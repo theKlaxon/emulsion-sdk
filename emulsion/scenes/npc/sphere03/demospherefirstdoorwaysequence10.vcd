@@ -1,0 +1,91 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 3.916667 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.demospherefirstdoorwaysequence10"
+    {
+      time 0.000000 3.549977
+      param "sphere03.demospherefirstdoorwaysequence10"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_plug_shake_tilt_CW"
+    {
+      time 1.947916 3.914583
+      param "sphere_plug_shake_tilt_CW"
+      event_ramp
+      {
+        0.2667 0.9881
+        1.7788 1.0000
+      }
+      fixedlength
+    }
+  }
+  channel "Gesture"
+  {
+    event gesture "g_plug_angle_N"
+    {
+      time 2.795120 3.283334
+      param "g_plug_angle_N"
+      event_ramp
+      {
+        0.1758 0.7857
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_both_lids_open"
+    {
+      time 2.659703 3.147916
+      param "g_both_lids_open"
+      event_ramp
+      {
+        0.3064 0.8214
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_plug_angle_N"
+    {
+      time 2.781250 3.269465
+      param "g_plug_angle_N"
+      event_ramp
+      {
+        0.1758 0.7857
+      }
+      sequenceduration 0.366667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "SceneRampTool" "100"
+  "GestureTool" "100"
+  "RampTool" "66"
+  "ExpressionTool" "100"
+  "CChoreoView" "64"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,168 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 3.416667 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.demospherebreakerlift07"
+    {
+      time 0.000000 3.413220
+      param "sphere03.demospherebreakerlift07"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 1.681437 1.826244
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 2.083622 2.228429
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 2.441007 2.585814
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 2.805473 2.950280
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 3.215901 3.360708
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 2.271101 2.415908
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 2.613243 2.758050
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 2.977708 3.122515
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_plug_spin_cycle_B"
+    {
+      time 1.656250 3.422916
+      param "sphere_plug_spin_cycle_B"
+      event_ramp
+      {
+        0.0879 0.9963
+        1.6727 0.9925
+      }
+    }
+  }
+  channel "Gesture"
+  {
+    event gesture "g_plug_shake_slow"
+    {
+      time 0.250000 2.097916
+      param "g_plug_shake_slow"
+      event_ramp
+      {
+        0.2606 0.9962 "curve_easein_to_curve_easeout"
+        1.6439 0.9924 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 4.066667
+    }
+    event gesture "g_plug_emphasis_open"
+    {
+      time 0.000000 0.572917
+      param "g_plug_emphasis_open"
+      event_ramp
+      {
+        0.0636 0.7841 "curve_easein_to_curve_easeout"
+        0.5021 0.7879 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.000000
+    }
+    event gesture "g_plug_angle_CW"
+    {
+      time 1.177084 2.116667
+      param "g_plug_angle_CW"
+      event_ramp
+      {
+        0.1212 0.9924
+        0.7843 0.9962
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_plug_emphasis_open"
+    {
+      time 0.833333 1.437500
+      param "g_plug_emphasis_open"
+      event_ramp
+      {
+        0.2333 0.6780 "curve_easein_to_curve_easein"
+        0.5425 1.0000 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.000000
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

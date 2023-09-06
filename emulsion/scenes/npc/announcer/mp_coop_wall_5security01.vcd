@@ -1,0 +1,107 @@
+// Choreo version 1
+actor "@glados"
+{
+  channel "audio"
+  {
+    event speak "glados.mp_coop_come_along05"
+    {
+      time -0.011111 12.609728
+      param "glados.COOP_TEST_CHAMBER_BOTH33"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "glados.COOP_TEST_CHAMBER_BOTH17"
+    {
+      time 12.757577 13.247849
+      param "glados.COOP_TEST_CHAMBER_BOTH17"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "glados.COOP_TEST_CHAMBER_BOTH18"
+    {
+      time 13.348486 13.804177
+      param "glados.COOP_TEST_CHAMBER_BOTH18"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "glados.COOP_TEST_CHAMBER_BOTH19"
+    {
+      time 13.863637 14.368376
+      param "glados.COOP_TEST_CHAMBER_BOTH19"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "glados.COOP_TEST_CHAMBER_BOTH20"
+    {
+      time 14.484849 14.896572
+      param "glados.COOP_TEST_CHAMBER_BOTH20"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "glados.COOP_TEST_CHAMBER_BOTH22"
+    {
+      time 15.000001 15.266169
+      param "glados.COOP_TEST_CHAMBER_BOTH22"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "glados.COOP_TEST_CHAMBER_BOTH20"
+    {
+      time 15.333335 15.745058
+      param "glados.COOP_TEST_CHAMBER_BOTH20"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "glados.COOP_TEST_CHAMBER_BOTH18"
+    {
+      time 15.833332 16.289024
+      param "glados.COOP_TEST_CHAMBER_BOTH18"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "glados.COOP_TEST_CHAMBER_BOTH22"
+    {
+      time 16.393942 16.660110
+      param "glados.COOP_TEST_CHAMBER_BOTH22"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+}
+
+actor "@announcer"
+{
+  channel "audio"
+  {
+    event speak "announcer.mp_coop_wall_5security01"
+    {
+      time 11.909091 17.309296
+      param "announcer.mp_coop_wall_5security03"
+      param2 "VOL_NORM"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "32"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,71 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 2.656250 -1.000000
+  param "noaction"
+}
+actor "@glados"
+{
+  channel "audio"
+  {
+    event speak "Announcer.openingevacuation01"
+    {
+      time 0.000000 2.630000
+      param "Announcer.openingevacuation01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+actor "@sphere"
+{
+  channel "Animation"
+  {
+    event sequence "sphere_glance_up_concerned"
+    {
+      time 0.052083 2.641666
+      param "sphere_glance_up_concerned"
+      event_ramp
+      {
+        0.2636 0.9977
+        2.3659 0.9977
+      }
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  faceposermodel "D:\Dev\main\portal2\staging\game\portal2\models\npcs\personality_sphere\personality_sphere.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

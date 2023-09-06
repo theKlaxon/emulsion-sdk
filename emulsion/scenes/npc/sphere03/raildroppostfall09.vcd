@@ -1,0 +1,105 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 3.843750 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.raildroppostfall09"
+    {
+      time 0.000000 3.825079
+      param "sphere03.raildroppostfall09"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event gesture "sphere_idle_concerned"
+    {
+      time 0.437500 3.104167
+      param "sphere_idle_concerned"
+      event_ramp
+      {
+        0.3091 0.9820
+        2.3242 0.9880
+      }
+      sequenceduration 2.666667
+    }
+  }
+  channel "Gesture"
+  {
+    event gesture "g_emphasis_open"
+    {
+      time 0.052083 0.614583
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.1061 0.8623
+        0.4515 0.8623
+      }
+      sequenceduration 1.000000
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 1.489583 2.052083
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.1061 0.8623
+        0.4515 0.8623
+      }
+      sequenceduration 1.000000
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 3.177083 3.739583
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.1061 0.8623
+        0.4515 0.8623
+      }
+      sequenceduration 1.000000
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 0.489583 1.052083
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.1061 0.8623
+        0.4515 0.8623
+      }
+      sequenceduration 1.000000
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

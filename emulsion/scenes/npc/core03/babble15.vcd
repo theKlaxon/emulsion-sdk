@@ -1,0 +1,94 @@
+// Choreo version 1
+actor "@core02"
+{
+  channel "audio"
+  {
+    event speak "core03.babble15"
+    {
+      time 0.000000 5.466621
+      param "core03.babble15"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "sphere_LidSwagger"
+    {
+      time 1.437500 5.433333
+      param "sphere_LidSwagger"
+      event_ramp
+      {
+        1.3545 0.9593
+        2.2758 0.3597
+        3.1364 0.9774
+      }
+      sequenceduration 1.600000
+    }
+    event gesture "sphere_slowLidClose"
+    {
+      time 2.562500 3.395833
+      param "sphere_slowLidClose"
+      event_ramp
+      {
+        0.3758 0.5452
+      }
+    }
+    event gesture "sphere_slowLidClose"
+    {
+      time 0.125000 0.958333
+      param "sphere_slowLidClose"
+      sequenceduration 0.833333
+    }
+    event gesture "sphere_singleNodDwn"
+    {
+      time 4.812500 5.412500
+      param "sphere_singleNodDwn"
+      event_ramp
+      {
+        0.0030 0.0023
+        0.2394 0.5181
+        0.4091 0.4525
+        0.5788 0.0090
+      }
+      sequenceduration 0.600000
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 4.302084 5.302084
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.4758 0.6629
+      }
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,40 @@
+// Choreo version 1
+actor "@glados"
+{
+  channel "audio"
+  {
+    event firetrigger "trigger1"
+    {
+      time 5.724999 -1.000000
+      param "1"
+    }
+    event speak "glados.COOP_FRUITS01"
+    {
+      time 0.079167 6.174519
+      param "glados.Gesture1_03"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "glados.COOP_FRUITS01"
+    {
+      time 6.495833 9.840844
+      param "glados.Gesture1_04"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "40"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

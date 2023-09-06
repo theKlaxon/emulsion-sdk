@@ -1,0 +1,79 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.bw_a4_finale04_bombtaunts02"
+    {
+      time 0.000000 5.542064
+      param "sphere03.bw_a4_finale04_bombtaunts02"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "glad_whet_stg2_lookUpRight"
+    {
+      time 0.020834 3.000000
+      param "glad_whet_stg2_lookUpRight"
+      event_ramp
+      {
+        0.0152 0.1906
+        2.9667 0.2354
+      }
+      sequenceduration 4.333333
+    }
+    event gesture "glad_wheat_small_upL"
+    {
+      time 2.197917 5.431250
+      param "glad_wheat_small_upL"
+      event_ramp
+      {
+        0.0030 0.8408
+        3.2303 0.7892
+      }
+      sequenceduration 3.233333
+    }
+    event gesture "glados_wheatly_headnod"
+    {
+      time 2.541667 4.666667
+      param "glados_wheatly_headnod"
+      sequenceduration 3.083333
+    }
+    event gesture "glados_wheatly_eyeUp"
+    {
+      time 0.395833 1.312500
+      param "glados_wheatly_eyeUp"
+      sequenceduration 0.916667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

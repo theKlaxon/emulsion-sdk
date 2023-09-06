@@ -1,0 +1,93 @@
+// Choreo version 1
+actor "@core02"
+{
+  channel "audio"
+  {
+    event speak "core03.babble17"
+    {
+      time 0.000000 3.628776
+      param "core03.babble17"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "sphere_SternLook"
+    {
+      time 0.000000 2.556250
+      param "sphere_SternLook"
+      sequenceduration 1.233333
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 2.510416 3.208333
+      param "g_emphasis_open"
+      sequenceduration 1.000000
+    }
+    event gesture "g_angle_CCW"
+    {
+      time 1.229167 2.033333
+      param "g_angle_CCW"
+      event_ramp
+      {
+        0.0061 0.0181
+        0.2061 0.0520 "curve_easeout_to_curve_easeout"
+        0.3606 0.4548
+        0.5848 0.3869
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_eye_look_NW"
+    {
+      time 0.823529 1.156862
+      param "g_eye_look_NW"
+      event_ramp
+      {
+        0.0394 0.1810 "curve_linear_interp_to_curve_linear_interp"
+        0.3030 0.1833 "curve_linear_interp_to_curve_linear_interp"
+      }
+      sequenceduration 0.333333
+    }
+    event gesture "g_eye_look_W"
+    {
+      time 2.019608 2.352942
+      param "g_eye_look_W"
+      event_ramp
+      {
+        0.0061 0.0113
+        0.0818 0.2511 "curve_linear_interp_to_curve_linear_interp"
+        0.2545 0.2489 "curve_linear_interp_to_curve_linear_interp"
+      }
+      sequenceduration 0.333333
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "68"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

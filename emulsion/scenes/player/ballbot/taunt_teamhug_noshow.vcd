@@ -1,0 +1,47 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 2.100000 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event sequence "taunt_teamhug_noShow"
+    {
+      time -0.040000 2.126667
+      param "taunt_teamhug_noShow"
+      event_ramp
+      {
+        0.0000 1.0000
+        2.1667 1.0000
+      }
+      fixedlength
+    }
+  }
+  channel "wav"
+  {
+    event speak "ballbot.ballbot_apology_01"
+    {
+      time 0.026666 2.560544
+      param "ballbot.ballbot_awww_05"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  faceposermodel "D:\Dev\main\portal2\staging\game\portal2\models\player\eggbot\eggbot.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "100"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

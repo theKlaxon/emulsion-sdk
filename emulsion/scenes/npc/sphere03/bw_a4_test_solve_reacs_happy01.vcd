@@ -1,0 +1,164 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 4.666667 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.bw_a4_test_solve_reacs_happy01"
+    {
+      time 0.000000 4.617347
+      param "sphere03.bw_a4_test_solve_reacs_happy01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "bod_up"
+    {
+      time 0.041666 2.708333
+      param "bod_up"
+      event_ramp
+      {
+        0.0030 0.0045 "curve_easein_to_curve_easeout"
+        1.8000 0.9978 "curve_easein_to_curve_easein"
+        2.0636 0.0090
+      }
+      sequenceduration 0.625000
+    }
+    event gesture "glados_wheatly_g_angel_N"
+    {
+      time 0.020833 1.947916
+      param "glados_wheatly_g_angel_N"
+      event_ramp
+      {
+        0.0030 0.0090 "curve_easein_to_curve_easeout"
+        1.6538 0.9910 "curve_easein_to_curve_easein"
+      }
+      sequenceduration 0.458333
+    }
+    event gesture "Blink1"
+    {
+      time 0.083333 2.854166
+      param "Blink1"
+      event_ramp
+      {
+        0.0000 1.0000
+        1.6545 0.9955 "curve_easein_to_curve_easeout"
+        2.0364 0.0179
+        2.7708 0.0000
+      }
+      sequenceduration 0.250000
+    }
+    event gesture "glados_wheatly_StraightNod"
+    {
+      time 2.291667 2.968750
+      param "glados_wheatly_StraightNod"
+      event_ramp
+      {
+        0.0000 0.9933
+        0.5636 0.9933
+      }
+      sequenceduration 0.708333
+    }
+    event gesture "glados_wheatly_headnod"
+    {
+      time 1.645834 4.729167
+      param "glados_wheatly_headnod"
+      event_ramp
+      {
+        1.4788 0.9910
+        2.1121 0.2870 "curve_easein_to_curve_easeout"
+        2.8364 0.2085 "curve_easein_to_curve_easeout"
+        2.9697 0.0000
+      }
+      sequenceduration 3.083333
+    }
+    event gesture "glados_wheatly_StraightNod"
+    {
+      time 1.656250 2.364583
+      param "glados_wheatly_StraightNod"
+      sequenceduration 0.708333
+    }
+    event gesture "glados_wheatly_PupilUp"
+    {
+      time 0.041667 1.541667
+      param "glados_wheatly_PupilUp"
+      event_ramp
+      {
+        0.5273 1.0000
+        1.5000 1.0000
+      }
+      sequenceduration 0.541667
+    }
+    event gesture "glados_wheatly_g_angel_CCW"
+    {
+      time 3.364583 4.635417
+      param "glados_wheatly_g_angel_CCW"
+      event_ramp
+      {
+        0.4242 0.6368 "curve_easein_to_curve_easeout"
+        0.8697 0.6323 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.458333
+    }
+    event gesture "glados_wheatly_PupilRight"
+    {
+      time 2.593750 2.968750
+      param "glados_wheatly_PupilRight"
+      event_ramp
+      {
+        0.0091 0.1682
+        0.3750 0.1300
+      }
+      sequenceduration 0.458333
+    }
+    event gesture "upperlid_half"
+    {
+      time 2.052083 3.958333
+      param "upperlid_half"
+      event_ramp
+      {
+        0.0667 0.9955 "curve_easeout_to_curve_easeout"
+        0.1121 0.0202 "curve_easein_to_curve_easeout"
+        0.2667 0.6211 "curve_easein_to_curve_easein"
+        0.5000 0.7646 "curve_easein_to_curve_easeout"
+        0.6788 0.1099
+        0.7848 0.7556 "curve_easeout_to_curve_easeout"
+      }
+      sequenceduration 1.083333
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

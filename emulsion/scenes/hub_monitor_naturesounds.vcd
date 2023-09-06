@@ -1,0 +1,63 @@
+// Choreo version 1
+actor "monitor"
+{
+  channel "audio"
+  {
+    event speak "glados.HubActivated_cardinal"
+    {
+      time 0.013889 127.941666
+      param "glados.HubActivated_cardinal"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "trigger"
+  {
+    event firetrigger "Firetrigger 5"
+    {
+      time 15.654120 -1.000000
+      param "5"
+    }
+    event firetrigger "Firetrigger 7"
+    {
+      time 9.387940 -1.000000
+      param "7"
+    }
+    event firetrigger "Firetrigger 4"
+    {
+      time 10.049423 -1.000000
+      param "4"
+    }
+    event firetrigger "Firetrigger 10"
+    {
+      time 11.648147 -1.000000
+      param "10"
+    }
+    event firetrigger "Firetrigger 6"
+    {
+      time 11.393518 -1.000000
+      param "6"
+    }
+    event firetrigger "Firetrigger 6"
+    {
+      time 17.222221 -1.000000
+      param "6"
+    }
+  }
+  channel "actions"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "144"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

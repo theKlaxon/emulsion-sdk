@@ -1,0 +1,86 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 0.875000 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.bw_a4_paradox05"
+    {
+      time 0.000000 0.898912
+      param "sphere03.bw_a4_paradox05"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "glados_wheatly_g_emphasis_close"
+    {
+      time 0.000000 0.791667
+      param "glados_wheatly_g_emphasis_close"
+      sequenceduration 1.000000
+    }
+    event gesture "glados_wheatly_LeftNod"
+    {
+      time 0.031250 0.656250
+      param "glados_wheatly_LeftNod"
+      event_ramp
+      {
+        0.3030 0.4126
+      }
+    }
+    event gesture "bod_down"
+    {
+      time 0.031250 0.885416
+      param "bod_down"
+      event_ramp
+      {
+        0.2879 0.8274
+      }
+      sequenceduration 0.625000
+    }
+    event gesture "glados_wheatly_PupilUp"
+    {
+      time 0.072917 0.364584
+      param "glados_wheatly_PupilUp"
+      event_ramp
+      {
+        0.0394 0.6278 "curve_easein_to_curve_easein"
+        0.2091 0.6345 "curve_easein_to_curve_easein"
+      }
+      sequenceduration 0.541667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

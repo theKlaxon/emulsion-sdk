@@ -1,0 +1,55 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "Sphere.BlipLarge"
+    {
+      time 0.882465 1.951966
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_glance_up_concerned"
+    {
+      time 0.163715 3.263715
+      param "sphere_glance_up_concerned"
+      event_ramp
+      {
+        0.1061 0.9194 "curve_easein_to_curve_easeout"
+        2.8545 0.9435 "curve_easein_to_curve_easeout"
+      }
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

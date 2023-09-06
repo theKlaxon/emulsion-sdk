@@ -1,0 +1,98 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 1.458333 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.sp_a2_bts6_tuberide01"
+    {
+      time 0.000000 1.439705
+      param "sphere03.sp_a2_bts6_tuberide01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "sphere_tuberide_med_twirl"
+    {
+      time -1.229167 1.437500
+      param "sphere_tuberide_med_twirl"
+      event_ramp
+      {
+        1.1788 0.0060
+        1.4333 0.9581
+        2.5606 0.9940
+      }
+      sequenceduration 2.666667
+    }
+    event gesture "g_angle_E"
+    {
+      time 0.010417 0.658334
+      param "g_angle_E"
+      event_ramp
+      {
+        0.2000 0.9880
+        0.4062 1.0000
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_W"
+    {
+      time 0.281250 1.168750
+      param "g_angle_W"
+      event_ramp
+      {
+        0.4727 0.9820
+        0.5822 0.9820
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_damaged_pose"
+    {
+      time 0.010416 1.447917
+      param "g_damaged_pose"
+      event_ramp
+      {
+        0.0879 1.0000
+        1.1667 1.0000
+      }
+      sequenceduration 0.666667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+  channel "Gesture2"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,93 @@
+// Choreo version 1
+actor "@glados"
+{
+  channel "audio"
+  {
+    event speak "glados.COOP_FRUITS01"
+    {
+      time 11.173611 12.926718
+      param "glados.PreHub01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event firetrigger "trigger2"
+    {
+      time 25.114576 -1.000000
+      param "2"
+    }
+    event speak "glados.COOP_FRUITS01"
+    {
+      time 0.201389 1.064881
+      param "glados.COOP_SCORE_COMMENT01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "glados.COOP_FRUITS01"
+    {
+      time 1.340278 3.996604
+      param "glados.PreHub02"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event firetrigger "trigger1"
+    {
+      time 9.267357 -1.000000
+      param "1"
+    }
+    event speak "glados.COOP_FRUITS01"
+    {
+      time 5.104167 8.895187
+      param "glados.Radar04"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "glados.COOP_FRUITS01"
+    {
+      time 13.354167 15.063849
+      param "glados.Radar05"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "glados.COOP_FRUITS01"
+    {
+      time 15.590278 18.823792
+      param "glados.Radar06"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "glados.COOP_FRUITS01"
+    {
+      time 19.173611 23.076128
+      param "glados.Radar07"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "glados.COOP_FRUITS01"
+    {
+      time 23.395834 26.146173
+      param "glados.Radar08"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+}
+
+scalesettings
+{
+  "SceneRampTool" "100"
+  "GestureTool" "100"
+  "RampTool" "66"
+  "ExpressionTool" "100"
+  "CChoreoView" "40"
+}
+fps 60
+snap off
+ignorePhonemes off

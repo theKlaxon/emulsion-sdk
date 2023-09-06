@@ -1,0 +1,81 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 0.513021 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.sp_sabotage_jailbreak07"
+    {
+      time 0.000000 0.508526
+      param "sphere03.sp_sabotage_jailbreak07"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "g_angle_NW"
+    {
+      time 0.015447 0.512535
+      param "g_angle_NW"
+      event_ramp
+      {
+        0.2879 0.3127
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_CCW"
+    {
+      time 0.022729 0.500398
+      param "g_angle_CCW"
+      event_ramp
+      {
+        0.2924 0.4140
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 0.013020 0.513020
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.0727 0.9924
+        0.4423 0.9924
+      }
+      sequenceduration 1.000000
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "SceneRampTool" "100"
+  "GestureTool" "100"
+  "RampTool" "66"
+  "ExpressionTool" "100"
+  "CChoreoView" "256"
+}
+fps 60
+snap off
+ignorePhonemes off

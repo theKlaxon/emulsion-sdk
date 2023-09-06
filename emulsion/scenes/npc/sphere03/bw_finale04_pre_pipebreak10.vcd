@@ -1,0 +1,249 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 16.911112 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.bw_finale04_pre_pipebreak10"
+    {
+      time 0.000000 16.917709
+      param "sphere03.bw_finale04_pre_pipebreak10"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "glados_wheatly_SideToSideNod"
+    {
+      time 0.052083 1.552083
+      param "glados_wheatly_SideToSideNod"
+    }
+    event gesture "glad_whet_stg3_ShkNoHeadRoll"
+    {
+      time 1.099306 4.313889
+      param "glad_whet_stg3_ShkNoHeadRoll"
+      event_ramp
+      {
+        0.0000 0.3139 "curve_easeout_to_curve_easeout"
+        1.6904 0.3116 "curve_easeout_to_curve_easeout"
+        3.1843 0.0000 "curve_easein_to_curve_easein"
+      }
+      sequenceduration 3.433333
+    }
+    event gesture "glad_wheat_up_yesNod"
+    {
+      time 3.452084 5.779167
+      param "glad_wheat_up_yesNod"
+      event_ramp
+      {
+        0.0000 0.1839
+        2.3152 0.1771
+      }
+      sequenceduration 2.400000
+    }
+    event gesture "glad_whet_stg3_LookL_R_StrIdle"
+    {
+      time 5.635417 8.052083
+      param "glad_whet_stg3_LookL_R_StrIdle"
+      event_ramp
+      {
+        0.0121 0.3408
+        2.4091 0.2713
+      }
+      sequenceduration 1.333333
+    }
+    event gesture "glad_whet_stg3_LookL_R_StrIdle"
+    {
+      time 8.062500 9.395833
+      param "glad_whet_stg3_LookL_R_StrIdle"
+      event_ramp
+      {
+        0.0030 0.3139
+        1.3000 0.2758
+      }
+      sequenceduration 1.333333
+    }
+    event gesture "glad_wheat_up_yesNod"
+    {
+      time 9.395833 11.795833
+      param "glad_wheat_up_yesNod"
+      event_ramp
+      {
+        0.0030 0.2601 "curve_easeout_to_curve_easeout"
+        1.0364 0.2601 "curve_easeout_to_curve_easeout"
+      }
+      sequenceduration 2.400000
+    }
+    event gesture "glad_wheat_up_yesNod"
+    {
+      time 8.739584 16.889585
+      param "glad_wheat_up_yesNod"
+      event_ramp
+      {
+        1.9757 0.0989 "curve_linear_interp_to_curve_linear_interp"
+        2.9818 0.1220 "curve_easein_to_curve_easeout"
+        3.6451 0.0000 "curve_easeout_to_curve_easeout"
+      }
+      sequenceduration 2.400000
+    }
+    event gesture "glad_wheat_small_fwd_up"
+    {
+      time 11.916666 18.250000
+      param "glad_wheat_small_fwd_up"
+      event_ramp
+      {
+        0.0000 1.0000
+        0.0000 0.0000 "curve_easeout_to_curve_easeout"
+        3.8333 0.0000 "curve_easein_to_curve_easein"
+        4.2152 0.2958
+        4.8364 0.0068
+      }
+      sequenceduration 6.333333
+    }
+    event gesture "glados_wheatly_eyePopLeft"
+    {
+      time 1.864583 5.114583
+      param "glados_wheatly_eyePopLeft"
+      sequenceduration 3.250000
+    }
+    event gesture "glados_wheatley_LidSquint"
+    {
+      time 6.062500 6.645833
+      param "glados_wheatley_LidSquint"
+      sequenceduration 0.583333
+    }
+    event gesture "glados_wheatley_LidSquint"
+    {
+      time 7.458334 8.041667
+      param "glados_wheatley_LidSquint"
+      sequenceduration 0.583333
+    }
+    event gesture "glados_wheatley_G_FinsFlicker"
+    {
+      time 5.781250 8.447917
+      param "glados_wheatley_G_FinsFlicker"
+      event_ramp
+      {
+        0.4879 0.0273 "curve_easein_to_curve_easeout"
+        0.7424 0.9567 "curve_easein_to_curve_easeout"
+        0.8606 0.9636 "curve_easein_to_curve_easeout"
+        1.4152 0.0137 "curve_easein_to_curve_easeout"
+        1.5818 0.0228 "curve_easeout_to_curve_easeout"
+        2.0333 0.9818 "curve_easein_to_curve_easeout"
+        2.4970 0.0182 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 2.666667
+    }
+    event gesture "glados_wheatly_g_angel_CW"
+    {
+      time 12.385417 14.093750
+      param "glados_wheatly_g_angel_CW"
+      event_ramp
+      {
+        0.3455 0.6765
+        0.7879 0.1093
+        1.1333 0.9704
+      }
+      sequenceduration 0.458333
+    }
+    event gesture "glados_wheatly_g_angel_N"
+    {
+      time 14.416668 14.875001
+      param "glados_wheatly_g_angel_N"
+      sequenceduration 0.458333
+    }
+    event gesture "glad_wheat_head_down"
+    {
+      time 14.760417 17.593750
+      param "glad_wheat_head_down"
+      event_ramp
+      {
+        0.0000 1.0000
+        1.5091 1.0000 "curve_easein_to_curve_easeout"
+        2.1697 0.0068
+      }
+      sequenceduration 2.833333
+    }
+    event gesture "glados_wheatly_PupilUp"
+    {
+      time 10.072917 10.614584
+      param "glados_wheatly_PupilUp"
+      sequenceduration 0.541667
+    }
+    event gesture "glados_wheatly_PupilLeft"
+    {
+      time 10.614584 11.031251
+      param "glados_wheatly_PupilLeft"
+      sequenceduration 0.416667
+    }
+    event gesture "glados_wheatley_LidSquint"
+    {
+      time 12.197916 14.177082
+      param "glados_wheatley_LidSquint"
+      sequenceduration 0.583333
+    }
+    event gesture "glados_wheatley_G_FinsFlicker"
+    {
+      time 13.111111 15.777778
+      param "glados_wheatley_G_FinsFlicker"
+      event_ramp
+      {
+        0.9121 0.0182
+        1.2788 0.6287
+        1.6424 0.0342
+      }
+      sequenceduration 2.666667
+    }
+    event gesture "glados_wheatly_LidGoIn"
+    {
+      time 14.855556 16.877777
+      param "glados_wheatly_LidGoIn"
+      sequenceduration 0.666667
+    }
+    event gesture "glados_wheatley_LidSquint"
+    {
+      time 12.282052 14.147436
+      param "glados_wheatley_LidSquint"
+      sequenceduration 0.583333
+    }
+    event gesture "glados_wheatly_LidPopOut"
+    {
+      time 10.255555 11.644444
+      param "glados_wheatly_LidPopOut"
+      sequenceduration 0.833333
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "60"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

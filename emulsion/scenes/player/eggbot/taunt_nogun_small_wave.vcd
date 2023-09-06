@@ -1,0 +1,47 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 4.500124 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event sequence "taunt_noGun_small_wave"
+    {
+      time 0.000000 4.600000
+      param "taunt_noGun_small_wave"
+      event_ramp
+      {
+        0.0000 1.0000
+        4.6000 0.9979
+      }
+      fixedlength
+    }
+  }
+  channel "wav"
+  {
+    event speak "EggBotWave04"
+    {
+      time 1.806818 4.371671
+      param "EggBotWave04"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  faceposermodel "D:\Dev\main\portal2\staging\game\portal2\models\player\eggbot\eggbot.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "176"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

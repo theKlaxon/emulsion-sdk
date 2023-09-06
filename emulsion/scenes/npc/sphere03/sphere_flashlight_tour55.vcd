@@ -1,0 +1,114 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 4.093750 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.sphere_flashlight_tour55"
+    {
+      time 0.000000 4.043583
+      param "sphere03.sphere_flashlight_tour55"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "sphere_react_portal_happy"
+    {
+      time 0.614583 2.481250
+      param "sphere_react_portal_happy"
+      event_ramp
+      {
+        0.2000 1.0000
+        1.6030 0.9886
+      }
+      sequenceduration 1.866667
+    }
+    event gesture "g_damaged_pose"
+    {
+      time 0.031250 2.520833
+      param "g_damaged_pose"
+      event_ramp
+      {
+        0.0636 0.9962
+        2.4381 1.0000
+      }
+      sequenceduration 0.666667
+    }
+    event gesture "g_angle_CW"
+    {
+      time 3.229167 3.658333
+      param "g_angle_CW"
+      event_ramp
+      {
+        0.2051 0.8485
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_nod_fast"
+    {
+      time 2.322916 4.089583
+      param "g_nod_fast"
+      event_ramp
+      {
+        0.1152 1.0000
+        1.6424 0.9924
+      }
+      sequenceduration 1.766667
+    }
+    event gesture "sphere_eye_pop"
+    {
+      time 0.031249 0.497915
+      param "sphere_eye_pop"
+      event_ramp
+      {
+        0.1030 1.0000
+        0.3788 0.9962
+      }
+      sequenceduration 0.466667
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 3.093750 4.093750
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.1121 0.9924
+        0.8970 0.9962
+      }
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,140 @@
+// Choreo version 1
+actor "magnusson"
+{
+  channel "head"
+  {
+    event gesture "hg_headshake_small"
+    {
+      time 1.215054 3.515054
+      param "hg_headshake_small"
+      absolutetags playback_time
+      {
+        "apex" 0.088235
+        "extreme" 0.220588
+        "loop" 0.661765
+        "end" 0.676471
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.088235
+        "extreme" 0.220588
+        "loop" 0.661765
+        "end" 0.676471
+      }
+      sequenceduration 2.300000
+    }
+    event gesture "g_raisechest_whands"
+    {
+      time -0.043011 1.923656
+      param "g_raisechest_whands"
+      absolutetags playback_time
+      {
+        "apex" 0.362069
+        "accent" 0.586207
+        "loop" 0.672414
+        "end" 0.758621
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.362069
+        "accent" 0.586207
+        "loop" 0.672414
+        "end" 0.758621
+      }
+    }
+    event gesture "p_lookleft"
+    {
+      time 2.811828 5.778495
+      param "p_lookleft"
+      absolutetags playback_time
+      {
+        "apex" 0.170455
+        "loop" 0.568182
+        "end" 0.681818
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.170455
+        "loop" 0.568182
+        "end" 0.681818
+      }
+    }
+    event gesture "p_looktocam"
+    {
+      time 3.075269 5.441936
+      param "p_looktocam"
+      event_ramp
+      {
+        0.2909 0.3898
+        1.7333 0.4407
+      }
+      absolutetags playback_time
+      {
+        "apex" 0.342857
+        "loop" 0.428571
+        "end" 0.571429
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.342857
+        "loop" 0.428571
+        "end" 0.571429
+      }
+    }
+  }
+  channel "gestures"
+  {
+    event gesture "g_handswipe"
+    {
+      time 1.526882 3.493549
+      param "g_handswipe"
+      absolutetags playback_time
+      {
+        "apex" 0.293103
+        "accent" 0.603448
+        "loop" 0.706897
+        "end" 0.810345
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.293103
+        "accent" 0.603448
+        "loop" 0.706897
+        "end" 0.810345
+      }
+      sequenceduration 1.966667
+    }
+    event gesture "g_L_hand_ease_high"
+    {
+      time 3.053764 4.520431
+      param "g_L_hand_ease_high"
+      absolutetags playback_time
+      {
+        "apex" 0.372093
+        "accent" 0.558140
+        "loop" 0.651163
+        "end" 0.697674
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.372093
+        "accent" 0.558140
+        "loop" 0.651163
+        "end" 0.697674
+      }
+    }
+  }
+  faceposermodel "U:\DEV\main\game\ep2\models\magnusson.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "124"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

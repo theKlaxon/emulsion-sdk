@@ -1,0 +1,118 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 1.179487 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.bw_a4_misc_solve_nags03"
+    {
+      time 0.000000 1.162177
+      param "sphere03.bw_a4_misc_solve_nags03"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "glados_wheatly_Scream"
+    {
+      time -0.217948 2.532052
+      param "glados_wheatly_Scream"
+      event_ramp
+      {
+        0.0030 0.0247
+        0.1788 0.6569 "curve_linear_interp_to_curve_linear_interp"
+        0.7697 0.6525 "curve_linear_interp_to_curve_linear_interp"
+        0.9788 0.0045
+      }
+    }
+    event gesture "bod_fwd"
+    {
+      time 0.012821 1.304488
+      param "bod_fwd"
+      event_ramp
+      {
+        0.0000 1.0000
+        1.0121 0.9888
+      }
+      sequenceduration 0.625000
+    }
+    event gesture "upperlid_half"
+    {
+      time 0.012820 1.096154
+      param "upperlid_half"
+      event_ramp
+      {
+        0.0424 0.0493 "curve_linear_interp_to_curve_linear_interp"
+        1.0242 0.0650 "curve_linear_interp_to_curve_linear_interp"
+      }
+      sequenceduration 1.083333
+    }
+    event gesture "lowlid_half"
+    {
+      time 0.038463 1.080130
+      param "lowlid_half"
+      event_ramp
+      {
+        0.0121 1.0000 "curve_linear_interp_to_curve_linear_interp"
+        1.0121 1.0000 "curve_linear_interp_to_curve_linear_interp"
+      }
+      sequenceduration 1.041667
+    }
+    event gesture "iris_narrow_"
+    {
+      time 0.051281 1.134614
+      param "iris_narrow_"
+      sequenceduration 1.083333
+    }
+    event gesture "glados_wheatly_eyeDown"
+    {
+      time 0.064102 1.102564
+      param "glados_wheatly_eyeDown"
+      sequenceduration 0.833333
+    }
+    event gesture "glados_wheatly_PupilUp"
+    {
+      time 0.102564 1.067308
+      param "glados_wheatly_PupilUp"
+      event_ramp
+      {
+        0.0303 0.2511 "curve_linear_interp_to_curve_linear_interp"
+        0.9273 0.2466 "curve_linear_interp_to_curve_linear_interp"
+      }
+      sequenceduration 0.541667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "52"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

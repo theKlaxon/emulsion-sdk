@@ -1,0 +1,34 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 2.108378 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event sequence "eggbot_taunt_rps_fail"
+    {
+      time 0.000000 2.200000
+      param "eggbot_taunt_rps_fail"
+      fixedlength
+    }
+  }
+  channel "wav"
+  {
+  }
+  faceposermodel "D:\dev\main\portal2\staging\game\portal2\models\player\eggbot\eggbot.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "296"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

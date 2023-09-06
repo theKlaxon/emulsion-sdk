@@ -1,0 +1,61 @@
+// Choreo version 1
+event stoppoint "bert"
+{
+  time 0.424666 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.fgb_hello01"
+    {
+      time 0.000667 0.421460
+      param "sphere03.fgb_hello01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "g_plug_emphasis_open"
+    {
+      time -0.056667 0.423333
+      param "g_plug_emphasis_open"
+      event_ramp
+      {
+        0.0939 1.0000 "curve_easein_to_curve_easeout"
+        0.2848 1.0000 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.000000
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "1000"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

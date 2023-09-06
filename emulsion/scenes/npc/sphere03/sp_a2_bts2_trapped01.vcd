@@ -1,0 +1,98 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.sp_a2_bts2_trapped01"
+    {
+      time 0.000000 1.802630
+      param "sphere03.sp_a2_bts2_trapped01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "g_shake_fast"
+    {
+      time 0.041667 1.804167
+      param "g_shake_fast"
+      event_ramp
+      {
+        0.1000 0.9940
+        1.4898 0.9924
+      }
+      sequenceduration 1.200000
+    }
+    event gesture "g_angle_N"
+    {
+      time 0.177084 0.543750
+      param "g_angle_N"
+      event_ramp
+      {
+        0.1545 0.9811
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 0.041666 0.718750
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.1091 0.9924
+        0.4303 1.0000
+      }
+      sequenceduration 1.000000
+    }
+    event gesture "g_angle_N"
+    {
+      time 1.177084 1.543750
+      param "g_angle_N"
+      event_ramp
+      {
+        0.1545 0.9811
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 1.041666 1.718750
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.1091 0.9924
+        0.4303 1.0000
+      }
+      sequenceduration 1.000000
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

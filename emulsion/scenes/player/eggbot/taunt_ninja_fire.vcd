@@ -1,0 +1,38 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 5.800000 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event speak "EggBotTrickFire03"
+    {
+      time 0.773333 5.646304
+      param "EggBotTrickFire03"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event gesture "taunt_trickfire_ninja"
+    {
+      time 0.000000 6.333333
+      param "taunt_trickfire_ninja"
+    }
+  }
+  faceposermodel "D:\Dev\main\portal2\staging\game\portal2\models\player\eggbot\eggbot.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "100"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,108 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 1.893939 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.demospherepowerup02"
+    {
+      time 0.027345 1.870361
+      param "sphere03.demospherepowerup02"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 0.012778 0.157585
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 0.467610 0.612417
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 1.183115 1.327922
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 0.240050 0.384857
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 0.853975 0.998782
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 1.508872 1.653679
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_plug_spin_cycle_C"
+    {
+      time 0.121212 1.887879
+      param "sphere_plug_spin_cycle_C"
+      event_ramp
+      {
+        0.1524 0.9925
+        1.6333 0.9888
+      }
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "SceneRampTool" "100"
+  "GestureTool" "100"
+  "RampTool" "42"
+  "ExpressionTool" "100"
+  "CChoreoView" "88"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,43 @@
+// Choreo version 1
+event stoppoint "FireCompletion"
+{
+  time .1 -1.000000
+  param ""
+}
+actor "Sphere02"
+{
+  channel "audio"
+  {
+
+  }
+  channel "look at"
+  {
+  }
+  channel "move to"
+  {
+  }
+  channel "gestures"
+  {
+  }
+  channel "postures"
+  {
+  }
+  channel "facial flex"
+  {
+  }
+  channel "triggers"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

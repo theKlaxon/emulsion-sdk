@@ -1,0 +1,54 @@
+// Choreo version 1
+actor "!Target1"
+{
+  channel "Audio"
+  {
+    event speak "item_bedframe01"
+    {
+      time 0.186667 2.746667
+      param "obot.item_bedframe01"
+      param2 "75dB"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "Expression"
+  {
+    event expression "evil01"
+    {
+      time 0.027183 3.552695
+      param "obot\emotion\emotion"
+      param2 "evil01"
+      event_ramp
+      {
+        0.4440 0.9018 "curve_easein_to_curve_easeout"
+        2.9362 0.9018 "curve_easein_to_curve_easeout"
+      }
+    }
+  }
+  channel "lookat"
+  {
+  }
+  channel "faceto"
+  {
+  }
+  channel "moveto"
+  {
+  }
+  channel "gesture"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "100"
+  "RampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

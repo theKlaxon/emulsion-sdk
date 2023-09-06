@@ -1,0 +1,165 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 4.177083 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.bw_sp_a4_laser_catapult_intro02"
+    {
+      time 0.000000 4.173832
+      param "sphere03.bw_sp_a4_laser_catapult_intro02"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event gesture "glados_wheatly_HeadShakeNo"
+    {
+      time 1.302083 4.177083
+      param "glados_wheatly_HeadShakeNo"
+      event_ramp
+      {
+        0.4879 0.0498
+        1.0727 1.0000
+        2.7970 1.0000
+      }
+    }
+    event gesture "glados_wheatly_HeadShakeNo"
+    {
+      time 0.447916 3.656250
+      param "glados_wheatly_HeadShakeNo"
+      event_ramp
+      {
+        0.2455 1.0000
+        0.9909 0.9732
+        1.9788 0.0153
+      }
+      sequenceduration 2.875000
+    }
+    event gesture "bod_back"
+    {
+      time 3.562500 4.187500
+      param "bod_back"
+      event_ramp
+      {
+        0.3091 0.8314
+      }
+    }
+    event gesture "glad_wheat_small_fwd"
+    {
+      time 0.052083 4.166667
+      param "glad_wheat_small_fwd"
+      event_ramp
+      {
+        0.1152 0.1303
+        3.9848 0.1303
+      }
+      sequenceduration 4.333333
+    }
+    event gesture "bod_fwd"
+    {
+      time 2.208333 2.833333
+      param "bod_fwd"
+      event_ramp
+      {
+        0.2939 0.6897
+      }
+    }
+    event gesture "Blink1"
+    {
+      time 0.458333 0.770833
+      param "Blink1"
+      event_ramp
+      {
+        0.0545 0.9847
+        0.2650 1.0000
+      }
+      sequenceduration 0.250000
+    }
+    event gesture "Blink1"
+    {
+      time 1.208333 1.520833
+      param "Blink1"
+      event_ramp
+      {
+        0.0545 0.9847
+        0.2650 1.0000
+      }
+      sequenceduration 0.250000
+    }
+    event gesture "Blink1"
+    {
+      time 2.156250 2.468750
+      param "Blink1"
+      event_ramp
+      {
+        0.0545 0.9847
+        0.2650 1.0000
+      }
+      sequenceduration 0.250000
+    }
+    event gesture "Blink1"
+    {
+      time 3.656250 3.968750
+      param "Blink1"
+      event_ramp
+      {
+        0.0545 0.9847
+        0.2650 1.0000
+      }
+      sequenceduration 0.250000
+    }
+    event gesture "bod_back"
+    {
+      time 0.041667 0.666667
+      param "bod_back"
+      event_ramp
+      {
+        0.3091 0.8314
+      }
+    }
+    event gesture "glados_wheatly_g_angel_N"
+    {
+      time 0.083333 0.541667
+      param "glados_wheatly_g_angel_N"
+      event_ramp
+      {
+        0.2242 0.6284
+      }
+      sequenceduration 0.458333
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

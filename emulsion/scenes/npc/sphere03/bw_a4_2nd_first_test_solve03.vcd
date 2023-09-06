@@ -1,0 +1,115 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 0.864583 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.bw_a4_2nd_first_test_solve03"
+    {
+      time 0.000000 0.880680
+      param "sphere03.bw_a4_2nd_first_test_solve03"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "Explode"
+    {
+      time 0.062500 0.750000
+      param "Explode"
+      event_ramp
+      {
+        0.0909 0.8485
+        0.2061 0.3497
+        0.3576 0.9161
+        0.4576 0.0443
+      }
+      sequenceduration 0.208333
+    }
+    event gesture "bod_up"
+    {
+      time 0.010417 0.635417
+      param "bod_up"
+      event_ramp
+      {
+        0.0000 1.0000
+        0.5121 0.9953
+      }
+    }
+    event gesture "iris_narrow_"
+    {
+      time -0.114583 0.968750
+      param "iris_narrow_"
+      event_ramp
+      {
+        0.1364 0.0163
+        0.2697 0.9907
+        0.3515 0.0070
+      }
+      sequenceduration 1.083333
+    }
+    event gesture "glados_wheatly_g_angel_CW"
+    {
+      time -0.031250 0.385417
+      param "glados_wheatly_g_angel_CW"
+      event_ramp
+      {
+        0.2152 0.9930
+      }
+      sequenceduration 0.458333
+    }
+    event gesture "glados_wheatly_g_angel_CCW"
+    {
+      time 0.302083 0.593750
+      param "glados_wheatly_g_angel_CCW"
+      event_ramp
+      {
+        0.1672 0.9977
+      }
+      sequenceduration 0.458333
+    }
+    event gesture "glados_wheatly_g_angel_S"
+    {
+      time 0.416667 0.875000
+      param "glados_wheatly_g_angel_S"
+      event_ramp
+      {
+        0.2121 0.9977
+      }
+      sequenceduration 0.458333
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

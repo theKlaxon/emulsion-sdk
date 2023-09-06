@@ -1,0 +1,44 @@
+// Choreo version 1
+actor "@glados"
+{
+  channel "audio"
+  {
+    event speak "glados.sp_catapult_fling_sphere_peek_failureone02"
+    {
+      time 0.000000 1.75500
+      param "glados.sp_catapult_fling_sphere_peek_failureone02"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off

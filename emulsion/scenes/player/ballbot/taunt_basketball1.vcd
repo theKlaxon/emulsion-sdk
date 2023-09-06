@@ -1,0 +1,39 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 5.993333 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event sequence "taunt_basketball1"
+    {
+      time 0.000000 5.600000
+      param "taunt_basketball1"
+      fixedlength
+    }
+    event speak "egg"
+    {
+      time -0.046667 5.986666
+      param "ballbot.basketball_vo"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  faceposermodel "D:\portal_staging\portal2\rel_pc\game\portal2\models\player\ballbot\ballbot.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "100"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

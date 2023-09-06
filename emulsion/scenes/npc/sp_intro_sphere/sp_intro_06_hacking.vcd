@@ -1,0 +1,119 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 0.093750 0.790621
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 0.572917 1.269788
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 1.062500 1.759371
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 1.531250 2.228121
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 2.010417 2.707288
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 2.458333 3.155204
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 0.093750 1.022843
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 0.781250 2.106102
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 1.895833 2.757488
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_plug_spin_cycle_b"
+    {
+      time 0.111632 1.409548
+      param "sphere_plug_spin_cycle_b"
+    }
+    event sequence "sphere_plug_spin_cycle_C"
+    {
+      time 1.392882 3.159549
+      param "sphere_plug_spin_cycle_C"
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

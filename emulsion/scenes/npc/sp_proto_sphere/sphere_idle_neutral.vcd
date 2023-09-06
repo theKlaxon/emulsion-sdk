@@ -1,0 +1,30 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+  }
+  channel "base"
+  {
+    event sequence "sphere_idle_neutral"
+    {
+      time 0.000000 3.200000
+      param "sphere_idle_neutral"
+    }
+  }
+  channel "gesture"
+  {
+  }
+}
+
+scalesettings
+{
+  "RampTool" "100"
+  "GestureTool" "100"
+  "ExpressionTool" "100"
+  "SceneRampTool" "100"
+  "CChoreoView" "116"
+}
+fps 60
+snap off
+ignorePhonemes off

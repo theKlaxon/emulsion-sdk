@@ -1,0 +1,92 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 1.875000 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.bw_sp_a4_tb_wall_button_not_solve05"
+    {
+      time 0.000000 1.841746
+      param "sphere03.bw_sp_a4_tb_wall_button_not_solve05"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "glados_wheatley_G_FinsFlicker"
+    {
+      time 0.052083 1.864583
+      param "glados_wheatley_G_FinsFlicker"
+      event_ramp
+      {
+        0.1152 0.3027
+        1.6667 0.2988
+      }
+      sequenceduration 2.666667
+    }
+    event gesture "glad_wheat_small_fwd"
+    {
+      time 0.031251 1.864584
+      param "glad_wheat_small_fwd"
+      event_ramp
+      {
+        0.1485 0.1763 "curve_easein_to_curve_easeout"
+        1.6424 0.1724 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 4.333333
+    }
+    event gesture "glados_wheatly_PupilDown"
+    {
+      time 0.718750 1.177084
+      param "glados_wheatly_PupilDown"
+      event_ramp
+      {
+        0.2152 0.7395
+      }
+      sequenceduration 0.458333
+    }
+    event gesture "glados_wheatly_eyeDown"
+    {
+      time 0.552084 1.385417
+      param "glados_wheatly_eyeDown"
+      event_ramp
+      {
+        0.4152 0.9502
+      }
+      sequenceduration 0.833333
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

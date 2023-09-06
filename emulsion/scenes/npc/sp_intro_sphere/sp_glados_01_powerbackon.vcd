@@ -1,0 +1,93 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "Sphere.BlipLarge"
+    {
+      time 0.257464 0.986285
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 1.455381 2.324179
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 2.476214 3.205035
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+    active "0"
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "g_talk_turn_S"
+    {
+      time 1.125000 1.897916
+      param "g_talk_turn_S"
+      event_ramp
+      {
+        0.4388 0.6183
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_talk_turn_S"
+    {
+      time 1.666666 2.387500
+      param "g_talk_turn_S"
+      event_ramp
+      {
+        0.3563 0.5752
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_lid_squint_Tight"
+    {
+      time 0.072916 3.679166
+      param "g_lid_squint_Tight"
+      event_ramp
+      {
+        0.3438 0.9948
+        3.2292 1.0000
+      }
+      sequenceduration 0.366667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "32"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,103 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 1.822917 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.sp_catapult_fling_sphere_peek01"
+    {
+      time 0.000000 1.796825
+      param "sphere03.sp_catapult_fling_sphere_peek01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "g_nod_fast"
+    {
+      time 0.010417 1.777084
+      param "g_nod_fast"
+      event_ramp
+      {
+        0.1091 0.9925
+        1.6333 0.9925
+      }
+      sequenceduration 1.766667
+    }
+    event gesture "sphere_eye_pop_big"
+    {
+      time 0.614583 1.414584
+      param "sphere_eye_pop_big"
+      event_ramp
+      {
+        0.1394 0.9886
+        0.6879 0.9848
+      }
+      sequenceduration 0.800000
+    }
+    event gesture "g_nod_fast"
+    {
+      time 0.010417 1.777084
+      param "g_nod_fast"
+      event_ramp
+      {
+        0.1091 0.9925
+        1.6333 0.9925
+      }
+      sequenceduration 1.766667
+    }
+    event gesture "g_both_lids_open"
+    {
+      time 0.437500 0.804166
+      param "g_both_lids_open"
+      event_ramp
+      {
+        0.1848 0.9886
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_both_lids_open"
+    {
+      time 0.437500 0.804166
+      param "g_both_lids_open"
+      event_ramp
+      {
+        0.1848 0.9886
+      }
+      sequenceduration 0.366667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

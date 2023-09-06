@@ -1,0 +1,69 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 5.155675 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event gesture "eggbot_taunt_rps_shake"
+    {
+      time 0.004504 1.137838
+      param "eggbot_taunt_rps_shake"
+      sequenceduration 1.133333
+    }
+    event gesture "eggbot_taunt_rps_success"
+    {
+      time 2.060846 5.160847
+      param "eggbot_taunt_rps_success"
+      sequenceduration 3.100000
+    }
+    event gesture "eggbot_taunt_rps_paper"
+    {
+      time 1.116403 2.083069
+      param "eggbot_taunt_rps_paper"
+      sequenceduration 0.966667
+    }
+  }
+  channel "wav"
+  {
+    event speak "TauntRpsEggbotSuccess01"
+    {
+      time 2.071097 5.539351
+      param "TauntRpsEggbotSuccess01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "EggbotJumps04"
+    {
+      time 1.190477 1.909729
+      param "EggbotJumps04"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "EggbotJumps05"
+    {
+      time 0.275132 0.930642
+      param "EggbotJumps05"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "252"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

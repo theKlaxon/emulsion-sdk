@@ -1,0 +1,115 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 9.072918 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.sp_a2_bts5_hack13"
+    {
+      time 0.000000 9.065397
+      param "sphere03.sp_a2_bts5_hack13"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "sphere_damaged_glance_concerned"
+    {
+      time -0.218750 9.081250
+      param "sphere_damaged_glance_concerned"
+      event_ramp
+      {
+        0.0939 0.9940
+        9.2182 0.9940
+      }
+    }
+    event gesture "g_nod_fast"
+    {
+      time 6.656250 9.047917
+      param "g_nod_fast"
+      event_ramp
+      {
+        0.1243 0.1458
+        2.3099 0.1398
+      }
+      sequenceduration 1.766667
+    }
+    event gesture "g_angle_CW"
+    {
+      time 3.697917 5.137499
+      param "g_angle_CW"
+      event_ramp
+      {
+        0.2515 0.0741
+        1.1710 0.1864
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_CCW"
+    {
+      time 4.864584 6.450002
+      param "g_angle_CCW"
+      event_ramp
+      {
+        0.2000 0.0833
+        1.2527 0.1332
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_CW"
+    {
+      time 7.989583 9.033333
+      param "g_angle_CW"
+      event_ramp
+      {
+        0.2879 0.1519
+        0.7904 0.1864
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_shake_tilt_CW"
+    {
+      time 1.135417 3.379166
+      param "g_shake_tilt_CW"
+      event_ramp
+      {
+        0.1333 0.9963
+        2.1000 1.0000
+      }
+      sequenceduration 4.066667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

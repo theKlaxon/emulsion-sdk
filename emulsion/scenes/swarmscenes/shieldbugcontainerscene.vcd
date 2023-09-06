@@ -1,0 +1,30 @@
+// Choreo version 1
+actor "Shieldbug"
+{
+  channel "PushContainerScene"
+  {
+    event moveto "MoveToContainer"
+    {
+      time 0.000000 1.860000
+      param "ContainerSpot"
+      param2 "Run"
+    }
+    event sequence "PushContainer"
+    {
+      time 1.873333 3.540000
+      param "attack_backhand"
+      fixedlength
+    }
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "100"
+  "RampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off

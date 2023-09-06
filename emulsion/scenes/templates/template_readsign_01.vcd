@@ -1,0 +1,200 @@
+// Choreo version 1
+event section "kljkl;kj"
+{
+  time 1.192308 -1.000000
+  param "noaction"
+}
+actor "!target1"
+{
+  channel "Audio"
+  {
+    event speak "obot.Signs12"
+    {
+      time 1.615384 4.395974
+      param "obot.Signs12"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "obot.SignResponsesDanger"
+    {
+      time 5.192307 5.433577
+      param "obot.SignResponsesDanger"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "lookAt"
+  {
+    event lookat "Look at !hint"
+    {
+      time 0.100513 5.485640
+      param "!hint"
+      event_ramp
+      {
+        0.5000 1.0000 "curve_easein_to_curve_easeout"
+        4.7981 1.0000 "curve_easein_to_curve_easeout"
+      }
+    }
+    event lookat "Look at !player"
+    {
+      time 5.003590 7.130257
+      param "!player"
+      event_ramp
+      {
+        0.4931 1.0000 "curve_easein_to_curve_easeout"
+        1.5864 1.0000 "curve_easein_to_curve_easeout"
+      }
+    }
+  }
+  channel "moveTo"
+  {
+    event moveto "Move to sign"
+    {
+      time 0.855897 2.111795
+      param "!hint"
+      param2 "Run"
+      param3 "!hint"
+      resumecondition
+      distancetotarget 51.00
+    }
+  }
+  channel "faceTo"
+  {
+    event face "hint"
+    {
+      time 0.106667 5.497950
+      param "!hint"
+      event_ramp
+      {
+        0.5448 1.0000 "curve_easein_to_curve_easeout"
+        4.7887 1.0000 "curve_easein_to_curve_easeout"
+      }
+    }
+    event face "player"
+    {
+      time 5.089231 7.149231
+      param "!player"
+      event_ramp
+      {
+        0.5724 1.0000 "curve_easein_to_curve_easeout"
+        1.4885 1.0000 "curve_easein_to_curve_easeout"
+      }
+      lockbodyfacing
+    }
+  }
+  channel "postures"
+  {
+  }
+  channel "seq"
+  {
+  }
+  channel "gestures"
+  {
+  }
+  channel "body"
+  {
+    event gesture "g_point_l"
+    {
+      time 0.314469 5.007779
+      param "g_point_l"
+      event_ramp
+      {
+        0.1500 1.0000 "curve_easein_to_curve_easeout"
+        0.7818 0.9649
+        1.6545 0.9649
+        2.3455 0.9201
+        2.4358 0.9297
+        2.6833 0.9105
+        3.2378 0.9393
+        4.0469 1.0000 "curve_easein_to_curve_easeout"
+        4.3560 1.0000 "curve_easein_to_curve_easeout"
+      }
+      absolutetags playback_time
+      {
+        "in" 0.040330
+        "loop" 0.190341
+        "end" 0.724024
+        "out" 0.887955
+      }
+      absolutetags shifted_time
+      {
+        "in" 0.081967
+        "loop" 0.508197
+        "end" 0.639344
+        "out" 0.836066
+      }
+      sequenceduration 2.066667
+    }
+  }
+  channel "head"
+  {
+  }
+  channel "facial"
+  {
+  }
+  channel "trigger"
+  {
+  }
+  channel "expressions"
+  {
+    event expression "shock01"
+    {
+      time 0.170818 1.642013
+      param "obot\emotion\emotion"
+      param2 "shock01"
+      event_ramp
+      {
+        0.1950 0.9968 "curve_easein_to_curve_easeout"
+        0.9376 0.9968 "curve_easein_to_curve_easeout"
+      }
+    }
+    event expression "squint"
+    {
+      time 1.241509 5.120000
+      param "obot\emotion\emotion"
+      param2 "squint"
+      event_ramp
+      {
+        0.4355 0.9968 "curve_easein_to_curve_easeout"
+        0.5389 0.9936
+        0.6423 0.8754
+        0.7583 0.7636
+        0.9250 0.7316
+        1.1029 0.7412
+        1.2694 0.9936
+        1.4639 0.9521
+        1.7722 0.9936
+        2.0833 0.9649
+        2.4314 0.9042
+        2.8675 1.0000
+        3.2536 0.9649 "curve_bspline_to_curve_bspline"
+        3.5046 0.7827 "curve_catmullrom_normalize_x_to_curve_catmullrom_normalize_x"
+      }
+    }
+    event expression "happy01"
+    {
+      time 5.006532 7.056846
+      param "obot\emotion\emotion"
+      param2 "happy01"
+      event_ramp
+      {
+        0.5250 0.9904 "curve_easein_to_curve_easeout"
+        1.5323 0.9936 "curve_easein_to_curve_easeout"
+      }
+    }
+  }
+}
+
+scalesettings
+{
+  "SceneRampTool" "100"
+  "RampTool" "58"
+  "GestureTool" "100"
+  "ExpressionTool" "100"
+  "CChoreoView" "52"
+}
+fps 60
+snap off
+ignorePhonemes off

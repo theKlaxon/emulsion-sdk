@@ -1,0 +1,115 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 14.270834 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.fgb_stalemate_nags09"
+    {
+      time 0.000000 14.242676
+      param "sphere03.fgb_stalemate_nags09"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+    event sequence "sphere_plug_glance_agitated"
+    {
+      time 8.604167 12.070834
+      param "sphere_plug_glance_agitated"
+    }
+  }
+  channel "MoveTo"
+  {
+    event sequence "sphere_plug_glance_concerned"
+    {
+      time 2.364583 5.464583
+      param "sphere_plug_glance_concerned"
+    }
+  }
+  channel "Animation"
+  {
+    event gesture "sphere_plug_short_laugh"
+    {
+      time 0.041667 1.395834
+      param "sphere_plug_short_laugh"
+      event_ramp
+      {
+        0.0394 0.9792 "curve_easein_to_curve_easeout"
+        1.3030 0.9757 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.833333
+    }
+    event gesture "sphere_plug_shifty_look"
+    {
+      time 12.020834 14.235417
+      param "sphere_plug_shifty_look"
+      event_ramp
+      {
+        0.1857 0.9549 "curve_easein_to_curve_easeout"
+        2.0431 0.9410 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 2.266667
+    }
+    event gesture "sphere_plug_eye_pop_big"
+    {
+      time 7.895833 8.695834
+      param "sphere_plug_eye_pop_big"
+      event_ramp
+      {
+        0.1000 0.9410 "curve_easein_to_curve_easeout"
+        0.6762 0.9375 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.800000
+    }
+  }
+  channel "Gesture"
+  {
+    event gesture "sphere_plug_shake_tilt_CW"
+    {
+      time 1.114584 2.539583
+      param "sphere_plug_shake_tilt_CW"
+      event_ramp
+      {
+        0.1485 0.9653 "curve_easein_to_curve_easeout"
+        1.2970 0.9722 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.966667
+    }
+    event gesture "sphere_plug_awkward_blink"
+    {
+      time 5.375000 7.920834
+      param "sphere_plug_awkward_blink"
+      event_ramp
+      {
+        0.1476 0.9653 "curve_easein_to_curve_easeout"
+        2.4095 0.9722 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 2.233333
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "42"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,69 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 4.355800 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event gesture "ballbot_taunt_rps_shake"
+    {
+      time 0.002645 1.135979
+      param "ballbot_taunt_rps_shake"
+      sequenceduration 1.133333
+    }
+    event gesture "ballbot_taunt_rps_success"
+    {
+      time 2.072830 4.406163
+      param "ballbot_taunt_rps_success"
+      sequenceduration 2.333333
+    }
+    event gesture "ballbot_taunt_rps_paper"
+    {
+      time 1.130719 2.097386
+      param "ballbot_taunt_rps_paper"
+      sequenceduration 0.966667
+    }
+  }
+  channel "wav"
+  {
+    event speak "ballbot.ballbot_jump_01"
+    {
+      time 2.119048 5.319048
+      param "ballbot.ballbot_jump_01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "ballbot.ballbot_smash_into_wall_sm_01"
+    {
+      time 1.142857 1.948413
+      param "ballbot.ballbot_smash_into_wall_sm_01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "ballbot.ballbot_stop_messing_with_me_07"
+    {
+      time 0.285714 1.111360
+      param "ballbot.ballbot_stop_messing_with_me_07"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+}
+
+scalesettings
+{
+  "GestureTool" "100"
+  "ExpressionTool" "100"
+  "SceneRampTool" "100"
+  "RampTool" "100"
+  "CChoreoView" "204"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,78 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.burningshort04"
+    {
+      time 0.000000 2.060771
+      param "sphere03.burningshort04"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_react_laser_scream"
+    {
+      time 0.000000 0.933333
+      param "sphere_react_laser_scream"
+      event_ramp
+      {
+        0.2212 0.9378 "curve_easein_to_curve_easeout"
+        0.7515 0.9353 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+    event sequence "sphere_react_laser_scream"
+    {
+      time 1.114583 2.047916
+      param "sphere_react_laser_scream"
+      event_ramp
+      {
+        0.2090 0.9602 "curve_easein_to_curve_easeout"
+        0.7758 0.9602 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+    event sequence "sphere_react_laser_freeze"
+    {
+      time 0.531251 1.364584
+      param "sphere_react_laser_freeze"
+      event_ramp
+      {
+        0.2030 0.8881 "curve_easein_to_curve_easeout"
+        0.6485 0.8930 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

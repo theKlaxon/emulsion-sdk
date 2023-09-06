@@ -1,0 +1,105 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 3.552083 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.sp_sabotage_factory_hackdoor08"
+    {
+      time 0.000000 3.532109
+      param "sphere03.sp_sabotage_factory_hackdoor08"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "g_shake_fast"
+    {
+      time 2.114583 3.533333
+      param "g_shake_fast"
+      event_ramp
+      {
+        0.1425 0.0000 "curve_easein_to_curve_easeout"
+        0.4485 0.7811 "curve_easein_to_curve_easeout"
+        1.1119 0.7694 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.200000
+    }
+    event gesture "sphere_react_fizzler_flinch"
+    {
+      time 2.302083 3.302083
+      param "sphere_react_fizzler_flinch"
+      event_ramp
+      {
+        0.1273 1.0000 "curve_easein_to_curve_easeout"
+        0.8636 1.0000 "curve_easein_to_curve_easeout"
+      }
+    }
+    event gesture "g_nod_fast"
+    {
+      time -0.010418 1.183332
+      param "g_nod_fast"
+      event_ramp
+      {
+        0.2151 1.0000 "curve_easein_to_curve_easeout"
+        0.9271 0.9962 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.766667
+    }
+    event gesture "sphere_react_laser_scream"
+    {
+      time 1.447917 2.381250
+      param "sphere_react_laser_scream"
+      event_ramp
+      {
+        0.0848 1.0000
+        0.8545 1.0000
+      }
+      sequenceduration 0.933333
+    }
+    event gesture "sphere_impact_NW"
+    {
+      time 0.989583 1.622917
+      param "sphere_impact_NW"
+      event_ramp
+      {
+        0.1273 0.9886
+        0.5606 0.9924
+      }
+      sequenceduration 0.633333
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

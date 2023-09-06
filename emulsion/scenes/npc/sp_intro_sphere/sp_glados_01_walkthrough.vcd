@@ -1,0 +1,104 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "Sphere.BlipLarge"
+    {
+      time 0.965798 2.720582
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 0.184548 1.046203
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "g_talk_turn_E"
+    {
+      time 0.677083 1.168750
+      param "g_talk_turn_E"
+      event_ramp
+      {
+        0.1958 0.3273
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_talk_turn_W"
+    {
+      time 0.385417 0.918750
+      param "g_talk_turn_W"
+      event_ramp
+      {
+        0.2515 0.3272
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_talk_turn_E"
+    {
+      time 0.145833 0.658333
+      param "g_talk_turn_E"
+      event_ramp
+      {
+        0.2363 0.3377
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_talk_turn_W"
+    {
+      time 0.947916 1.543750
+      param "g_talk_turn_W"
+      event_ramp
+      {
+        0.3000 0.3299
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_talk_turn_N"
+    {
+      time 0.145833 1.564584
+      param "g_talk_turn_N"
+      event_ramp
+      {
+        0.0727 0.9921 "curve_easein_to_curve_easeout"
+        1.3214 0.9895 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "SceneRampTool" "100"
+  "GestureTool" "100"
+  "RampTool" "66"
+  "ExpressionTool" "100"
+  "CChoreoView" "64"
+}
+fps 60
+snap off
+ignorePhonemes off

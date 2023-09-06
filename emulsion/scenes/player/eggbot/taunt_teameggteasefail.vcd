@@ -1,0 +1,42 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 1.732555 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event gesture "taunt_taunt_teamEggTeaseFail"
+    {
+      time 0.000000 1.833333
+      param "taunt_taunt_teamEggTeaseFail"
+      sequenceduration 1.833333
+    }
+  }
+  channel "wav"
+  {
+    event speak "EggTeaseFail01"
+    {
+      time 0.451219 1.412534
+      param "EggTeaseFail01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  faceposermodel "D:\Dev\main\portal2\staging\game\portal2\models\player\eggbot\eggbot.mdl"
+}
+
+scalesettings
+{
+  "GestureTool" "100"
+  "ExpressionTool" "100"
+  "SceneRampTool" "100"
+  "RampTool" "100"
+  "CChoreoView" "180"
+}
+fps 60
+snap off
+ignorePhonemes off

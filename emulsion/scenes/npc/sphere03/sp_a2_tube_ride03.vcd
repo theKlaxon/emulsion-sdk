@@ -1,0 +1,122 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 3.364584 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.sp_a2_tube_ride03"
+    {
+      time 0.000000 3.118753
+      param "sphere03.sp_a2_tube_ride03"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_damaged_flip_front_back"
+    {
+      time 0.010417 3.343750
+      param "sphere_damaged_flip_front_back"
+      event_ramp
+      {
+        0.1061 0.9848
+        3.2061 0.9962
+      }
+      fixedlength
+    }
+  }
+  channel "Gesture"
+  {
+    event gesture "g_brows_both_open"
+    {
+      time 2.395833 3.131250
+      param "g_brows_both_open"
+      event_ramp
+      {
+        0.3587 0.4924
+      }
+      sequenceduration 0.433333
+    }
+    event gesture "g_angle_E"
+    {
+      time 1.020835 1.689585
+      param "g_angle_E"
+      event_ramp
+      {
+        0.1939 0.1364
+        0.4273 0.7576
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_W"
+    {
+      time 1.427083 2.012499
+      param "g_angle_W"
+      event_ramp
+      {
+        0.2758 0.8030
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_E"
+    {
+      time 1.714287 2.275894
+      param "g_angle_E"
+      event_ramp
+      {
+        0.3201 0.7576
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_W"
+    {
+      time 2.023810 2.609226
+      param "g_angle_W"
+      event_ramp
+      {
+        0.2758 0.8030
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_E"
+    {
+      time 2.303573 2.805656
+      param "g_angle_E"
+      event_ramp
+      {
+        0.2606 0.7576
+      }
+      sequenceduration 0.366667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "112"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

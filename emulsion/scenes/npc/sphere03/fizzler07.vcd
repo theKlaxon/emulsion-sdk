@@ -1,0 +1,61 @@
+// Choreo version 1
+event stoppoint "End"
+{
+  time 1.109375 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.fizzler07"
+    {
+      time 0.000000 1.100045
+      param "sphere03.fizzler07"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_react_fizzler_happy"
+    {
+      time 0.020833 1.487500
+      param "sphere_react_fizzler_happy"
+      event_ramp
+      {
+        0.2788 1.0000 "curve_easein_to_curve_easeout"
+        1.2061 0.9967 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "128"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

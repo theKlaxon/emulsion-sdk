@@ -1,0 +1,91 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "Sphere.BlipLarge"
+    {
+      time 1.453703 2.116333
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 0.351850 1.280943
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 3.555555 4.417211
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 2.703703 3.562683
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_nod_fast"
+    {
+      time 1.787037 3.553704
+      param "sphere_nod_fast"
+      event_ramp
+      {
+        0.1999 1.0000 "curve_easein_to_curve_easeout"
+        1.4885 1.0000 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+    event sequence "sphere_flip_Front_Back"
+    {
+      time 0.083334 2.016667
+      param "sphere_flip_Front_Back"
+      event_ramp
+      {
+        0.2919 0.9974
+        1.6838 0.9948
+      }
+      fixedlength
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "SceneRampTool" "100"
+  "GestureTool" "100"
+  "RampTool" "74"
+  "ExpressionTool" "100"
+  "CChoreoView" "72"
+}
+fps 60
+snap off
+ignorePhonemes off

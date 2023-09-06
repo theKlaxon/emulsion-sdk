@@ -1,0 +1,118 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 5.416667 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.openingbraindamage02"
+    {
+      time 0.000000 5.388095
+      param "sphere03.openingbraindamage02"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_sigh"
+    {
+      time 0.041667 2.308334
+      param "sphere_sigh"
+      event_ramp
+      {
+        0.2030 0.9233 "curve_easein_to_curve_easeout"
+        1.9727 0.9279 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+  }
+  channel "Gesture"
+  {
+    event gesture "g_emphasis_open"
+    {
+      time 0.010417 1.143750
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.3030 0.6070 "curve_catmullrom_normalize_x_to_curve_catmullrom_normalize_x"
+        0.9818 0.8814 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.000000
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 4.218750 5.185417
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.3424 0.6372 "curve_catmullrom_normalize_x_to_curve_catmullrom_normalize_x"
+        0.8121 0.9814 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.000000
+    }
+    event gesture "g_lid_squint_Tight"
+    {
+      time 2.489583 4.189584
+      param "g_lid_squint_Tight"
+      event_ramp
+      {
+        0.5454 0.5256 "curve_easein_to_curve_easeout"
+        1.4303 0.5256 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_shake_slow"
+    {
+      time 1.583333 4.670833
+      param "g_shake_slow"
+      event_ramp
+      {
+        0.8303 0.0023 "curve_easein_to_curve_easeout"
+        1.3545 0.5860 "curve_easein_to_curve_easeout"
+        2.7261 0.5907 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 4.066667
+    }
+    event gesture "g_angle_CW"
+    {
+      time 0.010417 4.960417
+      param "g_angle_CW"
+      event_ramp
+      {
+        0.8636 0.0070
+        1.4424 0.7023 "curve_easein_to_curve_easeout"
+        4.5347 0.6860 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "SceneRampTool" "100"
+  "GestureTool" "100"
+  "RampTool" "66"
+  "ExpressionTool" "100"
+  "CChoreoView" "64"
+}
+fps 60
+snap off
+ignorePhonemes off

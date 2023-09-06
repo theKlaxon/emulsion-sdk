@@ -1,0 +1,95 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.bw_finale04_pre_pipebreak08"
+    {
+      time 0.000000 7.633628
+      param "sphere03.bw_finale04_pre_pipebreak08"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "glad_wheat_small_fwd_up"
+    {
+      time 0.010417 6.343750
+      param "glad_wheat_small_fwd_up"
+      event_ramp
+      {
+        0.0152 0.2265 "curve_easeout_to_curve_easeout"
+        6.3182 0.1973 "curve_easeout_to_curve_easeout"
+      }
+      sequenceduration 6.333333
+    }
+    event gesture "glados_wheatly_curious"
+    {
+      time 0.208334 5.291667
+      param "glados_wheatly_curious"
+    }
+    event gesture "glados_wheatly_laugh"
+    {
+      time 0.300000 4.174999
+      param "glados_wheatly_laugh"
+      sequenceduration 3.875000
+    }
+    event gesture "glad_whet_stg3_ShkNoHeadRoll"
+    {
+      time 1.700001 5.133333
+      param "glad_whet_stg3_ShkNoHeadRoll"
+      event_ramp
+      {
+        0.0121 0.6771 "curve_easeout_to_curve_easeout"
+        1.9030 0.6726 "curve_easeout_to_curve_easeout"
+        2.5394 0.1244
+      }
+      sequenceduration 3.433333
+    }
+    event gesture "glados_wheatly_g_emphasis_open"
+    {
+      time 6.322223 7.572223
+      param "glados_wheatly_g_emphasis_open"
+    }
+    event gesture "glados_wheatly_LeftNod"
+    {
+      time 6.744445 7.369445
+      param "glados_wheatly_LeftNod"
+    }
+    event gesture "glados_wheatly_g_angel_N"
+    {
+      time 5.711112 6.525001
+      param "glados_wheatly_g_angel_N"
+      sequenceduration 0.458333
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "60"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

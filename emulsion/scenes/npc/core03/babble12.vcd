@@ -1,0 +1,120 @@
+// Choreo version 1
+actor "@core02"
+{
+  channel "audio"
+  {
+    event speak "core03.babble12"
+    {
+      time 0.000000 4.278481
+      param "core03.babble12"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "g_neutral_pose"
+    {
+      time 3.218750 4.195833
+      param "g_neutral_pose"
+      event_ramp
+      {
+        0.1667 0.2376 "curve_easein_to_curve_easein"
+        0.3788 0.2557 "curve_easeout_to_curve_easeout"
+        0.6121 0.6787
+      }
+      sequenceduration 0.300000
+    }
+    event gesture "g_angry_pose"
+    {
+      time 0.000000 1.331250
+      param "g_angry_pose"
+      event_ramp
+      {
+        0.0091 0.0023
+        0.2758 0.8484
+        0.7030 0.4706
+        1.0485 0.8643
+        1.3182 0.0068
+      }
+      sequenceduration 0.300000
+    }
+    event gesture "g_look_SW"
+    {
+      time 1.322916 2.741666
+      param "g_look_SW"
+      event_ramp
+      {
+        0.0030 0.0113
+        0.3576 0.6403 "curve_easein_to_curve_easeout"
+        1.1521 0.6787 "curve_easein_to_curve_easeout"
+        1.4006 0.0068
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 2.250000 2.812500
+      param "g_emphasis_open"
+      sequenceduration 1.000000
+    }
+    event gesture "sphere_SternLook"
+    {
+      time 2.395833 3.233333
+      param "sphere_SternLook"
+      event_ramp
+      {
+        0.4152 0.7557
+      }
+      sequenceduration 1.233333
+    }
+    event gesture "g_eye_look_E"
+    {
+      time 2.875000 3.145833
+      param "g_eye_look_E"
+      event_ramp
+      {
+        0.1152 0.2783
+      }
+      sequenceduration 0.333333
+    }
+    event gesture "sphere_SternLook"
+    {
+      time 3.541667 4.035417
+      param "sphere_SternLook"
+      event_ramp
+      {
+        0.2485 0.5633
+      }
+      sequenceduration 1.233333
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

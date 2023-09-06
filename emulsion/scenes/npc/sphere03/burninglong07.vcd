@@ -1,0 +1,61 @@
+// Choreo version 1
+event stoppoint "End"
+{
+  time 1.906250 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.burninglong07"
+    {
+      time 0.000000 1.883719
+      param "sphere03.burninglong07"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_sing_bounce_01"
+    {
+      time 0.000000 4.000000
+      param "sphere_sing_bounce_01"
+      event_ramp
+      {
+        0.3727 0.9950
+        3.7000 0.9950
+      }
+      fixedlength
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "22"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

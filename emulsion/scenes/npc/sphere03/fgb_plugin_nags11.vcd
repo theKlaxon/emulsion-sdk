@@ -1,0 +1,95 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 2.697917 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.fgb_plugin_nags11"
+    {
+      time 0.000000 2.690000
+      param "sphere03.fgb_plugin_nags11"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+    event gesture "g_damaged_pose"
+    {
+      time -0.000000 2.700000
+      param "g_damaged_pose"
+      sequenceduration 0.666667
+    }
+  }
+  channel "MoveTo"
+  {
+    event gesture "g_eye_pupil_small"
+    {
+      time 1.531250 2.440278
+      param "g_eye_pupil_small"
+      event_ramp
+      {
+        0.2242 0.9928 "curve_easein_to_curve_easeout"
+        0.7171 0.9892 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.000000
+    }
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_react_portal_happy"
+    {
+      time 0.031250 1.897917
+      param "sphere_react_portal_happy"
+      event_ramp
+      {
+        0.0727 0.6223 "curve_easein_to_curve_easeout"
+        1.3576 0.6187 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+  }
+  channel "Gesture"
+  {
+    event gesture "sphere_nod_fast"
+    {
+      time 1.510417 2.699306
+      param "sphere_nod_fast"
+      event_ramp
+      {
+        0.2485 0.9892 "curve_easein_to_curve_easeout"
+        0.7858 0.9784 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.766667
+    }
+  }
+  channel "Trigger"
+  {
+    event gesture "g_damaged_pose"
+    {
+      time -0.135416 2.650001
+      param "g_damaged_pose"
+      sequenceduration 0.666667
+    }
+  }
+}
+
+scalesettings
+{
+  "SceneRampTool" "100"
+  "GestureTool" "100"
+  "RampTool" "66"
+  "ExpressionTool" "100"
+  "CChoreoView" "60"
+}
+fps 60
+snap off
+ignorePhonemes off

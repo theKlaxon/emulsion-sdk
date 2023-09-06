@@ -1,0 +1,71 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 4.613333 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event sequence "taunt_robot_arm_ripple"
+    {
+      time 0.006667 5.140001
+      param "taunt_robot_arm_ripple"
+      event_ramp
+      {
+        0.0760 1.0000 "curve_easein_to_curve_easeout"
+        5.1333 0.9953 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+  }
+  channel "wav"
+  {
+    event speak "ballbot.ballbot_hi_01"
+    {
+      time 0.480000 1.394286
+      param "ballbot.ballbot_hi_01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "s"
+    {
+      time 2.640000 4.050612
+      param "ballbot.ballbot_screw_with_someone_03"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "ballbot.ballbot_hi_02"
+    {
+      time 1.426667 2.602178
+      param "ballbot.ballbot_hi_02"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "ballbot.ballbot_ok_03"
+    {
+      time 4.233333 4.990884
+      param "ballbot.ballbot_ok_03"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  faceposermodel "D:\Dev\main\game\portal2\models\player\ballbot\ballbot.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "100"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

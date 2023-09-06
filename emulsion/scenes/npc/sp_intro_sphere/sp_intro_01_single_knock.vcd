@@ -1,0 +1,48 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_single_knock"
+    {
+      time -0.004065 0.162602
+      param "sphere_single_knock"
+      event_ramp
+      {
+        0.0041 0.9974 "curve_easein_to_curve_easeout"
+        0.1667 1.0000 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "SceneRampTool" "100"
+  "GestureTool" "100"
+  "RampTool" "200"
+  "ExpressionTool" "100"
+  "CChoreoView" "164"
+}
+fps 60
+snap off
+ignorePhonemes off

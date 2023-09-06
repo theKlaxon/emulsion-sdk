@@ -1,0 +1,71 @@
+// Choreo version 1
+actor "!target1"
+{
+  channel "faceto"
+  {
+  }
+  channel "moveto"
+  {
+  }
+  channel "lookat"
+  {
+  }
+  channel "postures"
+  {
+    event gesture "fireIdle"
+    {
+      time -0.833333 -0.033333
+      param "fireIdle"
+    }
+  }
+  channel "gestures"
+  {
+  }
+  channel "head"
+  {
+  }
+  channel "headflex"
+  {
+  }
+  channel "trigger"
+  {
+    event firetrigger "1"
+    {
+      time 1.125594 -1.000000
+      param "1"
+    }
+    event firetrigger "2portal1gun"
+    {
+      time 17.737265 -1.000000
+      param "2"
+    }
+    event firetrigger "3portal2gun"
+    {
+      time 31.945477 -1.000000
+      param "3"
+    }
+    event firetrigger "5_reaction"
+    {
+      time 47.166668 -1.000000
+      param "4"
+    }
+    event firetrigger "4hole closes"
+    {
+      time 45.190479 -1.000000
+      param "4"
+    }
+  }
+  faceposermodel "U:\DEV\main\game\portal2\models\bot_male_lab\bot_male_lab.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "28"
+  "ExpressionTool" "46"
+  "RampTool" "16"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,78 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere01.PAIN01"
+    {
+      time 0.011574 0.253207
+      param "sphere01.PAIN01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "sphere001.PAIN07"
+    {
+      time 0.259259 0.582162
+      param "sphere001.PAIN07"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "sphere001.PAINCRITICAL05"
+    {
+      time 0.585648 0.966601
+      param "sphere001.PAINCRITICAL05"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "held"
+    {
+      time 0.969907 1.448818
+      param "sphere001.SURPRISE03"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "base"
+  {
+    event sequence "sphere_react_laser_ow"
+    {
+      time 0.000000 1.133333
+      param "sphere_react_laser_ow"
+      event_ramp
+      {
+        0.0180 0.9353 "curve_easein_to_curve_easeout"
+        1.0940 0.9403 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+    event sequence "sphere_idle_neutral"
+    {
+      time 1.108796 1.473148
+      param "sphere_idle_neutral"
+      event_ramp
+      {
+        0.0180 0.9577 "curve_easein_to_curve_easeout"
+        0.3644 0.9577 "curve_easein_to_curve_easeout"
+      }
+    }
+  }
+  channel "gesture"
+  {
+  }
+}
+
+scalesettings
+{
+  "RampTool" "100"
+  "GestureTool" "100"
+  "ExpressionTool" "100"
+  "SceneRampTool" "100"
+  "CChoreoView" "288"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,83 @@
+// Choreo version 1
+event stoppoint "End"
+{
+  time 1.291667 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.SolveFirstPuzzle07"
+    {
+      time -0.005208 1.279146
+      param "sphere03.SolveFirstPuzzle07"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_plug_idle_shiver"
+    {
+      time -0.000000 1.066667
+      param "sphere_plug_idle_shiver"
+      event_ramp
+      {
+        0.3333 1.0000 "curve_easein_to_curve_easeout"
+        0.6091 1.0000 "curve_easein_to_curve_easeout"
+      }
+    }
+    event sequence "sphere_plug_eye_pop_big"
+    {
+      time 0.281250 1.081250
+      param "sphere_plug_eye_pop_big"
+      event_ramp
+      {
+        0.1818 1.0000 "curve_easein_to_curve_easeout"
+        0.6182 1.0000 "curve_easein_to_curve_easeout"
+        0.8000 0.0000
+      }
+      fixedlength
+    }
+    event sequence "sphere_plug_idle_shiver"
+    {
+      time 0.442709 1.509375
+      param "sphere_plug_idle_shiver"
+      event_ramp
+      {
+        0.0000 0.0000
+        0.3212 1.0000 "curve_easein_to_curve_easeout"
+        0.9970 0.9974 "curve_easein_to_curve_easeout"
+      }
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "128"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,166 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 0.072917 0.769788
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 0.500000 1.196871
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 1.072917 1.769788
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 1.520834 2.217705
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 2.000000 2.696871
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 2.947917 3.644788
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 3.385417 4.082288
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 3.895834 4.592705
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 4.343750 5.040621
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 0.114583 1.869368
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 1.656250 2.319833
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 2.739583 3.468404
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 3.958333 5.415635
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_plug_spin_cycle_b"
+    {
+      time 0.069965 1.472048
+      param "sphere_plug_spin_cycle_b"
+      event_ramp
+      {
+        0.2152 0.9973
+        1.4021 0.9892
+      }
+    }
+    event sequence "sphere_plug_spin_cycle_C"
+    {
+      time 3.194965 5.034549
+      param "sphere_plug_spin_cycle_C"
+      event_ramp
+      {
+        0.0000 0.9919
+        1.6848 0.9892
+      }
+    }
+    event sequence "sphere_plug_spin_cycle_A"
+    {
+      time 1.447917 3.214583
+      param "sphere_plug_spin_cycle_A"
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

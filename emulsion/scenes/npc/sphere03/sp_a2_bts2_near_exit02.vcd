@@ -1,0 +1,125 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 2.291667 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.sp_a2_bts2_near_exit02"
+    {
+      time 0.000000 2.254535
+      param "sphere03.sp_a2_bts2_near_exit02"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_damaged_glance_up_scared_shiver"
+    {
+      time -0.802084 2.297916
+      param "sphere_damaged_glance_up_scared_shiver"
+      event_ramp
+      {
+        0.8061 0.0160
+        0.9636 0.9880
+        2.9273 0.9880
+      }
+    }
+  }
+  channel "Gesture"
+  {
+    event gesture "g_angle_N"
+    {
+      time 1.645833 2.012500
+      param "g_angle_N"
+      event_ramp
+      {
+        0.1909 0.9940
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_S"
+    {
+      time 1.458333 1.825000
+      param "g_angle_S"
+      event_ramp
+      {
+        0.1848 0.7126
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_look_NW"
+    {
+      time 0.020833 0.752083
+      param "g_look_NW"
+      event_ramp
+      {
+        0.1758 0.4470
+        0.6000 0.5038
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_look_NE"
+    {
+      time 0.635417 1.647917
+      param "g_look_NE"
+      event_ramp
+      {
+        0.2182 0.3561
+        0.8455 0.4129
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_look_W"
+    {
+      time 0.020833 0.772916
+      param "g_look_W"
+      event_ramp
+      {
+        0.2000 0.5720
+        0.5788 0.6402
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_look_E"
+    {
+      time 0.656250 1.679166
+      param "g_look_E"
+      event_ramp
+      {
+        0.2000 0.5720
+        0.8496 0.6402
+      }
+      sequenceduration 0.366667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

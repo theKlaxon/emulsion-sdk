@@ -1,0 +1,145 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "Sphere.BlipLarge"
+    {
+      time 2.072917 3.397769
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 0.062500 2.582477
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "Sphere.BlipLarge"
+    {
+      time 1.052083 1.714713
+      param "Sphere.BlipLarge"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_flip_Front_Back"
+    {
+      time 0.041667 1.975000
+      param "sphere_flip_Front_Back"
+      event_ramp
+      {
+        0.1576 0.9975 "curve_easein_to_curve_easeout"
+        1.6970 1.0000 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+    event gesture "sphere_idle_happy"
+    {
+      time 0.020834 2.889359
+      param "sphere_idle_happy"
+      event_ramp
+      {
+        0.1939 1.0000 "curve_easein_to_curve_easeout"
+        2.5291 0.9961 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 3.033333
+    }
+  }
+  channel "Gesture"
+  {
+    event gesture "g_lid_close_High"
+    {
+      time 1.441404 2.897916
+      param "g_lid_close_High"
+      event_ramp
+      {
+        0.2697 0.6547 "curve_easein_to_curve_easeout"
+        1.1887 0.6519 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_talk_tilt_CW"
+    {
+      time 2.354167 2.720834
+      param "g_talk_tilt_CW"
+      event_ramp
+      {
+        0.1788 0.4008
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_talk_tilt_CCW"
+    {
+      time 1.687500 2.054167
+      param "g_talk_tilt_CCW"
+      event_ramp
+      {
+        0.1970 0.4064
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_talk_tilt_CCW"
+    {
+      time 2.135417 2.502084
+      param "g_talk_tilt_CCW"
+      event_ramp
+      {
+        0.1758 0.3912
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_talk_tilt_CW"
+    {
+      time 1.875000 2.241667
+      param "g_talk_tilt_CW"
+      event_ramp
+      {
+        0.1788 0.4008
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_talk_turn_N"
+    {
+      time 1.441404 2.880801
+      param "g_talk_turn_N"
+      event_ramp
+      {
+        0.2152 0.3675 "curve_easein_to_curve_easeout"
+        1.1866 0.3634 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "SceneRampTool" "100"
+  "GestureTool" "100"
+  "RampTool" "66"
+  "ExpressionTool" "100"
+  "CChoreoView" "64"
+}
+fps 60
+snap off
+ignorePhonemes off

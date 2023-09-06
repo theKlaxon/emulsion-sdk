@@ -1,0 +1,43 @@
+// Choreo version 1
+actor "Tom"
+{
+  channel "TomScene"
+  {
+    event moveto "RunToExit"
+    {
+      time 0.000000 4.000000
+      param "ExitTarget"
+      param2 "Run"
+    }
+    event sequence "IdleGestureWindow"
+    {
+      time 6.486667 6.486667
+      param "g_OverHere_LeftapexArms"
+      fixedlength
+    }
+    event sequence "ConversationGesture"
+    {
+      time 6.493333 6.493333
+      param "g_SMG1_StopapexArms"
+      fixedlength
+    }
+    event sequence "ConversationGesture"
+    {
+      time 6.486667 6.486667
+      param "g_plead_01apexArms"
+      fixedlength
+    }
+    active "0"
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "108"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off

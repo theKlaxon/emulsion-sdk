@@ -1,0 +1,376 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 24.227272 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.bw_screen_smash21"
+    {
+      time 0.000000 24.260454
+      param "sphere03.bw_screen_smash21"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "glados_wheatly_laugh"
+    {
+      time -0.166666 3.708333
+      param "glados_wheatly_laugh"
+      event_ramp
+      {
+        0.0242 0.2774
+        3.8424 0.4872
+      }
+      sequenceduration 3.875000
+    }
+    event gesture "glad_whet_stg2_BigSwaySide2Side"
+    {
+      time 0.121212 3.654546
+      param "glad_whet_stg2_BigSwaySide2Side"
+      event_ramp
+      {
+        0.0667 0.0956 "curve_easein_to_curve_easein"
+        3.5212 0.0909 "curve_easeout_to_curve_easeout"
+      }
+      sequenceduration 3.533334
+    }
+    event gesture "glados_wheatly_eyeDown"
+    {
+      time 4.863636 6.015152
+      param "glados_wheatly_eyeDown"
+      sequenceduration 0.833333
+    }
+    event gesture "glados_wheatly_g_angel_W"
+    {
+      time 7.090909 8.867424
+      param "glados_wheatly_g_angel_W"
+      event_ramp
+      {
+        0.3000 0.9790
+        0.9727 0.7576
+        1.6121 0.9837
+      }
+      sequenceduration 0.458333
+    }
+    event gesture "glados_wheatly_EyeEnphisRight"
+    {
+      time 10.212121 10.878788
+      param "glados_wheatly_EyeEnphisRight"
+      sequenceduration 0.666667
+    }
+    event gesture "glados_wheatly_g_emphasis_open"
+    {
+      time 3.666667 4.916667
+      param "glados_wheatly_g_emphasis_open"
+    }
+    event gesture "bod_fwd"
+    {
+      time 9.575758 11.261364
+      param "bod_fwd"
+      sequenceduration 0.625000
+    }
+    event gesture "glad_whet_stg2_lookUpLeft"
+    {
+      time 11.873244 13.006577
+      param "glad_whet_stg2_lookUpLeft"
+      event_ramp
+      {
+        0.0091 0.1841
+        1.1364 0.1818
+      }
+      sequenceduration 1.133333
+    }
+    event gesture "glados_wheatly_SideToSideNod"
+    {
+      time 13.385149 15.587530
+      param "glados_wheatly_SideToSideNod"
+      event_ramp
+      {
+        0.0636 0.4592
+        2.1636 0.4499
+      }
+      sequenceduration 1.500000
+    }
+    event gesture "glados_wheatly_eyeDown"
+    {
+      time 16.825624 17.658958
+      param "glados_wheatly_eyeDown"
+      sequenceduration 0.833333
+    }
+    event gesture "glados_wheatly_g_angel_E"
+    {
+      time 18.039909 18.498243
+      param "glados_wheatly_g_angel_E"
+      event_ramp
+      {
+        0.1030 0.9977
+        0.3303 0.9930
+      }
+    }
+    event gesture "glados_wheatly_g_angel_NW"
+    {
+      time 19.968481 21.605387
+      param "glados_wheatly_g_angel_NW"
+      sequenceduration 0.458333
+    }
+    event gesture "bod_up"
+    {
+      time 18.492290 19.605385
+      param "bod_up"
+      event_ramp
+      {
+        0.0848 1.0000
+        0.9303 0.9953
+      }
+      sequenceduration 0.625000
+    }
+    event gesture "bod_down"
+    {
+      time 23.341497 23.966497
+      param "bod_down"
+    }
+    event gesture "glados_wheatly_g_angel_E"
+    {
+      time 5.004195 5.462529
+      param "glados_wheatly_g_angel_E"
+      event_ramp
+      {
+        0.1909 0.5501
+      }
+      sequenceduration 0.458333
+    }
+    event gesture "glados_wheatly_g_angel_E"
+    {
+      time 5.849433 6.307766
+      param "glados_wheatly_g_angel_E"
+      event_ramp
+      {
+        0.1909 0.5385
+      }
+      sequenceduration 0.458333
+    }
+    event gesture "glados_wheatly_g_angel_W"
+    {
+      time 5.408958 5.867291
+      param "glados_wheatly_g_angel_W"
+      event_ramp
+      {
+        0.1788 0.6084
+      }
+      sequenceduration 0.458333
+    }
+    event gesture "lowlid_half"
+    {
+      time 8.468481 9.510147
+      param "lowlid_half"
+      sequenceduration 1.041667
+    }
+    event gesture "upperlid_half"
+    {
+      time 8.456577 9.539911
+      param "upperlid_half"
+      event_ramp
+      {
+        0.0303 0.7646
+        1.0667 0.7599
+      }
+      sequenceduration 1.083333
+    }
+    event gesture "glados_wheatly_PupilUp"
+    {
+      time 7.658957 8.200624
+      param "glados_wheatly_PupilUp"
+      sequenceduration 0.541667
+    }
+    event gesture "iris_narrow_"
+    {
+      time 9.325624 10.408958
+      param "iris_narrow_"
+      sequenceduration 1.083333
+    }
+    event gesture "bod_down"
+    {
+      time 9.420862 10.581576
+      param "bod_down"
+      sequenceduration 0.625000
+    }
+    event gesture "glados_wheatly_PupilRight"
+    {
+      time 4.813719 5.272052
+      param "glados_wheatly_PupilRight"
+    }
+    event gesture "glados_wheatly_StraightNod"
+    {
+      time 10.825624 11.224434
+      param "glados_wheatly_StraightNod"
+      sequenceduration 0.708333
+    }
+    event gesture "glados_wheatly_StraightNod"
+    {
+      time 11.206577 11.605387
+      param "glados_wheatly_StraightNod"
+      sequenceduration 0.708333
+    }
+    event gesture "glados_wheatly_eyeLeft"
+    {
+      time 11.254196 12.379196
+      param "glados_wheatly_eyeLeft"
+      event_ramp
+      {
+        0.0000 1.0000
+        1.0152 1.0000
+      }
+    }
+    event gesture "glados_wheatly_eyeRoll"
+    {
+      time 13.041667 14.833334
+      param "glados_wheatly_eyeRoll"
+      event_ramp
+      {
+        0.0545 1.0000
+        1.6424 1.0000
+      }
+    }
+    event gesture "bod_fwd"
+    {
+      time 15.736112 16.805555
+      param "bod_fwd"
+      sequenceduration 0.625000
+    }
+    event gesture "glados_wheatly_EyeEnphisStraight"
+    {
+      time 15.722221 16.430555
+      param "glados_wheatly_EyeEnphisStraight"
+      sequenceduration 0.708333
+    }
+    event gesture "glados_wheatly_PupilRight"
+    {
+      time 16.208332 16.666666
+      param "glados_wheatly_PupilRight"
+      sequenceduration 0.458333
+    }
+    event gesture "Blink1"
+    {
+      time 17.250000 17.500000
+      param "Blink1"
+    }
+    event gesture "glad_whet_stg2_lookUpLeftIdle"
+    {
+      time 17.458334 19.058334
+      param "glad_whet_stg2_lookUpLeftIdle"
+      sequenceduration 1.600000
+    }
+    event gesture "glados_wheatly_PupilLeft"
+    {
+      time 19.013889 19.430555
+      param "glados_wheatly_PupilLeft"
+      sequenceduration 0.416667
+    }
+    event gesture "glados_wheatly_PupilRight"
+    {
+      time 20.972221 21.430555
+      param "glados_wheatly_PupilRight"
+      sequenceduration 0.458333
+    }
+    event gesture "bod_rot_right"
+    {
+      time 19.916666 21.541666
+      param "bod_rot_right"
+      event_ramp
+      {
+        0.7303 0.7319
+      }
+      sequenceduration 0.625000
+    }
+    event gesture "bod_down"
+    {
+      time 22.013891 24.222225
+      param "bod_down"
+      sequenceduration 0.625000
+    }
+    event gesture "glados_wheatly_eyeDown"
+    {
+      time 22.986111 23.861113
+      param "glados_wheatly_eyeDown"
+      sequenceduration 0.833333
+    }
+    event gesture "glados_wheatly_PupilLeft"
+    {
+      time 22.930557 23.347221
+      param "glados_wheatly_PupilLeft"
+      sequenceduration 0.416667
+    }
+    event gesture "Blink1"
+    {
+      time 23.861109 24.111109
+      param "Blink1"
+    }
+    event gesture "Explode"
+    {
+      time 8.500000 10.805555
+      param "Explode"
+      event_ramp
+      {
+        0.4939 0.0256
+        0.8879 0.5431
+        1.2697 0.0163
+      }
+      sequenceduration 0.208333
+    }
+    event gesture "Explode"
+    {
+      time 15.333333 16.277777
+      param "Explode"
+      event_ramp
+      {
+        0.4545 0.3986
+      }
+      sequenceduration 0.208333
+    }
+    event gesture "glados_wheatly_LidTrunLeft"
+    {
+      time 20.416668 21.250002
+      param "glados_wheatly_LidTrunLeft"
+    }
+    event gesture "glados_wheatly_LidPopOut"
+    {
+      time 23.361111 24.194443
+      param "glados_wheatly_LidPopOut"
+      sequenceduration 0.833333
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "48"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

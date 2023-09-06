@@ -1,0 +1,62 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 0.750000 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.jailbreakdooropens26"
+    {
+      time 0.000000 0.725533
+      param "sphere03.jailbreakdooropens26"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_react_laser_ow"
+    {
+      time -0.385417 0.747916
+      param "sphere_react_laser_ow"
+      event_ramp
+      {
+        0.4061 0.0417
+        0.5424 1.0000
+        0.9939 1.0000
+      }
+      fixedlength
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

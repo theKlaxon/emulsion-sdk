@@ -1,0 +1,112 @@
+// Choreo version 1
+actor "!target1"
+{
+  channel "Audio"
+  {
+    event speak "Hats01"
+    {
+      time 0.186667 3.611610
+      param "medicbot.Hats09"
+      param2 "75dB"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "Expression"
+  {
+    event expression "happy01"
+    {
+      time 0.033850 4.189706
+      param "mbot\emotion\emotion"
+      param2 "happy01"
+      event_ramp
+      {
+        0.4440 0.9018 "curve_easein_to_curve_easeout"
+        3.5666 0.9018 "curve_easein_to_curve_easeout"
+      }
+    }
+    event expression "lookUpL"
+    {
+      time 0.080000 4.146667
+      param "mbot\emotion\emotion"
+      param2 "lookUpL"
+      event_ramp
+      {
+        0.3727 1.0000 "curve_easein_to_curve_easeout"
+        3.6758 1.0000 "curve_easein_to_curve_easeout"
+      }
+    }
+  }
+  channel "lookat"
+  {
+    event lookat "!self"
+    {
+      time 0.066666 4.020000
+      param "!self"
+      event_ramp
+      {
+        0.2900 0.9965 "curve_easein_to_curve_easeout"
+        3.6030 0.9965 "curve_easein_to_curve_easeout"
+      }
+    }
+  }
+  channel "faceto"
+  {
+    event face "face_!player"
+    {
+      time 0.028746 3.455217
+      param "!player"
+      event_ramp
+      {
+        0.4940 1.0000 "curve_easein_to_curve_easeout"
+        3.4265 1.0000 "curve_easein_to_curve_easeout"
+      }
+    }
+  }
+  channel "moveto"
+  {
+    event moveto "!player"
+    {
+      time 0.106666 3.200000
+      param "!player"
+      param2 "Run"
+      distancetotarget 70.00
+    }
+  }
+  channel "gesture"
+  {
+    event gesture "mbot_gesture_checkHat"
+    {
+      time 0.726667 3.326667
+      param "mbot_gesture_checkHat"
+      absolutetags playback_time
+      {
+        "apex" 0.104119
+        "accent" 0.442501
+        "loop" 0.520591
+        "end" 0.574359
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.121212
+        "accent" 0.515152
+        "loop" 0.606061
+        "end" 0.833333
+      }
+      sequenceduration 2.233333
+    }
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "100"
+  "RampTool" "66"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,36 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 1.553333 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event sequence "taunt_golf_swing"
+    {
+      time 0.013334 1.580001
+      param "taunt_golf_swing"
+      event_ramp
+      {
+        0.0760 1.0000 "curve_easein_to_curve_easeout"
+        1.5120 0.9977 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+  }
+  faceposermodel "D:\Dev\main\game\portal2\models\player\ballbot\ballbot.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "100"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

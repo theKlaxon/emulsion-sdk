@@ -1,0 +1,196 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "lau"
+    {
+      time 5.320402 6.109880
+      param "sphere01.UNHELDRELIEF01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "BaseCombatWeapon.WeaponDrop"
+    {
+      time 0.145834 0.625970
+      param "BaseCombatWeapon.WeaponDrop"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "sphere001.DIRECTIONSFORWARD04"
+    {
+      time 0.873564 2.043269
+      param "sphere001.DIRECTIONSFORWARD04"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "sphere001.JUMPING06"
+    {
+      time 10.812501 11.953181
+      param "sphere001.JUMPING06"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "sphere001.LAUGH01"
+    {
+      time 6.182472 6.728867
+      param "sphere001.LAUGH01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "BaseCombatWeapon.WeaponDrop"
+    {
+      time 10.250001 10.730137
+      param "BaseCombatWeapon.WeaponDrop"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "sphere001.DIRECTIONSFORWARD03"
+    {
+      time 2.602729 3.646176
+      param "sphere001.DIRECTIONSFORWARD03"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "sphere001.DIRECTIONSFORWARD05"
+    {
+      time 8.288794 9.055052
+      param "sphere001.DIRECTIONSFORWARD05"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "sphere001.DIRECTIONSFORWARD05"
+    {
+      time 9.216954 9.983212
+      param "sphere001.DIRECTIONSFORWARD05"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "sphere001.DIRECTIONSUP02"
+    {
+      time 4.049726 4.770996
+      param "sphere001.DIRECTIONSUP02"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "sphere001.DIRECTIONSFORWARD04"
+    {
+      time 6.942530 8.112235
+      param "sphere001.DIRECTIONSFORWARD04"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "base"
+  {
+    event sequence "sphere_plug_glance_01"
+    {
+      time 3.889368 5.281035
+      param "sphere_plug_glance_01"
+      event_ramp
+      {
+        0.0580 0.9478 "curve_easein_to_curve_easeout"
+        1.3297 0.9677 "curve_easein_to_curve_easeout"
+      }
+    }
+    event sequence "sphere_plug_nod_fast"
+    {
+      time 5.183190 6.949857
+      param "sphere_plug_nod_fast"
+      event_ramp
+      {
+        0.0860 0.9652 "curve_easein_to_curve_easeout"
+        1.6740 0.9677 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+    event sequence "sphere_plug_insert_neutral"
+    {
+      time -0.011494 0.588506
+      param "sphere_plug_insert_neutral"
+      event_ramp
+      {
+        0.0560 0.9030 "curve_easein_to_curve_easeout"
+        0.5280 0.9030 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+    event sequence "sphere_plug_spin_cycle_A"
+    {
+      time 0.551724 2.318391
+      param "sphere_plug_spin_cycle_A"
+      event_ramp
+      {
+        0.0480 0.9627 "curve_easein_to_curve_easeout"
+        1.6620 0.9652 "curve_easein_to_curve_easeout"
+      }
+    }
+    event sequence "sphere_plug_spin_cycle_C"
+    {
+      time 2.224138 3.990805
+      param "sphere_plug_spin_cycle_C"
+      event_ramp
+      {
+        0.0460 0.9776 "curve_easein_to_curve_easeout"
+        1.6880 0.9776 "curve_easein_to_curve_easeout"
+      }
+    }
+    event sequence "sphere_plug_spin_cycle_B"
+    {
+      time 8.505748 10.272413
+      param "sphere_plug_spin_cycle_B"
+      event_ramp
+      {
+        0.0540 0.9776 "curve_easein_to_curve_easeout"
+        1.6900 0.9502 "curve_easein_to_curve_easeout"
+      }
+    }
+    event sequence "sphere_plug_stop_eject_neutral"
+    {
+      time 10.212643 11.879310
+      param "sphere_plug_stop_eject_neutral"
+      event_ramp
+      {
+        0.0340 0.9652 "curve_easein_to_curve_easeout"
+        1.6220 0.9552 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+    event sequence "sphere_plug_spin_cycle_A"
+    {
+      time 6.839080 8.605746
+      param "sphere_plug_spin_cycle_A"
+      event_ramp
+      {
+        0.0700 0.9851 "curve_easein_to_curve_easeout"
+        1.6820 0.9801 "curve_easein_to_curve_easeout"
+      }
+    }
+  }
+  channel "gesture"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "116"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+  "RampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

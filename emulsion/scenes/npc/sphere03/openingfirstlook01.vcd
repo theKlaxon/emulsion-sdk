@@ -1,0 +1,268 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 4.645833 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.openingfirstlook01"
+    {
+      time 0.000000 4.610068
+      param "sphere03.openingfirstlook01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_eye_pop_big"
+    {
+      time 0.013341 0.813341
+      param "sphere_eye_pop_big"
+      event_ramp
+      {
+        0.1242 0.9907
+        0.7030 0.9860
+      }
+      fixedlength
+    }
+    event sequence "sphere_idle_scared"
+    {
+      time 0.168583 2.867508
+      param "sphere_idle_scared"
+      event_ramp
+      {
+        0.1181 0.9883
+        1.8929 0.9561
+        2.0545 0.0112
+      }
+    }
+    event sequence "sphere_glance_concerned"
+    {
+      time 1.443348 4.657931
+      param "sphere_glance_concerned"
+      event_ramp
+      {
+        1.4485 0.0485
+        1.7121 0.6718 "curve_easein_to_curve_easeout"
+        2.8818 0.6657 "curve_easein_to_curve_easeout"
+        3.2025 0.0187 "curve_easein_to_curve_easeout"
+      }
+    }
+  }
+  channel "Gesture"
+  {
+    event gesture "g_brow_lower_open"
+    {
+      time 1.263340 2.207091
+      param "g_brow_lower_open"
+      event_ramp
+      {
+        0.4818 0.4976
+        0.7428 0.5489
+      }
+      sequenceduration 0.433333
+    }
+    event gesture "g_look_SW"
+    {
+      time 1.936220 2.598758
+      param "g_look_SW"
+      event_ramp
+      {
+        0.3175 0.4630 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_N"
+    {
+      time 0.873355 1.962975
+      param "g_angle_N"
+      event_ramp
+      {
+        0.2000 0.1721 "curve_easein_to_curve_easein"
+        0.3576 0.1953 "curve_easein_to_curve_easeout"
+        0.5303 0.0512 "curve_easein_to_curve_easein"
+        0.6670 0.0256 "curve_easein_to_curve_easein"
+        0.8805 0.1976 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 1.560124 2.482931
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.3152 0.5767 "curve_easein_to_curve_easein"
+        0.7289 0.8232 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.000000
+    }
+    event gesture "g_lid_close_Center"
+    {
+      time 0.523757 1.053435
+      param "g_lid_close_Center"
+      event_ramp
+      {
+        0.1454 1.0000 "curve_easein_to_curve_easeout"
+        0.2842 1.0000 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_lid_close_Center"
+    {
+      time 1.315424 1.675693
+      param "g_lid_close_Center"
+      event_ramp
+      {
+        0.1576 0.5256 "curve_easein_to_curve_easeout"
+        0.1830 0.5255 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_idle_shiver_layer"
+    {
+      time 0.239483 0.627711
+      param "g_idle_shiver_layer"
+      event_ramp
+      {
+        0.0455 0.9953 "curve_easein_to_curve_easeout"
+        0.3352 0.9884 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.000000
+    }
+    event gesture "g_brows_both_open"
+    {
+      time 0.879268 1.428146
+      param "g_brows_both_open"
+      event_ramp
+      {
+        0.2466 0.2674 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.433333
+    }
+    event gesture "g_brows_both_open"
+    {
+      time 0.194114 0.455593
+      param "g_brows_both_open"
+      event_ramp
+      {
+        0.0608 0.5233
+      }
+      sequenceduration 0.433333
+    }
+    event gesture "g_angle_S"
+    {
+      time 0.537098 1.117763
+      param "g_angle_S"
+      event_ramp
+      {
+        0.2788 0.9255 "curve_easein_to_curve_easeout"
+        0.3145 0.9256 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_lid_close_Center"
+    {
+      time 1.853871 2.158037
+      param "g_lid_close_Center"
+      event_ramp
+      {
+        0.1424 0.9767 "curve_easein_to_curve_easeout"
+        0.1839 0.9744 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_S"
+    {
+      time 1.271016 1.734722
+      param "g_angle_S"
+      event_ramp
+      {
+        0.1406 0.5720 "curve_easein_to_curve_easein"
+        0.2818 0.6419 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 2.281250 2.854166
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.1121 0.7015
+        0.4638 0.7052
+      }
+      sequenceduration 1.000000
+    }
+    event gesture "g_nod_fast"
+    {
+      time 2.895833 4.662500
+      param "g_nod_fast"
+      event_ramp
+      {
+        0.1424 0.7500
+        1.6394 0.7537
+      }
+      sequenceduration 1.766667
+    }
+    event gesture "g_angle_CCW"
+    {
+      time 3.927083 4.293750
+      param "g_angle_CCW"
+      event_ramp
+      {
+        0.1939 0.7649
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_N"
+    {
+      time 2.266264 2.846931
+      param "g_angle_N"
+      event_ramp
+      {
+        0.2667 0.3322 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_eye_look_SW"
+    {
+      time 1.936220 2.598758
+      param "g_eye_look_SW"
+      event_ramp
+      {
+        0.3175 0.4630 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.333333
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "SceneRampTool" "100"
+  "GestureTool" "100"
+  "RampTool" "66"
+  "ExpressionTool" "100"
+  "CChoreoView" "64"
+}
+fps 60
+snap off
+ignorePhonemes off

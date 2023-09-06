@@ -1,0 +1,42 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 2.470650 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event sequence "taunt_highFive_beckon"
+    {
+      time 0.000000 1.800000
+      param "taunt_highFive_beckon"
+      fixedlength
+    }
+  }
+  channel "audio"
+  {
+    event speak "eggbot.egg_overhere_01"
+    {
+      time 0.620000 1.476145
+      param "eggbot.egg_overhere_01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  faceposermodel "D:\Dev\main\portal2\staging\game\portal2\models\player\eggbot\eggbot.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "100"
+  "RampTool" "48"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

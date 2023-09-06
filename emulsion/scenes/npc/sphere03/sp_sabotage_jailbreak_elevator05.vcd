@@ -1,0 +1,120 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 1.385416 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.sp_sabotage_jailbreak_elevator05"
+    {
+      time 0.000000 1.359501
+      param "sphere03.sp_sabotage_jailbreak_elevator05"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "g_angle_N"
+    {
+      time 0.010416 0.377083
+      param "g_angle_N"
+      event_ramp
+      {
+        0.1848 0.9821
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_N"
+    {
+      time 0.416666 0.783332
+      param "g_angle_N"
+      event_ramp
+      {
+        0.1848 0.9821
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_N"
+    {
+      time 0.843749 1.210415
+      param "g_angle_N"
+      event_ramp
+      {
+        0.1848 0.9821
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_S"
+    {
+      time 0.249999 0.616665
+      param "g_angle_S"
+      event_ramp
+      {
+        0.1848 0.9821
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_S"
+    {
+      time 0.645833 1.012499
+      param "g_angle_S"
+      event_ramp
+      {
+        0.1848 0.9821
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_brows_both_open"
+    {
+      time 0.197917 0.631250
+      param "g_brows_both_open"
+      event_ramp
+      {
+        0.2152 0.7803
+      }
+      sequenceduration 0.433333
+    }
+    event gesture "g_brows_both_open"
+    {
+      time 0.843750 1.277083
+      param "g_brows_both_open"
+      event_ramp
+      {
+        0.2152 0.7803
+      }
+      sequenceduration 0.433333
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

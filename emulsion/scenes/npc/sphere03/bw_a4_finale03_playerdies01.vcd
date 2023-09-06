@@ -1,0 +1,77 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 1.937500 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.bw_a4_finale03_playerdies01"
+    {
+      time 0.000000 1.948481
+      param "sphere03.bw_a4_finale03_playerdies01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "bod_up"
+    {
+      time 0.197917 0.718750
+      param "bod_up"
+      event_ramp
+      {
+        0.0303 0.9910
+        0.2667 0.9933
+      }
+      sequenceduration 0.625000
+    }
+    event gesture "bod_back"
+    {
+      time 0.812500 1.937500
+      param "bod_back"
+      sequenceduration 0.625000
+    }
+    event gesture "glados_wheatly_InnerEyeLeft"
+    {
+      time 0.791667 1.916667
+      param "glados_wheatly_InnerEyeLeft"
+    }
+    event gesture "glados_wheatly_g_emphasis_open"
+    {
+      time -0.011111 1.238889
+      param "glados_wheatly_g_emphasis_open"
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "60"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

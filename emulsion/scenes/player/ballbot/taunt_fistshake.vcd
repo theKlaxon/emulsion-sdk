@@ -1,0 +1,36 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 1.733333 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event sequence "taunt_fistShake"
+    {
+      time 0.000000 1.766667
+      param "taunt_fistShake"
+      event_ramp
+      {
+        0.0280 0.9977 "curve_easein_to_curve_easeout"
+        1.7320 0.9953 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+  }
+  faceposermodel "D:\Dev\main\game\portal2\models\player\ballbot\ballbot.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "100"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

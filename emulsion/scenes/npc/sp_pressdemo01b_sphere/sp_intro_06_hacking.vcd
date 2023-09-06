@@ -1,0 +1,102 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 3.833333 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 2.270833 2.967704
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 0.822917 1.519787
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 1.291667 1.988538
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "AndroidDispenser.Blocked"
+    {
+      time 1.739583 2.436454
+      param "AndroidDispenser.Blocked"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "sphere03.PluggedFirstTime09"
+    {
+      time 0.114584 3.754312
+      param "sphere03.PluggedFirstTime09"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_plug_spin_cycle_b"
+    {
+      time 0.028298 1.326214
+      param "sphere_plug_spin_cycle_b"
+      event_ramp
+      {
+        0.0545 0.9937
+        1.2333 0.9937
+      }
+    }
+    event sequence "sphere_plug_spin_cycle_C"
+    {
+      time 1.299132 3.065799
+      param "sphere_plug_spin_cycle_C"
+      event_ramp
+      {
+        0.0576 0.9906
+        1.7091 0.9937
+      }
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

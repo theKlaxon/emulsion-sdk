@@ -1,0 +1,111 @@
+// Choreo version 1
+event stoppoint "End"
+{
+  time 1.390625 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere001.HELDPANIC05"
+    {
+      time -0.005208 1.363318
+      param "sphere001.HELDPANIC23"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_plug_idle_shiver"
+    {
+      time -1.270833 1.395833
+      param "sphere_plug_idle_shiver"
+      event_ramp
+      {
+        1.2485 0.0124
+        1.3879 0.9876
+        2.5848 1.0000
+      }
+    }
+  }
+  channel "Gesture"
+  {
+    event gesture "g_plug_talk_turn_S"
+    {
+      time 0.411459 0.778125
+      param "g_plug_talk_turn_S"
+      event_ramp
+      {
+        0.1697 0.4565
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_plug_talk_turn_S"
+    {
+      time 0.010416 0.377083
+      param "g_plug_talk_turn_S"
+      event_ramp
+      {
+        0.1697 0.4720
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_plug_talk_turn_S"
+    {
+      time 0.817708 1.184375
+      param "g_plug_talk_turn_S"
+      event_ramp
+      {
+        0.1636 0.5093
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_plug_talk_turn_N"
+    {
+      time 0.223959 0.590625
+      param "g_plug_talk_turn_N"
+      event_ramp
+      {
+        0.1758 0.9938
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_plug_talk_turn_N"
+    {
+      time 0.656251 1.022917
+      param "g_plug_talk_turn_N"
+      event_ramp
+      {
+        0.1848 0.9907
+      }
+      sequenceduration 0.366667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "SceneRampTool" "100"
+  "GestureTool" "100"
+  "RampTool" "66"
+  "ExpressionTool" "100"
+  "CChoreoView" "128"
+}
+fps 60
+snap off
+ignorePhonemes off

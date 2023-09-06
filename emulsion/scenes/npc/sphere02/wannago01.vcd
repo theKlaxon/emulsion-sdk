@@ -1,0 +1,26 @@
+// Choreo version 1
+actor "sphere02"
+{
+  channel "audio"
+  {
+    event speak "sphere02.WANNAGO01"
+    {
+      time 0.000000 0.55600
+      param "sphere02.WANNAGO01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off

@@ -1,0 +1,42 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 4.081314 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event sequence "taunt_Spinjump"
+    {
+      time 0.000000 3.066667
+      param "taunt_Spinjump"
+      fixedlength
+    }
+  }
+  channel "wav"
+  {
+    event speak "egg.spin_jump"
+    {
+      time -0.223214 4.080686
+      param "egg.spin_jump"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  faceposermodel "D:\dev\main\portal2\staging\game\portal2\models\player\eggbot\eggbot.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "224"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

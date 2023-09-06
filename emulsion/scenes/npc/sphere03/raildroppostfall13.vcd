@@ -1,0 +1,72 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 2.354167 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.raildroppostfall13"
+    {
+      time 0.000000 2.317460
+      param "sphere03.raildroppostfall13"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "g_emphasis_open"
+    {
+      time 1.343750 2.343750
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.0545 0.9880
+        0.9212 0.9880
+      }
+      sequenceduration 1.000000
+    }
+    event gesture "sphere_shifty_look"
+    {
+      time 0.020833 2.339582
+      param "sphere_shifty_look"
+      event_ramp
+      {
+        0.1727 0.4015
+        2.1788 0.3674
+      }
+      sequenceduration 2.266667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

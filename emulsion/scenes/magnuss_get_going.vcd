@@ -1,0 +1,62 @@
+// Choreo version 1
+actor "magnusson"
+{
+  channel "head"
+  {
+    event gesture "g_raisechest_whands"
+    {
+      time -0.043011 1.923656
+      param "g_raisechest_whands"
+      absolutetags playback_time
+      {
+        "apex" 0.362069
+        "accent" 0.586207
+        "loop" 0.672414
+        "end" 0.758621
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.362069
+        "accent" 0.586207
+        "loop" 0.672414
+        "end" 0.758621
+      }
+      sequenceduration 1.966667
+    }
+  }
+  channel "gestures"
+  {
+    event gesture "g_Lhand_circle"
+    {
+      time 0.704301 3.004301
+      param "g_Lhand_circle"
+      absolutetags playback_time
+      {
+        "in" 0.220588
+        "loop" 0.740000
+        "end" 0.750000
+        "out" 0.882353
+      }
+      absolutetags shifted_time
+      {
+        "in" 0.220588
+        "loop" 0.750000
+        "end" 0.750000
+        "out" 0.882353
+      }
+    }
+  }
+  faceposermodel "U:\DEV\main\game\ep2\models\magnusson.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "124"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,82 @@
+// Choreo version 1
+actor "Tom"
+{
+  channel "TomScene"
+  {
+    event moveto "RunToCulDeSac"
+    {
+      time 0.000000 4.000000
+      param "CulDeSacTarget"
+      param2 "Run"
+    }
+    event sequence "IdleGestureWindow"
+    {
+      time 6.486667 6.486667
+      param "g_OverHere_LeftapexArms"
+      fixedlength
+    }
+    event sequence "ConversationGesture"
+    {
+      time 6.493333 6.493333
+      param "g_SMG1_StopapexArms"
+      fixedlength
+    }
+    event sequence "ConversationGesture"
+    {
+      time 6.486667 6.486667
+      param "g_plead_01apexArms"
+      fixedlength
+    }
+    active "0"
+  }
+  channel "LookAt"
+  {
+    event lookat "LookAtPlayer"
+    {
+      time -0.505952 -0.005952
+      param "!player"
+    }
+    event lookat "LookAtPlayer"
+    {
+      time 0.005953 4.011905
+      param "!player"
+    }
+    active "0"
+  }
+  channel "WaveArms"
+  {
+    event gesture "WaveArms"
+    {
+      time 3.160494 4.687654
+      param "g_scan_ID"
+      absolutetags playback_time
+      {
+        "apex" 0.105352
+        "accent" 0.267433
+        "loop" 0.846154
+        "end" 0.995951
+        "extreme" 0.417358
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.126984
+        "accent" 0.317460
+        "loop" 0.952381
+        "end" 1.031746
+        "extreme" 0.628571
+      }
+      sequenceduration 2.133333
+    }
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "108"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off

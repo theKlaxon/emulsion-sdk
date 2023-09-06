@@ -1,0 +1,175 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 9.750001 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.sp_a2_bts5_hack15"
+    {
+      time 0.000000 9.728004
+      param "sphere03.sp_a2_bts5_hack15"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "g_shake_tilt_CW"
+    {
+      time 1.552083 5.889583
+      param "g_shake_tilt_CW"
+      event_ramp
+      {
+        0.0909 0.9940
+        4.2375 0.9940
+      }
+      sequenceduration 4.066667
+    }
+    event gesture "g_nod_slow"
+    {
+      time 5.791667 8.085417
+      param "g_nod_slow"
+      event_ramp
+      {
+        0.0667 0.1634
+        2.1606 0.1613
+      }
+      sequenceduration 3.866667
+    }
+    event gesture "g_shake_tilt_CCW"
+    {
+      time 8.020835 9.722918
+      param "g_shake_tilt_CCW"
+      event_ramp
+      {
+        0.0939 0.9940
+        1.6121 0.9940
+      }
+      sequenceduration 4.066667
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 8.020833 9.020833
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.2576 0.7715 "curve_easein_to_curve_easein"
+        0.8364 0.9925 "curve_easein_to_curve_easeout"
+      }
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 1.770833 2.770833
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.2697 0.8202 "curve_easein_to_curve_easein"
+        0.9000 0.9850 "curve_easein_to_curve_easeout"
+      }
+    }
+    event gesture "g_angle_N"
+    {
+      time 5.302083 5.814584
+      param "g_angle_N"
+      event_ramp
+      {
+        0.2273 0.2101
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 3.052083 3.770833
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.2697 0.8202 "curve_easein_to_curve_easein"
+        0.6187 0.9850 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.000000
+    }
+    event gesture "g_angle_CW"
+    {
+      time 3.062934 3.501042
+      param "g_angle_CW"
+      event_ramp
+      {
+        0.1758 0.1406
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_N"
+    {
+      time 1.916666 2.658333
+      param "g_angle_N"
+      event_ramp
+      {
+        0.3303 0.1395
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_CW"
+    {
+      time 7.094184 7.771875
+      param "g_angle_CW"
+      event_ramp
+      {
+        0.3001 0.0949
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_angle_N"
+    {
+      time 8.333334 8.845835
+      param "g_angle_N"
+      event_ramp
+      {
+        0.2546 0.0661
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_nod_slow"
+    {
+      time 0.041667 2.335417
+      param "g_nod_slow"
+      event_ramp
+      {
+        0.0758 0.2062
+        2.1697 0.2002
+      }
+      sequenceduration 3.866667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,39 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 4.213334 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event sequence "taunt_danceSpin"
+    {
+      time 0.000000 4.066667
+      param "taunt_danceSpin"
+      fixedlength
+    }
+    event speak "ballbot.dance_spin"
+    {
+      time -0.453333 3.704331
+      param "ballbot.dance_spin_vo"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  faceposermodel "D:\Dev\main\game\portal2\models\player\ballbot\ballbot.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "100"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

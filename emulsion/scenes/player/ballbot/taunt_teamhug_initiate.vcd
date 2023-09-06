@@ -1,0 +1,47 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 1.760702 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event sequence "taunt_teamhug_initiate"
+    {
+      time 0.000000 1.866667
+      param "taunt_teamhug_initiate"
+      event_ramp
+      {
+        0.0000 1.0000
+        1.8667 1.0000
+      }
+      fixedlength
+    }
+  }
+  channel "wav"
+  {
+    event speak "ballbot.ballbot_come_on_04"
+    {
+      time 0.157895 1.228915
+      param "ballbot.ballbot_come_on_04"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  faceposermodel "D:\dev\main\portal2\staging\game\portal2\models\player\ballbot\ballbot.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "228"
+  "RampTool" "100"
+  "SceneRampTool" "100"
+  "ExpressionTool" "100"
+  "GestureTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,95 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 0.419355 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.bw_sp_a4_intro_notdone04"
+    {
+      time 0.000000 0.455079
+      param "sphere03.bw_sp_a4_intro_notdone04"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "Explode"
+    {
+      time -0.075269 0.288979
+      param "Explode"
+      event_ramp
+      {
+        0.0394 0.0000
+        0.1061 0.1502
+        0.2273 0.0067
+      }
+      sequenceduration 0.208333
+    }
+    event gesture "bod_fwd"
+    {
+      time 0.016129 0.641129
+      param "bod_fwd"
+      event_ramp
+      {
+        0.2364 0.8789
+        0.3545 0.0045
+      }
+    }
+    event gesture "glados_wheatly_g_angel_CW"
+    {
+      time 0.000000 0.458333
+      param "glados_wheatly_g_angel_CW"
+      event_ramp
+      {
+        0.1121 0.4843
+        0.3485 0.0045
+      }
+      sequenceduration 0.458333
+    }
+    event gesture "glados_wheatley_LidsWideOpen"
+    {
+      time -0.112903 0.678763
+      param "glados_wheatley_LidsWideOpen"
+      event_ramp
+      {
+        0.1212 0.0045
+        0.3303 1.0000
+        0.4364 0.0067
+      }
+      sequenceduration 0.791667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "124"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

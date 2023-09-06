@@ -1,0 +1,68 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 0.760417 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.bw_a4_leave_nags01"
+    {
+      time 0.000000 0.760045
+      param "sphere03.bw_a4_leave_nags01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "bod_fwd"
+    {
+      time 0.052084 0.677084
+      param "bod_fwd"
+    }
+    event gesture "glados_wheatly_Scream"
+    {
+      time -0.864583 1.885417
+      param "glados_wheatly_Scream"
+      event_ramp
+      {
+        1.0212 0.0045
+        1.1939 0.9865
+        1.3424 0.9978
+        1.6364 0.0090
+      }
+      sequenceduration 2.750000
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

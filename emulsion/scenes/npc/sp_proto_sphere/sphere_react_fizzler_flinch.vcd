@@ -1,0 +1,39 @@
+// Choreo version 1
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere01.FRUSTRATION08"
+    {
+      time 0.025463 0.914352
+      param "sphere01.FRUSTRATION08"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "base"
+  {
+    event sequence "sphere_react_fizzler_flinch"
+    {
+      time 0.000000 1.000000
+      param "sphere_react_fizzler_flinch"
+      fixedlength
+    }
+  }
+  channel "gesture"
+  {
+  }
+}
+
+scalesettings
+{
+  "RampTool" "100"
+  "GestureTool" "100"
+  "ExpressionTool" "100"
+  "SceneRampTool" "100"
+  "CChoreoView" "288"
+}
+fps 60
+snap off
+ignorePhonemes off

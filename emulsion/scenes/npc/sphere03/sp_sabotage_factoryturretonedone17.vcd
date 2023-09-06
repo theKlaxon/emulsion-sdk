@@ -1,0 +1,114 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 3.416667 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.sp_sabotage_factoryturretonedone17"
+    {
+      time 0.000000 3.385782
+      param "sphere03.sp_sabotage_factoryturretonedone17"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "g_nod_slow"
+    {
+      time 2.145834 3.408334
+      param "g_nod_slow"
+      event_ramp
+      {
+        0.2909 0.6886
+        1.0199 0.6647
+      }
+      sequenceduration 3.866667
+    }
+    event gesture "sphere_annoyed_eye_roll"
+    {
+      time 0.010417 1.677083
+      param "sphere_annoyed_eye_roll"
+      event_ramp
+      {
+        0.2970 0.9924 "curve_easein_to_curve_easeout"
+        1.2848 0.9924 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.666667
+    }
+    event gesture "sphere_low_blink"
+    {
+      time 1.333334 2.233334
+      param "sphere_low_blink"
+      event_ramp
+      {
+        0.2273 0.9962 "curve_easein_to_curve_easeout"
+        0.6848 0.9886 "curve_easein_to_curve_easeout"
+      }
+    }
+    event gesture "g_both_lids_open"
+    {
+      time 2.166667 3.397917
+      param "g_both_lids_open"
+      event_ramp
+      {
+        0.1879 0.5303
+        1.0606 0.5152
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 2.354167 3.062500
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.1424 1.0000 "curve_easein_to_curve_easeout"
+        0.5871 0.9924 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.000000
+    }
+    event gesture "g_angle_N"
+    {
+      time 2.250000 2.731250
+      param "g_angle_N"
+      event_ramp
+      {
+        0.2303 0.6591
+      }
+      sequenceduration 0.366667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,27 @@
+// Choreo version 1
+actor "cavejohnson"
+{
+  channel "audio"
+  {
+    event speak "cavejohnson.Puzzle01Success"
+    {
+      param "cavejohnson.Puzzle01Success"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+		time 0.000000 2.188000
+	}
+}
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

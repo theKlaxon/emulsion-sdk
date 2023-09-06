@@ -1,0 +1,113 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 4.500000 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.tubeturret03"
+    {
+      time 0.000000 4.168685
+      param "sphere03.tubeturret03"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_eye_roll"
+    {
+      time 0.020833 1.720833
+      param "sphere_eye_roll"
+      event_ramp
+      {
+        0.0788 0.9907 "curve_easein_to_curve_easeout"
+        1.5061 0.9884 "curve_easein_to_curve_easeout"
+      }
+      fixedlength
+    }
+  }
+  channel "Gesture"
+  {
+    event gesture "g_angry_pose"
+    {
+      time 2.406250 4.466666
+      param "g_angry_pose"
+      event_ramp
+      {
+        0.2303 0.8140 "curve_easein_to_curve_easein"
+        0.5818 0.8767 "curve_easein_to_curve_easeout"
+        0.8879 0.3116 "curve_easein_to_curve_easein"
+        1.4280 0.2488 "curve_easein_to_curve_easeout"
+        1.7129 0.9302 "curve_easein_to_curve_easein"
+        1.9697 0.9558 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.300000
+    }
+    event gesture "g_angle_SE"
+    {
+      time 2.406250 4.481250
+      param "g_angle_SE"
+      event_ramp
+      {
+        0.4061 0.7093 "curve_easein_to_curve_easein"
+        0.7091 0.7302 "curve_easein_to_curve_easeout"
+        0.9455 0.1465 "curve_easein_to_curve_easein"
+        1.4246 0.0279 "curve_easein_to_curve_easeout"
+        1.6307 0.7442 "curve_easein_to_curve_easein"
+        1.9152 0.7837 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_shake_fast"
+    {
+      time 1.468750 2.668750
+      param "g_shake_fast"
+      event_ramp
+      {
+        0.4667 0.8930 "curve_easein_to_curve_easeout"
+        1.0545 0.8930 "curve_easein_to_curve_easeout"
+      }
+    }
+    event gesture "g_angle_NW"
+    {
+      time 0.041667 2.835417
+      param "g_angle_NW"
+      event_ramp
+      {
+        0.6758 0.4884 "curve_easein_to_curve_easeout"
+        1.3273 0.7674 "curve_easein_to_curve_easein"
+        2.4413 0.8209 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

@@ -1,0 +1,118 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 3.770833 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.sp_a1_wakeup_hacking09"
+    {
+      time 0.000000 3.769138
+      param "sphere03.sp_a1_wakeup_hacking09"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 0.000000 0.144807
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 0.390000 0.534807
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 0.736000 0.880807
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 1.294000 1.438807
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 1.715000 1.859807
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "NPC_RocketTurret.LockingBeep"
+    {
+      time 3.441000 3.585807
+      param "NPC_RocketTurret.LockingBeep"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+    event sequence "sphere_plug_spin_cycle_A"
+    {
+      time 0.062500 1.829167
+      param "sphere_plug_spin_cycle_A"
+      event_ramp
+      {
+        0.0879 0.9925
+        1.6758 1.0000
+      }
+    }
+    event sequence "sphere_plug_spin_cycle_B"
+    {
+      time 1.989584 3.756250
+      param "sphere_plug_spin_cycle_B"
+      event_ramp
+      {
+        0.1061 0.9963
+        1.6758 0.9888
+      }
+    }
+  }
+  channel "Gesture"
+  {
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

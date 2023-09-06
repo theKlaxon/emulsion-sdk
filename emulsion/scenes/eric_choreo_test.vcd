@@ -1,0 +1,39 @@
+// Choreo version 1
+actor "human"
+{
+  channel "gestures"
+  {
+    event gesture "g_hands_wave_off_high"
+    {
+      time 0.370968 1.837635
+      param "g_hands_wave_off_high"
+      absolutetags playback_time
+      {
+        "apex" 0.348837
+        "accent" 0.488372
+        "loop" 0.767442
+        "end" 0.790698
+      }
+      absolutetags shifted_time
+      {
+        "apex" 0.348837
+        "accent" 0.488372
+        "loop" 0.767442
+        "end" 0.790698
+      }
+    }
+  }
+  faceposermodel "U:\DEV\main\game\ep2\models\magnusson.mdl"
+}
+
+scalesettings
+{
+  "CChoreoView" "124"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

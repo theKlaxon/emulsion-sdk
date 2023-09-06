@@ -1,0 +1,92 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 1.312500 -1.000000
+  param "noaction"
+}
+actor "@sphere"
+{
+  channel "audio"
+  {
+    event speak "sphere03.demosphereintro14"
+    {
+      time 0.000000 1.277574
+      param "sphere03.demosphereintro14"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  channel "LookAt"
+  {
+  }
+  channel "FaceTo"
+  {
+  }
+  channel "MoveTo"
+  {
+  }
+  channel "Animation"
+  {
+  }
+  channel "Gesture"
+  {
+    event gesture "g_look_NW"
+    {
+      time 0.031250 0.825000
+      param "g_look_NW"
+      event_ramp
+      {
+        0.1879 0.9030 "curve_easein_to_curve_easein"
+        0.4242 0.9888 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_emphasis_open"
+    {
+      time 0.020833 1.020833
+      param "g_emphasis_open"
+      event_ramp
+      {
+        0.0788 0.9963
+        0.8939 1.0000
+      }
+    }
+    event gesture "g_lid_close_Center"
+    {
+      time 0.197916 0.564583
+      param "g_lid_close_Center"
+      event_ramp
+      {
+        0.1636 0.8022
+      }
+      sequenceduration 0.366667
+    }
+    event gesture "g_nod_fast"
+    {
+      time 0.041667 1.131250
+      param "g_nod_fast"
+      event_ramp
+      {
+        0.0515 0.2687 "curve_easein_to_curve_easeout"
+        1.0350 0.3918 "curve_easein_to_curve_easeout"
+      }
+      sequenceduration 1.766667
+    }
+  }
+  channel "Trigger"
+  {
+  }
+}
+
+scalesettings
+{
+  "CChoreoView" "64"
+  "ExpressionTool" "100"
+  "RampTool" "66"
+  "GestureTool" "100"
+  "SceneRampTool" "100"
+}
+fps 60
+snap off
+ignorePhonemes off

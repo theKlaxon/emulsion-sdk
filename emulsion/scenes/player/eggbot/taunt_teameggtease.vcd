@@ -1,0 +1,66 @@
+// Choreo version 1
+event stoppoint "end"
+{
+  time 5.898408 -1.000000
+  param "noaction"
+}
+actor "player"
+{
+  channel "animation"
+  {
+    event sequence "taunt_teamEggTease"
+    {
+      time 0.000000 6.000000
+      param "taunt_teamEggTease"
+      fixedlength
+    }
+  }
+  channel "wav"
+  {
+    event speak "EggbotLaugh03"
+    {
+      time 3.422764 5.436438
+      param "EggbotLaugh03"
+      event_ramp
+      {
+        0.0000 0.0000
+        0.0000 0.0000 "curve_easein_to_curve_easein"
+        0.6520 0.0000 "curve_easein_to_curve_easein"
+        0.7940 0.9979
+        2.0137 1.0000
+      }
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "EggbotTease01"
+    {
+      time 0.605691 2.591043
+      param "EggbotTease01"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+    event speak "EggBotPoint03"
+    {
+      time 3.016260 3.405557
+      param "EggBotPoint03"
+      fixedlength
+      cctype "cc_master"
+      cctoken ""
+    }
+  }
+  faceposermodel "D:\Dev\main\portal2\staging\game\portal2\models\player\eggbot\eggbot.mdl"
+}
+
+scalesettings
+{
+  "GestureTool" "100"
+  "ExpressionTool" "100"
+  "SceneRampTool" "100"
+  "RampTool" "100"
+  "CChoreoView" "164"
+}
+fps 60
+snap off
+ignorePhonemes off
