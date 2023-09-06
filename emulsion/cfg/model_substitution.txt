@@ -1,0 +1,88 @@
+"substitution"
+{
+// SAMPLE DATA - use the "sub" key to create a new substitution entry.  
+// DO NOT specify file extensions; the code will automatically handle VVD, VTX, MDL, and ANI
+
+// Coming soon: feature to white list certain maps 
+//	"map"	"sp_a1_intro1"
+//	"map"	"sp_a1_intro2"
+//	"map"	"sp_a1_intro3"
+//	"map"	"sp_a1_intro4"
+//	"map"	"sp_a1_intro5"
+
+	"sub"
+	{
+		"maxgpulevel"	"1"
+		"original"	"models\container_ride\endWallDestruction3"
+		"substitute"	"models\container_ride\lowres\endWallDestruction3"
+	}
+	"sub"
+	{
+		"maxgpulevel"	"1"
+		"original"	"models\container_ride\endWallDestruction4"
+		"substitute"	"models\container_ride\lowres\endWallDestruction4"
+	}
+	
+	"sub"
+	{
+		"maxgpulevel"	"1"
+		"original"	"models\container_ride\finedebris_part1"
+		"substitute"	"models\container_ride\lowres\finedebris_part1"
+	}
+	"sub"
+	{
+		"maxgpulevel"	"1"
+		"original"	"models\container_ride\finedebris_part3"
+		"substitute"	"models\container_ride\lowres\finedebris_part3"
+	}
+	"sub"
+	{
+		"maxgpulevel"	"1"
+		"original"	"models\container_ride\finedebris_part5"
+		"substitute"	"models\container_ride\lowres\finedebris_part5"
+	}
+	"sub"
+	{
+		"maxgpulevel"	"1"
+		"original"	"models\container_ride\finedebris_part7"
+		"substitute"	"models\container_ride\lowres\finedebris_part7"
+	}
+	"sub"
+	{
+		"maxgpulevel"	"1"
+		"original"	"models\container_ride\finedebris_part9"
+		"substitute"	"models\container_ride\lowres\finedebris_part9"
+	}
+	"sub"
+	{
+		"maxgpulevel"	"1"
+		"original"	"models\container_ride\finedebris_part11"
+		"substitute"	"models\container_ride\lowres\finedebris_part11"
+	}
+	"sub"
+	{
+		"maxgpulevel"	"1"
+		"original"	"models\container_ride\finedebris_part13"
+		"substitute"	"models\container_ride\lowres\finedebris_part13"
+	}
+
+	"sub"
+	{
+		"maxgpulevel"	"1"
+		"original"	"models\container_ride\lorezContainersCombined_1_56"
+		"substitute"	"models\container_ride\lowres\lorezContainersCombined_1_56"
+	}
+	"sub"
+	{
+		"maxgpulevel"	"1"
+		"original"	"models\container_ride\lorezContainersCombined_57_92"
+		"substitute"	"models\container_ride\lowres\lorezContainersCombined_57_92"
+	}
+
+	"sub"
+	{
+		"maxgpulevel"	"1"
+		"original"	"models\container_ride\wheatley_entry"
+		"substitute"	"models\container_ride\lowres\wheatley_entry"
+	}
+}
