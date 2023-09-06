@@ -1,0 +1,38 @@
+﻿  Compiling pointeroverride.asm
+  Microsoft (R) Macro Assembler Version 14.31.30919.0
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
+   Assembling: D:\theKlaxon\source-sdk-2011\src\public\tier0\pointeroverride.asm
+  Running VPC CRC Check - vphysics_jolt_inc.vpc
+  The process cannot access the file because it is being used by another process.
+  cbase.cpp
+  2011_patch.cpp
+D:\theKlaxon\source-sdk-2011\src\public\tier0\dbg.h(354,25): message : see previous definition of '_AssertValidStringPtr'
+  vjolt_collide.cpp
+  vjolt_collide_trace.cpp
+  vjolt_constraints.cpp
+  vjolt_controller_fluid.cpp
+  vjolt_controller_motion.cpp
+  vjolt_controller_player.cpp
+  vjolt_controller_shadow.cpp
+  vjolt_controller_vehicle.cpp
+  vjolt_debugrender.cpp
+  vjolt_environment.cpp
+  vjolt_friction.cpp
+  vjolt_interface.cpp
+  vjolt_keyvalues_schema.cpp
+  vjolt_object.cpp
+  vjolt_objectpairhash.cpp
+  vjolt_parse.cpp
+  vjolt_querymodel.cpp
+  vjolt_surfaceprops.cpp
+  Generating Code...
+  memoverride.cpp
+  collisionutils.cpp
+  filesystem_helpers.cpp
+     Creating library .\Release_SSE2\.\vphysics_jolt_sse2.lib and object .\Release_SSE2\.\vphysics_jolt_sse2.exp
+LINK : warning LNK4217: symbol '__AssertValidStringPtr' defined in '2011_patch.obj' is imported by 'tier1.lib(strtools.obj)' in function '"int __cdecl _V_strlen(char const *)" (?_V_strlen@@YAHPBD@Z)'
+  vphysics_jolt_sse2.vcxproj -> D:\theKlaxon\source-sdk-2011\src\vphysics_jolt\vphysics_jolt\Release_SSE2\vphysics_jolt_sse2.dll
+  Publishing to ..\..\..\game\bin\.
+          1 file(s) copied.
+          1 file(s) copied.

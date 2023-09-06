@@ -1,0 +1,6 @@
+﻿  Compiling pointeroverride.asm
+  Microsoft (R) Macro Assembler Version 14.31.30919.0
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
+   Assembling: D:\source-sdk-2011\src\public\tier0\pointeroverride.asm
+  Running VPC CRC Check - vphysics_jolt_inc.vpc

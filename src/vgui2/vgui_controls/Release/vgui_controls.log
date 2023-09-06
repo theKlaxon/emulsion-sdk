@@ -1,0 +1,223 @@
+﻿cl : Command line warning D9002: ignoring unknown option '/Gw'
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+  AnalogBar.cpp
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+  AnimatingImagePanel.cpp
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+  AnimationController.cpp
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+  BitmapImagePanel.cpp
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+  BuildFactoryHelper.cpp
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+  BuildGroup.cpp
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+  BuildModeDialog.cpp
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+  Button.cpp
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+  CheckButton.cpp
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+  CheckButtonList.cpp
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+  CircularProgressBar.cpp
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+  ComboBox.cpp
+  consoledialog.cpp
+  ControllerMap.cpp
+d:\source-sdk-2011\src\public\localize\ilocalize.h(149): warning C4717: 'ILocalize::ConstructString' : recursive on all control paths, function will cause runtime stack overflow
+  controls.cpp
+  CvarToggleCheckButton.cpp
+d:\source-sdk-2011\src\vgui2\vgui_controls\button.cpp(607): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\button.cpp(609): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\button.cpp(629): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\button.cpp(631): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\button.cpp(896): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+  DirectorySelectDialog.cpp
+  Divider.cpp
+  EditablePanel.cpp
+  ExpandButton.cpp
+  FileOpenDialog.cpp
+  FileOpenStateMachine.cpp
+  filesystem_helpers.cpp
+  FocusNavGroup.cpp
+  Frame.cpp
+  GraphPanel.cpp
+  HTML.cpp
+  Image.cpp
+  ImageList.cpp
+  ImagePanel.cpp
+  InputDialog.cpp
+  KeyBindingHelpDialog.cpp
+  KeyBoardEditorDialog.cpp
+  KeyRepeat.cpp
+  Label.cpp
+  ListPanel.cpp
+  ListViewPanel.cpp
+  Menu.cpp
+  MenuBar.cpp
+d:\source-sdk-2011\src\vgui2\vgui_controls\imagepanel.cpp(292): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\imagepanel.cpp(293): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\imagepanel.cpp(295): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\imagepanel.cpp(296): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\imagepanel.cpp(297): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+  MenuButton.cpp
+  MenuItem.cpp
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(72): warning C4005: 'INT8_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(73): warning C4005: 'INT16_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(293) : see previous definition of 'INT16_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(74): warning C4005: 'INT32_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(294) : see previous definition of 'INT32_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(76): warning C4005: 'INT8_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(287) : see previous definition of 'INT8_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(77): warning C4005: 'INT16_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(288) : see previous definition of 'INT16_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(78): warning C4005: 'INT32_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(289) : see previous definition of 'INT32_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(79): warning C4005: 'UINT8_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(297) : see previous definition of 'UINT8_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(80): warning C4005: 'UINT16_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(298) : see previous definition of 'UINT16_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(81): warning C4005: 'UINT32_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(299) : see previous definition of 'UINT32_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(149): warning C4005: 'INT64_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(295) : see previous definition of 'INT64_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(150): warning C4005: 'INT64_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(290) : see previous definition of 'INT64_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(151): warning C4005: 'UINT64_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
+d:\source-sdk-2011\src\vgui2\vgui_controls\html.cpp(2010): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\listpanel.cpp(609): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\listpanel.cpp(612): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+  MessageBox.cpp
+  MessageDialog.cpp
+  Panel.cpp
+  PanelListPanel.cpp
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(72): warning C4005: 'INT8_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(73): warning C4005: 'INT16_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(293) : see previous definition of 'INT16_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(74): warning C4005: 'INT32_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(294) : see previous definition of 'INT32_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(76): warning C4005: 'INT8_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(287) : see previous definition of 'INT8_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(77): warning C4005: 'INT16_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(288) : see previous definition of 'INT16_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(78): warning C4005: 'INT32_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(289) : see previous definition of 'INT32_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(79): warning C4005: 'UINT8_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(297) : see previous definition of 'UINT8_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(80): warning C4005: 'UINT16_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(298) : see previous definition of 'UINT16_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(81): warning C4005: 'UINT32_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(299) : see previous definition of 'UINT32_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(149): warning C4005: 'INT64_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(295) : see previous definition of 'INT64_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(150): warning C4005: 'INT64_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(290) : see previous definition of 'INT64_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(151): warning C4005: 'UINT64_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(72): warning C4005: 'INT8_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(73): warning C4005: 'INT16_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(293) : see previous definition of 'INT16_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(74): warning C4005: 'INT32_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(294) : see previous definition of 'INT32_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(76): warning C4005: 'INT8_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(287) : see previous definition of 'INT8_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(77): warning C4005: 'INT16_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(288) : see previous definition of 'INT16_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(78): warning C4005: 'INT32_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(289) : see previous definition of 'INT32_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(79): warning C4005: 'UINT8_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(297) : see previous definition of 'UINT8_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(80): warning C4005: 'UINT16_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(298) : see previous definition of 'UINT16_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(81): warning C4005: 'UINT32_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(299) : see previous definition of 'UINT32_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(149): warning C4005: 'INT64_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(295) : see previous definition of 'INT64_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(150): warning C4005: 'INT64_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(290) : see previous definition of 'INT64_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(151): warning C4005: 'UINT64_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
+  patch.cpp
+  PerforceFileExplorer.cpp
+  PerforceFileList.cpp
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
+  perforcefilelistframe.cpp
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
+  ProgressBar.cpp
+  ProgressBox.cpp
+  PropertyDialog.cpp
+  PropertyPage.cpp
+  PropertySheet.cpp
+d:\source-sdk-2011\src\vgui2\vgui_controls\panel.cpp(1355): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\panel.cpp(1363): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\panel.cpp(3338): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\panel.cpp(4580): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\panel.cpp(4582): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\panel.cpp(4683): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\source-sdk-2011\src\vgui2\vgui_controls\panel.cpp(5281): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+  QueryBox.cpp
+  RadioButton.cpp
+  RichText.cpp
+d:\source-sdk-2011\src\public\localize\ilocalize.h(149): warning C4717: 'ILocalize::ConstructString' : recursive on all control paths, function will cause runtime stack overflow
+  RotatingProgressBar.cpp
+d:\source-sdk-2011\src\public\localize\ilocalize.h(149): warning C4717: 'ILocalize::ConstructString' : recursive on all control paths, function will cause runtime stack overflow
+  savedocumentquery.cpp
+  ScalableImagePanel.cpp
+  ScrollableEditablePanel.cpp
+  ScrollBar.cpp
+  ScrollBarSlider.cpp
+  SectionedListPanel.cpp
+  Slider.cpp
+  Splitter.cpp
+  subrectimage.cpp
+  TextEntry.cpp
+  TextImage.cpp
+  ToggleButton.cpp
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(72): warning C4005: 'INT8_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(73): warning C4005: 'INT16_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(293) : see previous definition of 'INT16_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(74): warning C4005: 'INT32_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(294) : see previous definition of 'INT32_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(76): warning C4005: 'INT8_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(287) : see previous definition of 'INT8_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(77): warning C4005: 'INT16_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(288) : see previous definition of 'INT16_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(78): warning C4005: 'INT32_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(289) : see previous definition of 'INT32_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(79): warning C4005: 'UINT8_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(297) : see previous definition of 'UINT8_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(80): warning C4005: 'UINT16_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(298) : see previous definition of 'UINT16_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(81): warning C4005: 'UINT32_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(299) : see previous definition of 'UINT32_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(149): warning C4005: 'INT64_MIN' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(295) : see previous definition of 'INT64_MIN'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(150): warning C4005: 'INT64_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(290) : see previous definition of 'INT64_MAX'
+c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(151): warning C4005: 'UINT64_MAX' : macro redefinition
+          d:\source-sdk-2011\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
+  Tooltip.cpp
+  ToolWindow.cpp
+  TreeView.cpp
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
+d:\source-sdk-2011\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
+  TreeViewListControl.cpp
+d:\source-sdk-2011\src\vgui2\vgui_controls\richtext.cpp(2272): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+  URLLabel.cpp

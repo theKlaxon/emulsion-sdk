@@ -1,0 +1,62 @@
+//-----------------------------------------------------------------------------
+//	CLIENT_TEMPLATE.VPC
+//
+//	Project Script
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR		"..\.."
+$Macro GAMENAME 	"emulsion"
+
+$Include "$SRCDIR\game\client\client_base.vpc"
+
+$Configuration
+{
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"$BASE;.\swarm;.\hl2;.\portal2;.\emulsion;.\swarm\vgui;$SRCDIR\game\shared\portal2;$SRCDIR\game\shared\portal;$SRCDIR\game\shared\emulsion;.\gameui;$SRCDIR\game\client\portal2\gameui;$SRCDIR\game\client\swarm\gameui\swarm;..\statemachine;"
+		$PreprocessorDefinitions		"$BASE;EMULSION_DLL;P2_DLL;PORTAL2;GAMEUI_EMBEDDED;GAMEUI_EXPORTS;SPLITSCREEN_STUBS"
+	}
+}
+
+$Project "Client (Emulsion)"
+{
+	$Folder	"Link Libraries"
+	{
+		$Lib	"$LIBPUBLIC\discord-rpc"
+	}
+
+	$Folder "Source Files"
+	{
+		$Folder	"Emulsion"
+		{		
+			$File	"emulsion\c_emulsion_player.h"
+			$File	"emulsion\c_emulsion_player.cpp"
+			$File	"emulsion\c_emulsion_lesson.cpp"
+			$File	"emulsion\c_weapon_paintgun.cpp"
+			$File	"emulsion\c_discord.cpp"
+			$File	"emulsion\c_discord.h"
+			
+			$File	"emulsion\clientmode_emulsion.h"
+			$File	"emulsion\clientmode_emulsion.cpp"
+			$File	"emulsion\emulsion_fx.cpp"
+			$File	"emulsion\emulsion_in_main.cpp"
+			$File	"emulsion\emulsion_prediction.cpp"
+			$File	"emulsion\emulsion_rootpanel.cpp"
+			
+			$Folder "Shared"
+			{
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_gamemovement.cpp"
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_gamerules.cpp"
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_shareddefs.h"
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_usermessages.cpp"
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_parsers.cpp"
+				$File 	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
+			}
+		}
+	}
+
+	$Folder	"Link Libraries"
+	{
+		$Lib "$LIBPUBLIC\vpklib"
+	}
+}

@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{922C6F41-C460-59B1-3A59-D4FA6DDC9C37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Link Libraries">
+      <UniqueIdentifier>{6D11200E-4206-7C82-1DCE-61EA5E3FE718}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{9A3C0498-7C60-1BDF-BDF7-06BDDE4E468F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\asm">
+      <UniqueIdentifier>{f043aaf3-502c-4720-918f-4d8460147eb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\portal2">
+      <UniqueIdentifier>{1d9b1812-521b-4e0c-aaef-6a587933327b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\public\particles\particles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="particles_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="random_floats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="patch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\debug_lib_check.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="particles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="builtin_initializers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="builtin_particle_ops.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_sort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="builtin_particle_emitters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="builtin_particle_forces.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="addbuiltin_ops.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="builtin_constraints.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_snapshot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="builtin_particle_render_ops.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="def_renderblobs_2.cpp">
+      <Filter>Source Files\portal2</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\lib\public\bitmap.lib">
+      <Filter>Link Libraries</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="asw\ImpParticle.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\ImpRenderer.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\ImpTiler.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\PhysParticle.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\PhysParticleCache.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\PhysTiler.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\ProjectingParticleCache.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\SideProjectingParticleCache.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\SweepRenderer.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\TriStripVertexBuffer.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\UserFunctions.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\VolumetricParticleCache.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\VolumetricSweepRenderer.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\IndexTriStripVertexBuffer.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\IndexTriVertexBuffer.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\InfHashParticleCache.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\InfHashRenderer.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\LocalBuffer.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\MCParticleCache.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+    <Object Include="asw\MCRenderer.obj">
+      <Filter>Source Files\asm</Filter>
+    </Object>
+  </ItemGroup>
+</Project>

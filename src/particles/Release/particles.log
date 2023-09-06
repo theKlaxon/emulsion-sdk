@@ -1,0 +1,32 @@
+﻿  addbuiltin_ops.cpp
+  builtin_constraints.cpp
+  builtin_initializers.cpp
+  builtin_particle_emitters.cpp
+  builtin_particle_forces.cpp
+  builtin_particle_ops.cpp
+  builtin_particle_render_ops.cpp
+  def_renderblobs_2.cpp
+  particles.cpp
+D:\source-sdk-2011\src\public\materialsystem/materialsystemutil.h(51): warning C4114: same type qualifier used more than once
+D:\source-sdk-2011\src\public\materialsystem/materialsystemutil.h(51): warning C4114: same type qualifier used more than once
+D:\source-sdk-2011\src\public\materialsystem/materialsystemutil.h(51): warning C4114: same type qualifier used more than once
+  particle_snapshot.cpp
+  particle_sort.cpp
+D:\source-sdk-2011\src\public\materialsystem/materialsystemutil.h(51): warning C4114: same type qualifier used more than once
+D:\source-sdk-2011\src\public\materialsystem/materialsystemutil.h(51): warning C4114: same type qualifier used more than once
+D:\source-sdk-2011\src\public\materialsystem/materialsystemutil.h(51): warning C4114: same type qualifier used more than once
+  patch.cpp
+D:\source-sdk-2011\src\public\materialsystem/materialsystemutil.h(51): warning C4114: same type qualifier used more than once
+D:\source-sdk-2011\src\public\materialsystem/materialsystemutil.h(51): warning C4114: same type qualifier used more than once
+D:\source-sdk-2011\src\public\materialsystem/materialsystemutil.h(51): warning C4114: same type qualifier used more than once
+D:\source-sdk-2011\src\public\materialsystem/materialsystemutil.h(51): warning C4114: same type qualifier used more than once
+particles.cpp(408): warning C4189: 'name' : local variable is initialized but not referenced
+D:\source-sdk-2011\src\public\materialsystem/materialsystemutil.h(51): warning C4114: same type qualifier used more than once
+D:\source-sdk-2011\src\public\materialsystem/materialsystemutil.h(51): warning C4114: same type qualifier used more than once
+def_renderblobs_2.cpp(151): warning C4554: '>>' : check operator precedence for possible error; use parentheses to clarify precedence
+def_renderblobs_2.cpp(122): warning C4189: 'pSorted' : local variable is initialized but not referenced
+builtin_particle_render_ops.cpp(3538): warning C4189: 'a' : local variable is initialized but not referenced
+d:\source-sdk-2011\src\particles\def_renderblobs_2.cpp(130): warning C4700: uninitialized local variable 'fStack_20' used
+d:\source-sdk-2011\src\particles\def_renderblobs_2.cpp(130): warning C4700: uninitialized local variable 'fStack_30' used
+d:\source-sdk-2011\src\particles\def_renderblobs_2.cpp(131): warning C4700: uninitialized local variable 'fStack_1c' used
+d:\source-sdk-2011\src\particles\def_renderblobs_2.cpp(131): warning C4700: uninitialized local variable 'fStack_2c' used

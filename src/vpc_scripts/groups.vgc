@@ -1,0 +1,24 @@
+//-----------------------------------------------------------------------------
+//	GROUPS.VGC
+//
+//	Group Configurations for all Source(TM) Projects
+//-----------------------------------------------------------------------------
+
+///////////////////////
+// Group definitions //
+///////////////////////
+$Group "game"
+{
+	"client"
+	"server"
+}
+
+$Group "everything"
+{
+	"client"
+	"server"
+	"vgui_controls"
+	"particles"
+	"videocfg"
+	//"jolt"
+}

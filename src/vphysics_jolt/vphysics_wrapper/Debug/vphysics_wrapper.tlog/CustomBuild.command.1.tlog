@@ -1,0 +1,6 @@
+^D:\THEKLAXON\EMULSION-SDK\SRC\PUBLIC\TIER0\POINTEROVERRIDE.ASM
+"C:\Program Files\Microsoft Visual Studio\2022\Preview\VC\Tools\MSVC\14.31.30919\bin\HostX64\x86\ml.exe" /safeseh /c /Cp /Zi /Fo".\Debug\.\\pointeroverride.obj" "D:\theKlaxon\emulsion-sdk\src\public\tier0\pointeroverride.asm"
+^D:\THEKLAXON\EMULSION-SDK\SRC\VPHYSICS_JOLT\VPHYSICS_WRAPPER\VPHYSICS_WRAPPER_INC.VPC
+if exist "..\..\devtools\bin\vpc.exe" "..\..\devtools\bin\vpc.exe" -crc2 "vphysics_wrapper_external.vcxproj"
+if ERRORLEVEL 1 exit /b 1
+echo crc_complete > D:\theKlaxon\source-sdk-2011\src\vphysics_jolt\vphysics_wrapper\vphysics_wrapper_inc.vpc.sentinel
