@@ -1,0 +1,57 @@
+"Resource/UI/SignInDialog.res"
+{
+	"SignInDialog"
+	{
+		"ControlName"		"Frame"
+		"fieldName"			"SignInDialog"
+		"xpos"				"0"
+		"ypos"				"0"
+		"wide"				"7"
+		"tall"				"2"
+		"autoResize"		"0"
+		"visible"			"1"
+		"enabled"			"1"
+		"tabPosition"		"0"
+		"dialogstyle"		"1"
+	}
+
+	"BtnSignin"
+	{
+		"ControlName"		"BaseModHybridButton"
+		"fieldName"			"BtnSignin"
+		"xpos"				"0"
+		"ypos"				"25"
+		"wide"				"0"
+		"tall"				"20"
+		"autoResize"		"0"
+		"visible"			"1"
+		"enabled"			"1"
+		"tabPosition"		"0"
+		"navUp"				"BtnPlayAsGuest"
+		"navDown"			"BtnPlayAsGuest"
+		"labelText"			"#L4D360UI_SignIn_SignInNow1"
+		"style"				"DefaultButton"
+		"Command"			"Play"
+		"OnlyActiveUser"	"1"
+	}
+
+	"BtnPlayAsGuest"
+	{
+		"ControlName"		"BaseModHybridButton"
+		"fieldName"			"BtnPlayAsGuest"
+		"xpos"				"0"
+		"ypos"				"50"
+		"wide"				"0"
+		"tall"				"20"
+		"autoResize"		"0"
+		"visible"			"1"
+		"enabled"			"1"
+		"tabPosition"		"0"
+		"navUp"				"BtnSignin"
+		"navDown"			"BtnSignIn"
+		"labelText"			"#L4D360UI_SignIn_PlayAsGuest"
+		"style"				"DefaultButton"
+		"Command"			"PlayAsGuest"
+		"OnlyActiveUser"	"1"
+	}
+}
