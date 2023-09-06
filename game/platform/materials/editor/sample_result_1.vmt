@@ -1,0 +1,12 @@
+"screenspace_general"
+{
+	"$pixshader" "lpreview_output_ps20"
+	"$basetexture" "_rt_accbuf"
+	"$texture1" "_rt_albedo"
+	$POINTSAMPLE_BASETEXTURE 1
+	$POINTSAMPLE_TEXTURE2 1
+	"$texture2" "_rt_normal"
+	$LINEARREAD_TEXTURE2 1
+	"$ignorez" 1
+	"$nocull" 1
+}

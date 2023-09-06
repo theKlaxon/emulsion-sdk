@@ -1,0 +1,13 @@
+"GameInfo"
+{
+	FileSystem
+	{
+		SteamAppId				644
+		
+		SearchPaths
+		{
+			p2map_publish				|gameinfo_path|.
+			p2map_publish				platform
+		}
+	}
+}

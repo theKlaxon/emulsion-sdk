@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$model" 1
+	"$vertexcolor" 0
+	"$vertexalpha" 0
+	"$ignorez" 1
+	"$no_fullbright" "1"
+	"$additive"	"1"
+	"$baseTexture" "vgui/white"
+}

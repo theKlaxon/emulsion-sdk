@@ -1,0 +1,17 @@
+"screenspace_general"
+{
+	$vertexshader "lpreview1_vs20"
+	$pixshader "lpreview1_ps20"
+	$basetexture "_rt_albedo"
+	$texture1 "_rt_normal"
+	$texture2 "_rt_position"
+	$tcsize1 4
+	$tcsize2 4
+	$tcsize3 3
+	$tcsize4 4
+	$tcsize5 3
+	$additive 1
+	$linearwrite 1
+	$ignorez 1
+	$cull 1
+}

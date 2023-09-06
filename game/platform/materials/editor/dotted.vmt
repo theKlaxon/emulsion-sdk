@@ -1,0 +1,8 @@
+"UnlitGeneric"
+{
+	"$translucent" "1"
+	"$basetexture" "editor/dotted"
+	"$vertexalpha" "1"
+	"$vertexcolor" 1
+	"$ignorez" "1"
+}

@@ -1,0 +1,31 @@
+"Configs"
+{
+	"Games"
+	{
+		"Portal 2"
+		{
+			"GameDir"		"D:\SteamLibrary\steamapps\common\Portal 2\portal2"
+			"Hammer"
+			{
+				"GameData0"		"D:\SteamLibrary\steamapps\common\Portal 2\bin\portal2.fgd"
+				"TextureFormat"		"5"
+				"MapFormat"		"4"
+				"DefaultTextureScale"		"0.250000"
+				"DefaultLightmapScale"		"8"
+				"GameExe"		"D:\SteamLibrary\steamapps\common\Portal 2\portal2.exe"
+				"DefaultSolidEntity"		"func_detail"
+				"DefaultPointEntity"		"info_player_start"
+				"BSP"		"D:\SteamLibrary\steamapps\common\Portal 2\bin\vbsp.exe"
+				"Vis"		"D:\SteamLibrary\steamapps\common\Portal 2\bin\vvis.exe"
+				"Light"		"D:\SteamLibrary\steamapps\common\Portal 2\bin\vrad.exe"
+				"GameExeDir"		"D:\SteamLibrary\steamapps\common\Portal 2"
+				"MapDir"		"D:\SteamLibrary\steamapps\common\Portal 2\sdk_content\maps"
+				"BSPDir"		"D:\SteamLibrary\steamapps\common\Portal 2\portal2\maps"
+				"PrefabDir"		"D:\SteamLibrary\steamapps\common\Portal 2\bin\Prefabs"
+				"CordonTexture"		"tools\toolsskybox"
+				"MaterialExcludeCount"		"0"
+			}
+		}
+	}
+	"SDKVersion"		"4"
+}
