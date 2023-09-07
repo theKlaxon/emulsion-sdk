@@ -1,5 +1,6 @@
 # Prerequisites
 *.d
+*.sln
 
 # Compiled Object files
 *.slo
@@ -30,3 +31,17 @@
 *.exe
 *.out
 *.app
+
+# Debug + VS Folders
+src/game/client/Release*
+src/game/client/Debug*
+src/game/server/Debug*
+src/game/server/Release*
+
+*.vpc.sentinel
+*.VC
+*.VC.VC.opendb
+*.VC.db
+*.pdb
+*.mdmp
+src/.vs
