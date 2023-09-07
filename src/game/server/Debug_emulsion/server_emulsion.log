@@ -1,0 +1,720 @@
+﻿  Running VPC CRC Check - server_emulsion.vpc
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+  stdafx.cpp
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(57): warning C4005: 'INT8_MIN' : macro redefinition
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(58): warning C4005: 'INT16_MIN' : macro redefinition
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(293) : see previous definition of 'INT16_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(59): warning C4005: 'INT32_MIN' : macro redefinition
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(294) : see previous definition of 'INT32_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(60): warning C4005: 'INT64_MIN' : macro redefinition
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(295) : see previous definition of 'INT64_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(61): warning C4005: 'INT8_MAX' : macro redefinition
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(287) : see previous definition of 'INT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(62): warning C4005: 'INT16_MAX' : macro redefinition
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(288) : see previous definition of 'INT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(63): warning C4005: 'INT32_MAX' : macro redefinition
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(289) : see previous definition of 'INT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(64): warning C4005: 'INT64_MAX' : macro redefinition
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(290) : see previous definition of 'INT64_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(65): warning C4005: 'UINT8_MAX' : macro redefinition
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(297) : see previous definition of 'UINT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(66): warning C4005: 'UINT16_MAX' : macro redefinition
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(298) : see previous definition of 'UINT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(67): warning C4005: 'UINT32_MAX' : macro redefinition
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(299) : see previous definition of 'UINT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(68): warning C4005: 'UINT64_MAX' : macro redefinition
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+  dbg_patch.cpp
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+  KeyValues.cpp
+  materialsystemutil.cpp
+  uniqueid.cpp
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+  utlstring.cpp
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+  closedcaptions.cpp
+  collisionutils.cpp
+  compiledcaptionswap.cpp
+  debug_dll_check.cpp
+  dt_send.cpp
+  dt_utlvector_common.cpp
+  dt_utlvector_send.cpp
+  editor_sendcommand.cpp
+  filesystem_helpers.cpp
+  gamehandle.cpp
+  GameStats_BasicStatsFunctions.cpp
+  h_export.cpp
+  init_factory.cpp
+  interpolatortypes.cpp
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(57): warning C4005: 'INT8_MIN' : macro redefinition (..\..\tier1\KeyValues.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(58): warning C4005: 'INT16_MIN' : macro redefinition (..\..\tier1\KeyValues.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(293) : see previous definition of 'INT16_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(59): warning C4005: 'INT32_MIN' : macro redefinition (..\..\tier1\KeyValues.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(294) : see previous definition of 'INT32_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(60): warning C4005: 'INT64_MIN' : macro redefinition (..\..\tier1\KeyValues.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(295) : see previous definition of 'INT64_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(61): warning C4005: 'INT8_MAX' : macro redefinition (..\..\tier1\KeyValues.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(287) : see previous definition of 'INT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(62): warning C4005: 'INT16_MAX' : macro redefinition (..\..\tier1\KeyValues.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(288) : see previous definition of 'INT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(63): warning C4005: 'INT32_MAX' : macro redefinition (..\..\tier1\KeyValues.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(289) : see previous definition of 'INT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(64): warning C4005: 'INT64_MAX' : macro redefinition (..\..\tier1\KeyValues.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(290) : see previous definition of 'INT64_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(65): warning C4005: 'UINT8_MAX' : macro redefinition (..\..\tier1\KeyValues.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(297) : see previous definition of 'UINT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(66): warning C4005: 'UINT16_MAX' : macro redefinition (..\..\tier1\KeyValues.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(298) : see previous definition of 'UINT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(67): warning C4005: 'UINT32_MAX' : macro redefinition (..\..\tier1\KeyValues.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(299) : see previous definition of 'UINT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(68): warning C4005: 'UINT64_MAX' : macro redefinition (..\..\tier1\KeyValues.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(57): warning C4005: 'INT8_MIN' : macro redefinition (..\..\tier1\utlstring.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(58): warning C4005: 'INT16_MIN' : macro redefinition (..\..\tier1\utlstring.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(293) : see previous definition of 'INT16_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(59): warning C4005: 'INT32_MIN' : macro redefinition (..\..\tier1\utlstring.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(294) : see previous definition of 'INT32_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(60): warning C4005: 'INT64_MIN' : macro redefinition (..\..\tier1\utlstring.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(295) : see previous definition of 'INT64_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(61): warning C4005: 'INT8_MAX' : macro redefinition (..\..\tier1\utlstring.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(287) : see previous definition of 'INT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(62): warning C4005: 'INT16_MAX' : macro redefinition (..\..\tier1\utlstring.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(288) : see previous definition of 'INT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(63): warning C4005: 'INT32_MAX' : macro redefinition (..\..\tier1\utlstring.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(289) : see previous definition of 'INT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(64): warning C4005: 'INT64_MAX' : macro redefinition (..\..\tier1\utlstring.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(290) : see previous definition of 'INT64_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(65): warning C4005: 'UINT8_MAX' : macro redefinition (..\..\tier1\utlstring.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(297) : see previous definition of 'UINT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(66): warning C4005: 'UINT16_MAX' : macro redefinition (..\..\tier1\utlstring.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(298) : see previous definition of 'UINT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(67): warning C4005: 'UINT32_MAX' : macro redefinition (..\..\tier1\utlstring.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(299) : see previous definition of 'UINT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(68): warning C4005: 'UINT64_MAX' : macro redefinition (..\..\tier1\utlstring.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(57): warning C4005: 'INT8_MIN' : macro redefinition (..\..\tier1\uniqueid.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(58): warning C4005: 'INT16_MIN' : macro redefinition (..\..\tier1\uniqueid.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(293) : see previous definition of 'INT16_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(59): warning C4005: 'INT32_MIN' : macro redefinition (..\..\tier1\uniqueid.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(294) : see previous definition of 'INT32_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(60): warning C4005: 'INT64_MIN' : macro redefinition (..\..\tier1\uniqueid.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(295) : see previous definition of 'INT64_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(61): warning C4005: 'INT8_MAX' : macro redefinition (..\..\tier1\uniqueid.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(287) : see previous definition of 'INT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(62): warning C4005: 'INT16_MAX' : macro redefinition (..\..\tier1\uniqueid.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(288) : see previous definition of 'INT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(63): warning C4005: 'INT32_MAX' : macro redefinition (..\..\tier1\uniqueid.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(289) : see previous definition of 'INT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(64): warning C4005: 'INT64_MAX' : macro redefinition (..\..\tier1\uniqueid.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(290) : see previous definition of 'INT64_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(65): warning C4005: 'UINT8_MAX' : macro redefinition (..\..\tier1\uniqueid.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(297) : see previous definition of 'UINT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(66): warning C4005: 'UINT16_MAX' : macro redefinition (..\..\tier1\uniqueid.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(298) : see previous definition of 'UINT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(67): warning C4005: 'UINT32_MAX' : macro redefinition (..\..\tier1\uniqueid.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(299) : see previous definition of 'UINT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(68): warning C4005: 'UINT64_MAX' : macro redefinition (..\..\tier1\uniqueid.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(57): warning C4005: 'INT8_MIN' : macro redefinition (..\..\public\materialsystem\materialsystemutil.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(58): warning C4005: 'INT16_MIN' : macro redefinition (..\..\public\materialsystem\materialsystemutil.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(293) : see previous definition of 'INT16_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(59): warning C4005: 'INT32_MIN' : macro redefinition (..\..\public\materialsystem\materialsystemutil.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(294) : see previous definition of 'INT32_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(60): warning C4005: 'INT64_MIN' : macro redefinition (..\..\public\materialsystem\materialsystemutil.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(295) : see previous definition of 'INT64_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(61): warning C4005: 'INT8_MAX' : macro redefinition (..\..\public\materialsystem\materialsystemutil.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(287) : see previous definition of 'INT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(62): warning C4005: 'INT16_MAX' : macro redefinition (..\..\public\materialsystem\materialsystemutil.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(288) : see previous definition of 'INT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(63): warning C4005: 'INT32_MAX' : macro redefinition (..\..\public\materialsystem\materialsystemutil.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(289) : see previous definition of 'INT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(64): warning C4005: 'INT64_MAX' : macro redefinition (..\..\public\materialsystem\materialsystemutil.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(290) : see previous definition of 'INT64_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(65): warning C4005: 'UINT8_MAX' : macro redefinition (..\..\public\materialsystem\materialsystemutil.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(297) : see previous definition of 'UINT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(66): warning C4005: 'UINT16_MAX' : macro redefinition (..\..\public\materialsystem\materialsystemutil.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(298) : see previous definition of 'UINT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(67): warning C4005: 'UINT32_MAX' : macro redefinition (..\..\public\materialsystem\materialsystemutil.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(299) : see previous definition of 'UINT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(68): warning C4005: 'UINT64_MAX' : macro redefinition (..\..\public\materialsystem\materialsystemutil.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(57): warning C4005: 'INT8_MIN' : macro redefinition (..\..\tier0\dbg_patch.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(58): warning C4005: 'INT16_MIN' : macro redefinition (..\..\tier0\dbg_patch.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(293) : see previous definition of 'INT16_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(59): warning C4005: 'INT32_MIN' : macro redefinition (..\..\tier0\dbg_patch.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(294) : see previous definition of 'INT32_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(60): warning C4005: 'INT64_MIN' : macro redefinition (..\..\tier0\dbg_patch.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(295) : see previous definition of 'INT64_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(61): warning C4005: 'INT8_MAX' : macro redefinition (..\..\tier0\dbg_patch.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(287) : see previous definition of 'INT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(62): warning C4005: 'INT16_MAX' : macro redefinition (..\..\tier0\dbg_patch.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(288) : see previous definition of 'INT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(63): warning C4005: 'INT32_MAX' : macro redefinition (..\..\tier0\dbg_patch.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(289) : see previous definition of 'INT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(64): warning C4005: 'INT64_MAX' : macro redefinition (..\..\tier0\dbg_patch.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(290) : see previous definition of 'INT64_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(65): warning C4005: 'UINT8_MAX' : macro redefinition (..\..\tier0\dbg_patch.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(297) : see previous definition of 'UINT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(66): warning C4005: 'UINT16_MAX' : macro redefinition (..\..\tier0\dbg_patch.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(298) : see previous definition of 'UINT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(67): warning C4005: 'UINT32_MAX' : macro redefinition (..\..\tier0\dbg_patch.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(299) : see previous definition of 'UINT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(68): warning C4005: 'UINT64_MAX' : macro redefinition (..\..\tier0\dbg_patch.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
+  keyframe.cpp
+  language.cpp
+  map_utils.cpp
+  memoverride.cpp
+  networkvar.cpp
+  randoverride.cpp
+  registry.cpp
+  rope_physics.cpp
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(57): warning C4005: 'INT8_MIN' : macro redefinition (GameStats_BasicStatsFunctions.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(58): warning C4005: 'INT16_MIN' : macro redefinition (GameStats_BasicStatsFunctions.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(293) : see previous definition of 'INT16_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(59): warning C4005: 'INT32_MIN' : macro redefinition (GameStats_BasicStatsFunctions.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(294) : see previous definition of 'INT32_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(60): warning C4005: 'INT64_MIN' : macro redefinition (GameStats_BasicStatsFunctions.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(295) : see previous definition of 'INT64_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(61): warning C4005: 'INT8_MAX' : macro redefinition (GameStats_BasicStatsFunctions.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(287) : see previous definition of 'INT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(62): warning C4005: 'INT16_MAX' : macro redefinition (GameStats_BasicStatsFunctions.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(288) : see previous definition of 'INT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(63): warning C4005: 'INT32_MAX' : macro redefinition (GameStats_BasicStatsFunctions.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(289) : see previous definition of 'INT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(64): warning C4005: 'INT64_MAX' : macro redefinition (GameStats_BasicStatsFunctions.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(290) : see previous definition of 'INT64_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(65): warning C4005: 'UINT8_MAX' : macro redefinition (GameStats_BasicStatsFunctions.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(297) : see previous definition of 'UINT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(66): warning C4005: 'UINT16_MAX' : macro redefinition (GameStats_BasicStatsFunctions.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(298) : see previous definition of 'UINT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(67): warning C4005: 'UINT32_MAX' : macro redefinition (GameStats_BasicStatsFunctions.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(299) : see previous definition of 'UINT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(68): warning C4005: 'UINT64_MAX' : macro redefinition (GameStats_BasicStatsFunctions.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
+  scratchpad3d.cpp
+  ScratchPadUtils.cpp
+  server_class.cpp
+  sheetsimulator.cpp
+  simple_physics.cpp
+  stringregistry.cpp
+  studio.cpp
+  vgui_controls.cpp
+d:\theklaxon\emulsion-sdk\src\public\materialsystem\materialsystemutil.h(51): warning C4114: same type qualifier used more than once (..\..\public\materialsystem\materialsystemutil.cpp)
+d:\theklaxon\emulsion-sdk\src\tier0\dbg_patch.cpp(6): warning C4273: '_AssertValidStringPtr' : inconsistent dll linkage
+          d:\theklaxon\emulsion-sdk\src\public\tier0\dbg.h(364) : see previous definition of '_AssertValidStringPtr'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(57): warning C4005: 'INT8_MIN' : macro redefinition (..\..\public\vgui_controls\vgui_controls.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(58): warning C4005: 'INT16_MIN' : macro redefinition (..\..\public\vgui_controls\vgui_controls.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(293) : see previous definition of 'INT16_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(59): warning C4005: 'INT32_MIN' : macro redefinition (..\..\public\vgui_controls\vgui_controls.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(294) : see previous definition of 'INT32_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(60): warning C4005: 'INT64_MIN' : macro redefinition (..\..\public\vgui_controls\vgui_controls.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(295) : see previous definition of 'INT64_MIN'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(61): warning C4005: 'INT8_MAX' : macro redefinition (..\..\public\vgui_controls\vgui_controls.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(287) : see previous definition of 'INT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(62): warning C4005: 'INT16_MAX' : macro redefinition (..\..\public\vgui_controls\vgui_controls.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(288) : see previous definition of 'INT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(63): warning C4005: 'INT32_MAX' : macro redefinition (..\..\public\vgui_controls\vgui_controls.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(289) : see previous definition of 'INT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(64): warning C4005: 'INT64_MAX' : macro redefinition (..\..\public\vgui_controls\vgui_controls.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(290) : see previous definition of 'INT64_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(65): warning C4005: 'UINT8_MAX' : macro redefinition (..\..\public\vgui_controls\vgui_controls.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(297) : see previous definition of 'UINT8_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(66): warning C4005: 'UINT16_MAX' : macro redefinition (..\..\public\vgui_controls\vgui_controls.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(298) : see previous definition of 'UINT16_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(67): warning C4005: 'UINT32_MAX' : macro redefinition (..\..\public\vgui_controls\vgui_controls.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(299) : see previous definition of 'UINT32_MAX'
+c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdint.h(68): warning C4005: 'UINT64_MAX' : macro redefinition (..\..\public\vgui_controls\vgui_controls.cpp)
+          d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+  achievement_saverestore.cpp
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+  achievementmgr.cpp
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+cl : Command line warning D9025: overriding '/WX' with '/WX-'
+  activitylist.cpp
+  ai_activity.cpp
+  ai_addon.cpp
+  ai_agent.cpp
+  ai_baseactor.cpp
+  ai_basehumanoid.cpp
+  ai_basenpc.cpp
+  ai_basenpc_flyer.cpp
+  ai_basenpc_flyer_new.cpp
+  ai_basenpc_movement.cpp
+d:\theklaxon\emulsion-sdk\src\game\shared\achievementmgr.cpp(85): warning C4355: 'this' : used in base member initializer list
+d:\theklaxon\emulsion-sdk\src\game\shared\achievementmgr.cpp(86): warning C4355: 'this' : used in base member initializer list
+  ai_basenpc_physicsflyer.cpp
+  ai_basenpc_schedule.cpp
+  ai_basenpc_squad.cpp
+  ai_behavior.cpp
+  ai_behavior_assault.cpp
+  ai_behavior_fear.cpp
+  ai_behavior_fightfromcover.cpp
+  ai_behavior_follow.cpp
+  ai_behavior_lead.cpp
+  ai_behavior_rappel.cpp
+  ai_behavior_standoff.cpp
+  ai_blended_movement.cpp
+  ai_concommands.cpp
+  ai_condition.cpp
+  ai_criteria.cpp
+  ai_default.cpp
+  ai_dynamiclink.cpp
+  ai_event.cpp
+  ai_expresserfollowup.cpp
+  ai_goalentity.cpp
+  ai_hint.cpp
+  ai_hull.cpp
+  ai_initutils.cpp
+  AI_Interest_Target.cpp
+  ai_link.cpp
+  ai_localnavigator.cpp
+  ai_looktarget.cpp
+  ai_memory.cpp
+  ai_motor.cpp
+  ai_moveprobe.cpp
+  ai_moveshoot.cpp
+  ai_movesolver.cpp
+  ai_namespaces.cpp
+  ai_navigator.cpp
+  ai_network.cpp
+  ai_networkmanager.cpp
+  ai_node.cpp
+  ai_pathfinder.cpp
+  ai_planesolver.cpp
+  ai_playerally.cpp
+  ai_responsesystem.cpp
+  ai_route.cpp
+  ai_saverestore.cpp
+  ai_schedule.cpp
+CL : warning : find some way to prevent AI from using network before it's ready, but allowing the TestHull to still instantiate.
+  ai_scriptconditions.cpp
+  ai_senses.cpp
+  ai_sentence.cpp
+  ai_speech.cpp
+  ai_speechconcept.cpp
+  ai_speechfilter.cpp
+  ai_speechqueue.cpp
+  ai_squad.cpp
+  ai_squadslot.cpp
+  ai_tacticalservices.cpp
+  ai_task.cpp
+  ai_trackpather.cpp
+  ai_utils.cpp
+  ai_waypoint.cpp
+  ambientgeneric.cpp
+  ammodef.cpp
+  animation.cpp
+  base_gameinterface.cpp
+  base_playeranimstate.cpp
+  base_transmit_proxy.cpp
+  baseachievement.cpp
+  baseanimating.cpp
+  BaseAnimatingOverlay.cpp
+  basecombatcharacter.cpp
+  basecombatcharacter_shared.cpp
+  basecombatweapon.cpp
+  basecombatweapon_shared.cpp
+  baseentity.cpp
+  baseentity_shared.cpp
+  baseflex.cpp
+  basegrenade_shared.cpp
+  basemultiplayerplayer.cpp
+  baseparticleentity.cpp
+  baseplayer_shared.cpp
+  baseviewmodel.cpp
+  baseviewmodel_shared.cpp
+  beam_shared.cpp
+  beamspotlight.cpp
+  bitstring.cpp
+  bmodels.cpp
+  bonelist.cpp
+  buttons.cpp
+  cbase.cpp
+  cbaseprojectile.cpp
+  client.cpp
+  coerciblevariant_t.cpp
+  collisionproperty.cpp
+  colorcorrection.cpp
+  colorcorrectionvolume.cpp
+  CommentarySystem.cpp
+  controlentities.cpp
+  cplane.cpp
+  CRagdollMagnet.cpp
+  cvisibilitymonitor.cpp
+  damagemodifier.cpp
+  death_pose.cpp
+  debugoverlay_shared.cpp
+  decals.cpp
+  doors.cpp
+  dynamiclight.cpp
+  effect_dispatch_data.cpp
+  effects.cpp
+  EffectsServer.cpp
+  ehandle.cpp
+  entityblocker.cpp
+  EntityDissolve.cpp
+  EntityFlame.cpp
+  EntityFreezing.cpp
+  entitylist.cpp
+  entitylist_base.cpp
+  EntityParticleTrail.cpp
+  EntityParticleTrail_Shared.cpp
+  env_ambient_light.cpp
+  env_debughistory.cpp
+  env_detail_controller.cpp
+  env_dof_controller.cpp
+  env_effectsscript.cpp
+  env_entity_maker.cpp
+  env_global_light.cpp
+  env_instructor_hint.cpp
+  env_particlescript.cpp
+  env_player_surface_trigger.cpp
+  env_projectedtexture.cpp
+  env_screenoverlay.cpp
+  env_texturetoggle.cpp
+  env_tonemap_controller.cpp
+  env_wind_shared.cpp
+  env_zoom.cpp
+  EnvBeam.cpp
+  EnvFade.cpp
+  EnvHudHint.cpp
+  EnvLaser.cpp
+  EnvMessage.cpp
+  envmicrophone.cpp
+  EnvShake.cpp
+  EnvSpark.cpp
+  eventlist.cpp
+  EventLog.cpp
+  explode.cpp
+  filters.cpp
+  fire.cpp
+  fire_smoke.cpp
+  fish.cpp
+  flex_expresser.cpp
+  fogcontroller.cpp
+  fogvolume.cpp
+  foundryhelpers_server.cpp
+  fourwheelvehiclephysics.cpp
+  func_areaportal.cpp
+  func_areaportalbase.cpp
+  func_areaportalwindow.cpp
+  func_break.cpp
+  func_breakablesurf.cpp
+  func_dust.cpp
+  func_instance_io_proxy.cpp
+  func_ladder.cpp
+  func_ladder_endpoint.cpp
+  func_lod.cpp
+  func_movelinear.cpp
+  func_occluder.cpp
+  func_reflective_glass.cpp
+  func_smokevolume.cpp
+  game.cpp
+  game_timescale_shared.cpp
+  game_ui.cpp
+  gameinterface.cpp
+  gamemovement.cpp
+  gamerules.cpp
+  gamerules_register.cpp
+  GameStats.cpp
+  gamestringpool.cpp
+  gametrace_dll.cpp
+  gamevars_shared.cpp
+  gameweaponmanager.cpp
+  genericactor.cpp
+  genericmonster.cpp
+  gib.cpp
+  global_event_log.cpp
+  globals.cpp
+  globalstate.cpp
+  guntarget.cpp
+  h_ai.cpp
+  hierarchy.cpp
+  hintmessage.cpp
+  hintsystem.cpp
+  hltvdirector.cpp
+  igamesystem.cpp
+  info_camera_link.cpp
+  info_overlay_accessor.cpp
+  inforemarkable.cpp
+  intermission.cpp
+  item_world.cpp
+  lightglow.cpp
+  lights.cpp
+  logic_measure_movement.cpp
+  logic_navigation.cpp
+  logic_playerproxy.cpp
+  logic_playmovie.cpp
+  logic_random_outputs.cpp
+d:\theklaxon\emulsion-sdk\src\public\materialsystem\materialsystemutil.h(51): warning C4114: same type qualifier used more than once (gameinterface.cpp)
+  logicauto.cpp
+  logicentities.cpp
+  logicrelay.cpp
+  mapentities.cpp
+  mapentities_shared.cpp
+  maprules.cpp
+  MaterialModifyControl.cpp
+  message_entity.cpp
+  modelentities.cpp
+  ModelSoundsCache.cpp
+  movehelper_server.cpp
+  movement.cpp
+  movevars_shared.cpp
+  movie_display.cpp
+  mp_shareddefs.cpp
+  multiplay_gamerules.cpp
+  ndebugoverlay.cpp
+  npc_vehicledriver.cpp
+  obstacle_pushaway.cpp
+  particle_light.cpp
+  particle_parse.cpp
+  particle_system.cpp
+  particlesystemquery.cpp
+  pathcorner.cpp
+  pathtrack.cpp
+  phys_controller.cpp
+d:\theklaxon\emulsion-sdk\src\public\materialsystem\materialsystemutil.h(51): warning C4114: same type qualifier used more than once (particle_system.cpp)
+  physconstraint.cpp
+  physics.cpp
+d:\theklaxon\emulsion-sdk\src\public\materialsystem\materialsystemutil.h(51): warning C4114: same type qualifier used more than once (..\..\game\shared\particlesystemquery.cpp)
+d:\theklaxon\emulsion-sdk\src\public\materialsystem\materialsystemutil.h(51): warning C4114: same type qualifier used more than once (..\..\game\shared\particle_parse.cpp)
+  physics_bone_follower.cpp
+  physics_cannister.cpp
+  physics_fx.cpp
+  physics_impact_damage.cpp
+  physics_main.cpp
+  physics_main_shared.cpp
+  physics_npc_solver.cpp
+  physics_prop_ragdoll.cpp
+  physics_prop_statue.cpp
+  physics_saverestore.cpp
+  physics_shared.cpp
+  physobj.cpp
+  player.cpp
+  player_command.cpp
+  player_lagcompensation.cpp
+  player_pickup.cpp
+  player_resource.cpp
+  player_voice_listener.cpp
+  playerinfomanager.cpp
+  playerlocaldata.cpp
+  plugin_check.cpp
+  point_bonusmaps_accessor.cpp
+  point_camera.cpp
+  point_devshot_camera.cpp
+  point_entity_finder.cpp
+  point_event_proxy.cpp
+  point_playermoveconstraint.cpp
+  point_posecontroller.cpp
+  point_spotlight.cpp
+  point_template.cpp
+  pointanglesensor.cpp
+  PointAngularVelocitySensor.cpp
+  pointhurt.cpp
+  pointteleport.cpp
+  postprocesscontroller.cpp
+  precache_register.cpp
+  predictableid.cpp
+  prop_hallucination.cpp
+  props.cpp
+  props_shared.cpp
+  querycache.cpp
+  ragdoll_manager.cpp
+  ragdoll_shared.cpp
+  RagdollBoogie.cpp
+  recipientfilter.cpp
+  replaydirector.cpp
+  rope.cpp
+  rope_helpers.cpp
+  saverestore.cpp
+  SceneCache.cpp
+  sceneentity.cpp
+  sceneentity_shared.cpp
+  scratchpad_gamedll_helpers.cpp
+  scripted.cpp
+  scriptedtarget.cpp
+  sendproxy.cpp
+  sequence_Transitioner.cpp
+  serverbenchmark_base.cpp
+  ServerNetworkProperty.cpp
+  shadowcontrol.cpp
+  simtimer.cpp
+  singleplay_gamerules.cpp
+  skyboxswapper.cpp
+  SkyCamera.cpp
+  slideshow_display.cpp
+  sound.cpp
+  SoundEmitterSystem.cpp
+  soundent.cpp
+  soundenvelope.cpp
+  SoundParametersInternal.cpp
+  soundscape.cpp
+  soundscape_system.cpp
+  spatialentity.cpp
+  spotlightend.cpp
+  Sprite.cpp
+  sprite_perfmonitor.cpp
+  steamworks_gamestats.cpp
+  studio_shared.cpp
+  subs.cpp
+  sun.cpp
+  sunlightshadowcontrol.cpp
+  takedamageinfo.cpp
+  tanktrain.cpp
+  team.cpp
+  teamplay_gamerules.cpp
+  TemplateEntities.cpp
+  tempmonster.cpp
+  tesla.cpp
+  test_ehandle.cpp
+  test_proxytoggle.cpp
+  test_stressentities.cpp
+  testfunctions.cpp
+  testtraceline.cpp
+  textstatsmgr.cpp
+  timedeventmgr.cpp
+  trains.cpp
+  triggers.cpp
+  usercmd.cpp
+  util.cpp
+  util_shared.cpp
+  variant_t.cpp
+  vehicle_base.cpp
+  vehicle_baseserver.cpp
+  vehicle_viewblend_shared.cpp
+  vgui_gamedll_int.cpp
+  vguiscreen.cpp
+  voice_gamemgr.cpp
+  vscript_server.cpp
+  vscript_shared.cpp
+  waterbullet.cpp
+  WaterLODControl.cpp
+  wcedit.cpp
+  weapon_parse.cpp
+  weapon_proficiency.cpp
+  weight_button.cpp
+  world.cpp
+  emulsion_client.cpp
+  emulsion_eventlog.cpp
+  emulsion_pickupcontroller.cpp
+  emulsion_player.cpp
+  emulsion_playermove.cpp
+  prop_button.cpp
+  prop_devcube.cpp
+  prop_floorbutton.cpp
+  weapon_paintgun.cpp
+d:\theklaxon\emulsion-sdk\src\game\server\emulsion\emulsion_player.cpp(283): warning C4189: 'm_flEyeRotation' : local variable is initialized but not referenced
+  emulsion_gamemovement.cpp
+d:\theklaxon\emulsion-sdk\src\game\server\emulsion\prop_floorbutton.cpp(48): warning C4130: '==' : logical operation on address of string constant
+d:\theklaxon\emulsion-sdk\src\game\server\emulsion\prop_floorbutton.cpp(56): warning C4130: '==' : logical operation on address of string constant
+d:\theklaxon\emulsion-sdk\src\game\server\emulsion\prop_floorbutton.cpp(151): warning C4130: '==' : logical operation on address of string constant
+  emulsion_gamerules.cpp
+d:\theklaxon\emulsion-sdk\src\game\shared\emulsion\emulsion_gamemovement.cpp(242): warning C4102: 'B' : unreferenced label
+d:\theklaxon\emulsion-sdk\src\game\shared\emulsion\emulsion_gamemovement.cpp(2002): warning C4189: 'm_pPowers2' : local variable is initialized but not referenced
+d:\theklaxon\emulsion-sdk\src\game\shared\emulsion\emulsion_gamemovement.cpp(2016): warning C4189: 'reach2' : local variable is initialized but not referenced
+  emulsion_parsers.cpp
+  emulsion_usermessages.cpp
+  nav_area.cpp
+  nav_colors.cpp
+  nav_edit.cpp
+  nav_entities.cpp
+  nav_file.cpp
+  nav_generate.cpp
+  nav_ladder.cpp
+  nav_merge.cpp
+  nav_mesh.cpp
+d:\theklaxon\emulsion-sdk\src\game\shared\emulsion\emulsion_gamemovement.cpp(1918): warning C4701: potentially uninitialized local variable 'exitSound' used
+d:\theklaxon\emulsion-sdk\src\game\shared\emulsion\emulsion_gamemovement.cpp(1918): warning C4703: potentially uninitialized local pointer variable 'exitSound' used
+  nav_mesh_factory.cpp
+  nav_node.cpp
+  nav_simplify.cpp
+  basetempentity.cpp
+  event_tempentity_tester.cpp
+  movie_explosion.cpp
+  particle_fire.cpp
+  particle_smokegrenade.cpp
+  plasma.cpp
+  smoke_trail.cpp
+  smokestack.cpp
+  SpriteTrail.cpp
+  steamjet.cpp
+  te.cpp
+  te_armorricochet.cpp
+  te_basebeam.cpp
+  te_beamentpoint.cpp
+  te_beaments.cpp
+  te_beamfollow.cpp
+  te_beamlaser.cpp
+  te_beampoints.cpp
+  te_beamring.cpp
+  te_beamringpoint.cpp
+  te_beamspline.cpp
+  te_bloodsprite.cpp
+  te_bloodstream.cpp
+  te_breakmodel.cpp
+  te_bspdecal.cpp
+  te_bubbles.cpp
+  te_bubbletrail.cpp
+  te_clientprojectile.cpp
+  te_decal.cpp
+  te_dynamiclight.cpp
+  te_effect_dispatch.cpp
+  te_energysplash.cpp
+  te_explosion.cpp
+  te_fizz.cpp
+  te_footprintdecal.cpp
+  te_gaussexplosion.cpp
+  te_glassshatter.cpp
+  te_glowsprite.cpp
+  te_impact.cpp
+  te_killplayerattachments.cpp
+  te_largefunnel.cpp
+  te_muzzleflash.cpp
+  te_particlesystem.cpp
+  te_physicsprop.cpp
+  te_playerdecal.cpp
+  te_projecteddecal.cpp
+  te_showline.cpp
+  te_smoke.cpp
+  te_sparks.cpp
+  te_sprite.cpp
+  te_spritespray.cpp
+  te_worlddecal.cpp
+  usermessages.cpp
+  entity_tools_server.cpp
+  toolframework_server.cpp
+d:\theklaxon\emulsion-sdk\src\public\materialsystem\materialsystemutil.h(51): warning C4114: same type qualifier used more than once (entity_tools_server.cpp)
+     Creating library .\Debug_emulsion\server.lib and object .\Debug_emulsion\server.exp
+tier1.lib(strtools.obj) : warning LNK4217: locally defined symbol __AssertValidStringPtr imported in function "int __cdecl _V_strlen(char const *)" (?_V_strlen@@YAHPBD@Z)
+  server_emulsion.vcxproj -> D:\theKlaxon\emulsion-sdk\src\game\server\.\Debug_emulsion\server.dll
+          1 file(s) copied.
+          1 file(s) copied.

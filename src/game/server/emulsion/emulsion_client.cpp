@@ -1,7 +1,7 @@
 #include "cbase.h"
 #include "tier0/vprof.h"
 
-#define DEFAULT_PLAYER_MODEL "models/player.mdl"
+#define DEFAULT_PLAYER_MODEL "models/player/chell/player.mdl"
 
 extern bool	g_fGameOver;
 
