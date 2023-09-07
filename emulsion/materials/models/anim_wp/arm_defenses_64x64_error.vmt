@@ -1,0 +1,8 @@
+VertexlitGeneric
+{
+$basetexture "models\anim_wp\arm_defenses_64x64_error"
+$phong 1
+$phongboost 2
+$phongexponent 10
+$phongfresnelranges "[.1 .5 1]"
+}

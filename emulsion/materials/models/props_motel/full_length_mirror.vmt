@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+$baseTexture "models/props_motel/full_length_mirror_main"
+$surfaceprop metal
+$envmap env_cubemap
+$envmaptint "[ .5 .5 .5 ]"
+}

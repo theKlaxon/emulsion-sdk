@@ -1,0 +1,10 @@
+VertexLitGeneric
+{
+$basetexture "models/props/glados_pillar/glados_pillar_broken"
+$surfaceprop metal
+
+$phong 1
+$phongboost 1
+$phongexponent 10
+$phongfresnelranges "[.1 .5 1]"
+}

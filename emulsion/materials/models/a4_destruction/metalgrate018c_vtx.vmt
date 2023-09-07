@@ -1,0 +1,10 @@
+vertexlitgeneric
+{
+$basetexture "Metal/metalgrate018c"
+"%compilepassbullets" 1
+$surfaceprop metalgrate
+"%keywords" portal
+$AlphaTest 1
+$AlphaTestReference "0.3"
+$AllowAlphaToCoverage 1
+}

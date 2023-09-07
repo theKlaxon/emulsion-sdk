@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/lobby_curtains"
+$surfaceprop cloth
+$nocull 1
+}

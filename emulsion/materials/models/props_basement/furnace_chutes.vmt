@@ -1,0 +1,16 @@
+VertexlitGeneric
+{
+$basetexture "models\props_basement\furnace_chutes"
+$surfaceprop metal
+$envmap env_cubemap
+$phong 1
+$phongexponent 500
+$phongboost 1
+$phongfresnelranges "[.3 .6 4]"
+
+
+
+$envmaptint "[ .6 .6 .6 ]"
+
+$basealphaenvmapmask 1
+}

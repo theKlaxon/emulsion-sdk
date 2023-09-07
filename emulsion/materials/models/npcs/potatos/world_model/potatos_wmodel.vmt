@@ -1,0 +1,13 @@
+VertexLitGeneric
+{
+$basetexture "models/npcs/potatOS/world_model/potatOS_wmodel"
+$surfaceprop default
+$selfillum 1
+Proxies
+{
+LightedMouth
+{
+resultVar $selfillumtint
+}
+}
+}

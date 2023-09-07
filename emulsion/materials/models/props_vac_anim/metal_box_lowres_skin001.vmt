@@ -1,0 +1,15 @@
+VertexlitGeneric
+{
+$basetexture "models\props_vac_anim\metal_box_lowres_skin001"
+
+
+
+
+
+
+
+
+
+
+$selfillum 1
+}

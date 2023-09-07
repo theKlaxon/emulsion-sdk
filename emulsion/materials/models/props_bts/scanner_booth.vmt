@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/scanner_booth"
+$surfaceprop default
+
+}

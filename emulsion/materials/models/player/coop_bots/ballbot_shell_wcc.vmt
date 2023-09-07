@@ -1,0 +1,20 @@
+VertexLitGeneric
+{
+$basetexture "models/player/coop_bots/ballbot_shell_WCC"
+$bumpmap "models/player/coop_bots/ballbot_shell_normal"
+$surfaceprop metal
+$phong 1
+$phongboost 5
+$phongexponent 60
+$phongfresnelranges "[.6 1 2]"
+
+$envmap env_cubemap
+$envmapfresnel 1
+$envmapFresnelMinMaxExp "[.0 5 .4]"
+
+$envmapcontrast ".5"
+
+$rimlightexponent 2
+$rimlightboost 2
+$nodecal 1
+}

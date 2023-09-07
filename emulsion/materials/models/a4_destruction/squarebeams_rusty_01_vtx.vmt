@@ -1,0 +1,7 @@
+vertexlitgeneric
+{
+$basetexture "models\anim_wp\framework\squarebeams_skin2"
+$surfaceprop metal
+"%noportal" 1
+"%keywords" "portal2 bts destruction"
+}

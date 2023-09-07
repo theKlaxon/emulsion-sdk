@@ -1,0 +1,13 @@
+VertexLitGeneric
+{
+$baseTexture "models/props_bts/clear_tubes"
+$bumpmap "models/props_bts/clear_tubes"
+$phong 1
+$phongexponenttexture "models/props_bts/clear_tubes_exponent"
+$phongboost 1
+$lightwarptexture "models/props_bts/clear_tubes_lightwarp"
+$phongfresnelranges "[0.5 1 2.5]"
+
+
+
+}

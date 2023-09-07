@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props/camera_skin02"
+$surfaceprop metal
+}

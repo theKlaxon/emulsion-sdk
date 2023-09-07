@@ -1,0 +1,9 @@
+VertexLitGeneric
+{
+$basetexture "models\props_foliage\leaves_dead"
+$translucent 1
+$nocull 1
+
+"%keywords" portal2
+$LowQualityFlashlightShadows 1
+}

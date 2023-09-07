@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+     "$basetexture" "models\props_interiors\refrigeratordoor02a"
+     "$surfaceprop" "metal"
+	"$envmap" "env_cubemap"
+	"$basealphaenvmapmask" 1
+	"$envmaptint" .2 .2 .2
+}

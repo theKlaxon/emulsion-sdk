@@ -1,0 +1,26 @@
+"Unlittwotexture"
+//"VertexLitGeneric"
+{
+	"$baseTexture" "Models/props_lab/security_screens"
+	"$texture2" "Models/props_lab/security_noise"
+	"$selfillum" 1
+	"$model" 1
+	"Proxies"
+	{
+		"TextureScroll"
+		{
+			"texturescrollvar" "$basetexturetransform"
+			"texturescrollrate" .01
+			"texturescrollangle" 0
+		}
+		"TextureScroll"
+		{
+			"texturescrollvar" "$texture2transform"
+			"texturescrollrate" 10
+			"texturescrollangle" 70
+		}
+	}
+
+
+}
+

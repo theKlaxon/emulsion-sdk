@@ -1,0 +1,14 @@
+
+VertexLitGeneric
+{
+$baseTexture "models/props_bts/cables_hanging"
+$surfaceprop default
+$model 1
+$blendtintbybasealpha 1
+$bumpmap "dev/flat_normal"
+
+$phongboost 1
+$phongexponent 10
+
+$phongfresnelranges "[1 3 10]"
+}

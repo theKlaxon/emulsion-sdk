@@ -1,0 +1,25 @@
+"Unlittwotexture"
+//"VertexLitGeneric"
+{
+	"$baseTexture" "Models/props_lab/security_screen"
+	"$texture2" "Models/props_lab/security_noise"
+	"$model" 1
+	"Proxies"
+	{
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$basetexture" 
+			"animatedtextureframenumvar" "$frame"
+			"animatedtextureframerate" .3
+		}
+		"TextureScroll"
+		{
+			"texturescrollvar" "$texture2transform"
+			"texturescrollrate" 10
+			"texturescrollangle" 90
+		}
+	}
+
+
+}
+

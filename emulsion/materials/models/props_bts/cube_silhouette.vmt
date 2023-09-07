@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/cube_silhouette"
+$surfaceprop metal
+$selfillum 1
+}

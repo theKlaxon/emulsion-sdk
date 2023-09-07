@@ -1,0 +1,13 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/underground_floor_button"
+$bumpmap "models/props_underground/underground_floor_button_normal"
+$normalmapalphaenvmapmask 1
+$phong 1
+$phongexponent 55
+$envmaptint "[.05 .05 .05]"
+$phongboost 8
+$phongfresnelranges "[1 1 1]"
+
+$envmap env_cubemap
+}

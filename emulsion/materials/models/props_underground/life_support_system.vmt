@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/life_support_system"
+$surfaceprop metal
+$selfillum 1
+}

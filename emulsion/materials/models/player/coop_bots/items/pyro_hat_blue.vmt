@@ -1,0 +1,11 @@
+VertexlitGeneric
+{
+$baseTexture "models/player/coop_bots/items/pyro_hat_blue"
+$phong 1
+$phongexponent 15
+$phongboost ".1"
+$phongfresnelranges "[2 1 5]"
+$rimlight 1
+$rimlightexponent 4
+$rimlightboost 2
+}

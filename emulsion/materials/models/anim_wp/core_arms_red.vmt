@@ -1,0 +1,10 @@
+VertexlitGeneric
+{
+$basetexture "models\anim_wp\core_arms_red"
+$selfillum 1
+
+
+
+
+
+}

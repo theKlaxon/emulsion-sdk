@@ -1,0 +1,12 @@
+VertexLitGeneric
+{
+$basetexture "models/props/pc_case_open/pc_case_open"
+$surfaceprop metal
+$bumpmap "models/props/pc_case_open/pc_case_open_n"
+$envmaptint "[1 .7 .4]"
+
+$phong 1
+$phongboost 2
+$phongexponenttexture "models/props/pc_case_open/pc_case_open_exp"
+$phongfresnelranges "[1 1.5 2]"
+}

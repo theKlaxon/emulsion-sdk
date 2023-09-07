@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$baseTexture "models\props_interiors/soap_dispenser"
+$envmap env_cubemap
+$envmapmask "models\props_interiors\soap_dispenser_ref"
+}

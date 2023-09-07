@@ -1,0 +1,11 @@
+VertexlitGeneric
+{
+$basetexture "models\npcs\glados\glados_head"
+$bumpmap "models\npcs\glados\glados_head_normal"
+$phong 1
+$phongexponenttexture "models\npcs\glados\glados_head_exponent"
+
+$phongtint "[1 1 1]"
+$phongboost 1
+$phongfresnelranges "[1 1.5 2]"
+}

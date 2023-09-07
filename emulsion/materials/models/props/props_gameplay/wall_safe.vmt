@@ -1,0 +1,5 @@
+vertexLitGeneric
+{
+$baseTexture "models/props/props_gameplay/wall_safe"
+$surfaceprop metal
+}

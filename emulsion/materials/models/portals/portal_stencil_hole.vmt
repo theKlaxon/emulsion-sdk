@@ -1,0 +1,27 @@
+PortalRefract
+{
+$Stage 1
+$PortalOpenAmount "0.0"
+$PortalStatic "0.0"
+"<DX90"
+{
+$PortalMaskTexture "models/portals/portal-mask-dx8"
+$PortalColorTexture "models/portals/portal-mask-dx8"
+}
+$time "0.0"
+Proxies
+{
+CurrentTime
+{
+resultVar $time
+}
+PortalOpenAmount
+{
+resultVar $PortalOpenAmount
+}
+PortalStatic
+{
+resultVar $PortalStatic
+}
+}
+}

@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/chair_lobby"
+$surfaceprop default
+}

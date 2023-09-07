@@ -1,0 +1,8 @@
+
+VertexLitGeneric
+{
+$baseTexture "models/props_motel/clock_radio01_glass"
+$translucent 1
+$envmap "metal/black_wall_envmap_002a"
+$envmaptint ".05 .05 .05"
+}

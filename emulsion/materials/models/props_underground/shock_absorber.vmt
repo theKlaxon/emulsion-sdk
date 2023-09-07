@@ -1,0 +1,17 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/shock_absorber"
+
+
+
+$normalmapalphaenvmapmask 1
+
+
+
+
+
+
+
+
+
+}

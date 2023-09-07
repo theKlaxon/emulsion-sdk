@@ -1,0 +1,16 @@
+VertexlitGeneric
+{
+$basetexture "concrete/concrete_bts_floor002c"
+$surfaceprop default
+
+
+$bumpmap "concrete/concrete_bts_floor002c_normal"
+"%keywords" "portal2 destruction underground"
+$envmaplightscale .6
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmapcontrast 1
+$envmapsaturation .2
+$envmaptint .2 .2 .2
+"%noportal" 1
+}

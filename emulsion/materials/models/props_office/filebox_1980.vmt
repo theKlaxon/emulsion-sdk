@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_office/filebox_1980"
+$surfaceprop metal
+}

@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$baseTexture "de_chateau/woodm"
+$surfaceprop wood
+"%keywords" cstrike
+}

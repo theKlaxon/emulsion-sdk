@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/console_sign_door"
+$surfaceprop default
+}

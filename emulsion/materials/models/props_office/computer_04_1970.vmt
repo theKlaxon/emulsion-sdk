@@ -1,0 +1,13 @@
+VertexLitGeneric
+{
+$baseTexture "models/props_office/computer_04_1970"
+$phong 1
+$phongexponent 20
+$phongboost ".125"
+$phongfresnelranges "[2 1 .8]"
+$basemapalphaphongmask 1
+
+
+$surfaceprop metal
+
+}

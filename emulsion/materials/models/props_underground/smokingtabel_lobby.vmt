@@ -1,0 +1,19 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/smokingtable_lobby"
+$surfaceprop metal
+
+
+
+$envmapsaturation 0.2
+
+
+$phong 1
+$phongexponent 100
+$phongboost 8
+$phongfresnelranges "[.3 .6 4]"
+$basealphaenvmapmask 1
+$basemapalphaphongmask 1
+$envmap env_cubemap
+$envmaptint ".9 .9 1"
+}

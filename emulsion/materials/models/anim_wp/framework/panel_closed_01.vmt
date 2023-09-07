@@ -1,0 +1,19 @@
+VertexLitGeneric
+{
+$basetexture "models/anim_wp/framework/panel_closed_01_main"
+$surfaceprop metal
+$bumpmap "models/anim_wp/framework/panel_closed_01_normal"
+$ssbump 1
+
+$phong 1
+$phongboost ".25"
+$phongexponent 30
+$phongfresnelranges "[.1 .5 1]"
+
+
+
+
+
+
+
+}

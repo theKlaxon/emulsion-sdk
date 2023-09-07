@@ -1,0 +1,11 @@
+VertexLitGeneric
+{
+$basetexture "models/player/coop_bots/Items/glasses_frame"
+$surfaceprop default
+$phong 1
+$phongboost 2
+$phongexponent 20
+$phongfresnelranges "[.6 1 2]"
+$basemapalphaphongmask 1
+$nodecal 1
+}

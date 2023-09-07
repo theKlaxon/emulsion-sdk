@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/tank_c_384x320"
+$surfaceprop metal
+}

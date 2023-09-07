@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+$baseTexture "models/player/coop_bots/bot_eye_lights.vtf"
+$surfaceprop metal
+$selfillum 1
+$nodecal 1
+}

@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/player/coop_bots/Items/bots_tophat"
+$surfaceprop default
+}

@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+
+$basetexture "models\props_underground\frame_underground"
+$surfaceprop metalgrate
+"%noportal" 1
+}

@@ -1,0 +1,9 @@
+VertexLitGeneric
+{
+
+$basetexture "models/props_underground/truss_underground"
+$surfaceprop metalgrate
+"%noportal" 1
+"%nopaint" 1
+"%keywords" "portal2 underground"
+}

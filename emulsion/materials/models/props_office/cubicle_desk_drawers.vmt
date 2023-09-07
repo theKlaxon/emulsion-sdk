@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_office/cubicle_desk_drawers"
+$surfaceprop metal
+}

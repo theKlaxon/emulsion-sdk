@@ -1,0 +1,17 @@
+VertexLitGeneric
+{
+$baseTexture "models\props/Light_Rail_Endcap"
+$bumpmap "models\props\Light_Rail_Endcap_normal"
+
+
+
+
+
+
+
+$envmap env_cubemap $normalmapalphaenvmapmask 1
+$envmaptint "[0.8 0.8 0.8]"
+$envmapcontrast "0.5"
+$envmapsaturation "0.75"
+
+}

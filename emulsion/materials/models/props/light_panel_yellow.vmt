@@ -1,0 +1,14 @@
+vertexlitgeneric
+{
+$baseTexture "models\props/light_panel_yellow"
+
+
+
+
+
+
+
+
+
+$selfillum 1
+}

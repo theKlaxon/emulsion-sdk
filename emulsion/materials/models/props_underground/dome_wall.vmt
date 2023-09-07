@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models\props_underground\dome_wall"
+$surfaceprop metal
+"%keywords" portal
+}

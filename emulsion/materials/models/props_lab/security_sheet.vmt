@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "Models/props_lab/security_sheet"
+	"$selfillum" "1"
+}

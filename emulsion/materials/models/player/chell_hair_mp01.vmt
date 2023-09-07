@@ -1,0 +1,14 @@
+VertexLitGeneric
+{
+$basetexture "models/player/chell_hair_mp01"
+$bumpmap "models\player/chell_hair_normal"
+$phong 1
+$phongexponenttexture "models\player/chell_hair_exponent"
+$phongboost 10
+
+$phongfresnelranges "[0 0.5 1]"
+$translucent 1
+$halflambert 1
+$nodecal 1
+$nocull 1
+}

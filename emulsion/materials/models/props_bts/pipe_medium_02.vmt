@@ -1,0 +1,17 @@
+
+VertexLitGeneric
+{
+$baseTexture "models/props_bts/pipe_medium_02"
+$model 1
+$blendtintbybasealpha 1
+$bumpmap "models/props_underground/rusty_normal"
+$phong 1
+$phongboost 1
+$phongexponent 40
+
+$phongfresnelranges "[1 3 10]"
+
+
+
+
+}

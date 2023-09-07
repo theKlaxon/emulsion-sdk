@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/geodome_exterior_01_frame"
+$surfaceprop default
+}

@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$baseTexture "models/props_motel/tile_ceiling_001a"
+"%keywords" tf
+}

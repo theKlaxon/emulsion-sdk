@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/truss_box_1024_01"
+$surfaceprop default
+}

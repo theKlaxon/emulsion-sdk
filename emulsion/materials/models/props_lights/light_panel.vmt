@@ -1,0 +1,16 @@
+vertexlitgeneric
+{
+$baseTexture "models/props_lights/light_panel"
+$surfaceprop metal
+$envmap "metal/black_wall_envmap_002a"
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$envmapcontrast 1
+$envmapsaturation .4
+$envmaptint .1 .1 .1
+"%noportal" 1
+$envmapmask "models/props_lights/light_panel_mask"
+$selfillum_envmapmask_alpha 1
+}

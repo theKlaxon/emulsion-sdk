@@ -1,0 +1,17 @@
+
+VertexLitGeneric
+{
+$baseTexture "models/props_bts/control_panel"
+$model 1
+$blendtintbybasealpha 1
+$bumpmap "dev/flat_normal"
+$phong 1
+$phongboost 3
+$phongexponent 10
+
+$phongfresnelranges "[1 3 10]"
+
+
+
+
+}

@@ -1,0 +1,5 @@
+VertexlitGeneric
+{
+$basetexture "models\lights\robo_lights"
+$selfillum 1
+}

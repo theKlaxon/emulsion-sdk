@@ -1,0 +1,12 @@
+vertexlitgeneric
+{
+$baseTexture "models\props/pedestal"
+$bumpmap "models\props\pedestal_normal"
+$phong 1
+$phongexponenttexture "models\props\pedestal_exponent"
+
+$phongboost 2
+
+$phongfresnelranges "[1 1.5 2]"
+$selfillum 1
+}

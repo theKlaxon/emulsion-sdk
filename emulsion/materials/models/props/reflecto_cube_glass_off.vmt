@@ -1,0 +1,6 @@
+vertexlitgeneric
+{
+$baseTexture "models/props/reflecto_cube_glass"
+$additive 1
+$nodecal 1
+}

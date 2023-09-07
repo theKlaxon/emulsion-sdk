@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_office/clock_wall_1980"
+$surfaceprop metal
+}

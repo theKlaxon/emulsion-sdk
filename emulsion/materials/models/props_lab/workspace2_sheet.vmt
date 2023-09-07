@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "Models/props_lab/workspace2_sheet"
+	"$selfillum" "1"
+}

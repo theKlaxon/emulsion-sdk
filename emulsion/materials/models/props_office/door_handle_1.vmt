@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_office/door_handle_1"
+$surfaceprop metal
+"%noportal" 1
+}

@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+$basetexture "Models/props_animsigns/newsignage_back02_dirty"
+$surfaceprop metal
+$selfillum 1
+$selfillumtint "0.25 0.25 0.25"
+}

@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/ball_catcher_behind"
+$surfaceprop default
+}

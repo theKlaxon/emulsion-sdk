@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "Models/props_animsigns/awe_blank"
+$surfaceprop metal
+$alphatest 1
+}

@@ -1,0 +1,11 @@
+VertexlitGeneric
+{
+$basetexture "concrete/factory_concrete_wall001a"
+
+
+
+
+$bumpmap "concrete/concrete_bts_floor002c_normal"
+$surfaceprop concrete
+"%keywords" "portal2 bts"
+}

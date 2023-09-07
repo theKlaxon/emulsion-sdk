@@ -1,0 +1,16 @@
+VertexLitGeneric
+{
+$basetexture "Models/props_gameplay/crusher_floorplate"
+$bumpmap "Models/props_gameplay/crusher_floorplate_normal"
+
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$phong 1
+
+
+$envmaptint "[.005 .005 .005 ]"
+
+
+}

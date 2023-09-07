@@ -1,0 +1,7 @@
+
+VertexLitGeneric
+{
+$baseTexture "models/props_basement/incinerator_door_chute"
+$selfillum 1
+$surfaceprop metal
+}

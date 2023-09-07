@@ -1,0 +1,12 @@
+VertexLitGeneric
+{
+$basetexture "models\props_underground\light_ceiling_lobby"
+
+
+
+
+
+$selfillum 1
+$selfillummask "models\props_underground\light_ceiling_lobby_selfillum"
+$selfillumtint "[1.2 1.2 1]"
+}

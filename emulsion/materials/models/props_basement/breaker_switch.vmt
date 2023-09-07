@@ -1,0 +1,7 @@
+
+VertexLitGeneric
+{
+$baseTexture "models/props_basement/breaker_switch"
+$selfillum 1
+$surfaceprop metal
+}

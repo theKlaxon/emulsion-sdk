@@ -1,0 +1,11 @@
+VertexlitGeneric
+{
+$basetexture "models\npcs\glados\glados_cables"
+$bumpmap "models\npcs\glados\glados_cables_normal"
+$phong 1
+
+$phongexponent 20
+$phongtint "[1 1 1]"
+$phongboost ".2"
+$phongfresnelranges "[1 1 1]"
+}

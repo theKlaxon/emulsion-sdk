@@ -1,0 +1,19 @@
+vertexlitgeneric
+{
+$basetexture "models\player\chell\chell_torso_diffuse"
+$phongexponenttexture "models\player\chell\chell_torso_exponent"
+$bumpmap "models\player\chell\chell_torso_normals"
+$phong 1
+$phongboost "3.5"
+
+
+$phongtint "[.85 .85 1]"
+$phongfresnelranges "[.2 .5 5]"
+$nodecal 1
+$ambientocclusion 1
+$halflambert 0
+$diffuseexp "1.5"
+$lightwarptexture "models\player\chell\skin_warp"
+$rimlight 1
+$surfaceprop flesh
+}

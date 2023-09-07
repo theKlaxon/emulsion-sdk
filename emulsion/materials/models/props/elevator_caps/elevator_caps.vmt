@@ -1,0 +1,12 @@
+VertexLitGeneric
+{
+$basetexture "models/props/elevator_caps/elevator_caps"
+$surfaceprop metal
+
+
+$basemapalphaphongmask 1
+$phong 1
+$phongboost 4
+$phongexponenttexture "models/props/elevator_caps/elevator_caps_exp"
+$phongfresnelranges "[5 1.5 2]"
+}

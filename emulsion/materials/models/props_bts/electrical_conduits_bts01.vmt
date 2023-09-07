@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/electrical_conduits_bts01"
+$surfaceprop default
+}

@@ -1,0 +1,9 @@
+VertexlitGeneric
+{
+$basetexture "Props/plasticwall003a"
+$bumpmap "models/a4_destruction/plasticwall003c-normal"
+"%noportal" 1
+
+
+"%keywords" "portal2 bts"
+}

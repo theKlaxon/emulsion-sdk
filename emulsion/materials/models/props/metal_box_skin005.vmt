@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props/metal_box_skin005"
+$selfillum 1
+$nodecal 1
+}

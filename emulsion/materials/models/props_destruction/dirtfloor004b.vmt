@@ -1,0 +1,5 @@
+VertexlitGeneric
+{
+$basetexture "nature/dirtfloor004b"
+$surfaceprop default
+}

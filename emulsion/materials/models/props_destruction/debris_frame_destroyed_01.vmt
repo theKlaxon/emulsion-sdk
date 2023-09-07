@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_destruction/debris_frame_destroyed_01"
+$surfaceprop default
+}

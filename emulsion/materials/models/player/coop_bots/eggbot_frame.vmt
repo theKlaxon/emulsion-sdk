@@ -1,0 +1,20 @@
+VertexLitGeneric
+{
+$baseTexture "models/player/coop_bots/eggbot_frame"
+$bumpmap "models/player/coop_bots/eggbot_frame_normal"
+$surfaceprop metal
+$phong 1
+$phongboost 2
+$phongexponent 20
+$phongfresnelranges "[.6 1 2]"
+
+$envmap env_cubemap
+$envmapfresnel 1
+$envmapFresnelMinMaxExp "[.5 5 .4]"
+
+
+
+$nodecal 1
+
+
+}

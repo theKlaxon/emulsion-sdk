@@ -1,0 +1,4 @@
+VertexLitGeneric
+{
+$basetexture "models/player/coop_bots/Items/bots_beret"
+}

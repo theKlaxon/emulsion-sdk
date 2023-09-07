@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/push_button_stand_active"
+$surfaceprop default
+$selfillum 1
+}

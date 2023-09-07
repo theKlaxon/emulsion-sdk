@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/player/coop_bots/bot_flags_black"
+$surfaceprop default
+}

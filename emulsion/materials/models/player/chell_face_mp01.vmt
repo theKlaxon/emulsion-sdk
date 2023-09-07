@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/player/chell_face_mp01"
+$surfaceprop flesh
+}

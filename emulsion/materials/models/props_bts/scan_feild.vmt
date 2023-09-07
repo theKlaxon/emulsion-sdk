@@ -1,0 +1,14 @@
+VertexlitGeneric
+{
+$basetexture "models\props_bts\scan_feild"
+$additive 1
+$nocull 1
+Proxies
+{
+TextureScroll
+{
+texturescrollvar $basetexturetransform
+texturescrollrate 12
+}
+}
+}

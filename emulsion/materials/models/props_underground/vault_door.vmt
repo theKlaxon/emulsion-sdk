@@ -1,0 +1,8 @@
+
+VertexLitGeneric
+{
+$baseTexture "models/props_underground/vault_door"
+$detail "detail/detail_dirt02a"
+$detailscale "[50 50]"
+$detailblendmode 0
+}

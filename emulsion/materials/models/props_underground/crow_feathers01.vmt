@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/crow_feathers01"
+$surfaceprop default
+}

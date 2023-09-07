@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_office/office_wallframe"
+$surfaceprop metal
+"%keywords" portal2
+}

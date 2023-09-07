@@ -1,0 +1,23 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/rot_panel_piston"
+$surfaceprop default
+$envmap "metal/black_wall_envmap_002a"
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$phong 1
+$phongexponent 12
+$phongboost 12
+$phongfresnelranges "[.3 .6 4]"
+$basealphaenvmapmask 1
+$basemapalphaphongmask 1
+$envmapcontrast 1
+$envmapsaturation .01
+$envmaptint "[.02 .02 .02 ]"
+
+$envmaplightscale .6
+
+
+}

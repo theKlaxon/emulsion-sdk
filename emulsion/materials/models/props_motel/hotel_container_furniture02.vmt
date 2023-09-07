@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+$basetexture "models/props_motel/hotel_container_furniture02"
+$surfaceprop default
+$envmap env_cubemap
+$basealphaenvmapmask 1
+}

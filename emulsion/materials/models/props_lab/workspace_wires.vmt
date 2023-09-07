@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "Models/props_lab/workspace_wires"
+	"$translucent" "1"
+	"$nocull" "1"
+//	"$alphatest" "1"
+}

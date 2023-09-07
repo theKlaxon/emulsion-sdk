@@ -1,0 +1,31 @@
+PortalRefract
+{
+$Stage 2
+$PortalOpenAmount "0.0"
+$PortalStatic "0.0"
+$PortalMaskTexture "models/portals/noise-blur-256x256"
+$PortalColorTexture "models/portals/portal-blue-color"
+$PortalColorScale "4.0"
+"<DX90"
+{
+$PortalMaskTexture "models/portals/portal-mask-dx8"
+$PortalColorTexture "models/portals/portal-blue-color-dx8"
+$PortalColorScale "1.4"
+}
+$time "0.0"
+Proxies
+{
+CurrentTime
+{
+resultVar $time
+}
+PortalOpenAmount
+{
+resultVar $PortalOpenAmount
+}
+PortalStatic
+{
+resultVar $PortalStatic
+}
+}
+}

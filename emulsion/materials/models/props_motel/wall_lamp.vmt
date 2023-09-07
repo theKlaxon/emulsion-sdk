@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$baseTexture "models/props_motel/wall_lamp_main"
+$surfaceprop metal
+}

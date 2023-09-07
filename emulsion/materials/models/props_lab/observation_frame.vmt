@@ -1,0 +1,12 @@
+VertexLitGeneric
+{
+
+$basetexture "models/props_lab/observation_frame"
+$surfaceprop metal
+"%noportal" 1
+$phong 1
+$phongexponent 155
+$phongboost ".25"
+$phongfresnelranges "[.7 15 20]"
+
+}

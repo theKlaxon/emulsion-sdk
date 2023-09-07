@@ -1,0 +1,14 @@
+VertexLitGeneric
+{
+$basetexture "models/props/Round_elevator_sheet_1"
+$surfaceprop metal
+$bumpmap "models/props/Round_elevator_sheet_1_normal"
+$normalmapalphaenvmapmask 1
+
+
+
+$phong 1
+$phongboost 3
+$phongexponenttexture "models/props/Round_elevator_sheet_1_exponent"
+$phongfresnelranges "[2 1.5 2]"
+}

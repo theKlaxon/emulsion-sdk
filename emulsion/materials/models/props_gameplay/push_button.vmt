@@ -1,0 +1,10 @@
+VertexLitGeneric
+{
+$basetexture "models/props_gameplay/push_button"
+$basemapalphaphongmask 1
+$phong 1
+$phongexponent 10
+$phongboost ".15"
+$phongfresnelranges "[.7 15 20]"
+$selfillum 1
+}

@@ -1,0 +1,11 @@
+VertexlitGeneric
+{
+$basetexture "models\props_basement\shaftswitches"
+$selfillum 1
+$surfaceprop metal
+
+
+
+
+
+}

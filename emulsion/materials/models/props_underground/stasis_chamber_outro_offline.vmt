@@ -1,0 +1,15 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/stasis_chamber_outro_offline"
+$bumpmap "models/props_underground/stasis_chamber_outro_normal"
+$surfaceprop metal
+
+$normalmapalphaenvmapmask 1
+$phong 1
+$phongexponent 5
+$envmaptint "[.3 .3 .3 ]"
+$phongboost 8
+$phongfresnelranges "[5 1 2]"
+
+$envmap env_cubemap
+}

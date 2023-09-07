@@ -1,0 +1,13 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/railing_underground"
+
+
+
+
+
+
+"%compilepassbullets" 1
+$surfaceprop metalgrate
+$alphatest 1
+}

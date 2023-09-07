@@ -1,0 +1,5 @@
+VertexlitGeneric
+{
+$basetexture "models\npcs\personality_sphere\personality_sphere_light_damaged"
+$selfillum 1
+}

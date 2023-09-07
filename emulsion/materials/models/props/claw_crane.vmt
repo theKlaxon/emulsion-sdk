@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props/claw_crane"
+$surfaceprop default
+$model 1
+}

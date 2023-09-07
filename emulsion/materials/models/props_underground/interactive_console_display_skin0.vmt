@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/interactive_console_display_skin0"
+$surfaceprop default
+}

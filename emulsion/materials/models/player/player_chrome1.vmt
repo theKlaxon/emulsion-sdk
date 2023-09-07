@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+
+$basetexture "models/player/player_chrome1"
+$surfaceprop flesh
+}

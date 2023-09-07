@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "plastic/office_plasticwall001c"
+$surfaceprop default
+"%keywords" portal2
+}

@@ -1,0 +1,8 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/pipe_debris03"
+$surfaceprop default
+$detail "detail/detail_concrete001a"
+$detailscale "[125 125]"
+$detailblendmode 0
+}

@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/ticket_dispenser_01"
+$surfaceprop default
+$selfillum 1
+}

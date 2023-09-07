@@ -1,0 +1,10 @@
+VertexlitGeneric
+{
+$basetexture "models\props_backstage\vacum_pipe_selfillum"
+$selfillum 1
+
+
+
+
+
+}

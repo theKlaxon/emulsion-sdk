@@ -1,0 +1,12 @@
+
+VertexLitGeneric
+{
+$baseTexture "models/props_basement/incinerator_door"
+$envmap env_cubemap
+$phong 1
+$phongexponent 50
+$phongboost 2
+$phongfresnelranges "[.3 .6 4]"
+$basealphaenvmapmask 1
+$basemapalphaphongmask 1
+}

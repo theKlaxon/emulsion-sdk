@@ -1,0 +1,13 @@
+VertexLitGeneric
+{
+$basetexture "models/anim_wp/framework/strip_light_main"
+$surfaceprop metal
+
+
+$selfillum 1
+
+
+
+
+
+}

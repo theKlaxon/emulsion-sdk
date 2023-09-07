@@ -1,0 +1,22 @@
+PortalRefract
+{
+$Stage 0
+$PortalOpenAmount "0.0"
+$PortalStatic "0.0"
+$time "0.0"
+Proxies
+{
+CurrentTime
+{
+resultVar $time
+}
+PortalOpenAmount
+{
+resultVar $PortalOpenAmount
+}
+PortalStatic
+{
+resultVar $PortalStatic
+}
+}
+}

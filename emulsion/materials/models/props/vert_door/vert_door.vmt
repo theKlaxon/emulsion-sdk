@@ -1,0 +1,16 @@
+VertexLitGeneric
+{
+$basetexture "models/props/vert_door/vert_door"
+$surfaceprop metal
+$phong 1
+$phongboost 2
+$phongexponent 50
+$phongfresnelranges "[.6 1 2]"
+$basemapalphaphongmask 1
+$envmap env_cubemap
+$envmapfresnel 1
+$envmapFresnelMinMaxExp "[.5 5 .4]"
+
+$selfillum 1
+$selfillummask "models/props/vert_door/vert_door_illum_mask"
+}

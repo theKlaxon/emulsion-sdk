@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/stasis_chamber_body_cheap"
+$surfaceprop metal
+$selfillum 1
+}

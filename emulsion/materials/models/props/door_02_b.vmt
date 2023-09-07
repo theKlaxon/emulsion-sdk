@@ -1,0 +1,15 @@
+VertexLitGeneric
+{
+$baseTexture "models\props/Door_02_b"
+$bumpmap "models\props\Door_02_normal"
+$phong 1
+$phongexponenttexture "models\props\Door_02_exponent"
+
+$phongboost 1
+$lightwarptexture "models\props\Door_02_lightwarp"
+$phongfresnelranges "[2 0.5 1]"
+
+
+
+$selfillum 1
+}

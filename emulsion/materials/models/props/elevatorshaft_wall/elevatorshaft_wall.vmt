@@ -1,0 +1,13 @@
+VertexLitGeneric
+{
+$basetexture "models/props/elevatorshaft_wall/elevatorshaft_wall"
+$surfaceprop metal
+"%noportal" 1
+
+
+$basemapalphaphongmask 1
+$phong 1
+$phongboost 4
+$phongexponenttexture "models/props/elevatorshaft_wall/elevatorshaft_wall_exp"
+$phongfresnelranges "[5 1.5 2]"
+}

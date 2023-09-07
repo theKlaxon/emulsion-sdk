@@ -1,0 +1,14 @@
+VertexLitGeneric
+{
+$basetexture "models\player\eggbot\eggbot"
+$surfaceprop metal
+$phong 1
+$phongexponent 12
+
+$phongboost 3
+$phongfresnelranges "[0.5 1 2]"
+$basemapalphaphongmask 1
+
+
+$nodecal 1
+}

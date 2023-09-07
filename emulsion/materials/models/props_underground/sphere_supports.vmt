@@ -1,0 +1,20 @@
+VertexLitGeneric
+{
+$basetexture "metal/black_wall_metal_005d"
+$surfaceprop metal
+
+
+
+
+
+
+
+
+
+
+
+$envmaplightscale .6
+$reflectivity "[ 0.6 0.6 0.6 ]" 
+"%noportal" 1
+"%keywords" "portal2 noportal chamber"
+}

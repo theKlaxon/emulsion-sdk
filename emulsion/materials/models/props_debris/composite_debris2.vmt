@@ -1,0 +1,4 @@
+VertexLitGeneric
+{
+$baseTexture "models\props_debris/composite_debris2"
+}

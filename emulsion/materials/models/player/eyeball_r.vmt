@@ -1,0 +1,23 @@
+EyeRefract
+{
+$Iris "models/player/eyeball_r" 
+$AmbientOcclTexture "models/player/eyeball_r_ambient" 
+$Envmap "Engine/eye-reflection-cubemap-" 
+$CorneaTexture "Engine/eye-cornea" 
+$EyeballRadius "0.6" 
+$AmbientOcclColor "[0.13 0.13 0.13]" 
+$Dilation "0.75" 
+$ParallaxStrength "0.25" 
+$CorneaBumpStrength "1.0" 
+$halflambert 1
+$nodecal 1
+
+$RaytraceSphere 0 
+$SphereTexkillCombo 0 
+
+Eyes_dx8
+{
+$basetexture "models/player/eyeball_r_dx8"
+$iris "models/player/pupil_r"
+}
+}

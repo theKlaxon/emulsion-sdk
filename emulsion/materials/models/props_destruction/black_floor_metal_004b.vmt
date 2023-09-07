@@ -1,0 +1,21 @@
+VertexLitGeneric
+{
+$basetexture "nature/dirtfloor004c"
+$surfaceprop metal
+$bumpmap "models/props_destruction/black_floor_metal_001a_normal"
+
+$normalmapalphaenvmapmask 1
+
+$envmaptint .24 .24 .24
+$envmap "metal/black_wall_envmap_002a"
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$envmaplightscale .6
+$envmapcontrast 1
+$envmapsaturation 0
+$model 1
+"%noportal" 1
+"%keywords" "portal2 noportal chamber"
+}

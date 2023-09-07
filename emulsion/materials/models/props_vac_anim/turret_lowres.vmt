@@ -1,0 +1,9 @@
+VertexlitGeneric
+{
+$basetexture "models\props_vac_anim\turret_lowres"
+$surfaceprop solidmetal
+$phong 1
+$phongexponent 50
+$phongfresnelranges "[5 1 2]"
+$phongboost 2
+}

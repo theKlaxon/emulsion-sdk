@@ -1,0 +1,20 @@
+Refract
+{
+
+$model 1
+$refractamount ".01"
+
+$surfaceprop metal
+$normalmap "glass/stasis_chamber_glass_normal"
+$translucent 1
+$additive 1
+
+
+
+
+$envmap "metal/black_wall_envmap_002a_hdr"
+
+
+
+$envmaptint "[.01 .01 .01]"
+}

@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props/Laser_catcher_rusted_on"
+$selfillum 1
+}

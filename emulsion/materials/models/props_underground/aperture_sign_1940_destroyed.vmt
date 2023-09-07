@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/aperture_sign_1940_destroyed"
+$surfaceprop default
+}

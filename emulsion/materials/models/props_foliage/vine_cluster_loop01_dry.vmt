@@ -1,0 +1,15 @@
+patch
+{
+include "materials/models/props_foliage/vines_swaying01.vmt"
+insert
+{
+$basetexture "models\props_foliage\vine_cluster_loop01_dry"
+
+
+
+$translucent 1
+$nocull 1
+$model 1
+"%keywords" portal2
+}
+}

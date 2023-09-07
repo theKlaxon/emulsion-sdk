@@ -1,0 +1,12 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/pressure_door_crack"
+$bumpmap "models/props_underground/pressure_door_crack_normal"
+$translucent 1
+$normalmapalphaenvmapmask 1
+$phong 1
+$phongexponent 50
+$envmaptint "[.3 .3 .3 ]"
+$phongboost 2
+$phongfresnelranges "[5 1 2]"
+}

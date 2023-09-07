@@ -1,0 +1,12 @@
+vertexlitgeneric
+{
+$baseTexture "models\props/Security_Camera"
+$bumpmap "models\props\Security_Camera_normal"
+$phong 1
+$phongexponenttexture "models\props\Security_Camera_exponent"
+
+$phongboost 2
+
+$phongfresnelranges "[1 1.5 2]"
+$selfillum 1
+}

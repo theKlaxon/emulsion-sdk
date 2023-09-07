@@ -1,0 +1,31 @@
+UnLitTwoTexture
+{
+$basetexture "models/props_gameplay/coop_ping_arrow"
+$model 1
+$surfaceprop glass
+$texture2 "dev/dev_scanline"
+$translucent 1
+$additive 1
+$nocull 1
+Proxies
+{
+
+
+
+
+
+
+
+
+
+
+
+
+
+MaterialModify
+{
+
+dummy 0
+}
+}
+}

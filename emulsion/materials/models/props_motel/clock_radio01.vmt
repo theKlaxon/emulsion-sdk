@@ -1,0 +1,6 @@
+
+VertexLitGeneric
+{
+$baseTexture "models/props_motel/clock_radio01"
+$selfillum 1
+}

@@ -1,0 +1,15 @@
+VertexLitGeneric
+{
+$baseTexture "models\props/Door_01_off"
+$bumpmap "models\props\Door_01_normal"
+$phong 1
+$phongexponenttexture "models\props\Door_01_exponent"
+
+$phongboost 1
+
+$phongfresnelranges "[2 0.5 1]"
+
+
+
+
+}

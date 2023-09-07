@@ -1,0 +1,11 @@
+VertexLitGeneric
+{
+$basetexture "models/props/water_bottle/water_bottle"
+$surfaceprop plastic
+$bumpmap "models/props/water_bottle/water_bottle_n"
+
+$phong 1
+$phongboost 1
+$phongexponenttexture "models/props/water_bottle/water_bottle_exp"
+$phongfresnelranges "[1 1.5 2]"
+}

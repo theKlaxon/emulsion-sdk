@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$baseTexture "models/props_motel/rotating_picture_main"
+$surfaceprop metal
+}

@@ -1,0 +1,12 @@
+VertexLitGeneric
+{
+$basetexture "models/player/coop_bots/Items/killingfloor"
+$surfaceprop default
+$phong 1
+$phongboost 1
+$phongexponent 80
+$phongfresnelranges "[.6 1 2]"
+$basemapalphaphongmask 1
+$nocull 1
+$nodecal 1
+}

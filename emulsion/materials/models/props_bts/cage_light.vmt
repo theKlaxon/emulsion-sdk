@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$baseTexture "models\props_bts/cage_light"
+envmap env_cubemap
+$selfillum 1
+}

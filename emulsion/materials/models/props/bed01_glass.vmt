@@ -1,0 +1,18 @@
+VertexLitGeneric
+{
+$baseTexture "models\props/Bed01_glass"
+$envmap env_cubemap
+$alphaenvmapmask 1
+$envmaptint "[.20 .30 .35]"
+$additive 1
+$surfaceprop glass
+$translucent 1
+$nocull 1
+
+
+
+
+
+
+
+}

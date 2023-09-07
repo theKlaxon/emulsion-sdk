@@ -1,0 +1,15 @@
+VertexLitGeneric
+{
+$baseTexture "models\npcs\turret\Turret_01"
+$bumpmap "models\npcs\turret\Turret_01_normal"
+$phong 1
+$phongexponenttexture "models\npcs\turret\Turret_01_exponent"
+
+$phongboost 10
+
+$phongfresnelranges "[5 1 2]"
+
+
+
+$selfillum 1
+}

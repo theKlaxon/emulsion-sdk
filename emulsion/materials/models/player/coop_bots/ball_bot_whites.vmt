@@ -1,0 +1,15 @@
+
+VertexLitGeneric
+{
+$baseTexture "models/player/coop_bots/ball_bot_whites"
+$surfaceprop metal
+$phong 1
+$phongboost 2
+$phongexponent 2
+$phongfresnelranges "[.6 1 2]"
+$basemapalphaphongmask 1
+$rimlight 1
+$rimlightexponent 2
+$rimlightboost 3
+$nodecal 1
+}

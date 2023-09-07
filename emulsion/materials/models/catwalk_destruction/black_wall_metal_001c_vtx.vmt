@@ -1,0 +1,21 @@
+VertexlitGeneric
+{
+
+$basetexture "metal/black_wall_metal_001c"
+$surfaceprop metal
+$envmap "metal/black_wall_envmap_002a"
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$envmaplightscale 0.6
+$normalmapalphaenvmapmask 1
+$envmapcontrast 1.0
+$envmapsaturation 0.2
+$envmaptint 0.3 0.3 0.3
+$detail "detail/detail_blackfloor"
+$detailscale 4.2
+$detailblendfactor .6
+$detailblendmode 7
+"%keywords" "portal2 noportal chamber"
+}

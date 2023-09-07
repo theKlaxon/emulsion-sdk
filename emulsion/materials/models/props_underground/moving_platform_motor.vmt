@@ -1,0 +1,15 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/moving_platform_motor"
+$bumpmap "dev\flat_normal"
+$phong 1
+$phongboost 1
+$halflambert 0
+$phongDisableHalfLambert 1
+$phongexponent 18
+$phongfresnelranges "[.2 .5 1]"
+$basemapalphaphongmask 1
+$rimlight 1
+$rimlightexponent 20
+$rimlightboost 3
+}

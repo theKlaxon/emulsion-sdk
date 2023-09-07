@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+
+$basetexture "Models/props_debris/concretedebris_chunk01"
+$surfaceprop boulder
+}

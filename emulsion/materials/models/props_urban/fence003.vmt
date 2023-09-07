@@ -1,0 +1,13 @@
+VertexLitGeneric
+{
+$baseTexture "models/props_urban/fence003.vtf"
+$nocull 1
+$AllowFenceRenderStateHack 1
+$AlphaTest 1
+$AlphaTestReference 0.3
+$Translucent 1
+$FlashlightNoLambert 1
+
+$surfaceprop chainlink
+$nodecal 1
+}

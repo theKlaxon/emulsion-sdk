@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/door_bipart_128"
+$surfaceprop metal
+}

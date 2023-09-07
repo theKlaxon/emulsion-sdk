@@ -1,0 +1,15 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/beam_castellated"
+$bumpmap "models/props_bts/beam_castellated_normal"
+$surfaceprop default
+$model 1
+$blendtintbybasealpha 1
+$bumpmap "dev/flat_normal"
+$normalmapalphaenvmapmask 1
+$phong 1
+$phongboost 1
+$phongexponent 55
+$envmaptint "[.1 .1 .1]"
+$phongfresnelranges "[1 3 10]"
+}

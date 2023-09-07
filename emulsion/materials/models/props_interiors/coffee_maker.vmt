@@ -1,0 +1,13 @@
+VertexLitGeneric
+{
+$baseTexture "models\props_interiors/coffee_maker"
+$envmap env_cubemap
+$envmapmask "models\props_interiors\coffee_maker_ref"
+$envmaptint "[1 1 1]"
+$envmapcontrast .5
+$envmapsaturation .5
+vertexlitgeneric_HDR_dx9
+{
+$envmaptint "[.8 .8 .8]"
+}
+}

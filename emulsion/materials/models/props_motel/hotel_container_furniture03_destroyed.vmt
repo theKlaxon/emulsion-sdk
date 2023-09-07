@@ -1,0 +1,9 @@
+VertexLitGeneric
+{
+$basetexture "models/props_motel/hotel_container_furniture03_destroyed"
+$surfaceprop default
+$selfillum 1
+$selfillummask "VGUI/white"
+
+$selfillumtint "[0.015 0.018 0.021]"
+}

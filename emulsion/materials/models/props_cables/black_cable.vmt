@@ -1,0 +1,16 @@
+
+VertexLitGeneric
+{
+$baseTexture "models/props_cables/black_cable"
+
+
+$phongboost 1
+$halflambert 0
+$phongDisableHalfLambert 1
+$phongexponent 18
+$phongfresnelranges "[.2 .5 1]"
+$basemapalphaphongmask 1
+$rimlight 1
+$rimlightexponent 20
+$rimlightboost 3
+}

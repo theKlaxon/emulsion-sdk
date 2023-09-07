@@ -1,0 +1,23 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/underground_door_dynamic"
+$surfaceprop default
+$envmap "metal/black_wall_envmap_002a"
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$phong 1
+$phongexponent 25
+$phongboost 6
+$phongfresnelranges "[.3 .6 4]"
+$basealphaenvmapmask 1
+$basemapalphaphongmask 1
+$envmapcontrast 1
+$envmapsaturation .01
+$envmaptint "[.01 .01 .01 ]"
+
+$envmaplightscale .6
+
+
+}

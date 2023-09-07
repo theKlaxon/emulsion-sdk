@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_moon/moon_flag"
+$surfaceprop default
+}

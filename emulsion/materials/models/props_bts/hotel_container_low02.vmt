@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/hotel_container_low02"
+$surfaceprop default
+}

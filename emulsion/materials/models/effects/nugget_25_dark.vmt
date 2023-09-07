@@ -1,0 +1,25 @@
+Modulate
+{
+$basetexture "models/effects/nugget_25"
+
+$alpha 1
+$modblend ".43"
+$model 1
+$mod2x 1
+
+Proxies
+{
+
+
+
+
+
+Sine
+{
+Sineperiod 1
+SineMax 1
+SineMin ".1"
+resultVar $alpha
+}
+}
+}

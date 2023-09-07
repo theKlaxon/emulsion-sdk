@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$baseTexture "models/props_motel/tall_round_table_main"
+$surfaceprop metal
+}

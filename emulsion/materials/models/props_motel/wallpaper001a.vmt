@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$baseTexture "wallpaper/wallpaper001a"
+$surfaceprop plaster
+"%keywords" aperture
+}

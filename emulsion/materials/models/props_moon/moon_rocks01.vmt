@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_moon/moon_rocks01"
+$surfaceprop rock
+$bumpmap "models/props_moon/moon_rocks01_normal"
+}

@@ -1,0 +1,18 @@
+EyeRefract
+{
+$Iris "models/player/chell/gambler_eyes" 
+$AmbientOcclTexture "models/player/chell/gambler_eye_ao" 
+$Envmap "Engine/eye-reflection-cubemap-" 
+$CorneaTexture "Engine/eye-cornea" 
+$EyeballRadius "0.5" 
+$AmbientOcclColor "[.6 .4 .3]" 
+$Dilation ".6" 
+$ParallaxStrength "0.25" 
+$CorneaBumpStrength ".5" 
+$halflambert 1
+$nodecal 1
+$ambientocclusion 1
+
+$RaytraceSphere 1 
+$SphereTexkillCombo 0 
+}

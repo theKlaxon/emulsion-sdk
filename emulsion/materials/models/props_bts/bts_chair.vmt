@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/bts_chair"
+$surfaceprop default
+$model 1
+}

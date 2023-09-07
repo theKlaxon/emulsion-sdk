@@ -1,0 +1,12 @@
+VertexLitGeneric
+{
+$baseTexture "models/props/tripwire_turret.vtf"
+envmap env_cubemap
+$selfillum 1
+$surfaceprop metal
+
+$phong 1
+$phongboost 3
+$phongexponenttexture "models/props_bts/Rocket_Sentry_exponent"
+$phongfresnelranges "[1 1.5 2]"
+}

@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$baseTexture "models/props_motel/telephone_main"
+$surfaceprop metal
+}

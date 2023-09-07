@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+
+$basetexture "models/props_motel/carpetfloor003a"
+$surfaceprop carpet
+}

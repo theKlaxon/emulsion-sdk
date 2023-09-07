@@ -1,0 +1,17 @@
+VertexlitGeneric
+{
+$basetexture "models\props\portal_button_orange"
+$selfIllum 1
+
+
+
+
+
+Proxies
+{
+LightedFloorButton
+{
+resultVar $selfillumtint
+}
+}
+}

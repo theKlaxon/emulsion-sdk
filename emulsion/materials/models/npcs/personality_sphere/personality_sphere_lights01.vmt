@@ -1,0 +1,17 @@
+VertexlitGeneric
+{
+$basetexture "models\npcs\personality_sphere\personality_sphere_lights01"
+$selfillum 1
+
+
+
+
+
+Proxies
+{
+LightedMouth
+{
+resultVar $selfillumtint
+}
+}
+}

@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+$basetexture "models/props/saucepan/saucepan"
+$surfaceprop metal
+$envmap env_cubemap
+$basealphaenvmapmask 1
+}

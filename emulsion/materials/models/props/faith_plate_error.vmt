@@ -1,0 +1,10 @@
+VertexlitGeneric
+{
+$basetexture "models\props\faith_plate_error"
+
+$selfillum 1
+$phong 1
+$phongboost 2
+$phongexponent 10
+$phongfresnelranges "[.1 .5 1]"
+}

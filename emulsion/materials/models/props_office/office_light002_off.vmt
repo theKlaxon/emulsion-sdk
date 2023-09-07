@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_office/office_light002"
+$surfaceprop default
+}

@@ -1,0 +1,8 @@
+VertexLitGeneric
+{
+$baseTexture "models\props\futbol_Gibs"
+$phong 1
+$phongboost 2
+$phongfresnelranges "[1 1.5 2]"
+$selfillum 1
+}

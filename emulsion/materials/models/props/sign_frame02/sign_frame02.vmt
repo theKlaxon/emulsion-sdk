@@ -1,0 +1,10 @@
+VertexLitGeneric
+{
+$basetexture "models/props/sign_frame02/sign_frame02"
+$surfaceprop metal
+$basemapalphaphongmask 1
+$phong 1
+$phongboost 2
+$phongexponenttexture "models/props/sign_frame02/sign_frame02_exp"
+$phongfresnelranges "[2 1.5 2]"
+}

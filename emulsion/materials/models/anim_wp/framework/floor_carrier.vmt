@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/anim_wp/framework/floor_carrier_main"
+$surfaceprop metal
+$selfillum 1
+}

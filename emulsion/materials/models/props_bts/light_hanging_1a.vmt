@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/light_hanging_1a"
+$surfaceprop metal
+$selfillum 1
+}

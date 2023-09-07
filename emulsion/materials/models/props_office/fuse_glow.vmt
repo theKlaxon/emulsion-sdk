@@ -1,0 +1,30 @@
+VertexLitGeneric
+{
+$basetexture "models/props_office/fuse_glow"
+$surfaceprop default
+$selfillum 1
+Proxies
+{
+Sine
+{
+sineperiod "2.5"
+sinemin ".8"
+sinemax 1
+resultVar "$selfillumtint[0]"
+}
+Sine
+{
+sineperiod "2.5"
+sinemin ".2"
+sinemax 1
+resultVar "$selfillumtint[1]"
+}
+Sine
+{
+sineperiod "2.5"
+sinemin ".2"
+sinemax 1
+resultVar "$selfillumtint[2]"
+}
+}
+}

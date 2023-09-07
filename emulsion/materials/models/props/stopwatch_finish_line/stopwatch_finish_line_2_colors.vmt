@@ -1,0 +1,25 @@
+UnLitTwoTexture
+{
+$basetexture "models/props/stopwatch_finish_line/stopwatch_finish_line_2_colors"
+$texture2 "models/props/stopwatch_finish_line/stopwatch_beam_lines_scale"
+$translucent 1
+$model 1
+
+Proxies
+{
+TextureScroll
+{
+texturescrollvar $texture2transform
+texturescrollrate 5
+texturescrollangle 90
+}
+Sine
+{
+Sineperiod 2
+SineMax ".8"
+SineMin ".6"
+resultVar $color
+}
+}
+"%keywords" portal2
+}

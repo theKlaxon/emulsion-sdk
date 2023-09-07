@@ -1,0 +1,15 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/stasis_chamber_light_spot"
+$surfaceprop glass
+$selfillum 1
+
+$envmap env_cubemap
+$nocull 1
+$envmapsaturation "[.5 .5 .5]"
+
+
+
+
+
+}

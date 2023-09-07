@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_office/whiteboard_coop_msg_05"
+$surfaceprop metal
+}

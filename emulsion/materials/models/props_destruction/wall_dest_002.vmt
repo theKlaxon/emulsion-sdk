@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_destruction/wall_dest_002"
+$surfaceprop default
+}

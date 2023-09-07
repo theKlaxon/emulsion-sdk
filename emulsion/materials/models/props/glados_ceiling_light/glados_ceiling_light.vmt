@@ -1,0 +1,12 @@
+VertexLitGeneric
+{
+$basetexture "models/props/glados_ceiling_light/glados_ceiling_light"
+$surfaceprop metal
+$bumpmap "models/props/glados_ceiling_light/glados_ceiling_light_n"
+$selfillum 1
+
+$phong 1
+$phongboost 4
+$phongexponenttexture "models/props/glados_ceiling_light/glados_ceiling_light_exp"
+$phongfresnelranges "[5 1.5 2]"
+}

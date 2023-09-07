@@ -1,0 +1,15 @@
+VertexLitGeneric
+{
+$baseTexture "models\props/box_socket_active"
+$bumpmap "models\props\box_socket_normal"
+$phong 1
+$phongexponenttexture "models\props\box_socket_exponent"
+$phongexponent 25
+$phongboost 1
+
+$phongfresnelranges "[1 1.5 2]"
+$halflambert 1
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$selfillum 1
+}

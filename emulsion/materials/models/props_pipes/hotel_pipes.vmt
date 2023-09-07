@@ -1,0 +1,9 @@
+VertexLitGeneric
+{
+$basetexture "models\props_pipes\Hotel_pipes"
+$phong 1
+$phongexponent 150
+$phongboost 1
+$phongfresnelranges "[.7 15 20]"
+$bumpmap "models/props_fortifications/orangecone001_normal"
+}

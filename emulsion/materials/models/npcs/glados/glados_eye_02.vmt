@@ -1,0 +1,10 @@
+VertexlitGeneric
+{
+$basetexture "models\npcs\glados\glados_eye_02"
+$selfillum 1
+
+
+
+
+
+}

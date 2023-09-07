@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/duct_old"
+$surfaceprop metal
+"%noportal" 1
+}

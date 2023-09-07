@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/bts_clipboard_d"
+$surfaceprop default
+$model 1
+}

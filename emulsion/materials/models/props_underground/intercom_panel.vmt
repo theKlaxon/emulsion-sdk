@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+
+$basetexture "models/props_underground/intercom_panel"
+$surfaceprop metal
+}

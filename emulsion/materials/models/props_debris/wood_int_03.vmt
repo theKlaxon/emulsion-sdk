@@ -1,0 +1,8 @@
+VertexLitGeneric
+{
+$baseTexture "wood/wood_int_03"
+$surfaceprop wood
+
+
+"%keywords" l4d2
+}

@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_office/office_chair_1940_01"
+$surfaceprop default
+}

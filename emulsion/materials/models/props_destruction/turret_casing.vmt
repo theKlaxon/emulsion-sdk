@@ -1,0 +1,11 @@
+
+VertexLitGeneric
+{
+$baseTexture "models/npcs/turret/turret_casing"
+$surfaceprop solidmetal
+$phong 1
+$phongexponent 50
+$phongfresnelranges "[5 1 2]"
+$phongboost 2
+$basemapalphaphongmask 1
+}

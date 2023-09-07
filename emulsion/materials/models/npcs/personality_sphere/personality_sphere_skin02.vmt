@@ -1,0 +1,15 @@
+VertexlitGeneric
+{
+$basetexture "models\npcs\personality_sphere\personality_sphere_skin02"
+"!gameconsole?$phong" 1
+"!gameconsole?$phongboost" 1
+"!gameconsole?$halflambert" 0
+"!gameconsole?$phongDisableHalfLambert" 1
+"!gameconsole?$phongexponent" 12
+"!gameconsole?$phongfresnelranges" "[.6 1 2]"
+"!gameconsole?$basemapalphaphongmask" 1
+
+"!gameconsole?$rimlightexponent" "0.2"
+"!gameconsole?$rimlightboost" 3
+"!gameconsole?$phongalbedotint" 1
+}

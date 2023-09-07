@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_underground/office_decoration_1940_02"
+$surfaceprop default
+}

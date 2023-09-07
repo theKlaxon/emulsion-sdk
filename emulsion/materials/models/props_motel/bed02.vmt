@@ -1,0 +1,10 @@
+VertexLitGeneric
+{
+$basetexture "models/props_motel/bed02"
+$surfaceprop default
+$selfillum 1
+
+
+$selfillummask "models/container_destruction/container_illum_mask"
+$selfillumtint "[0.03 0.0375 0.055]"
+}

@@ -1,0 +1,11 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/ball_launcher_behind"
+$surfaceprop default
+$phong 1
+$phongexponent 100
+$phongboost ".5"
+$phongfresnelranges "[.3 .6 4]"
+
+$basemapalphaphongmask 1
+}

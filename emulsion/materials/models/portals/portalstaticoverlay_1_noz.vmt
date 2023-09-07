@@ -1,0 +1,9 @@
+PortalStaticOverlay
+{
+$staticblendtexture "models/portals/dummy-blue"
+$ghostoverlay 2 
+$Additive 1
+$NoCull 1
+$model 1
+$staticamount "0.3"
+}

@@ -1,0 +1,16 @@
+VertexlitGeneric
+{
+$basetexture "models\props_destruction\glass_break_A_inner"
+
+
+$phong 1
+$phongexponent 200
+$phongfresnelranges "[5 1 2]"
+$phongboost 1
+$nocull 1
+$basemapalphaphongmask 1
+$envmap env_cubemap
+$envmapcontrast 1
+$envmapsaturation "[.5 1 0]"
+$envmaptint "[.60 .79 .85]"
+}

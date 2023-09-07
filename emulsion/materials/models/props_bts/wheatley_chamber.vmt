@@ -1,0 +1,5 @@
+VertexlitGeneric
+{
+$basetexture "models\props_bts\wheatley_chamber"
+$surfaceprop metal
+}

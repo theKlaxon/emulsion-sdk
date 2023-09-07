@@ -1,0 +1,7 @@
+
+Portal
+{
+$fogcompatible 0 
+$basetexture _rt_Portal1 
+$alphamasktexture "models/portals/portal_mask" 
+}

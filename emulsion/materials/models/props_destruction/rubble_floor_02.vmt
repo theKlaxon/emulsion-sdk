@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_destruction/rubble_floor_02"
+$surfaceprop default
+}

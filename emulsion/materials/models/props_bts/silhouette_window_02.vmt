@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/silhouette_window_02"
+$surfaceprop default
+$translucent 1
+}

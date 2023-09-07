@@ -1,0 +1,12 @@
+patch
+{
+include "materials/models/props_foliage/vines_swaying_verysubtle01.vmt"
+insert
+{
+$basetexture "models\props_foliage\Vines_thick_384"
+$alphatest 1
+$AlphaTestReference ".5"
+$AllowAlphaToCoverage 1
+$nocull 1
+}
+}

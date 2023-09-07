@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props/lab_desk03/lab_desk03"
+$surfaceprop metal
+}

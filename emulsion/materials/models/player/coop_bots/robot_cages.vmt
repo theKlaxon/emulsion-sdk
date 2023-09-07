@@ -1,0 +1,10 @@
+VertexLitGeneric
+{
+$baseTexture "models/player/coop_bots/robot_cages"
+$phong 1
+$phongboost 1
+$phongexponent 80
+$phongfresnelranges "[.6 1 2]"
+$basemapalphaphongmask 1
+$nodecal 1
+}

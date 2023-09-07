@@ -1,0 +1,13 @@
+VertexLitGeneric
+{
+
+$basealphaenvmapmask 1
+$basetexture "models/props_motel/metalwall056a"
+$envmap env_cubemap
+$surfaceprop metal
+$detail "detail\metal_detail_01"
+$detailscale "4.283"
+$detailblendfactor .8
+$detailblendmode 0
+"%keywords" "c17industrial,combine,wasteland"
+}

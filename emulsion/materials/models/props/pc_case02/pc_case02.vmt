@@ -1,0 +1,36 @@
+VertexLitGeneric
+{
+$basetexture "models/props/pc_case02/pc_case02"
+$surfaceprop metal
+$bumpmap "models/props/pc_case02/pc_case02_n"
+$selfillum 1
+
+$phong 1
+$phongboost 6
+$phongexponenttexture "models/props/pc_case02/pc_case02_exp"
+$phongfresnelranges "[1 1.5 2]"
+Proxies
+{
+Sine
+{
+sineperiod "2.5"
+sinemin ".8"
+sinemax 1
+resultVar "$selfillumtint[0]"
+}
+Sine
+{
+sineperiod "2.5"
+sinemin ".2"
+sinemax 1
+resultVar "$selfillumtint[1]"
+}
+Sine
+{
+sineperiod "2.5"
+sinemin ".2"
+sinemax 1
+resultVar "$selfillumtint[2]"
+}
+}
+}

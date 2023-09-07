@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_motel/smoke_detector01_off"
+$surfaceprop default
+}

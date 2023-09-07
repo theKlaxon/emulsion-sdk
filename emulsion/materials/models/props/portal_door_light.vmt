@@ -1,0 +1,10 @@
+VertexlitGeneric
+{
+$basetexture "models\props\portal_door_light"
+$selfillum 1
+
+
+
+
+
+}

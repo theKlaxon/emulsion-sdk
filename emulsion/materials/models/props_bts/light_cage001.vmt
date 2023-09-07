@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/light_cage001"
+$surfaceprop default
+$selfillum 1
+}

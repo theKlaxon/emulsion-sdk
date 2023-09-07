@@ -1,0 +1,16 @@
+VertexlitGeneric
+{
+$basetexture "models\anim_wp\arm_64x64_exterior"
+$selfillum 1
+$phong 1
+$phongboost 2
+$halflambert 0
+$phongDisableHalfLambert 1
+$phongexponent 12
+$phongfresnelranges "[.6 1 2]"
+
+$rimlight 1
+$rimlightexponent "0.2"
+$rimlightboost 3
+$phongalbedotint 1
+}

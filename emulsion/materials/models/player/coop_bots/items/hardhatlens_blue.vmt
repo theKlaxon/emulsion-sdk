@@ -1,0 +1,12 @@
+VertexLitGeneric
+{
+$basetexture "models/player/coop_bots/Items/hardhatlens_blue"
+$selfillum 1
+$phong 1
+$phongexponent 50
+$phongboost 2
+$phongfresnelranges "[.25 1 4]"
+$rimlight 1
+$rimlightexponent 4
+$rimlightboost ".65"
+}

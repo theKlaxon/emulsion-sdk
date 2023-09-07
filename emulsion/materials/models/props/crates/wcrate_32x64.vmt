@@ -1,0 +1,4 @@
+VertexLitGeneric
+{
+$basetexture "models\props\crates\wcrate_32x64"
+}

@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$basetexture "Models/props_animsigns/newsignage_back00_dirty"
+$surfaceprop metal
+
+}

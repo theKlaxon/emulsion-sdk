@@ -1,0 +1,22 @@
+VertexLitGeneric
+{
+$basetexture "models/props_destruction/rubble_wall_ceiling02"
+$surfaceprop default
+$bumpmap "models/props_destruction/rubble_wall_ceiling02_normal"
+$normalmapalphaenvmapmask 1
+$ssbump 1
+$envmap "metal/black_wall_envmap_002a"
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$envmapcontrast 1
+$envmapsaturation .2
+$envmaptint "[.25 .25 .25 ]"
+
+$envmaplightscale .65
+$reflectivity "[ 0.6 0.6 0.6 ]" 
+$model 1
+"%noportal" 1
+"%keywords" "portal2 noportal chamber"
+}

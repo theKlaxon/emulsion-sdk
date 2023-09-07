@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$baseTexture "models/props_motel/armchair_main"
+$surfaceprop metal
+}

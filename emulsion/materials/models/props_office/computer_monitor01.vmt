@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_office/computer_monitor01"
+$surfaceprop default
+}

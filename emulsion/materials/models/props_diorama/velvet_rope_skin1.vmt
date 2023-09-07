@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_diorama/velvet_rope_skin1"
+$surfaceprop default
+}

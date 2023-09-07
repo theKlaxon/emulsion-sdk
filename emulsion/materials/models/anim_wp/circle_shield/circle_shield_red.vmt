@@ -1,0 +1,13 @@
+VertexlitGeneric
+{
+$basetexture "models\anim_wp\circle_shield\circle_shield_red"
+$surfaceprop metal
+$bumpmap "models/anim_wp/circle_shield/circle_shield_normal"
+$ssbump 1
+$selfillum 1
+
+"!gameconsole?$phong" 1
+"!gameconsole?$phongboost" 2
+"!gameconsole?$phongexponent" 10
+"!gameconsole?$phongfresnelranges" "[.1 .5 1]"
+}

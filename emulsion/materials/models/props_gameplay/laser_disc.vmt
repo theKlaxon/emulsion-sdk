@@ -1,0 +1,11 @@
+VertexLitGeneric
+{
+$baseTexture "models/props_gameplay/laser_disc"
+
+$basemapalphaphongmask 1
+$phong 1
+$phongexponent 30
+$phongboost 30
+$phongfresnelranges "[.7 15 20]"
+$envmap env_cubemap
+}

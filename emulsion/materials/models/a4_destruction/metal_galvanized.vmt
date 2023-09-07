@@ -1,0 +1,11 @@
+VertexlitGeneric
+{
+$basetexture "models\a4_destruction\metal_galvanized"
+$surfaceprop metalvent
+$bumpmap "models\a4_destruction\metal_galvanized_normal"
+
+
+
+
+
+}

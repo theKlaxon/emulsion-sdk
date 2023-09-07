@@ -1,0 +1,36 @@
+VertexLitGeneric
+{
+$basetexture "models/props/glados_pillar/glados_pillar_off"
+$surfaceprop metal
+
+$bumpmap "models/props/glados_pillar/glados_pillar_n"
+
+$phong 1
+$phongboost 4
+$phongexponenttexture "models/props/glados_pillar/glados_pillar_exp"
+$phongfresnelranges "[3 1.5 2]"
+Proxies
+{
+Sine
+{
+sineperiod "2.5"
+sinemin ".8"
+sinemax 1
+resultVar "$selfillumtint[0]"
+}
+Sine
+{
+sineperiod "2.5"
+sinemin ".2"
+sinemax 1
+resultVar "$selfillumtint[1]"
+}
+Sine
+{
+sineperiod "2.5"
+sinemin ".2"
+sinemax 1
+resultVar "$selfillumtint[2]"
+}
+}
+}

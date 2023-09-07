@@ -1,0 +1,5 @@
+VertexLitGeneric
+{
+$basetexture "models/props_bts/duct_addon"
+$surfaceprop metal
+}
