@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "overlays/office_rug001a"
+$surfaceprop default
+$translucent 1
+$decal 1
+}

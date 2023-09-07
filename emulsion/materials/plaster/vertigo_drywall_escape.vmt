@@ -1,0 +1,13 @@
+LightmappedGeneric
+{
+$basetexture "plaster\vertigo_drywall_escape"
+$bumpmap "plaster\vertigo_drywall_back_N.vtf"
+$envmapmask "plaster\vertigo_drywall_back_REF.vtf"
+$surfaceprop sheetrock
+
+$envmap env_cubemap
+$envmapcontrast 1
+$envmapsaturation "1 "
+
+$envmaptint "[.05 .05 .05]"
+}

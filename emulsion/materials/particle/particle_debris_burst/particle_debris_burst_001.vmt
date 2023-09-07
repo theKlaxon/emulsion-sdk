@@ -1,0 +1,8 @@
+UnlitGeneric
+{
+$basetexture "particle/particle_debris_burst/particle_debris_burst_001"
+$vertexcolor 1
+$vertexalpha 1
+$translucent 1
+$splinetype 2
+}

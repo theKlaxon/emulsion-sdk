@@ -1,0 +1,8 @@
+SpriteCard
+{
+$basetexture "effects/energyball"
+$vertexcolor 1
+$translucent 1
+$additive 1
+$splinetype 1
+}

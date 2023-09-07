@@ -1,0 +1,7 @@
+LightmappedGeneric
+{
+$translucent 1
+$basetexture "overlays/overlay_scrawlings_arrow01"
+$decal 1
+"%keywords" portal
+}

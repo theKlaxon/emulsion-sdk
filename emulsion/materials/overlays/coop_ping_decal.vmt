@@ -1,0 +1,10 @@
+UnlitGeneric
+{
+$translucent 1
+$basetexture "overlays/coop_ping_decal"
+$decal 1
+$vertexcolor 1
+$vertexalpha 1
+$decalFadeDuration 5
+"%keywords" portal2
+}

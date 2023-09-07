@@ -1,0 +1,5 @@
+LightMappedGeneric
+{
+$basetexture "metal/underground_wall_metal004a_normal"
+$surfaceprop default
+}

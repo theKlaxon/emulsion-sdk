@@ -1,0 +1,8 @@
+LightMappedGeneric
+{
+$basetexture "signage/signage_paint_speed"
+$surfaceprop glass
+$translucent 1
+$decal 1
+"%keywords" portal2
+}

@@ -1,0 +1,14 @@
+UnlitGeneric
+{
+$baseTexture "vgui\screens\vgui_coop_credits_DNAstrip"
+$translucent 1
+Proxies
+{
+TextureScroll
+{
+texturescrollvar $basetexturetransform
+texturescrollrate 0.4
+texturescrollangle -90
+}
+}
+}

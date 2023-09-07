@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$translucent 1
+$basetexture "Decals/smscorch2"
+$decal 1
+}

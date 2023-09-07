@@ -1,0 +1,10 @@
+SpriteCard
+{
+$basetexture "particle/beam_portaledge_01"
+$additive 1
+
+$translucent 1
+$nocull 1
+$splinetype 1
+$orientation 3
+}

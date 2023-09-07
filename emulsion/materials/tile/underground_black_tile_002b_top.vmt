@@ -1,0 +1,20 @@
+LightMappedGeneric
+{
+$basetexture "tile/underground_black_tile_002b_top"
+$surfaceprop tile
+$bumpmap "tile/underground_white_tile_001c-height-ssbump"
+
+
+$ssbump 1
+
+"%noportal" 1
+$normalmapalphaenvmapmask 1
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$envmapcontrast 1
+$envmapsaturation .2
+$envmaptint "[.15 .15 .15 ]"
+$envmaplightscale .7
+}

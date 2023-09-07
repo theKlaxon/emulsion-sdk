@@ -1,0 +1,8 @@
+LightMappedGeneric
+{
+$basetexture "signage/underground_50s_welcome"
+$surfaceprop default
+
+$decal 1
+$decalscale 0.25
+}

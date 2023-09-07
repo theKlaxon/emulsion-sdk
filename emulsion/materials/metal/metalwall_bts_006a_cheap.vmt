@@ -1,0 +1,20 @@
+LightmappedGeneric
+{
+$basetexture "Metal/metalwall_bts_006a"
+
+"%keywords" "portal2 bts destruction"
+$surfaceprop metal
+
+
+
+
+
+
+
+
+
+
+"%noportal" 1
+$reflectivity "[ .3 .3 .3 ]" 
+$vertexfog 0
+}

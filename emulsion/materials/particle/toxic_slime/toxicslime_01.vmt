@@ -1,0 +1,11 @@
+SpriteCard
+{
+$basetexture "particle/toxic_slime/toxicslime_01"
+$vertexcolor 1
+$vertexalpha 1
+$translucent 1
+$depthblend 0
+$maxsize .85
+$startfadesize .675
+$endfadesize .75
+}

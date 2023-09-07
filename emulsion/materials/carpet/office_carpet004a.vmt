@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "carpet/office_carpet004a"
+$surfaceprop default
+"%noportal" 1
+}

@@ -1,0 +1,8 @@
+LightMappedGeneric
+{
+$basetexture "signage/signage_tractor_beam"
+$surfaceprop glass
+$selfillum 1
+$decal 1
+"%keywords" portal2
+}

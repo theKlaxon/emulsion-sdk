@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "signage/underground_keepout01"
+$surfaceprop default
+$decal 1
+$decalscale 0.25
+}

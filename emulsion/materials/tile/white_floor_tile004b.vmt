@@ -1,0 +1,17 @@
+LightmappedGeneric
+{
+$baseTexture "Tile/white_floor_tile004b"
+$surfaceprop metal
+$bumpmap "Tile/white_floor_tile002a_normal"
+$reflectivity "[ .75 .75 .75 ]" 
+
+
+
+
+
+$detail "detail\detail_dirt02a"
+$detailscale ".4"
+$detailblendfactor .45
+$detailblendmode 0
+"%keywords" "portal2 chamber"
+}

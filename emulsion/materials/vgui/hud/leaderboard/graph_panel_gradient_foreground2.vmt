@@ -1,0 +1,7 @@
+unlitGeneric
+{
+$baseTexture "vgui/hud/leaderboard/graph_panel_gradient_foreground2"
+$vertexcolor 3
+$vertexalpha 1
+$translucent 1
+}

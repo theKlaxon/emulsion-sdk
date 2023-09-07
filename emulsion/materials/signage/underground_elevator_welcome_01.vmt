@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "signage/underground_elevator_welcome_01"
+$surfaceprop default
+$decal 1
+$translucent 1
+}

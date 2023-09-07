@@ -1,0 +1,17 @@
+UnlitGeneric
+{
+$baseTexture "vgui/scoreboard/scoreboard"
+
+
+"%keywords" portal
+$decal 1
+Proxies
+{
+ToggleTexture
+{
+toggleTextureVar $baseTexture
+toggleTextureFrameNumVar $frame
+toggleTextureShouldWrap 0
+}
+}
+}

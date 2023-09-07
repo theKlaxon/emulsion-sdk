@@ -1,0 +1,9 @@
+LightMappedGeneric
+{
+$basetexture "signage/signage_you_are_here02"
+$surfaceprop default
+$selfillum 1
+$decal 1
+"%keywords" portal2
+"%noportal" 1
+}

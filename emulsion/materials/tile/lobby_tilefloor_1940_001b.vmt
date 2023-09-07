@@ -1,0 +1,15 @@
+LightMappedGeneric
+{
+$basetexture "tile/lobby_tilefloor_1940_001b"
+$surfaceprop tile
+"%keywords" "portal2 portal bts"
+$envmap env_cubemap
+
+
+$bumpmap "tile/observation_tilefloor001a-height-ssbump"
+$ssbump 1
+$envmaptint "[.2 .2 .2 ]"
+$normalmapalphaenvmapmask 1
+$envmaplightscale .6
+"%noportal" 1
+}

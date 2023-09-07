@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "decals/moon_crater"
+$surfaceprop default
+$translucent 1
+$decal 1
+}

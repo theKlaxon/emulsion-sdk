@@ -1,0 +1,16 @@
+LightShafts
+{
+$intensity 1
+$cookieTexture dummy
+$shadowDepthTexture dummy
+$time "0.0"
+
+Proxies
+{
+	CurrentTime
+	{
+		resultVar $time
+	}
+}
+
+}

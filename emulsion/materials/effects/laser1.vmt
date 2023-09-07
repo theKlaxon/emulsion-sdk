@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$basetexture "effects/laser1"
+$additive 1
+$translucent 1
+$vertexcolor 1
+}

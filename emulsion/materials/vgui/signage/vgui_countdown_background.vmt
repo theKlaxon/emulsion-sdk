@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$basetexture "signage/countdown_background"
+$surfaceprop glass
+$selfillum 1
+"%keywords" portal2
+}

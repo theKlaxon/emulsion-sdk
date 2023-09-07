@@ -1,0 +1,9 @@
+UnlitGeneric
+{
+$basetexture "signage/XBLA_signage_crusher"
+$surfaceprop glass
+$selfillum 1
+$decal 1
+"%keywords" portal
+"%keywords" portal2
+}

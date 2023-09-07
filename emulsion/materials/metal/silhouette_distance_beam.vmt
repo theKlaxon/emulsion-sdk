@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "metal/silhouette_distance_beam"
+$surfaceprop default
+$translucent 1
+}

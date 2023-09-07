@@ -1,0 +1,5 @@
+unlitGeneric
+{
+$baseTexture "vgui/store/store_inspector_bottom"
+$translucent 1
+}

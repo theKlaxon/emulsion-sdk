@@ -1,0 +1,8 @@
+LightMappedGeneric
+{
+$basetexture "signage/underground_waiting_01"
+$decal 1
+$translucent 1
+$decalscale 0.25
+"%keywords" "portal2 underground"
+}

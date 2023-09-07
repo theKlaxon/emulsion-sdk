@@ -1,0 +1,6 @@
+UnlitGeneric
+{
+$baseTexture "vgui\scoreboard\scoreboard005"
+$vertexalpha 1
+$vertexcolor 1
+}

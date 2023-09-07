@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "overlays/paint_border_inverse03"
+$surfaceprop default
+$translucent 1
+$decal 1
+}

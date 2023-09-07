@@ -1,0 +1,10 @@
+LightmappedGeneric
+{
+$vertexcolor 1
+$vertexalpha 1
+
+$translucent 1
+$basetexture "Decals/break1"
+$decal 1
+$modelmaterial "decals/break1model"
+}

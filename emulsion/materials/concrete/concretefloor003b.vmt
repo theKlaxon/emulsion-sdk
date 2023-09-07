@@ -1,0 +1,9 @@
+LightMappedGeneric
+{
+$basetexture "concrete/concretefloor003b"
+$surfaceprop default
+$envmap env_cubemap
+$basealphaenvmapmask 1
+$envmaptint "[ .25 .25 .25]"
+"%keywords" portal2
+}

@@ -1,0 +1,8 @@
+LightMappedGeneric
+{
+$basetexture "metal/underground_wall_metal003a"
+$surfaceprop default
+
+$ssbump 1
+$bumpmap "metal/underground_wall_metal003a-height-ssbump"
+}

@@ -1,0 +1,23 @@
+LightmappedGeneric
+{
+$basetexture "metal/black_floor_metal_001a"
+$surfaceprop metal
+$bumpmap "metal/black_floor_metal_001a_normal"
+$reflectivity "[ 0.6 0.6 0.6 ]" 
+$envmap "metal/black_wall_envmap_002a"
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$envmaplightscale 0.6
+
+$normalmapalphaenvmapmask 1
+$envmapcontrast 1.0
+$envmapsaturation 0.2
+$envmaptint 0.2 0.2 0.2
+"%noportal" 1
+
+$detailscale 1.25
+$detailblendfactor 1
+$detailblendmode 0
+}

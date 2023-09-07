@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+$basetexture "Decals/wood/shot4"
+$decalscale 0.10
+$translucent 1
+$decal 1
+}

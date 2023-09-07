@@ -1,0 +1,9 @@
+"WorldVertexTransition"
+{
+	"$basetexture" "plastic/office_plasticwall001c"
+	"$basetexture2" "error/rubble01"
+	"$blendmodulatetexture" "stanley/wallblend"
+
+
+	"%keywords" "tsp"
+}

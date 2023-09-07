@@ -1,0 +1,11 @@
+LightmappedGeneric
+{
+$baseTexture "concrete/street_overlay_noparking00"
+$surfaceprop concrete
+$translucent 1
+$decal 1
+$decalscale ".25"
+$vertexcolor 1
+$vertexalpha 1
+"%keywords" l4d2
+}

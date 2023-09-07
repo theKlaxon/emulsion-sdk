@@ -1,0 +1,6 @@
+UnlitGeneric
+{
+$basetexture "vgui/slideshow/diagnostics/screen_sphere_socket_03"
+
+"%keywords" diagnostics
+}

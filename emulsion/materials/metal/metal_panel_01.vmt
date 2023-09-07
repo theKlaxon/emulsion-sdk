@@ -1,0 +1,10 @@
+lightmappedgeneric
+{
+$baseTexture "metal/metal_panel_01"
+$surfaceprop metal
+$bumpmap "metal/metal_panel_01_normal"
+
+
+
+"%keywords" l4d2
+}

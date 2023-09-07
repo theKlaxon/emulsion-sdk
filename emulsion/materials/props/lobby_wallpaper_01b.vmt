@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "props/lobby_wallpaper_01b"
+$surfaceprop default
+"%noportal" 1
+}

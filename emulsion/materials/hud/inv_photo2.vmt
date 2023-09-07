@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$baseTexture _rt_LargePhoto2
+$vertexcolor 1
+$vertexalpha 1
+$ignorez 1
+}

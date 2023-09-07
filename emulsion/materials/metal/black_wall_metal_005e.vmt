@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "metal/black_wall_metal_005e"
+$surfaceprop default
+"%noportal" 1
+}

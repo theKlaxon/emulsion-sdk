@@ -1,0 +1,9 @@
+LightmappedGeneric
+{
+
+$basetexture "Tools/toolsnodraw"
+$translucent 1
+"%noportal" 1
+"%keywords" portal2
+$surfaceprop brokenglass
+}

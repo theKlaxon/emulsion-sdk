@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "tile/white_wall_tile004g"
+$surfaceprop default
+"%keywords" "portal2 chamber destruction"
+}

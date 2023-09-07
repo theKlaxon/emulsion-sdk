@@ -1,0 +1,12 @@
+LightMappedGeneric
+{
+$basetexture "concrete/concrete_bts_floor002b_top"
+$surfaceprop default
+$bumpmap "concrete\concrete_bts_floor002a_normal"
+"%noportal" 1
+
+
+
+
+"%keywords" "portal2 destruction underground"
+}

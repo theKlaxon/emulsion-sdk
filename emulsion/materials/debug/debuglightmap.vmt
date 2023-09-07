@@ -1,0 +1,8 @@
+LightmappedGeneric
+{
+
+$comparez 0
+$writez 0
+"%noToolTexture" 1
+$basetexture "dev/twenty"
+}

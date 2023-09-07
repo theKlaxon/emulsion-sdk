@@ -1,0 +1,8 @@
+LightmappedGeneric
+{
+$basetexture "Nature/ground_grass03"
+$surfaceprop dirt
+$ssbump 1
+$bumpmap "Nature/ground_grass03_height-ssbump"
+$SSBumpMathFix 1
+}

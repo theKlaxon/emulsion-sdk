@@ -1,0 +1,7 @@
+DecalModulate
+{
+$translucent 1
+$basetexture "Decals/Yblood1"
+$decal 1
+$decalscale .25
+}

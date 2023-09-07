@@ -1,0 +1,17 @@
+
+LightmappedGeneric
+{
+$basetexture "Metal/metalwall048e"
+$surfaceprop metal
+"%keywords" "combine, portal"
+
+$bumpmap "metal/metalwall048b_height-ssbump"
+$ssbump 1
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmapcontrast 1
+$envmapsaturation 1
+$envmaptint "[ 0.75 .50 0.50 ]"
+"%noportal" 1
+$reflectivity "[ .35 .30 .27 ]" 
+}

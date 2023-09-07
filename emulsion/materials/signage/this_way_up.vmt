@@ -1,0 +1,10 @@
+LightmappedGeneric
+{
+$basetexture "signage/this_way_up"
+$translucent 1
+
+$decal 1
+
+
+"%keywords" "portal2 bts"
+}

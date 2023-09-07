@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+//	"$translucent" 1
+	"$alphatest"	1
+	"$basetexture" "detail/mcmushroom"
+//	"$nocull" 1
+//	"$vertexcolor" 1
+//	"$vertexalpha" 1
+	"$model" 1
+}

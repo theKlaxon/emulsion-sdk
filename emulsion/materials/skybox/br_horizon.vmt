@@ -1,0 +1,8 @@
+unlitgeneric
+{
+$basetexture "skybox\br_horizon"
+"%noportal" 1
+$nofog 1
+$alphatest 1
+$color2 "[ .9 .9 1 ]"
+}

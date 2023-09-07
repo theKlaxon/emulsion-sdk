@@ -1,0 +1,11 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "Vehicle/metaltrainglass001a"
+	"$surfaceprop" "glass"
+	"$translucent" 1
+	"$envmapmask" "Vehicle/metaltrainglass001a_mask"
+	"$envmaptint" "[ 0.75 0.75 0.75 ]"
+	"$envmap" "env_cubemap"
+	"$envmapcontrast" 1
+	"$envmapsaturation" 1
+}

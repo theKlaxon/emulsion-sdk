@@ -1,0 +1,8 @@
+LightMappedGeneric
+{
+$basetexture "concrete/underground_concrete_ceiling002"
+$surfaceprop default
+"%noportal" 1
+$ssbump 1
+$bumpmap "Props/plasticwall003c-height-ssbump"
+}

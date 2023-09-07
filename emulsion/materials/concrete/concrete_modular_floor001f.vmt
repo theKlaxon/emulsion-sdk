@@ -1,0 +1,8 @@
+LightMappedGeneric
+{
+$basetexture "concrete/concrete_modular_floor001f"
+$surfaceprop default
+
+"%noportal" 1
+"%keywords" portal2
+}

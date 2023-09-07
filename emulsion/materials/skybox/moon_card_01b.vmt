@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$basetexture "skybox/moon_card_01b"
+$surfaceprop default
+$translucent 1
+
+}

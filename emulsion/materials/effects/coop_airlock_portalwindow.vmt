@@ -1,0 +1,9 @@
+UnlitGeneric
+{
+$basetexture "Effects/coop_airlock_portalwindow"
+$nodecal 1
+$translucent 1
+
+$baseAlphaEnvMapMask 1
+$envmap env_cubemap
+}

@@ -1,0 +1,8 @@
+UnlitGeneric
+{
+$basetexture "skybox/moon_card_01a"
+$surfaceprop default
+$translucent 1
+$nofog 1
+$color "[ .45 .45 .45]"
+}

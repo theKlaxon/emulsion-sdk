@@ -1,0 +1,15 @@
+WorldVertexTransition
+{
+$basetexture "nature/mud_ext_01"
+$basetexture2 "concrete/roadparkinglot"
+
+
+
+
+
+$blendmodulatetexture "freedom/dirt_blend"
+$surfaceprop dirt
+$surfaceprop2 asphalt
+
+
+}

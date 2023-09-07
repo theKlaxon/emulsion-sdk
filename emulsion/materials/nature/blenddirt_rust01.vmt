@@ -1,0 +1,16 @@
+WorldVertexTransition
+{
+$basetexture "Nature/dirtfloor004b"
+$basetexture2 "nature/dirtfloor004a"
+$surfaceprop concrete
+$surfaceprop2 metal
+"%noportal" 1
+"%keywords" "portal2 destruction"
+"GPU>=1"
+{
+$blendmodulatetexture "nature/blend_texture_01"
+$bumpmap "Nature/pavement_ssbump"
+$bumpmap2 "Nature/pavement_ssbump"
+$ssbump 1
+}
+}

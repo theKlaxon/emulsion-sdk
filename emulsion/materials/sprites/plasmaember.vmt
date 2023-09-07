@@ -1,0 +1,6 @@
+UnlitGeneric
+{
+
+$additive 1
+$basetexture "sprites/plasmaember"
+}

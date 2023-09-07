@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "plastic/office_plasticwall001c"
+$surfaceprop default
+"%noportal" 1
+}

@@ -1,0 +1,9 @@
+UnlitGeneric
+{
+$basetexture "vgui/hud/stick_paint_indicator"
+$translucent 1
+$translucency 1
+$ignorez 1
+$vertexcolor 1
+$vertexalpha 1
+}

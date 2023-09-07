@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$basetexture "vgui\screens\vgui_button_pushed"
+$additive 1
+
+$ignorez 1
+}

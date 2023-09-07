@@ -1,0 +1,10 @@
+LightMappedGeneric
+{
+$basetexture "metal/metaldoor_white01"
+$surfaceprop metal
+$envmap env_cubemap
+$basealphaenvmapmask 1
+$envmaptint "[ .04 .04 .04 ]"
+"%keywords" portal
+"%noportal" 1
+}

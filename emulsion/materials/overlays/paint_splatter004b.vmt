@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "overlays/paint_splatter004b"
+$surfaceprop default
+$translucent 1
+$decal 1
+}

@@ -1,0 +1,6 @@
+unlitGeneric
+{
+$baseTexture "vgui/hud/leaderboard/crown"
+$vertexalpha 1
+$translucent 1
+}

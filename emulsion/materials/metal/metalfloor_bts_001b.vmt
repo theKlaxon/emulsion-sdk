@@ -1,0 +1,14 @@
+
+LightmappedGeneric
+{
+$basetexture "Metal/metalfloor_bts_001b"
+$surfaceprop metal
+"%keywords" portal
+$envmaptint "[ .56 .56 .56 ]"
+$envmap env_cubemap
+$basealphaenvmapmask 1
+$envmapcontrast 1
+$envmapsaturation 1
+"%noportal" 1
+$reflectivity "[.35 .30 .27 ]" 
+}

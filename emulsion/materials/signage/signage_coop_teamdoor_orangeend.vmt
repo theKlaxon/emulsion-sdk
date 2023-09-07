@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$baseTexture "signage/signage_coop_teamdoor_orange"
+$surfaceprop glass
+$selfillum 1
+"%keywords" portal
+}

@@ -1,0 +1,15 @@
+WorldVertexTransition
+{
+$basetexture "nature/ground_moss_aztec"
+$basetexture2 "de_aztec/aztec_stone05"
+
+
+
+
+
+$blendmodulatetexture "nature/blend_grass2"
+$surfaceprop dirt
+$surfaceprop2 concrete
+
+
+}

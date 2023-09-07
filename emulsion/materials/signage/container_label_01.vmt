@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "signage/container_label_01"
+$surfaceprop default
+$decal 1
+}

@@ -1,0 +1,19 @@
+"UnlitTwoTexture"
+{
+	"$basetexture" "screens/emp3"
+	"$texture2" "screens/screenbars"
+
+    "$scale2" "[0.05 0.05]"
+
+	"Proxies"
+	{
+		"TextureScroll"
+		{
+			"texturescrollvar" "$texture2transform"
+			"texturescrollrate" .35
+			"texturescrollangle" 230.00
+		}
+	}
+}
+
+

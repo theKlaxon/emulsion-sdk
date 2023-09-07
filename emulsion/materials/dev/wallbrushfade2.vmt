@@ -1,0 +1,6 @@
+"LightmappedGeneric"
+  {
+  "$basetexture" "dev\wallbrushfade2"
+  "$decal" 1
+  "$translucent" 1
+  }

@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "overlays/teller_vent_01"
+$surfaceprop default
+$translucent 1
+$decal 1
+}

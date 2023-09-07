@@ -1,0 +1,19 @@
+LightMappedGeneric
+{
+$basetexture "metal/underground_wall_metal004d"
+$surfaceprop default
+$bumpmap "plaster/paintwall006-normal"
+
+"%noportal" 1
+"%keywords" "portal2 underground"
+$envmap "metal/black_wall_envmap_002a"
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$envmapcontrast 1
+$envmapsaturation .2
+$envmaptint "[.2 .2 .2 ]"
+$normalmapalphaenvmapmask 1
+$envmaplightscale .6
+}

@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "props/carpetfloor003a"
+$surfaceprop default
+"%noportal" 1
+}

@@ -1,0 +1,12 @@
+LightmappedGeneric
+{
+
+$basetexture "Decals/extinguish1"
+$translucent 1
+$vertexcolor 1
+$vertexalpha 1
+$decal 1
+$decalscale 0.25
+$decalfadeduration 0.75
+$decalfadetime 0.00
+}

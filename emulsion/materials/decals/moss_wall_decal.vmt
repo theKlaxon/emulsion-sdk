@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "decals/moss_wall_decal"
+$surfaceprop default
+$translucent 1
+$decal 1
+}

@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "signage/underground_80s_paradoxes"
+$surfaceprop default
+$translucent 1
+$decal 1
+}

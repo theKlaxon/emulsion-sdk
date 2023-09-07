@@ -1,0 +1,11 @@
+SpriteCard
+{
+$basetexture "particle/coop/command_target_particle_wedge"
+
+$splinetype 1
+
+$translucent 1
+
+
+$depthblend 0
+}

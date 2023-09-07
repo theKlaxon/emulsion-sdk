@@ -1,0 +1,12 @@
+// envmaptint_fix
+"LightmappedGeneric"
+{
+	"$basetexture" "Vehicle/metaltrain001c"
+	"$surfaceprop" "metal"
+	"$bumpmap" "Vehicle/metaltrain001c_normal"
+	"$envmap" "env_cubemap"
+	"$normalmapalphaenvmapmask" 1
+	"$envmapcontrast" 1
+	"$envmapsaturation" 1
+	"$envmaptint" "[ .86 .86 .86 ]"
+}

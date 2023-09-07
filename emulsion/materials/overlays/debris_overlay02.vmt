@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "overlays/debris_overlay02"
+$surfaceprop default
+$decal 1
+$translucent 1
+}

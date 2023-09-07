@@ -1,0 +1,7 @@
+Sprite
+{
+$nosrgb 1
+$spriteorientation vp_parallel
+$spriteorigin "[ 0.50 0.50 ]"
+$basetexture "sprites/light_glow03"
+}

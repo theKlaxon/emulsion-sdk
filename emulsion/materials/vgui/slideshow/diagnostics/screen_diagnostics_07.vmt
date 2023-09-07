@@ -1,0 +1,6 @@
+UnlitGeneric
+{
+$basetexture "vgui/slideshow/diagnostics/screen_diagnostics_07"
+
+"%keywords" diagnostics
+}

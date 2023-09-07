@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$baseTexture "vgui\hud\commands\gesture_dance"
+$vertexcolor 1
+$vertexalpha 1
+$ignorez 1
+}

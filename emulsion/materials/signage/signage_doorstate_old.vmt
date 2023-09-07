@@ -1,0 +1,16 @@
+LightMappedGeneric
+{
+$baseTexture "signage/signage_doorstate_old"
+$surfaceprop glass
+$selfillum 1
+"%keywords" "portal2 underground"
+Proxies
+{
+ToggleTexture
+{
+toggleTextureVar $baseTexture
+toggleTextureFrameNumVar $frame
+toggleTextureShouldWrap 0
+}
+}
+}

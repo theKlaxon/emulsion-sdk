@@ -1,0 +1,17 @@
+LightMappedGeneric
+{
+$basetexture "tile/white_wall_tile_bullseye"
+$surfaceprop metal
+$bumpmap "Tile/white_wall_tile003a_normal"
+
+$normalmapalphaenvmapmask 1
+$envmapcontrast 1
+$envmapsaturation 1
+$envmaptint .3 .3 .3
+$detail "detail\detail_concrete001a"
+$detailscale "4.25"
+$detailblendfactor .25
+$detailblendmode 0
+$selfillum 1
+"%keywords" "portal2 chamber"
+}

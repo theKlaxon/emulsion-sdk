@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+
+$basetexture "effects/energyball"
+$additive 1
+$vertexcolor 1
+}

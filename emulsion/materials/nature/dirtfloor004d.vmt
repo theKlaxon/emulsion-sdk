@@ -1,0 +1,22 @@
+LightMappedGeneric
+{
+$basetexture "nature/dirtfloor004d"
+
+$bumpmap "nature/dirtfloor004c_height-ssbump"
+$ssbump 1
+
+
+$detail "detail/detail_tile02"
+$detailscale 6
+$detailblendfactor .4`
+$detailblendmode 7
+$envmaplightscale 0.6
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1`
+$envmapcontrast 1.0
+$envmapsaturation 0.2
+$envmaptint "[ 0.2 0.4 0.4 ]"
+$surfaceprop default
+"%keywords" "portal2 destruction chamber"
+"%noportal" 1
+}

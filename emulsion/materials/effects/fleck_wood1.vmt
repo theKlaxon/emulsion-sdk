@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$basetexture "effects/fleck_wood1"
+$vertexcolor 1
+$translucent 1
+
+}

@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture"	"overlays/buttonhevscr"
+	"$surfaceprop"	"default"
+	"$translucent"	1
+	"$decal"	1
+}

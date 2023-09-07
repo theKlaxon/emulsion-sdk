@@ -1,0 +1,7 @@
+"LightMappedGeneric"
+{
+	"$basetexture"	"signage/noff/number4"
+      	"$decal" 1
+	"$translucent" 1
+	"%keywords" "stanley"
+}

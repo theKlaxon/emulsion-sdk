@@ -1,0 +1,6 @@
+SpriteCard
+{
+$basetexture "effects/splashwake1"
+
+$translucent 1
+}

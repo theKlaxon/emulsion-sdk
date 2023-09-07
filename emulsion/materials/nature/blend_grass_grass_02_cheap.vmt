@@ -1,0 +1,11 @@
+WorldVertexTransition
+{
+$basetexture "nature/ground_grass03"
+$basetexture2 "nature/ground_grass04"
+$bumpmap "concrete/pavement_height-ssbump"
+$ssbump 1
+$surfaceprop2 dirt
+$surfaceprop dirt
+"%keywords" l4d2
+
+}

@@ -1,0 +1,13 @@
+DecalModulate
+{
+$basetexture "signage/underground_num_07"
+
+
+$fogfadestart 0.1
+$fogfadeend 0.3
+$decalscale 0.25
+$decal 1
+$vertexcolor 1
+$vertexalpha 1
+"%keywords" "portal2 underground"
+}

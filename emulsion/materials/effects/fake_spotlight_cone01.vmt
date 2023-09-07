@@ -1,0 +1,8 @@
+UnlitGeneric
+{
+$basetexture "effects/fake_spotlight_cone01"
+$additive 1
+"%noportal" 1
+"%nopaint" 1
+"%compilepassbullets" 1
+}

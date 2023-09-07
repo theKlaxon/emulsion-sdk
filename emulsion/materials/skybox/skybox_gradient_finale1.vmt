@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$basetexture "skybox/skybox_gradient_finale1"
+$surfaceprop default
+$translucent 1
+$nofog 1
+}

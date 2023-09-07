@@ -1,0 +1,7 @@
+Downsample_nohdr
+{
+$bloomtype 0 
+$basetexture _rt_FullFrameFB
+$ignorez 1
+"%noToolTexture" 1
+}

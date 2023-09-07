@@ -1,0 +1,5 @@
+LightMappedGeneric
+{
+$basetexture "signage/keep_out"
+$surfaceprop default
+}

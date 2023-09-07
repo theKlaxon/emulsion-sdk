@@ -1,0 +1,7 @@
+LightmappedGeneric
+{
+$basetexture "overlays/overlay_moss01"
+$surfaceprop default
+$translucent 1
+$decal 1
+}

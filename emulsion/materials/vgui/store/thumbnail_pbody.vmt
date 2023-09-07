@@ -1,0 +1,5 @@
+unlitGeneric
+{
+$baseTexture "vgui/store/thumbnail_Pbody"
+$translucent 0
+}

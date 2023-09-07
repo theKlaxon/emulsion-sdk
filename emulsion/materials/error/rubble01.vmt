@@ -1,0 +1,5 @@
+LightmappedGeneric
+{
+$baseTexture "models/props_underground/rubble01"
+$surfaceprop dirt
+}

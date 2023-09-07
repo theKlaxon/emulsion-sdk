@@ -1,0 +1,8 @@
+LightMappedGeneric
+{
+$basetexture "overlays/stain_concrete011"
+$surfaceprop default
+$translucent 1
+$decal 1
+"%keywords" portal
+}

@@ -1,0 +1,5 @@
+unlitGeneric
+{
+$baseTexture "vgui/store/store_item_bg_highlight"
+$translucent 1
+}

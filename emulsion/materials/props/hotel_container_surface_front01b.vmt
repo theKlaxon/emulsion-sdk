@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "props/hotel_container_surface_front01b"
+$surfaceprop default
+"%noportal" 1
+}

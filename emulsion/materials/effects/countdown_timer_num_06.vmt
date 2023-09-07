@@ -1,0 +1,5 @@
+UnlitGeneric
+{
+$basetexture "effects/countdown_timer_num_06"
+$surfaceprop default
+}

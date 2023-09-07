@@ -1,0 +1,12 @@
+LightMappedGeneric
+{
+$basetexture "metal/underground_pipe001a"
+$surfaceprop default
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmaptint "[.25 .25 .25]"
+$bumpmap "plaster/paintwall006-normal"
+
+"%noportal" 1
+"%keywords" "portal2 underground"
+}

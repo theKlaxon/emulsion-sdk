@@ -1,0 +1,16 @@
+WorldVertexTransition
+{
+$basetexture "tile/white_floor_tile004d"
+$basetexture2 "nature/dirtfloor004b"
+$surfaceprop metal
+$surfaceprop2 dirt
+"%noportal" 1
+"%keywords" "portal2 noportal chamber"
+"GPU>=1"
+{
+$blendmodulatetexture "nature/blend_texture_01"
+$bumpmap "metal/tile-height-ssbump"
+$bumpmap2 "Nature/pavement_ssbump"
+$ssbump 1
+}
+}

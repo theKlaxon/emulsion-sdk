@@ -1,0 +1,44 @@
+engine_post
+{
+
+$AllowVignette 0
+$AllowNoise 0
+$AllowLocalContrast 0
+$AAEnable 1
+
+$basetexture _rt_SmallFB0
+$fbtexture _rt_FullFrameFB
+$screenEffectTexture _rt_SmallFB1
+$additive 0
+$ignorez 1
+$nocull 1
+"%noToolTexture" 1
+
+$noiseScale "1.0"
+$noiseTexture "dev/noise_post"
+
+$localcontrastenable 0
+$noiseEnable 0
+$vignetteEnable 0
+Proxies
+{
+Engine_Post
+{
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+}

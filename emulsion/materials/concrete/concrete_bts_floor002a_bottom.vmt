@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "concrete/concrete_bts_floor002a_bottom"
+$surfaceprop default
+"%noportal" 1
+}

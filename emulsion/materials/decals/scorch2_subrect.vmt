@@ -1,0 +1,7 @@
+Subrect
+{
+$Material "decals/decals_lit"
+$Pos "128 0"
+$Size "128 128"
+$modelmaterial "decals/scorch2model"
+}

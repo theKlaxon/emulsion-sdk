@@ -1,0 +1,17 @@
+LightMappedGeneric
+{
+$basetexture "concrete/concrete_modular_ceiling001a"
+$surfaceprop default
+LightmappedGeneric_HDR_DX9
+{
+
+$bumpmap "concrete/concrete_modular_floor001a_normal"
+
+}
+LightmappedGeneric_DX9
+{
+
+$bumpmap "concrete/concrete_modular_floor001a_normal"
+
+}
+}

@@ -1,0 +1,17 @@
+LightmappedGeneric
+{
+$basetexture "Glass/glasswindow_frosted_002"
+$envmap "metal/black_wall_envmap_002a_hdr"
+$envmapmask "glass/glasswindow_frosted_002b_mask"
+
+$envmapsaturation .1
+$envmaptint "[ .1 .2 .3 ]"
+$surfaceprop glass
+$translucent 1
+$fresnelreflection .5
+
+"srgb?$alpha" "0.5"
+"%noportal" 1
+"%keywords" portal2
+$worldimposter 1
+}

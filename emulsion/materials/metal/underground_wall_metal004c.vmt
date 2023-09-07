@@ -1,0 +1,20 @@
+LightMappedGeneric
+{
+$basetexture "metal/underground_wall_metal004c"
+$surfaceprop default
+
+$bumpmap "Props/plasticwall003c-height-ssbump"
+$ssbump 1
+"%noportal" 1
+"%keywords" "portal2 underground"
+$envmap "metal/black_wall_envmap_002a"
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$envmapcontrast 1
+$envmapsaturation .2
+$envmaptint "[.2 .2 .2 ]"
+$normalmapalphaenvmapmask 1
+$envmaplightscale .75
+}

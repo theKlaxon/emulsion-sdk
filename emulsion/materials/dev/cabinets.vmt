@@ -1,0 +1,8 @@
+"LightMappedGeneric"
+{
+	"$basetexture"	"dev/cabinets"
+	"$surfaceprop"	"default"
+	"$translucent"	1
+	"$decal"	1
+	"%keywords" "SECRETS SECRETS WILLIAM IS GOOD AT HIDING SECRETS"
+}

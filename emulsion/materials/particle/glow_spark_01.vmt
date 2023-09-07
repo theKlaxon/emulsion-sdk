@@ -1,0 +1,7 @@
+SpriteCard
+{
+$basetexture "particle\glow_spark_01"
+$vertexcolor 1
+$vertexalpha 1
+$translucent 1
+}

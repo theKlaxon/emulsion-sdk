@@ -1,0 +1,11 @@
+UnlitGeneric
+{
+$baseTexture "skybox/a4_arm_lights_dot"
+$selfillum 1
+$translucent 1
+"%keywords" portal
+$AlphaTest 1
+$AlphaTestReference "0.3"
+$AllowAlphaToCoverage 1
+$nopaint 1
+}

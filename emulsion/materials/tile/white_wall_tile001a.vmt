@@ -1,0 +1,16 @@
+LightmappedGeneric
+{
+$baseTexture "Tile/white_wall_tile001a"
+$surfaceprop metal
+$envmap env_cubemap
+$envmapcontrast 1
+$envmapsaturation 1
+$bumpmap "tile/white_wall_tile001a_height-ssbump"
+$ssbump 1
+$normalmapalphaenvmapmask 1
+$envmaptint "[ 0.6 0.5 0.5 ]"
+$detail "detail\detail_concrete001a"
+$detailscale "4.25"
+$detailblendfactor .25
+$detailblendmode 0
+}

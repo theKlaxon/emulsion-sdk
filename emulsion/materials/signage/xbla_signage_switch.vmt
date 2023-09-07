@@ -1,0 +1,8 @@
+LightmappedGeneric
+{
+$basetexture "signage/XBLA_signage_switch"
+$decal 1
+$surfaceprop glass
+$selfillum 1
+"%keywords" portal
+}

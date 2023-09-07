@@ -1,0 +1,8 @@
+Sprite
+{
+$spriteorientation vp_parallel_oriented
+$spriteorigin "[ 0.50 0.50 ]"
+$spritescale 1
+$translucent 1
+$baseTexture "sprites/sphere_silhouette"
+}

@@ -1,0 +1,10 @@
+LightMappedGeneric
+{
+$basetexture "metal/underground_metalgrate003a"
+$surfaceprop default
+
+$alphatest 1
+"%noportal" 1
+"%nopaint" 1
+"%compilepassbullets" 1
+}

@@ -1,0 +1,8 @@
+LightMappedGeneric
+{
+$basetexture "overlays/number_04"
+$surfaceprop default
+$translucent 1
+$decal 1
+"%keywords" "portal2 bts"
+}

@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$baseTexture "skybox/finale_stars"
+$surfaceprop default
+
+
+}

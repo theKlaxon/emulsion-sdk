@@ -1,0 +1,24 @@
+LightMappedGeneric
+{
+$basetexture "metal/black_floor_metal_001d"
+
+
+
+
+
+
+
+
+$envmaplightscale 0.6
+
+
+
+
+
+"%noportal" 1
+
+
+
+
+"%keywords" "portal2 noportal chamber"
+}

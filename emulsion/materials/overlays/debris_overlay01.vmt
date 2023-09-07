@@ -1,0 +1,8 @@
+LightMappedGeneric
+{
+$basetexture "overlays/debris_overlay01"
+$surfaceprop default
+$translucent 1
+$decal 1
+"%keywords" portal2
+}

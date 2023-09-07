@@ -1,0 +1,8 @@
+Subrect
+{
+$Material "decals/decals_mod2x"
+$Pos "256 128"
+$Size "128 128"
+$decalscale 0.11
+$modelmaterial "decals/glass/shot3"
+}

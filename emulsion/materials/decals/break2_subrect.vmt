@@ -1,0 +1,7 @@
+Subrect
+{
+$Material "decals/decals_lit"
+$Pos "320 0"
+$Size "64 64"
+$modelmaterial "decals/break2model"
+}

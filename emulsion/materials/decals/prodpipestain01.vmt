@@ -1,0 +1,9 @@
+LightmappedGeneric
+{
+$translucent 1
+$basetexture "Decals/prodpipestain01"
+$decal 1
+$decalscale 0.35
+$vertexcolor 1
+$vertexalpha 1
+}

@@ -1,0 +1,51 @@
+SolidEnergy
+{
+$detail2 "effects/laser_group10x_phase"
+$detail1blendmode 1
+$detail1 "effects/laserplane_atmosphere"
+$detail2blendmode 1
+$basetexture "effects/laser_group10x"
+$translucent 1
+$additive 1
+$basetexturescale "[1 1]"
+$detailscale "[1 1]"
+$detail2rot -30
+$detail2offset "[0 0]"
+$detail1offset "[0 0]"
+$basetexturecentroid "[0 0.5]"
+"!srgb?$outputintensity" .75
+Proxies
+{
+Sine
+{
+sineMin -0.05
+sineMax 0.01
+sinePeriod 0.18
+resultVar "$detail2offset[1]"
+}
+LinearRamp
+{
+rate 0.04
+initialValue 0
+resultVar "$detail1offset[0]"
+}
+TextureTransform
+{
+centerVar $basetexturecentroid
+scaleVar $basetexturescale
+resultvar $basetexturetransform
+}
+TextureTransform
+{
+translateVar $detail2offset
+resultvar $detail2texturetransform
+}
+TextureTransform
+{
+scaleVar $detailscale
+translateVar $detail1offset
+rotateVar $detail1rot
+resultvar $detail1texturetransform
+}
+}
+}

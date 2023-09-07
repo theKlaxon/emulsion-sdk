@@ -1,0 +1,7 @@
+LightmappedGeneric
+{
+$basetexture "metal/neurotoxin_vent"
+$surfaceprop metal
+"%noportal" 1
+"%nopaint" 1
+}

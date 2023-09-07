@@ -1,0 +1,8 @@
+UnlitGeneric
+{
+$basetexture "vgui\screens\vgui_levelselect_icon_blue_only"
+$translucent 1
+
+
+
+}

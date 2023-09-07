@@ -1,0 +1,8 @@
+DecalModulate
+{
+$basetexture "signage/underground_start_00"
+$decal 1
+$translucent 1
+$decalscale 0.25
+"%keywords" "portal2 underground"
+}

@@ -1,0 +1,13 @@
+UnlitGeneric
+{
+
+$translucent 1
+$vertexcolor 1
+$vertexalpha 1
+$decal 1
+$basetexture "decals/plasmaglowalpha"
+$decalscale 2.00
+$decalfadeduration 0.10
+$decalfadetime 0.00
+$decalsecondpass 1
+}

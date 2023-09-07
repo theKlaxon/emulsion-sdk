@@ -1,0 +1,14 @@
+LightMappedGeneric
+{
+$basetexture "concrete/factory_concrete_wall001b_bottom"
+$surfaceprop concrete
+$ssbump 1
+$bumpmap "concrete/factory_concrete_wall001a_height-ssbump"
+$SSBumpMathFix 1
+
+
+
+
+
+"%keywords" "portal2 bts"
+}

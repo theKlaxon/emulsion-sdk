@@ -1,0 +1,6 @@
+UnlitGeneric
+{
+$basetexture "vgui\store\store_bottom_bar_button_highlight_bg"
+$translucent 1
+$ignorez 1
+}

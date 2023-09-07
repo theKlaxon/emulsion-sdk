@@ -1,0 +1,6 @@
+
+UnlitGeneric
+{
+$baseTexture "vgui/resource/black_round_rect"
+$vertexalpha 1
+}

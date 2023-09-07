@@ -1,0 +1,8 @@
+UnlitGeneric
+{
+$basetexture "sprites/crosshair_default"
+$additive 1
+$vertexcolor 1
+$vertexalpha 1
+$ignorez 1
+}

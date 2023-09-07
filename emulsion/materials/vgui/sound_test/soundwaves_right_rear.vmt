@@ -1,0 +1,10 @@
+UnlitGeneric
+{
+$basetexture "vgui/sound_test/soundwaves_right_rear"
+$translucent 1
+$vertexcolor 1
+$vertexalpha 1
+$ignorez 1
+$additive 0
+$no_fullbright 1
+}

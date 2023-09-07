@@ -1,0 +1,17 @@
+ "LightMappedGeneric"
+ {
+  "$baseTexture" "signage/clock/clock_minutes"
+  "$surfaceprop" "glass"
+  "$selfillum" 1
+  "%keywords" "portal"
+
+  "Proxies" 
+  { 
+   "ToggleTexture"
+   {
+    "toggleTextureVar" "$baseTexture"
+    "toggleTextureFrameNumVar" "$frame"
+    "toggleTextureShouldWrap" "0"
+   } 	
+  } 
+ }

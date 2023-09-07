@@ -1,0 +1,25 @@
+ "LightMappedGeneric"
+ {
+  "$baseTexture" "signage/clock/countdown"
+  "$surfaceprop" "glass"
+  "$selfillum" 1
+  "%keywords" "portal"
+
+	"$frame" 9
+
+  "Proxies" 
+  { 
+  	"MaterialModify"
+		{
+			// fixme!  This has to be here, or material loading barfs.
+			"dummy" 0
+		}
+  	
+//   "ToggleTexture"
+//   {
+//    "toggleTextureVar" "$baseTexture"
+//    "toggleTextureFrameNumVar" "$frame"
+//    "toggleTextureShouldWrap" "0"
+//   } 	
+  } 
+ }

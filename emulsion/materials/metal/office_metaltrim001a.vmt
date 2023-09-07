@@ -1,0 +1,5 @@
+LightMappedGeneric
+{
+$basetexture "metal/office_metaltrim001a"
+$surfaceprop default
+}

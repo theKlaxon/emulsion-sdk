@@ -1,0 +1,5 @@
+LightMappedGeneric
+{
+$basetexture "signage/stasis_annex"
+$surfaceprop default
+}

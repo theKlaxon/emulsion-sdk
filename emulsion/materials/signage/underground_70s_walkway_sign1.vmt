@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "signage/underground_70s_walkway_sign1"
+$surfaceprop default
+$translucent 1
+$decal 1
+}

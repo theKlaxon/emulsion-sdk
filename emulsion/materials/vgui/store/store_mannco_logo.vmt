@@ -1,0 +1,5 @@
+unlitGeneric
+{
+$baseTexture "vgui/store/store_mannco_logo"
+$translucent 1
+}

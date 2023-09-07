@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "signage/underground_nonotenter01"
+$surfaceprop default
+$decal 1
+}

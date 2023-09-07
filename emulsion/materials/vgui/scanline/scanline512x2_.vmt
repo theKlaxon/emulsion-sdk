@@ -1,0 +1,19 @@
+UnlitGeneric
+{
+$basetexture "vgui/scanline/scanline512x2_"
+$translucent 1
+$color "[.53 .41 .03]"
+$alpha ".03"
+$additive 1
+$vertexcolor 1
+$vertexalpha 1
+Proxies
+{
+AnimatedTexture
+{
+animatedtexturevar $basetexture
+animatedtextureframenumvar $frame
+animatedtextureframerate 24
+}
+}
+}

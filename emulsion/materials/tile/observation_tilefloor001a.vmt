@@ -1,0 +1,18 @@
+LightmappedGeneric
+{
+$baseTexture "Tile/observation_tilefloor001a"
+$surfaceprop tile
+
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$bumpmap "tile/observation_tilefloor001a-height-ssbump"
+$ssbump 1
+$envmapcontrast 1
+$envmapsaturation .2
+$envmaptint "[.1 .1 .1 ]"
+$envmaplightscale .7
+"%noportal" 1
+"%keywords" "portal2 noportal chamber"
+}

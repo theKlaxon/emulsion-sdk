@@ -1,0 +1,6 @@
+lightmappedGeneric
+{
+$baseTexture "brick/brickwall_baggage_stripe_dirt"
+$surfaceprop brick
+"%keywords" cstrike
+}

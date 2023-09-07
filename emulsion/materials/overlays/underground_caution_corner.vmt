@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "overlays/underground_caution_corner"
+$surfaceprop default
+$translucent 1
+$decal 1
+}

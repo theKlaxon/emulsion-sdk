@@ -1,0 +1,12 @@
+UnlitGeneric
+{
+$translucent 1
+$basetexture "vgui\loading_screens\loadingscreen_default_c_2_widescreen"
+$vertexcolor 1
+$vertexalpha 1
+$no_fullbright 1
+$ignorez 1
+$additive 0
+"gameconsole?$color2" "[.6 .6 .6]"
+$SHADERSRGBREAD360 1
+}

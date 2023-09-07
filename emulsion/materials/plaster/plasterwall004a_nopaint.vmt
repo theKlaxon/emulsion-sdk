@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "plaster/plasterwall004a_nopaint"
+$surfaceprop default
+"%nopaint" 1
+}

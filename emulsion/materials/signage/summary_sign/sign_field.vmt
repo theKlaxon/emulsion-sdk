@@ -1,0 +1,64 @@
+UnlitTwoTexture
+{
+$basetexture "signage/summary_sign/sign_field"
+$texture2 "signage/summary_sign/sign_field"
+
+$envmap env_cubemap
+$envmaptint "[1 1 1]"
+$additive 1
+$nodecal 1
+$playerdistance 0
+$inversealpha 1
+$alphainversed 1
+$one 1
+
+$sin_alpha 0
+$sin_scale 0
+$sin_ofs 0
+$sin_rotate 0
+$scale 2
+$scale2 1
+$scale_ofs 0
+$texoffset "[0 0]"
+$midofs 0.0
+
+Proxies
+{
+TextureScroll
+{
+texturescrollvar $basetexturetransform
+texturescrollrate 0
+texturescrollangle 90
+}
+AnimatedTexture
+{
+animatedtexturevar $basetexture
+animatedtextureframenumvar $frame
+animatedtextureframerate 30
+}
+AnimatedTexture
+{
+animatedtexturevar $texture2
+animatedtextureframenumvar $frame2
+animatedtextureframerate 22
+}
+PlayerProximity
+{
+resultVar $inversealpha
+scale .0005
+}
+Subtract
+{
+srcVar1 $one
+srcVar2 $inversealpha
+resultVar $alphainversed
+}
+Clamp
+{
+srcVar1 $alphainversed
+min 0
+max 1
+resultVar $alpha
+}
+}
+}

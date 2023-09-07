@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$basetexture "signage/shape02"
+$vertexcolor 1
+$vertexalpha 1
+"%keywords" portal2
+}

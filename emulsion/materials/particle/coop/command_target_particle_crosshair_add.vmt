@@ -1,0 +1,9 @@
+Spritecard
+{
+$translucent 1
+$basetexture "particle/coop/command_target_particle_crosshair_add"
+$vertexcolor 1
+$vertexalpha 1
+$additive 1
+$depthblend 0
+}

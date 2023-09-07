@@ -1,0 +1,9 @@
+
+LightmappedGeneric
+{
+$basetexture "Metal/metalfloor_bts_001a"
+"%keywords" portal
+
+$surfaceprop metal
+"%noportal" 1
+}

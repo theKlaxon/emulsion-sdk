@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$basetexture "skybox/skybox_card_cranes_01b"
+$surfaceprop default
+$translucent 1
+
+}

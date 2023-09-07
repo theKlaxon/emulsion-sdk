@@ -1,0 +1,12 @@
+LightMappedGeneric
+{
+$basetexture "tile/white_wall_tile003h"
+$surfaceprop default
+$bumpmap "Tile/white_wall_tile003h_height-ssbump"
+$ssbump 1
+$detail "detail\white_floor_detail_height-ssbump"
+$detailscale 80
+$detailblendfactor 1
+$detailblendmode 10
+"%keywords" "portal2 chamber"
+}

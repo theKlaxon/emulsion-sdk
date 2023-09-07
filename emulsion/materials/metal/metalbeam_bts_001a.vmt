@@ -1,0 +1,15 @@
+LightmappedGeneric
+{
+
+$basetexture "Metal/metalbeam_bts_001a"
+$surfaceprop metal
+"%noportal" 1
+"%keywords" "portal2 bts"
+$bumpmap "metal/metalbeam_bts_001a-height-ssbump"
+$ssbump 1
+
+
+
+
+
+}

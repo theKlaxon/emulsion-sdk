@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$basetexture "vgui\ico_friend_indicator_scoreboard"
+$translucent 1
+$ignorez 1
+$vertexcolor 1
+}

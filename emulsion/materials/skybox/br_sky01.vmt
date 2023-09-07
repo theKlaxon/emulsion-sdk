@@ -1,0 +1,8 @@
+UnlitGeneric
+{
+$basetexture "skybox\br_sky01"
+"%noportal" 1
+"%keywords" "c17downtown,c17industrial,c17sewers,c17trainstation,combine,wasteland"
+$nofog 1
+$translucent 1
+}

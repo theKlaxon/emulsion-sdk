@@ -1,0 +1,14 @@
+SpriteCard
+{
+$basetexture "particle\particle_glow_01"
+
+$OVERBRIGHTFACTOR .02
+$Additive 1
+$STARTFADESIZE .3
+$ENDFADESIZE .37
+$DEPTHBLEND 1
+
+$Blendframes 0
+GPU<2?$STARTFADESIZE .2
+GPU<2?$ENDFADESIZE .25
+}

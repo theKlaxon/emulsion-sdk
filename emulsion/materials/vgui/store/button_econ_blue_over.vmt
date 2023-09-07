@@ -1,0 +1,5 @@
+unlitGeneric
+{
+$baseTexture "vgui/store/button_econ_blue_over"
+$translucent 1
+}

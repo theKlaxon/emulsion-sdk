@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "plaster/plaster_wall008a_bottom"
+$surfaceprop default
+"%noportal" 1
+}

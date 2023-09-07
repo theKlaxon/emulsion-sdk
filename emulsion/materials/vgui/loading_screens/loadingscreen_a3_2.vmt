@@ -1,0 +1,12 @@
+UnlitGeneric
+{
+$translucent 1
+$basetexture "vgui\loading_screens\loadingscreen_a3_2"
+$vertexcolor 1
+$vertexalpha 1
+$no_fullbright 1
+$ignorez 1
+$additive 0
+"gameconsole?$color2" "[.7 .7 .7]"
+$SHADERSRGBREAD360 1
+}

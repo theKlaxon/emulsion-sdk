@@ -1,0 +1,40 @@
+
+LightmappedGeneric
+{
+$basetexture "Metal/metalwall_bts_003a"
+"%keywords" portal
+$surfaceprop metal
+$envmaptint "[ .10 .05 .05 ]"
+$envmap env_cubemap
+
+
+"%noportal" 1
+LightmappedGeneric_DX9
+{
+$bumpmap "Metal/metalwall_bts_006a_height-ssbump"
+
+$normalmapalphaenvmapmask 1
+$envmaptint "[ .10 .05 .05 ]"
+$ssbump 1
+}
+LightmappedGeneric_DX8
+{
+$bumpmap "Metal/metalwall_bts_006a_height-ssbump"
+
+$normalmapalphaenvmapmask 1
+$ssbump 1
+}
+LightmappedGeneric_NoBump_DX8
+{
+$basetexture "Metal/metalwall_bts_003a"
+$basealphaenvmapmask 1
+}
+LightmappedGeneric_hdr_dx9
+{
+
+$envmaptint "[ .10 .05 .05 ]"
+$bumpmap "Metal/metalwall_bts_006a_height-ssbump"
+$normalmapalphaenvmapmask 1
+$ssbump 1
+}
+}

@@ -1,0 +1,5 @@
+LightMappedGeneric
+{
+$basetexture "plastic/office_plasticwall001c_bottom"
+$surfaceprop default
+}

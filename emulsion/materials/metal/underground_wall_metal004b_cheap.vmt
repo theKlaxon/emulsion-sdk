@@ -1,0 +1,12 @@
+LightMappedGeneric
+{
+$basetexture "metal/underground_wall_metal004b"
+$surfaceprop default
+
+
+
+
+
+"%noportal" 1
+"%keywords" "portal2 underground"
+}

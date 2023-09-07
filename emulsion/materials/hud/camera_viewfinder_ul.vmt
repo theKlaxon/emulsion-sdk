@@ -1,0 +1,19 @@
+Refract
+{
+$model 1
+$bluramount 1
+$scale "[1 1]"
+
+$normalmap "HUD\camera_viewfinder_normal_ul"
+$bumpframe 0
+$translucent 1
+$ignorez 1
+$nofog 1
+$refracttinttexture "HUD\camera_viewfinder_ul"
+"SonyPS3?$forcerefract" 0
+"SonyPS3?$refractamount" 0
+"!SonyPS3?$forcerefract" 1
+"!SonyPS3?$refractamount" .2
+
+$scaleamount "[-1 1]"
+}

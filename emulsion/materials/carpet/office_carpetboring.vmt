@@ -1,0 +1,12 @@
+LightMappedGeneric
+{
+$basetexture "carpet/office_carpetboring"
+$surfaceprop default
+"%noportal" 1
+"%keywords" "portal2 bts office underground"
+$detail "detail\dt_fabric2"
+$detailscale "8"
+$detailblendfactor .1
+$detailblendmode 0
+
+}

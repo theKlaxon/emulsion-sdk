@@ -1,0 +1,10 @@
+UnlitGeneric
+{
+$translucent 1
+$basetexture "vgui\elevator_video_lines"
+$vertexcolor 1
+$vertexalpha 1
+$no_fullbright 1
+$ignorez 1
+$additive 0
+}

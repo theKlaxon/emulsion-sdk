@@ -1,0 +1,9 @@
+LightmappedGeneric
+{
+$vertexcolor 1
+$vertexalpha 1
+$translucent 1
+$basetexture "Decals/rollermine_crater"
+$decalscale 0.45
+$decal 1
+}

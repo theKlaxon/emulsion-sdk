@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "concrete/concrete_bts_floor002d"
+$surfaceprop default
+"%keywords" "portal2 destruction underground"
+"%noportal" 1
+}

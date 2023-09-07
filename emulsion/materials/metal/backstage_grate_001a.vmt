@@ -1,0 +1,10 @@
+LightmappedGeneric
+{
+$basetexture "Metal/backstage_grate_001a"
+"%compilepassbullets" 1
+$surfaceprop metalgrate
+"%keywords" "backstage,portal2"
+$alphatest 1
+"%noportal" 1
+"%nopaint" 1
+}

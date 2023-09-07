@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "fabric/office_fabricwall002a"
+$surfaceprop default
+"%keywords" portal2
+}

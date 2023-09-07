@@ -1,0 +1,8 @@
+LightmappedGeneric
+{
+
+$basetexture "Tools/toolsnodraw_portal"
+"%noportal" 0
+"%compilenodraw" 1
+"%keywords" "portal, portal2"
+}

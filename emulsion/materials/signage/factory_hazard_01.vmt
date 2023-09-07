@@ -1,0 +1,7 @@
+LightmappedGeneric
+{
+$basetexture "signage/factory_hazard_01"
+$translucent 1
+$decalscale 0.5
+"%keywords" "portal2 bts"
+}

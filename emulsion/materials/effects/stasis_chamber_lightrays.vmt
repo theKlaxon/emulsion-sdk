@@ -1,0 +1,8 @@
+UnlitGeneric
+{
+$basetexture "effects/stasis_chamber_lightrays"
+$additive 1
+"%noportal" 1
+"%nopaint" 1
+"%compilepassbullets" 1
+}

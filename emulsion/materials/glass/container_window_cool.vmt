@@ -1,0 +1,21 @@
+Refract
+{
+$model 1
+$refractamount ".025"
+$bluramount 1
+$REFRACTTINT "[.81 .89 1.0]"
+$scale "[1 1]"
+$normalmap "glass/refract_light_normal"
+$surfaceprop glass
+$localrefract 1
+$localrefractdepth "0.025"
+$basetexture "glass/refract_light_color"
+$envmap env_cubemap
+$envmapcontrast 0
+$envmapsaturation "[1 1 1]"
+$envmaptint "[.4 .4 .4]"
+"<dx90"
+{
+$fallbackmaterial "glass/refract01_dx8"
+}
+}

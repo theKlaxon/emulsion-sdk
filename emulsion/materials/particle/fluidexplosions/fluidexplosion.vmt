@@ -1,0 +1,23 @@
+SpriteCard
+{
+
+
+
+
+
+
+
+$basetexture "particle\fluidExplosions\fluidexplosion"
+
+$ADDOVERBLEND 1
+$SEQUENCE_BLEND_MODE 0 
+$CROPFACTOR "[1 1]"
+$OVERBRIGHTFACTOR 4.5
+$ADDSELF 1
+$DEPTHBLEND 1
+$BLENDFRAMES 1
+360?$BLENDFRAMES 0
+360?$DEPTHBLEND 0
+GPU<2?$BLENDFRAMES 0
+
+}

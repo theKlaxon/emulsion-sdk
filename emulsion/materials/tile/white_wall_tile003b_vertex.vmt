@@ -1,0 +1,16 @@
+VertexlitGeneric
+{
+$baseTexture "Tile/white_wall_tile003b"
+$surfaceprop metal
+$bumpmap "Tile/white_wall_tile003b_normal"
+$reflectivity "[ .75 .75 .75 ]" 
+
+$normalmapalphaenvmapmask 1
+$envmapcontrast 1
+$envmapsaturation 1
+$envmaptint .3 .3 .3
+$detail "detail\detail_concrete001a"
+$detailscale "4.25"
+$detailblendfactor .25
+$detailblendmode 0
+}

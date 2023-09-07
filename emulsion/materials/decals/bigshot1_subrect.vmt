@@ -1,0 +1,7 @@
+Subrect
+{
+$Material "decals/decals_lit"
+$Pos "64 32"
+$Size "64 64"
+$modelmaterial "decals/bigshot1model"
+}

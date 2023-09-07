@@ -1,0 +1,13 @@
+UnlitGeneric
+{
+"%tooltexture" "Decals/decalwastelandpuddle001a"
+$envmap env_cubemap
+$envmapmask "decals/decalborealispuddlemask001a"
+$vertexcolor 1
+$vertexalpha 1
+$decal 1
+$decalscale 0.2
+
+$decalfadeduration -2.00
+$decalfadetime 0.00
+}

@@ -1,0 +1,30 @@
+Modulate
+{
+
+$basetexture "vgui/screens/vgui_overlay"
+$writez 1 
+$texoffset "[0 0]"
+$texscale 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

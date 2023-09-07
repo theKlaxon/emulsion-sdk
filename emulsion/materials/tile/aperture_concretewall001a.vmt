@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "tile/aperture_concretewall001a"
+$surfaceprop concrete
+"%keywords" aperture
+}

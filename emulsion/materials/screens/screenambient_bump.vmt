@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$basetexture "screens/screenambient_bump"
+$surfaceprop metal
+  "$decal" 1
+  "$translucent" 1
+}

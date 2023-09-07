@@ -1,0 +1,17 @@
+LightMappedGeneric
+{
+$basetexture "elevator/elevator_screen_dirty2"
+$surfaceprop glass
+$bumpmap "elevator/elevator_screen_broken2_normal"
+
+$envmap "metal/black_wall_envmap_002a"
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$normalmapalphaenvmapmask 1
+$envmapcontrast 1
+$envmapsaturation .2
+$envmaptint .5 .7 .8
+"%noportal" 1
+}

@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "metal/underground_metal_corrugated001_bottom"
+$surfaceprop metal
+"%noportal" 1
+}

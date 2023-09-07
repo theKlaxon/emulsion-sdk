@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$basetexture "signage/coop_animals"
+$surfaceprop default
+
+"%keywords" portal2
+}

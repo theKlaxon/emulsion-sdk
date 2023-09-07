@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "tile/1970_tile_floor_01b"
+$surfaceprop default
+"%noportal" 1
+}

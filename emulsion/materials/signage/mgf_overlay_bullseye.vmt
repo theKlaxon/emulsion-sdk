@@ -1,0 +1,12 @@
+LightMappedGeneric
+{
+$basetexture "signage/mgf_overlay_bullseye"
+$decal 1
+$translucent 1
+$surfaceprop glass
+"%keywords" portal
+$detail "signage/mgf_overlay_bullseye_glow"
+$detailblendmode 5
+$detailscale 1
+$detailblendfactor ".45"
+}

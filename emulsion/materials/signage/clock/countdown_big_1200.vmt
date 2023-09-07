@@ -1,0 +1,5 @@
+LightMappedGeneric
+{
+$basetexture "signage/clock/countdown_big_1200"
+$surfaceprop default
+}

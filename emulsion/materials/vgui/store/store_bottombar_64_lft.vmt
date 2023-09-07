@@ -1,0 +1,6 @@
+UnlitGeneric
+{
+$basetexture "vgui\store\store_bottombar_64_lft"
+$translucent 1
+$ignorez 1
+}

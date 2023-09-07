@@ -1,0 +1,5 @@
+unlitGeneric
+{
+$baseTexture "vgui/store/thumbnail_Atlas"
+$translucent 0
+}

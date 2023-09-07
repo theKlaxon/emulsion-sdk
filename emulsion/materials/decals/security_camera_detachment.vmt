@@ -1,0 +1,8 @@
+LightmappedGeneric
+{
+$translucent 1
+$basetexture "decals/security_camera_detachment"
+$decal 1
+
+"%keywords" portal
+}

@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "metal/metaldoor007a"
+$surfaceprop metal
+"%keywords" "portal2 bts"
+"%noportal" 1
+}

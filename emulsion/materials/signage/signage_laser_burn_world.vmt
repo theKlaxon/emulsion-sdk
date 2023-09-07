@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "signage/signage_laser_burn_world"
+$surfaceprop glass
+$selfillum 1
+"%keywords" portal2
+}

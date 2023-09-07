@@ -1,0 +1,8 @@
+Subrect
+{
+$Material "decals/decals_lit"
+$Pos "0 32"
+$Size "32 32"
+$decalscale 0.1
+$modelmaterial "decals/bloodyflesh/blood3"
+}

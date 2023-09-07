@@ -1,0 +1,70 @@
+SolidEnergy
+{
+$basetexture "effects/tractor_beam_core"
+$detail1 "effects/tractor_beam_core2"
+$detail1scale 1
+$DETAIL1BLENDMODE 1
+$detail2 "effects/tractor_beam_core1"
+$detail2scale 1
+$detail2blendmode 0
+$surfaceprop glass
+"%keywords" Portal2
+$translucent 1
+$additive 1
+$color "[1 1 1]" 
+$vertexalpha 1
+$vertexcolor 1
+$nocull 1 
+$scrollrate 0
+$detail1scrollfactor -0.1
+$detail2scrollfactor 1.15
+$detail1scrollrate 0
+$detail2scrollrate 0
+$basetexturescrollrate 0
+$basetextureoffset 0
+$basetextureoffsetfreeze 0
+$basetexturetranslate "[0 0]"
+$neg "-0.6"
+
+$TANGENTTOPACITYRANGES "[1.0 -1.0 28 0.3]"
+
+$basescale "[1 1]"
+"!srgb?$outputintensity" .5
+Proxies
+{
+TractorBeam
+{
+resultvar $scrollrate
+}
+Multiply
+{
+srcvar1 $detail1scrollfactor
+srcvar2 $scrollrate
+resultvar $detail1scrollrate
+}
+Multiply
+{
+srcvar1 $detail2scrollfactor
+srcvar2 $scrollrate
+resultvar $detail2scrollrate
+}
+TextureScroll
+{
+texturescrollvar $detail1texturetransform
+texturescrollrate $detail1scrollrate
+texturescrollangle 190
+}
+TextureScroll
+{
+texturescrollvar $detail2texturetransform
+texturescrollrate $detail2scrollrate
+texturescrollangle 180
+}
+TextureScroll
+{
+texturescrollvar $basetexturetransform
+texturescrollrate $scrollrate
+texturescrollangle -180
+}
+}
+}

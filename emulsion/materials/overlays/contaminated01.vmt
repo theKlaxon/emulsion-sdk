@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "overlays/contaminated01"
+$surfaceprop default
+$decal 1
+}

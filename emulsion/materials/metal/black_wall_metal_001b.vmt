@@ -1,0 +1,16 @@
+LightMappedGeneric
+{
+$basetexture "metal/black_wall_metal_001b"
+$surfaceprop metal
+$bumpmap "metal/black_wall_metal_001b_normal"
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmapcontrast 1
+$envmapsaturation 1
+$envmaptint .3 .3 .3
+"%noportal" 1
+
+$detailscale 1.25
+$detailblendfactor 1
+$detailblendmode 0
+}

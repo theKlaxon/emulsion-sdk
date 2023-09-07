@@ -1,0 +1,17 @@
+UnlitGeneric
+{
+$baseTexture "signage/indicator_lights/indicator_neon_check"
+$surfaceprop glass
+$translucent 1
+"%keywords" portal
+$decal 1
+Proxies
+{
+ToggleTexture
+{
+toggleTextureVar $baseTexture
+toggleTextureFrameNumVar $frame
+toggleTextureShouldWrap 0
+}
+}
+}

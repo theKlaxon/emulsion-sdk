@@ -1,0 +1,9 @@
+SpriteCard
+{
+$basetexture "particle/smoke1/smoke1"
+$translucent 1
+$Additive 1
+
+
+"360?$muloutputbyalpha" 1
+}

@@ -1,0 +1,7 @@
+LightmappedGeneric
+{
+$translucent 1
+$basetexture "overlays/stain_tile001"
+$decal 1
+"%keywords" portal
+}

@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "props/core_hatch01_orange"
+$surfaceprop metal
+"%noportal" 1
+}

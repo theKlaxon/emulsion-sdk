@@ -1,0 +1,5 @@
+LightMappedGeneric
+{
+$basetexture "plaster/plaster_wall007b_bottom"
+$surfaceprop default
+}

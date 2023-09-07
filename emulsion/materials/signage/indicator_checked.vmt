@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$baseTexture "signage/indicator_checked"
+$surfaceprop glass
+$selfillum 1
+"%keywords" portal2
+}

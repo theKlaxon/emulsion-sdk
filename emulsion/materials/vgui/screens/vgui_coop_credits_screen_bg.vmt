@@ -1,0 +1,8 @@
+UnlitGeneric
+{
+$basetexture "vgui\screens\vgui_coop_credits_screen_bg"
+$translucent 1
+$vertexcolor 1
+$vertexalpha 1
+$ignorez 1
+}

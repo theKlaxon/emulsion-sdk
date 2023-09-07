@@ -1,0 +1,8 @@
+UnlitGeneric
+{
+$baseTexture "vgui\hud\commands\button_press"
+$vertexcolor 1
+$vertexalpha 1
+$ignorez 1
+$translucent 1
+}

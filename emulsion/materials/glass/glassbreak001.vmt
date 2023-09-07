@@ -1,0 +1,23 @@
+Refract
+{
+
+
+
+
+
+
+
+"%tooltexture" "glass/reflectiveglass002"
+$model 1
+$refractamount ".25"
+$bluramount 0
+$REFRACTTINT "{210 210 210}"
+$scale "[1 1]"
+$dudvmap "glass/reflectiveglass002_normal"
+$normalmap "glass/reflectiveglass002_normal"
+$surfaceprop glass
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmaptint "[.60 .90 1.05]"
+$translucent 1
+}

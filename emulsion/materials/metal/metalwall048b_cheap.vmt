@@ -1,0 +1,9 @@
+
+LightmappedGeneric
+{
+
+$basetexture "Metal/metalwall048b"
+$surfaceprop metal
+"%keywords" "combine, portal"
+"%noportal" 1
+}

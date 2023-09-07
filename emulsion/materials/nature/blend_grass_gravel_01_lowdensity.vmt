@@ -1,0 +1,13 @@
+WorldVertexTransition
+{
+$basetexture "nature/ground_grass03"
+$basetexture2 "nature/gravel_road001"
+$bumpmap "nature/ground_grass03_height-ssbump"
+$bumpmap2 "nature/gravel_road001_height-ssbump"
+$ssbump 1
+$surfaceprop2 gravel
+$surfaceprop dirt
+"%keywords" l4d2
+"%detailtype" urban_grass_overgrown_lowdensity
+$SSBumpMathFix 1
+}

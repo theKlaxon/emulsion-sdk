@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$basetexture "HUD/camera_viewfinder_halfcircle"
+$translucent 1
+$vertexcolor 1
+$vertexalpha 1
+}

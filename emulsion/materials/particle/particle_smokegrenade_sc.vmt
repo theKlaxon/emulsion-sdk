@@ -1,0 +1,9 @@
+SpriteCard
+{
+$basetexture "particle/particle_smokegrenade"
+$translucent 1
+$no_fullbright 1
+
+
+$depthblend 0
+}

@@ -1,0 +1,39 @@
+UnlitTwoTexture
+{
+$nocull 1
+$nodecal 1
+$additive 1
+$no_fullbright 1
+$model 1
+$nofog 1
+"!gameconsole?$basetexture" "sprites/purplelaser1"
+"gameconsole?$basetexture" "sprites/purplelaser1_gameconsole"
+$Texture2 "effects/laserplane_atmosphere"
+$color "[1 1 1]"
+"!srgb?$color2" "[.68 .68 .68]"
+$t2offset 0
+$t2scale 0.4
+$t2rot 27.5
+Proxies
+{
+LinearRamp
+{
+rate 0.02
+initalValue 0
+resultVar $t2offset
+}
+TextureTransform
+{
+translateVar $t2offset
+scaleVar $t2scale
+rotateVar $t2rot
+resultvar $texture2transform
+}
+UniformNoise
+{
+minVal 0.9
+maxVal 1.05
+resultVar $color
+}
+}
+}

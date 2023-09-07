@@ -1,0 +1,44 @@
+Water
+{
+$forceexpensive 1
+$normalmap "liquids/water_river_normal_sharp"
+$flowmap "liquids/mp_coop_turret_walls_hflowmap"
+$flow_normaluvscale 160
+$flow_worlduvscale 1
+$flow_timeintervalinseconds 0.6 
+$flow_uvscrolldistance 0.1 
+$flow_bumpstrength 1
+$flow_noise_texture "liquids/water_noise"
+$flow_noise_scale 0.0011
+$flow_debug 0
+$basetexture "liquids/toxicslime_color"
+$color_flow_uvscale 300
+$color_flow_timeintervalinseconds 4.5
+$color_flow_uvscrolldistance 0.11
+$color_flow_lerpexp 1 
+$color_flow_displacebynormalstrength 0.007 
+
+
+
+
+
+$forceenvmap 1
+$envmap env_cubemap
+$reflecttint "{ 190 205 205 }"
+
+
+
+
+$abovewater 1
+$bottommaterial "nature/toxicslime002a_beneath"
+$fogenable 1
+$fogstart 0
+$fogend 100
+$lightmapwaterfog 1
+
+$fogcolor "{ 58 35 20 }"
+$flashlighttint 1
+"%compilewater" 1
+"%tooltexture" "nature/water_frame01_normal"
+$surfaceprop slime
+}

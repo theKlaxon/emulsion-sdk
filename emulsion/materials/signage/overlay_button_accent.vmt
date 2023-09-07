@@ -1,0 +1,8 @@
+LightmappedGeneric
+{
+$basetexture "signage/overlay_button_accent"
+$decal 1
+$surfaceprop glass
+$translucent 1
+"%keywords" portal
+}

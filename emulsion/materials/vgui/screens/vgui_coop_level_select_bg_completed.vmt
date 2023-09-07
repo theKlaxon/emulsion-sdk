@@ -1,0 +1,8 @@
+UnlitGeneric
+{
+$basetexture "vgui\screens\vgui_coop_level_select_bg_completed"
+$translucent 1
+$vertexcolor 1
+$vertexalpha 1
+$ignorez 1
+}

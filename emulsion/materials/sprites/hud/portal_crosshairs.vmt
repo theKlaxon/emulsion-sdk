@@ -1,0 +1,10 @@
+UnlitGeneric
+{
+$spriteorientation vp_parallel
+$spriteorigin "[ 0.50 0.50 ]"
+$baseTexture "sprites\hud/portal_crosshairs"
+$vertexcolor 1
+$vertexalpha 1
+$translucent 1
+$ignorez 1
+}

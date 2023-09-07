@@ -1,0 +1,5 @@
+DecalModulate
+{
+$basetexture "Decals/glass/shot1"
+$decalscale 0.11
+}

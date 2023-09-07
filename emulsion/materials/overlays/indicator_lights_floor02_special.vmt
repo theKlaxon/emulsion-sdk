@@ -1,0 +1,8 @@
+UnlitGeneric
+{
+$baseTexture "overlays/indicator_lights_floor02_special"
+$surfaceprop glass
+$translucent 1
+"%keywords" portal
+$decal 1
+}

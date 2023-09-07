@@ -1,0 +1,5 @@
+LightMappedGeneric
+{
+$basetexture "concrete/concrete_bts_floor002f"
+$surfaceprop default
+}

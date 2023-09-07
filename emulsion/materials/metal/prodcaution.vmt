@@ -1,0 +1,5 @@
+LightmappedGeneric
+{
+$basetexture "metal\prodcaution"
+$surfaceprop metal
+}

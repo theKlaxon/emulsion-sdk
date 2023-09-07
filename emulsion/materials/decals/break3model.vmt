@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+$translucent 1
+$basetexture "Decals/break3"
+$decal 1
+}

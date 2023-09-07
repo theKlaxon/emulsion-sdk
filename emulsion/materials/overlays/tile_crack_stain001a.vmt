@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "overlays/tile_crack_stain001a"
+$surfaceprop default
+$translucent 1
+$decal 1
+}

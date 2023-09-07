@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "tile/office_tilefloor002a"
+$surfaceprop default
+"%keywords" portal2
+"%noportal" 1
+}

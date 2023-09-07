@@ -1,0 +1,7 @@
+LightmappedGeneric
+{
+$basetexture "Metal/metalhull013a"
+$surfaceprop metal
+"%keywords" "portal2 bts destruction"
+"%noportal" 1
+}

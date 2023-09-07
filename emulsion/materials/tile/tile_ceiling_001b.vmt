@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "tile/tile_ceiling_001b"
+"%keywords" portal2
+$bumpmap "tile/tile_ceiling_001a-height-ssbump"
+$ssbump 1
+}

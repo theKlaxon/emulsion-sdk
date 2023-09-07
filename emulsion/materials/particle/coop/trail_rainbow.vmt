@@ -1,0 +1,12 @@
+SpriteCard
+{
+$basetexture "particle/coop/trail_rainbow"
+$nocull 1
+$splinetype 1
+$depthblend 1
+$translucent 1
+$additive 1
+
+$overbrightfactor 2
+$selfillum 1
+}

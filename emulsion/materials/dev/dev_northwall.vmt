@@ -1,0 +1,6 @@
+LightmappedGeneric
+{
+
+$basetexture "Dev/dev_northwall"
+$surfaceprop concrete
+}

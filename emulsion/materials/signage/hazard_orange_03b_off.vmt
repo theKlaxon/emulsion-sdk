@@ -1,0 +1,5 @@
+LightMappedGeneric
+{
+$basetexture "signage/hazard_orange_03b_off"
+$surfaceprop default
+}

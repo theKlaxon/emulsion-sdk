@@ -1,0 +1,7 @@
+SpriteCard
+{
+$basetexture "particle/wake/ring_wake"
+$mod2x 1
+$addself 2.5
+$overbrightfactor 3
+}

@@ -1,0 +1,14 @@
+MotionBlur
+{
+$basetexture _rt_FullFrameFB [!$PS3]
+$basetexture "^PS3^BACKBUFFER" [$PS3]
+"%noToolTexture" 1
+$MotionBlurInternal "[0 0 0 0]"
+$MotionBlurViewportInternal "[0 0 1 1]"
+Proxies
+{
+MotionBlur
+{
+}
+}
+}

@@ -1,0 +1,8 @@
+Spritecard
+{
+$basetexture "particle/confetti/confetti"
+$translucent 1
+$addself 1
+$overbrightfactor 4
+$depthblend 0
+}

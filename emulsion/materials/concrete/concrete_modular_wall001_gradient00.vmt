@@ -1,0 +1,34 @@
+LightmappedGeneric
+{
+$basetexture "Concrete/concrete_modular_wall001_gradient00"
+$surfaceprop concrete
+"%keywords" portal
+LightmappedGeneric_HDR_DX9
+{
+$bumpmap "concrete/concrete_modular_wall001a_height-ssbump"
+$ssbump 1
+$detail "detail\detail_concrete_01"
+$detailscale "4.25"
+$detailblendfactor .35
+$detailblendmode 0
+}
+LightmappedGeneric_DX9
+{
+$bumpmap "concrete/concrete_modular_wall001a_height-ssbump"
+$ssbump 1
+$detail "detail\detail_concrete_01"
+$detailscale "4.25"
+$detailblendfactor .35
+$detailblendmode 0
+}
+LightmappedGeneric_DX8
+{
+$bumpmap "concrete/concrete_modular_wall001a_normal"
+$nodiffusebumplighting 1
+}
+LightmappedGeneric_NoBump_DX8
+{
+$basetexture "Concrete/concrete_modular_wall001_gradient00"
+$basealphaenvmapmask 1
+}
+}

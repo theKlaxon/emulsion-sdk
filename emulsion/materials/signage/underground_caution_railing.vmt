@@ -1,0 +1,10 @@
+LightMappedGeneric
+{
+$basetexture "signage/underground_caution_railing"
+
+$decalscale 0.5
+$decal 1
+$vertexcolor 1
+$vertexalpha 1
+"%keywords" "portal2 bts"
+}

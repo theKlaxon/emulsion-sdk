@@ -1,0 +1,7 @@
+unlitgeneric
+{
+$basetexture "skybox\br_stars01"
+"%noportal" 1
+$nofog 1
+$translucent 1
+}

@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+
+$color "[ 1.00 1.00 1.00 ]"
+$alpha 0.50
+"%noToolTexture" 1
+}

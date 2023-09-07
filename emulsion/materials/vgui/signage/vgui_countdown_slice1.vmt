@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$basetexture "signage/countdown_slice1"
+$translucent 1
+$vertexalpha 1
+"%keywords" portal2
+}

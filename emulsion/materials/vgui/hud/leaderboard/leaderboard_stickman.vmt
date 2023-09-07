@@ -1,0 +1,6 @@
+unlitGeneric
+{
+$baseTexture "vgui/hud/leaderboard/leaderboard_stickman"
+$vertexalpha 1
+$translucent 1
+}

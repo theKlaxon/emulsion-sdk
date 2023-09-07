@@ -1,0 +1,6 @@
+LightMappedGeneric
+{
+$basetexture "plastic/plasticwall1970_02"
+$surfaceprop default
+"%keywords" portal2
+}

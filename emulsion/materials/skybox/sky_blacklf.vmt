@@ -1,0 +1,6 @@
+UnlitGeneric
+{
+$basetexture "skybox/sky_blacklf.vtf"
+$hdrbasetexture "skybox/sky_blacklf.vtf"
+
+}

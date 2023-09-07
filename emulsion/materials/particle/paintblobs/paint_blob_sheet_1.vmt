@@ -1,0 +1,8 @@
+Spritecard
+{
+
+$translucent 1
+$basetexture "particle/paintblobs/paint_blob_sheet_1"
+$vertexcolor 1
+$vertexalpha 1
+}

@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "signage/underground_vitrified01"
+$surfaceprop default
+$decal 1
+$translucent 1
+}

@@ -1,0 +1,20 @@
+LightMappedGeneric
+{
+$basetexture "metal/conveyor_belt"
+$surfaceprop metal
+$bumpmap "metal/conveyor_belt_normal"
+$envmap env_cubemap
+$normalmapalphaenvmapmask 1
+$envmapcontrast 1
+$envmapsaturation 1
+$envmaptint .1 .1 .1
+"%noportal" 1
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+
+$detailscale 1.25
+$detailblendfactor 1
+$detailblendmode 0
+}

@@ -1,0 +1,7 @@
+LightMappedGeneric
+{
+$basetexture "props/diorama_card001"
+$surfaceprop default
+$translucent 1
+"%noportal" 1
+}
