@@ -5,6 +5,8 @@
 #include "game/shared/portal2/paint_enum.h"
 #include "emulsion_shareddefs.h"
 
+static bool g_bInStickTransition = false;
+
 class CEmulsionGameMovement : public CGameMovement {
 public:
 	DECLARE_CLASS(CEmulsionGameMovement, CGameMovement);
@@ -16,8 +18,6 @@ public:
 	void PlayerMove();
 	void FullWalkMove();
 	void WalkMove();
-	void FullStickMove();
-	void StickMove();
 	void AirMove();
 	void Friction();
 	void CheckParameters();
@@ -33,19 +33,18 @@ public:
 
 	// paint specifics
 	void ProcessPowerUpdate();
-	void BouncePlayer(cplane_t plane, short n = 1);
+	void BouncePlayer(cplane_t plane);
 	void StickPlayer(PaintInfo_t info);
 	void UnStickPlayer();
 
 	Vector GetGravityDir() { return m_vecGravity; }
-	void SetGravityDir(Vector dir) { 
-		m_vecPrevGravity = m_vecGravity; 
-		m_vecGravity = dir;
-	}
+	void SetGravityDir(Vector dir) { m_vecGravity = dir; }
 
 	void PlayPaintEntrySound(PaintPowerType type, bool force = false);
 	void PlayPaintExitSound(PaintPowerType type);
 	void DetermineExitSound(PaintPowerType type);
+
+	void CalculateStickAngles();
 
 	friend class CEmulsionPlayer;
 	friend class C_EmulsionPlayer;
@@ -64,8 +63,15 @@ protected:
 	Quaternion m_qRotFrom;
 	Quaternion m_qRotTo;
 
+	QAngle m_angDefaultAngles;
+	QAngle m_angStickAngles;
+
+	Vector m_vecStickForward;
+	Vector m_vecStickUp;
+
+	bool m_bIsTouchingStickParent;
+
 #ifdef GAME_DLL
-	//QAngle CalcViewAngle(Vector axis);
 	PaintInfo_t CheckPaintedSurface();										// get the paint(s) the player is touching
 	PaintPowerType GetHighestPriorityPaint(CUtlVector<unsigned char>* paints);	// get the paint with the highest priority
 

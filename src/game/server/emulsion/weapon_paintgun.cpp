@@ -3,6 +3,7 @@
 #include "player.h"
 #include "in_buttons.h"
 #include "weapon_paintgun.h"
+#include "emulsion_player.h"
 #include "..\public\game\shared\portal2\paint_enum.h"
 
 // -- paint colours 
@@ -54,6 +55,9 @@ void SetPaintDisplayColour(PaintPowerType power) {
 
 LINK_ENTITY_TO_CLASS(weapon_paintgun, CWeaponPaintgun);
 
+IMPLEMENT_SERVERCLASS_ST(CWeaponPaintgun, DT_WeaponPaintgun)
+END_SEND_TABLE()
+
 CWeaponPaintgun::CWeaponPaintgun() {
 	m_flCurPaintDelay = 0.0f;
 	g_playerPaintgun = this;
@@ -64,11 +68,11 @@ void CWeaponPaintgun::FirePaint(bool erase) {
 	if (gpGlobals->curtime < m_flCurPaintDelay)
 		return;
 
-	CBasePlayer* player = UTIL_GetLocalPlayer();
-	Vector halfHeightOrigin = player->GetAbsOrigin() + Vector(0, 0, player->BoundingRadius() / 2);
+	CEmulsionPlayer* pPlayer = ToEmulsionPlayer(UTIL_GetLocalPlayer());
+	Vector halfHeightOrigin = pPlayer->GetHalfHeight_Stick();// player->GetAbsOrigin() + Vector(0, 0, player->BoundingRadius() / 2);
 
 	trace_t tr;
-	UTIL_TraceLine(halfHeightOrigin, player->Forward() * MAX_TRACE_LENGTH, MASK_ALL, player, COLLISION_GROUP_PLAYER_MOVEMENT, &tr);
+	UTIL_TraceLine(halfHeightOrigin, pPlayer->GetForward_Stick() * MAX_TRACE_LENGTH, MASK_ALL, pPlayer, COLLISION_GROUP_PLAYER_MOVEMENT, &tr);
 
 	if (tr.DidHit()) {
 
