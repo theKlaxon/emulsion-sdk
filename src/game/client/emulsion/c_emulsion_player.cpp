@@ -7,19 +7,23 @@
 #include "emulsion_gamemovement.h"
 #include "igamemovement.h"
 
+static ConVar pl_stickcameralerpspeed("pl_stickcameralerpspeed", "1.85f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
+static ConVar pl_stickcamerauselerp("pl_stickcamerauselerp", "1", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
+
 extern CPrediction* prediction;
 extern IViewRender* view;
 
 LINK_ENTITY_TO_CLASS(player, C_EmulsionPlayer);
 
 IMPLEMENT_CLIENTCLASS_DT(C_EmulsionPlayer, DT_EmulsionPlayer, CEmulsionPlayer)
-	RecvPropVector(RECVINFO(m_vecVelocity)),
-	RecvPropInt(RECVINFO(m_iPaintPower))
+RecvPropVector(RECVINFO(m_vecVelocity)),
+RecvPropVector(RECVINFO(m_vecGravity)),
+RecvPropEHandle(RECVINFO(m_hStickParent)),
+RecvPropInt(RECVINFO(m_nPaintPower))
 END_RECV_TABLE()
 
 C_EmulsionPlayer::C_EmulsionPlayer() {
-	//m_vecGravity = Vector(0, 0, -1);
-	//m_vecPrevGravity = Vector(0, 0, -1);
+	m_vecCurLerpUp = Vector(0, 0, 1);
 }
 
 extern IGameMovement* g_pGameMovement;
@@ -58,6 +62,41 @@ void C_EmulsionPlayer::CalcPlayerView(Vector& eyeOrigin, QAngle& eyeAngles, floa
 	Vector vecBaseEyePosition = eyeOrigin;
 	QAngle baseEyeAngles = eyeAngles;
 
+	if (pl_stickcamerauselerp.GetBool()) {
+		//m_vecCurLerpUp = VectorLerp(m_vecCurLerpUp, -1 * m_vecGravity, (gpGlobals->frametime * pl_stickcameralerpspeed.GetFloat()));
+		m_vecCurLerpUp = Lerp<Vector>((gpGlobals->frametime * pl_stickcameralerpspeed.GetFloat()), m_vecCurLerpUp, -1 * m_vecGravity);
+	}
+
+	CEmulsionGameMovement* pMove = (CEmulsionGameMovement*)g_pGameMovement;
+	{//if (m_nPaintPower == PORTAL_POWER) {
+
+		Vector initial = Vector(0, 0, 1);
+		Vector axOf = pl_stickcamerauselerp.GetBool() ? m_vecCurLerpUp : -1 * m_vecGravity;
+
+		Vector vecAxisOfRotation = CrossProduct(initial, axOf); // build around out new up vector
+		float flAngleOfRotation = RAD2DEG(acos(DotProduct(initial, axOf))); // build around out new up vector
+
+		// build rotation matrix for new eye angles
+		VMatrix eyerotmat;
+		MatrixBuildRotationAboutAxis(eyerotmat, vecAxisOfRotation, flAngleOfRotation);
+
+		// rotate the eyeAngles we already have by the new matrix
+		Vector vecForward, vecUp;
+		AngleVectors(eyeAngles, &vecForward, nullptr, &vecUp);
+		VectorRotate(vecForward, eyerotmat.As3x4(), vecForward);
+		VectorRotate(vecUp, eyerotmat.As3x4(), vecUp);
+
+		// set the eyeAngles to our new result
+		VectorAngles(vecForward, vecUp, eyeAngles);
+
+		Vector vecRotOffset = m_vecViewOffset;
+		VectorRotate(vecRotOffset, eyerotmat.As3x4(), vecRotOffset);
+
+		// take the normal view offset and apply it to a new axis
+		float totalOffset = m_vecViewOffset.Length();
+		eyeOrigin = GetAbsOrigin() + ((pl_stickcamerauselerp.GetBool() ? m_vecCurLerpUp.Normalized() : -1 * m_vecGravity) * totalOffset);
+	}
+
 	CalcViewBob(eyeOrigin);
 	CalcViewRoll(eyeAngles);
 
@@ -85,37 +124,8 @@ void C_EmulsionPlayer::CalcPlayerView(Vector& eyeOrigin, QAngle& eyeAngles, floa
 
 	// calc current FOV
 	fov = GetFOV();
-	
-	if (m_iPaintPower == PORTAL_POWER) {
-		
-		CEmulsionGameMovement* pMove = (CEmulsionGameMovement*)g_pGameMovement;
-		Vector vecAxisOfRotation = CrossProduct(Vector(0, 0, 1), -1 * pMove->m_vecGravity);
-		float fAngleOfRotation = RAD2DEG(acos(DotProduct(Vector(0, 0, 1), -1 * pMove->m_vecGravity)));
-
-		Msg("(%f, %f, %f)\n", pMove->m_vecGravity.x, pMove->m_vecGravity.y, pMove->m_vecGravity.z);
-
-		VMatrix eyerotmat;
-		MatrixBuildRotationAboutAxis(eyerotmat, vecAxisOfRotation, fAngleOfRotation);
-
-		Vector vecForward, vecUp;
-		AngleVectors(eyeAngles, &vecForward, nullptr, &vecUp);
-		VectorRotate(vecForward, eyerotmat.As3x4(), vecForward);
-		VectorRotate(vecUp, eyerotmat.As3x4(), vecUp);
-
-		VectorAngles(vecForward, vecUp, eyeAngles);
-	}
 }
 
-/*	if (m_iPaintPower == PORTAL_POWER) {
-
-		Vector axrot = CrossProduct(Vector(0, 0, 1), Vector(0, -1, 0));
-		float angrot = RAD2DEG(acos(DotProduct(Vector(0, 0, 1), Vector(0, -1, 0))));
-
-		VMatrix eyerotmat;
-		MatrixBuildRotation(eyerotmat, Vector(0, 0, 1), Vector(0, -1, 0));
-
-		QAngle nEyeAngles;
-		MatrixAngles(eyerotmat.As3x4(), nEyeAngles);
-
-		eyeAngles = nEyeAngles;
-	}*/
+CBaseEntity* C_EmulsionPlayer::GetStickParent() {
+	return EntityFromEntityHandle(m_hStickParent->Get());
+}

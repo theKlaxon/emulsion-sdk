@@ -1,11 +1,12 @@
 #include "cbase.h"
 #include "emulsion_player.h"
+#include "emulsion_pickupcontroller.h"
 #include "player_pickup.h"
 #include "in_buttons.h"
-#include "emulsion_pickupcontroller.h"
 #include "ai_basenpc.h"
-#include "..\server\ilagcompensationmanager.h"
 #include "shareddefs.h"
+#include "globalstate.h"
+#include "..\server\ilagcompensationmanager.h"
 #include "..\game\shared\portal2\paint_enum.h"
 
 #define PLAYER_MDL "models/player.mdl"
@@ -16,7 +17,9 @@
 #define SOUND_USE_DENY	"Player.UseDeny"
 #define SOUND_USE		"Player.Use"
 #define SOUND_WHOOSH	"Player.FallWoosh2"
+#define SMOOTHING_FACTOR 0.9
 
+extern ConVar sv_regeneration_wait_time;
 extern ConVar sv_maxspeed;
 extern ConVar sv_debug_player_use;
 extern ConVar pl_normspeed;
@@ -39,16 +42,19 @@ void ToggleNoclip() {
 }
 static ConCommand togNoclip("tog_noclip", ToggleNoclip);
 
-LINK_ENTITY_TO_CLASS( player, CEmulsionPlayer);
+LINK_ENTITY_TO_CLASS(player, CEmulsionPlayer);
 
 IMPLEMENT_SERVERCLASS_ST(CEmulsionPlayer, DT_EmulsionPlayer)
-	SendPropVector(SENDINFO(m_vecVelocity), -1, SPROP_NOSCALE, 0.0f, HIGH_DEFAULT),
-	SendPropInt(SENDINFO(m_iPaintPower))
+SendPropVector(SENDINFO(m_vecVelocity), -1, SPROP_NOSCALE, 0.0f, HIGH_DEFAULT),
+SendPropVector(SENDINFO(m_vecGravity), -1, SPROP_NOSCALE, 0.0f, HIGH_DEFAULT),
+SendPropEHandle(SENDINFO(m_hStickParent)),
+SendPropInt(SENDINFO(m_nPaintPower))
 END_SEND_TABLE()
 
 CEmulsionPlayer::CEmulsionPlayer() {
+	pMove = (CEmulsionGameMovement*)g_pGameMovement;
 	m_vecGravity = Vector(0, 0, -1);
-	m_vecPrevGravity = Vector(0, 0, -1);
+	m_bIsTouchingStickParent = false;
 }
 
 void CEmulsionPlayer::Precache() {
@@ -83,14 +89,14 @@ void CEmulsionPlayer::Spawn() {
 
 	engine->ClientCommand(edict(), "bind l create_flashlight");
 	engine->ClientCommand(edict(), "bind n tog_noclip");
-	engine->ClientCommand(edict(), "give weapon_paintgun");
+	//engine->ClientCommand(edict(), "give weapon_paintgun");
 	engine->ClientCommand(edict(), "bind 0 exit2");
 	engine->ClientCommand(edict(), "bind 8 disconnect");
 	engine->ClientCommand(edict(), "bind mwheeldown paintgun_next");
 	engine->ClientCommand(edict(), "bind mwheelup paintgun_prev");
 	engine->ClientCommand(edict(), "bind b create_blob");
 
-	m_pStickParent = NULL;
+	m_hStickParent = NULL;
 	m_angInitialAngles = GetAbsAngles();
 
 	if (!engine->HasPaintmap())
@@ -103,41 +109,51 @@ void CEmulsionPlayer::Activate() {
 	BaseClass::Activate();
 }
 
-void CEmulsionPlayer::CreateViewModel( int index ) {
-	Assert( index >= 0 && index < MAX_VIEWMODELS );
+void CEmulsionPlayer::CreateViewModel(int index) {
+	Assert(index >= 0 && index < MAX_VIEWMODELS);
 
-	if ( GetViewModel(index) )
+	if (GetViewModel(index))
 		return;
 
-	CPredictedViewModel* vm = (CPredictedViewModel*)CreateEntityByName( "predicted_viewmodel" );
-	if ( vm )
+	CPredictedViewModel* vm = (CPredictedViewModel*)CreateEntityByName("predicted_viewmodel");
+	if (vm)
 	{
-		vm->SetAbsOrigin( GetAbsOrigin() );
-		vm->SetOwner( this );
-		vm->SetIndex( index );
-		DispatchSpawn( vm );
-		vm->FollowEntity( this, false );
-		m_hViewModel.Set( index, vm );
+		vm->SetAbsOrigin(GetAbsOrigin());
+		vm->SetOwner(this);
+		vm->SetIndex(index);
+		DispatchSpawn(vm);
+		vm->FollowEntity(this, false);
+		m_hViewModel.Set(index, vm);
 	}
 }
 
-void CEmulsionPlayer::PostThink() {
-	BaseClass::PostThink();
+void CEmulsionPlayer::Touch(CBaseEntity* pOther)
+{
+	if (pOther == m_pStickParent) {
+		m_bIsTouchingStickParent = true;
+		pMove->m_bIsTouchingStickParent = true;
+		return;
+	}
 
-	// Keep the model upright; pose params will handle pitch aiming.
-	QAngle angles = GetLocalAngles();
-	angles[PITCH] = 0;
-	SetLocalAngles(angles);
-
-	NetworkStateChanged();
+	BaseClass::Touch(pOther);
 }
 
-void CEmulsionPlayer::FireBullets ( const FireBulletsInfo_t &info ) {
-	lagcompensation->StartLagCompensation( this, LAG_COMPENSATE_HITBOXES);
+void CEmulsionPlayer::EndTouch(CBaseEntity* pOther) {
+	if (pOther == m_pStickParent) {
+		m_bIsTouchingStickParent = false;
+		pMove->m_bIsTouchingStickParent = false;
+		return;
+	}
+
+	BaseClass::EndTouch(pOther);
+}
+
+void CEmulsionPlayer::FireBullets(const FireBulletsInfo_t& info) {
+	lagcompensation->StartLagCompensation(this, LAG_COMPENSATE_HITBOXES);
 
 	BaseClass::FireBullets(info);
 
-	lagcompensation->FinishLagCompensation( this );
+	lagcompensation->FinishLagCompensation(this);
 }
 
 // hl2 player pickup code
@@ -276,32 +292,13 @@ extern CViewVectors* GetViewVectors();
 extern void VecNeg(Vector& v);
 
 void CEmulsionPlayer::SetGravityDir(Vector axis) {
-	m_vecPrevGravity = m_vecGravity;
 	m_vecGravity = axis;
 
-	Vector m_vecEyeAxisRot = CrossProduct(m_vecPrevGravity, m_vecGravity);
-	float m_flEyeRotation = RAD2DEG(acos(DotProduct(m_vecPrevGravity, m_vecGravity)));
+	Vector m_vecEyeAxisRot = CrossProduct(Vector(0, 0, -1), m_vecGravity.Get());
+	float m_flEyeRotation = RAD2DEG(acos(DotProduct(Vector(0, 0, -1), m_vecGravity.Get())));
 
 	MatrixSetIdentity(m_mGravityTransform);
-	MatrixBuildRotation(m_mGravityTransform, Vector(0, 0, 1), -1 * m_vecGravity);
-
-	//QAngle angAngles = m_angInitialAngles;
-	//MatrixAngles(m_mGravityTransform.As3x4(), angAngles);
-	//SetAbsAngles(angAngles);
-
-	//Msg("initial angles: %f, %f, %f\n", m_angInitialAngles.x, m_angInitialAngles.y, m_angInitialAngles.z);
-	//Msg("new angles: %f, %f, %f\n", angAngles.x, angAngles.y, angAngles.z);
-
-	//RotBoundingBox(m_mGravityTransform);
-}
-
-void CEmulsionPlayer::RotBoundingBox(VMatrix mat) {
-	RotateAABB(mat.As3x4(),
-		GetViewVectors()->m_vDuckHullMin, GetViewVectors()->m_vDuckHullMax,
-		GetViewVectors()->m_vDuckHullMin, GetViewVectors()->m_vDuckHullMax);
-	RotateAABB(mat.As3x4(),
-		GetViewVectors()->m_vHullMin, GetViewVectors()->m_vHullMax,
-		GetViewVectors()->m_vHullMin, GetViewVectors()->m_vHullMax);
+	MatrixBuildRotation(m_mGravityTransform, Vector(0, 0, 1), -1 * m_vecGravity.Get());
 }
 
 void CEmulsionPlayer::SetStickParent(CBaseEntity* pParent) {
@@ -309,5 +306,158 @@ void CEmulsionPlayer::SetStickParent(CBaseEntity* pParent) {
 }
 
 CBaseEntity* CEmulsionPlayer::GetStickParent() {
-	return m_pStickParent;
+	return m_hStickParent;
+}
+
+void CEmulsionPlayer::PreThink() {
+	BaseClass::PreThink();
+
+	// do paint stuff here
+	ProcessPowerUpdate();
+}
+
+static const float g_flStickTransitionTime = 10.0f;
+static float g_flCurStickTransitionTime = 0.0f;
+
+void CEmulsionPlayer::ProcessPowerUpdate() {
+	PaintInfo_t m_tNewInfo = pMove->CheckPaintedSurface();
+
+	//debugoverlay->AddBoxOverlay(GetAbsOrigin(), GetPlayerMins(), GetPlayerMaxs(), QAngle(0, 0, 1), 0, 255, 0, 150, 0);
+
+	switch (m_tNewInfo.type) {
+	case BOUNCE_POWER:
+		if (m_tCurPaintInfo.type == SPEED_POWER) {
+			BouncePlayer(m_tNewInfo.plane);
+			break;
+		}
+		else if (GetGroundEntity() != NULL) {
+			pMove->PlayPaintEntrySound(m_tNewInfo.type);
+			m_nPaintPower = BOUNCE_POWER;
+		}
+		break;
+	case SPEED_POWER:
+		if (GetGroundEntity() != NULL) {
+			pMove->PlayPaintEntrySound(m_tNewInfo.type);
+			m_nPaintPower = SPEED_POWER;
+		}
+		break;
+	case PORTAL_POWER:
+		if (m_tCurPaintInfo.type != PORTAL_POWER || (m_tNewInfo.plane.normal != m_tCurPaintInfo.plane.normal)) {
+			StickPlayer(m_tNewInfo);
+			pMove->PlayPaintEntrySound(m_tNewInfo.type);
+			m_nPaintPower = PORTAL_POWER;
+		}
+		break;
+	default:
+		if (m_tCurPaintInfo.type == PORTAL_POWER) {
+			UnStickPlayer();
+			m_nPaintPower = NO_POWER;
+		}
+		pMove->DetermineExitSound(m_tNewInfo.type);
+		break;
+	}
+
+	m_tCurPaintInfo = m_tNewInfo;
+	pMove->m_tCurPaintInfo = m_tNewInfo;
+}
+
+extern ConVar pl_bouncePaintWallFactor;
+extern ConVar pl_bouncePaintFactor;
+extern ConVar pl_showBouncePowerNormal;
+
+extern bool m_bCancelNextExitSound;
+
+void CEmulsionPlayer::BouncePlayer(cplane_t plane) {
+
+	Vector modVel = (m_vecVelocity.Get().Normalized() * (-1 * m_vecGravity)) * (pl_bouncePaintWallFactor.GetFloat());
+	modVel = (modVel.x + modVel.y + modVel.z) < 0 ? modVel * -1 : modVel;
+
+	Vector result = (plane.normal * (pl_bouncePaintFactor.GetFloat() * sqrt(m_vecVelocity.Get().Length()))) + modVel;
+	SetAbsVelocity(GetAbsVelocity() + result);
+
+	m_bCancelNextExitSound = true;
+	pMove->PlaySoundInternal("Player.JumpPowerUse");
+
+	if (pl_showBouncePowerNormal.GetBool())
+		Msg("(%f, %f, %f)\n", result.x, result.y, result.z);
+
+	SetGroundEntity(NULL);
+}
+
+void CEmulsionPlayer::StickPlayer(PaintInfo_t info) {
+	SetGravityDir(-1 * info.plane.normal);
+	pMove->SetGravityDir(-1 * info.plane.normal);
+	pMove->CalculateStickAngles();
+
+	SetStickParent(info.m_pEnt);
+	SetGroundEntity(NULL);
+
+	SetAbsOrigin(info.pos);
+	RotateBBox(info.plane.normal);
+}
+
+void CEmulsionPlayer::UnStickPlayer() {
+	SetGravityDir(Vector(0, 0, -1));
+	pMove->SetGravityDir(Vector(0, 0, -1));
+	pMove->CalculateStickAngles();
+
+	SetStickParent(NULL);
+	SetGroundEntity(NULL);
+	m_bIsTouchingStickParent = false;
+	pMove->m_bIsTouchingStickParent = false;
+
+	if (m_tCurPaintInfo.plane.normal != Vector(0, 0, 1))
+		SetAbsOrigin(GetAbsOrigin() + (GetViewOffset().Length() * (m_tCurPaintInfo.plane.normal)) * 1.2f);
+
+	RotateBBox(Vector(0, 0, 1));
+}
+
+static CViewVectors g_OriginalDefaultViewVectors(
+	Vector(0, 0, 64),			//VEC_VIEW (m_vView)
+
+	Vector(-16, -16, 0),		//VEC_HULL_MIN (m_vHullMin)
+	Vector(16, 16, 72),		//VEC_HULL_MAX (m_vHullMax)
+
+	Vector(-16, -16, 0),		//VEC_DUCK_HULL_MIN (m_vDuckHullMin)
+	Vector(16, 16, 36),		//VEC_DUCK_HULL_MAX	(m_vDuckHullMax)
+	Vector(0, 0, 28),			//VEC_DUCK_VIEW		(m_vDuckView)
+
+	Vector(-10, -10, -10),		//VEC_OBS_HULL_MIN	(m_vObsHullMin)
+	Vector(10, 10, 10),		//VEC_OBS_HULL_MAX	(m_vObsHullMax)
+
+	Vector(0, 0, 14)			//VEC_DEAD_VIEWHEIGHT (m_vDeadViewHeight)
+);
+
+CViewVectors* GetOriginalViewVectors()
+{
+	return &g_OriginalDefaultViewVectors;
+}
+
+void CEmulsionPlayer::RotateBBox(Vector vecUp) {
+
+	// rotate the bbox around the player origin,
+	// to the new up position from the plane normal
+
+	// build rotation matrix
+	VMatrix upMat;
+	Vector vecAxisOfRotation = CrossProduct(Vector(0, 0, 1), vecUp);
+	float flAngleOfRotation = RAD2DEG(acos(DotProduct(Vector(0, 0, 1), vecUp)));
+
+	MatrixBuildRotationAboutAxis(upMat, vecAxisOfRotation, flAngleOfRotation);
+
+	// rotate the tall bbox
+	RotateAABB(upMat.As3x4(), GetOriginalViewVectors()->m_vHullMin, GetOriginalViewVectors()->m_vHullMax,
+		GetViewVectors()->m_vHullMin, GetViewVectors()->m_vHullMax);
+
+	// rotate the small bbox (because i can)
+	RotateAABB(upMat.As3x4(), GetOriginalViewVectors()->m_vDuckHullMin, GetOriginalViewVectors()->m_vDuckHullMax,
+		GetViewVectors()->m_vDuckHullMin, GetViewVectors()->m_vDuckHullMax);
+}
+
+Vector CEmulsionPlayer::GetHalfHeight_Stick() {
+	return GetAbsOrigin() + ((-1 * m_vecGravity) * (GetViewOffset().Length() * 0.75f));
+}
+
+Vector CEmulsionPlayer::GetForward_Stick() {
+	return pMove->m_vecStickForward;
 }

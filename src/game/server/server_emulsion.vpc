@@ -32,6 +32,8 @@ $Project "Server (Emulsion)"
 				$File	"$SRCDIR\game\shared\emulsion\emulsion_shareddefs.h"
 				$File	"$SRCDIR\game\shared\emulsion\emulsion_usermessages.cpp"
 				$File	"$SRCDIR\game\shared\emulsion\emulsion_parsers.cpp"
+				$File	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
+				$File	"$SRCDIR\game\shared\predicted_viewmodel.h"
 			}
 			
 			$File	"emulsion\emulsion_pickupcontroller.cpp"

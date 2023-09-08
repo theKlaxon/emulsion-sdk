@@ -3,6 +3,7 @@
 
 class CWeaponPaintgun : public CBaseCombatWeapon {
 	DECLARE_CLASS(CWeaponPaintgun, CBaseCombatWeapon);
+	DECLARE_NETWORKCLASS();
 public:
 
 	CWeaponPaintgun();
