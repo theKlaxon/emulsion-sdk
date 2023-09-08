@@ -9,7 +9,6 @@ public:
 	C_EmulsionPlayer();
 
 	void CalcPlayerView(Vector& eyeOrigin, QAngle& eyeAngles, float& fov);
-
 	virtual bool ShouldRegenerateOriginFromCellBits() const
 	{
 		// C_BasePlayer assumes that we are networking a high-res origin value instead of using a cell
@@ -20,7 +19,15 @@ public:
 		return true;
 	}
 
+	CBaseEntity* GetStickParent();
+
+	friend class C_WeaponPaintgun;
 protected:
 
-	int m_iPaintPower;
+	CBaseHandle* m_hStickParent;
+
+	// stick lerp
+	Vector m_vecCurLerpUp;
+	Vector m_vecGravity;
+	int m_nPaintPower;
 };

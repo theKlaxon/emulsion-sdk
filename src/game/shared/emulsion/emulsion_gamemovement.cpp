@@ -13,6 +13,7 @@
 #include "env_player_surface_trigger.h"
 #include "emulsion_player.h"
 #else
+#include "c_emulsion_player.h"
 #define CRecipientFilter C_RecipientFilter
 #endif
 
@@ -46,7 +47,7 @@ ConVar pl_fallpunchthreshold("pl_fallpunchthreshold", "150", FCVAR_REPLICATED | 
 
 // paint
 ConVar pl_normspeed("pl_normspeed", "200", FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_CHEAT);
-ConVar pl_paintTraceRadius("pl_paintTraceRadius", "26.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
+ConVar pl_paintTraceRadius("pl_paintTraceRadius", "26.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY); // 26.0f worked good for a while // 20.0f while making stick
 ConVar pl_bouncePaintFactor("pl_bouncePaintFactor", "30.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
 ConVar pl_bouncePaintWallFactor("pl_bouncePaintFactor", "150.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
 ConVar pl_speedPaintMoveSpeed("pl_speedPaintMoveSpeed", "600", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
@@ -74,6 +75,8 @@ CEmulsionGameMovement::CEmulsionGameMovement() {
 
 	MatrixSetIdentity(m_mGravityTransform);
 
+	m_bIsTouchingStickParent = false;
+
 #ifdef GAME_DLL 
 	m_fCurPaintFrameDelay = m_fPaintFrameDelay;
 #endif
@@ -86,18 +89,18 @@ void VecNeg(Vector& v) {
 
 void CEmulsionGameMovement::ProcessMovement(CBasePlayer* pPlayer, CMoveData* pMove) {
 
-#ifdef GAME_DLL
-	if (m_fCurPaintFrameDelay <= 0.0f) {
-		ProcessPowerUpdate();
-
-		if (pl_showPaintPower.GetBool())
-			Msg("PaintPower: %i\n", (int)m_tCurPaintInfo.type);
-
-		m_fCurPaintFrameDelay = m_fPaintFrameDelay;
-	}
-	else
-		m_fCurPaintFrameDelay -= gpGlobals->frametime;
-#endif
+	//#ifdef GAME_DLL
+	//	if (m_fCurPaintFrameDelay <= 0.0f) {
+	//		ProcessPowerUpdate();
+	//
+	//		if (pl_showPaintPower.GetBool())
+	//			Msg("PaintPower: %i\n", (int)m_tCurPaintInfo.type);
+	//
+	//		m_fCurPaintFrameDelay = m_fPaintFrameDelay;
+	//	}
+	//	else
+	//		m_fCurPaintFrameDelay -= gpGlobals->frametime;
+	//#endif
 
 	m_nTraceCount = 0;
 
@@ -225,7 +228,7 @@ void CEmulsionGameMovement::PlayerMove()
 	if (player->GetGroundEntity() == NULL)
 	{
 		//player->m_Local.m_flFallVelocity = -mv->m_vecVelocity[2];
-		vec_t l = (-mv->m_vecVelocity * GetGravityDir()).Length();
+		vec_t l = (mv->m_vecVelocity * GetGravityDir()).Length();
 		player->m_Local.m_flFallVelocity = l;
 	}
 
@@ -277,7 +280,8 @@ C:
 		break;
 
 	case MOVETYPE_STICK:
-		FullStickMove();
+		//FullStickMove();
+		FullWalkMove();
 		break;
 
 	case MOVETYPE_OBSERVER:
@@ -316,9 +320,10 @@ void CEmulsionGameMovement::CategorizePosition(void)
 
 	float flOffset = 2.0f;
 
-	point[0] = mv->GetAbsOrigin()[0];
-	point[1] = mv->GetAbsOrigin()[1];
-	point[2] = mv->GetAbsOrigin()[2] - flOffset;
+	//point[0] = mv->GetAbsOrigin()[0];
+	//point[1] = mv->GetAbsOrigin()[1];
+	//point[2] = mv->GetAbsOrigin()[2] - flOffset;
+	point = mv->GetAbsOrigin() + ((-1 * GetGravityDir()) * -flOffset);
 
 	//point = mv->GetAbsOrigin();
 	//point += GetGravityDir() * -flOffset;
@@ -332,37 +337,38 @@ void CEmulsionGameMovement::CategorizePosition(void)
 #define NON_JUMP_VELOCITY 140.0f
 
 	//float zvel = mv->m_vecVelocity[2];
-	float zvel = (mv->m_vecVelocity * GetGravityDir()).Length();
+	float zvel = (mv->m_vecVelocity * (-1 * GetGravityDir())).Length();
 	bool bMovingUp = zvel > 0.0f;
 	bool bMovingUpRapidly = zvel > NON_JUMP_VELOCITY;
 	float flGroundEntityVelZ = 0.0f;
-	if (bMovingUpRapidly)
-	{
-		// Tracker 73219, 75878:  ywb 8/2/07
-		// After save/restore (and maybe at other times), we can get a case where we were saved on a lift and 
-		//  after restore we'll have a high local velocity due to the lift making our abs velocity appear high.  
-		// We need to account for standing on a moving ground object in that case in order to determine if we really 
-		//  are moving away from the object we are standing on at too rapid a speed.  Note that CheckJump already sets
-		//  ground entity to NULL, so this wouldn't have any effect unless we are moving up rapidly not from the jump button.
-		CBaseEntity* ground = player->GetGroundEntity();
-		if (ground)
-		{
-			flGroundEntityVelZ = ground->GetAbsVelocity().z;
-			//flGroundEntityVelZ = (ground->GetAbsVelocity() * GetGravityDir()).Length();
-			bMovingUpRapidly = (zvel - flGroundEntityVelZ) > NON_JUMP_VELOCITY;
-		}
-	}
+	//if (bMovingUpRapidly)
+	//{
+	//	// Tracker 73219, 75878:  ywb 8/2/07
+	//	// After save/restore (and maybe at other times), we can get a case where we were saved on a lift and 
+	//	//  after restore we'll have a high local velocity due to the lift making our abs velocity appear high.  
+	//	// We need to account for standing on a moving ground object in that case in order to determine if we really 
+	//	//  are moving away from the object we are standing on at too rapid a speed.  Note that CheckJump already sets
+	//	//  ground entity to NULL, so this wouldn't have any effect unless we are moving up rapidly not from the jump button.
+	//	CBaseEntity* ground = player->GetGroundEntity();
+	//	if (ground)
+	//	{
+	//		//flGroundEntityVelZ = ground->GetAbsVelocity().z;
+	//		flGroundEntityVelZ = (ground->GetAbsVelocity() * GetGravityDir()).Length();
+	//		bMovingUpRapidly = (zvel - flGroundEntityVelZ) > NON_JUMP_VELOCITY;
+	//	}
+	//}
 
 	// NOTE YWB 7/5/07:  Since we're already doing a traceline here, we'll subsume the StayOnGround (stair debouncing) check into the main traceline we do here to see what we're standing on
 	bool bUnderwater = (player->GetWaterLevel() >= WL_Eyes);
 	bool bMoveToEndPos = false;
+
 	if ((player->GetMoveType() == MOVETYPE_WALK || player->GetMoveType() == MOVETYPE_STICK) &&
-		player->GetGroundEntity() != NULL && !bUnderwater)
+		(player->GetGroundEntity() != NULL && !bUnderwater))
 	{
 		// if walking and still think we're on ground, we'll extend trace down by stepsize so we don't bounce down slopes
 		bMoveToEndPos = true;
-		point.z -= player->m_Local.m_flStepSize;
-		//point -= GetGravityDir() * player->m_Local.m_flStepSize;
+		//point.z -= player->m_Local.m_flStepSize;
+		point += GetGravityDir() * player->m_Local.m_flStepSize;
 	}
 
 	// Was on ground, but now suddenly am not
@@ -380,8 +386,7 @@ void CEmulsionGameMovement::CategorizePosition(void)
 		// Was on ground, but now suddenly am not.  If we hit a steep plane, we are not on ground
 		float flStandableZ = 0.7;
 
-
-		float slope = (pm.plane.normal * GetGravityDir()).Length();
+		float slope = (pm.plane.normal * (-1 * GetGravityDir())).Length();
 		if (!pm.m_pEnt || (slope < flStandableZ))
 		{
 			// Test four sub-boxes, to see if any of them would have found shallower slope we could actually stand on
@@ -394,8 +399,8 @@ void CEmulsionGameMovement::CategorizePosition(void)
 			{
 				SetGroundEntity(NULL);
 				// probably want to add a check for a +z velocity too!
-				if ((mv->m_vecVelocity.z > 0.0f) &&
-				//if (((mv->m_vecVelocity * GetGravityDir()).Length() > 0.0f) &&
+				//if ((mv->m_vecVelocity.z > 0.0f) &&
+				if (((mv->m_vecVelocity * (-1 * GetGravityDir())).Length() > 0.0f) &&
 					(player->GetMoveType() != MOVETYPE_NOCLIP))
 				{
 					player->m_surfaceFriction = 0.25f;
@@ -449,6 +454,12 @@ void CEmulsionGameMovement::CategorizePosition(void)
 
 void CEmulsionGameMovement::FullWalkMove()
 {
+	if (m_tCurPaintInfo.type == PORTAL_POWER)
+		CalculateStickAngles();
+
+	Vector vecInvGravity = m_vecGravity;
+	VecNeg(vecInvGravity);
+
 	if (!CheckWater())
 	{
 		StartGravity();
@@ -517,9 +528,11 @@ void CEmulsionGameMovement::FullWalkMove()
 
 		// Fricion is handled before we add in any base velocity. That way, if we are on a conveyor, 
 		//  we don't slow when standing still, relative to the conveyor.
-		if (player->GetGroundEntity() != NULL)
+		if (player->GetGroundEntity() != NULL || m_bIsTouchingStickParent)
 		{
-			mv->m_vecVelocity[2] = 0.0;
+			//mv->m_vecVelocity[2] = 0.0;
+			//mv->m_vecVelocity *= vecInvGravity;
+
 			player->m_Local.m_flFallVelocity = 0.0f;
 			Friction();
 		}
@@ -527,7 +540,7 @@ void CEmulsionGameMovement::FullWalkMove()
 		// Make sure velocity is valid.
 		CheckVelocity();
 
-		if (player->GetGroundEntity() != NULL)
+		if (player->GetGroundEntity() != NULL || (m_tCurPaintInfo.type == PORTAL_POWER && m_bIsTouchingStickParent))
 		{
 			WalkMove();
 		}
@@ -549,9 +562,10 @@ void CEmulsionGameMovement::FullWalkMove()
 		}
 
 		// If we are on ground, no downward velocity.
-		if (player->GetGroundEntity() != NULL)
+		if (player->GetGroundEntity() != NULL || (m_tCurPaintInfo.type == PORTAL_POWER && m_bIsTouchingStickParent))
 		{
-			mv->m_vecVelocity[2] = 0; // TODO: adapt this for stick paint axis (invert it, ex: V(0, 0, 1) -> V(1, 1, 0) * m_vecVel to keep our velocity)
+			//mv->m_vecVelocity[2] = 0; // TODO: adapt this for stick paint axis (invert it, ex: V(0, 0, 1) -> V(1, 1, 0) * m_vecVel to keep our velocity)
+			mv->m_vecVelocity *= vecInvGravity;
 		}
 		CheckFalling();
 	}
@@ -579,13 +593,20 @@ void CEmulsionGameMovement::WalkMove()
 	// setting vars early here to reduce if() statements later on
 	float accel = sv_accelerate.GetFloat();
 	float maxSpeed = mv->m_flMaxSpeed;
-	
+
+	Vector vecInvGravity = m_vecGravity;
 	Vector dest;
 	trace_t pm;
 	Vector forward, right, up;
 
+	VecNeg(vecInvGravity);
+
 	// TODO: adapt this to use an override with stick paint power
-	AngleVectors(mv->m_vecViewAngles, &forward, &right, &up);  // Determine movement angles
+	//AngleVectors(mv->m_vecViewAngles, &forward, &right, &up);  // Determine movement angles
+	if (m_tCurPaintInfo.type == PORTAL_POWER)
+		AngleVectors(m_angStickAngles, &forward, &right, &up);  // Determine movement angles
+	else
+		AngleVectors(mv->m_vecViewAngles, &forward, &right, &up);  // Determine movement angles
 
 	CHandle< CBaseEntity > oldground;
 	oldground = player->GetGroundEntity();
@@ -602,34 +623,42 @@ void CEmulsionGameMovement::WalkMove()
 	}
 
 	// Zero out z components of movement vectors // TODO: adapt for stick paint
-	if (g_bMovementOptimizations)
-	{
-		if (forward[2] != 0)
-		{
-			forward[2] = 0;
-			VectorNormalize(forward);
-		}
+	//if (g_bMovementOptimizations)
+	//{
+	//	if (forward[2] != 0)
+	//	{
+	//		forward[2] = 0;
+	//		VectorNormalize(forward);
+	//	}
 
-		if (right[2] != 0)
-		{
-			right[2] = 0;
-			VectorNormalize(right);
-		}
-	}
-	else
+	//	if (right[2] != 0)
+	//	{
+	//		right[2] = 0;
+	//		VectorNormalize(right);
+	//	}
+	//}
+	//else
 	{
 		// TODO: adapt for stick paint
-		forward[2] = 0;
-		right[2] = 0;
+//		forward[2] = 0;
+//		right[2] = 0;
+		forward *= vecInvGravity;
+		right *= vecInvGravity;
 
 		VectorNormalize(forward);  // Normalize remainder of vectors.
 		VectorNormalize(right);    // 
 	}
 
-	for (i = 0; i < 2; i++)       // Determine x and y parts of velocity
-		wishvel[i] = forward[i] * fmove + right[i] * smove;
+	//for (i = 0; i < 2; i++)       // Determine x and y parts of velocity
+	//	wishvel[i] = forward[i] * fmove + right[i] * smove;
 
-	wishvel[2] = 0;             // Zero out z part of velocity // TODO: adapt for stick paint
+	//for (i = 0; i < 3; i++)       // Determine x and y parts of velocity
+	//	wishvel[i] = forward[i] * fmove + right[i] * smove;
+
+	wishvel = (forward * fmove) + (right * smove);
+
+	//wishvel[2] = 0;             // Zero out z part of velocity // TODO: adapt for stick paint
+	wishvel *= vecInvGravity;     // Zero out z part of velocity // TODO: adapt for stick paint
 
 	VectorCopy(wishvel, wishdir);   // Determine maginitude of speed of move
 	wishspeed = VectorNormalize(wishdir);
@@ -644,9 +673,11 @@ void CEmulsionGameMovement::WalkMove()
 	}
 
 	// Set pmove velocity // TODO: adapt for stick paint
-	mv->m_vecVelocity[2] = 0;
+	//mv->m_vecVelocity[2] = 0;
+	//mv->m_vecVelocity *= vecInvGravity;
 	Accelerate(wishdir, wishspeed, accel);
-	mv->m_vecVelocity[2] = 0; // TODO: adapt for stick paint
+	//mv->m_vecVelocity[2] = 0; // TODO: adapt for stick paint
+	//mv->m_vecVelocity *= vecInvGravity;
 
 	// Add in any base velocity to the current velocity.
 	VectorAdd(mv->m_vecVelocity, player->GetBaseVelocity(), mv->m_vecVelocity);
@@ -662,9 +693,11 @@ void CEmulsionGameMovement::WalkMove()
 	}
 
 	// first try just moving to the destination	
-	dest[0] = mv->GetAbsOrigin()[0] + mv->m_vecVelocity[0] * gpGlobals->frametime;
-	dest[1] = mv->GetAbsOrigin()[1] + mv->m_vecVelocity[1] * gpGlobals->frametime;
-	dest[2] = mv->GetAbsOrigin()[2];
+	//dest[0] = mv->GetAbsOrigin()[0] + mv->m_vecVelocity[0] * gpGlobals->frametime;
+	//dest[1] = mv->GetAbsOrigin()[1] + mv->m_vecVelocity[1] * gpGlobals->frametime;
+	//dest[2] = mv->GetAbsOrigin()[2];
+
+	dest = mv->GetAbsOrigin() + ((vecInvGravity * mv->m_vecVelocity) * gpGlobals->frametime);
 
 	// first try moving directly to the next spot
 	TracePlayerBBox(mv->GetAbsOrigin(), dest, PlayerSolidMask(), COLLISION_GROUP_PLAYER_MOVEMENT, pm);
@@ -706,295 +739,7 @@ void CEmulsionGameMovement::WalkMove()
 	StayOnGround();
 }
 
-void CEmulsionGameMovement::FullStickMove()
-{
-	Vector nAxis = GetGravityDir();
-	VecNeg(nAxis);
-	
-	if (!CheckWater())
-	{
-		StartGravity();
-	}
-
-	// If we are leaping out of the water, just update the counters.
-	if (player->m_flWaterJumpTime)
-	{
-		WaterJump();
-		TryPlayerMove();
-		// See if we are still in water?
-		CheckWater();
-		return;
-	}
-
-	// If we are swimming in the water, see if we are nudging against a place we can jump up out
-	//  of, and, if so, start out jump.  Otherwise, if we are not moving up, then reset jump timer to 0
-	if (player->GetWaterLevel() >= WL_Waist)
-	{
-		if (player->GetWaterLevel() == WL_Waist)
-		{
-			CheckWaterJump();
-		}
-
-		// not sure if ima handle water + stick situation
-		// If we are falling again, then we must not trying to jump out of water any more.
-		//if (mv->m_vecVelocity[2] < 0 &&
-		//	player->m_flWaterJumpTime)
-		//{
-		//	player->m_flWaterJumpTime = 0;
-		//}
-
-		//if ((mv->m_vecVelocity * GetGravityDir()).Length() < 0 &&
-		//	player->m_flWaterJumpTime)
-		//{
-		//	player->m_flWaterJumpTime = 0;
-		//}
-
-		// Was jump button pressed?
-		if (mv->m_nButtons & IN_JUMP)
-		{
-			CheckJumpButton();
-		}
-		else
-		{
-			mv->m_nOldButtons &= ~IN_JUMP;
-		}
-
-		// Perform regular water movement
-		//WaterMove();
-
-		// Redetermine position vars
-		CategorizePosition();
-
-		// If we are on ground, no downward velocity.
-		if (player->GetGroundEntity() != NULL)
-		{
-			mv->m_vecVelocity *= nAxis;
-			//mv->m_vecVelocity[2] = 0;
-		}
-	}
-	else
-		// Not fully underwater
-	{
-		// Was jump button pressed?
-		if (mv->m_nButtons & IN_JUMP)
-		{
-			CheckJumpButton();
-		}
-		else
-		{
-			mv->m_nOldButtons &= ~IN_JUMP;
-		}
-
-		// Fricion is handled before we add in any base velocity. That way, if we are on a conveyor, 
-		//  we don't slow when standing still, relative to the conveyor.
-		if (player->GetGroundEntity() != NULL)
-		{
-			mv->m_vecVelocity *= nAxis;
-			//mv->m_vecVelocity[2] = 0.0;
-
-			player->m_Local.m_flFallVelocity = 0.0f;
-			Friction();
-		}
-
-		// Make sure velocity is valid.
-		CheckVelocity();
-
-		if (player->GetGroundEntity() != NULL)
-		{
-			StickMove();
-		}
-		else
-		{
-			AirMove();  // Take into account movement when in air.
-		}
-
-		// Set final flags.
-		CategorizePosition();
-
-		// Make sure velocity is valid.
-		CheckVelocity();
-
-		// Add any remaining gravitational component.
-		if (!CheckWater())
-		{
-			FinishGravity();
-		}
-
-		// If we are on ground, no downward velocity.
-		if (player->GetGroundEntity() != NULL)
-		{
-			mv->m_vecVelocity *= nAxis;
-			//mv->m_vecVelocity[2] = 0; // TODO: adapt this for stick paint axis (invert it, ex: V(0, 0, 1) -> V(1, 1, 0) * m_vecVel to keep our velocity)
-		}
-		CheckFalling();
-	}
-
-	if ((m_nOldWaterLevel == WL_NotInWater && player->GetWaterLevel() != WL_NotInWater) ||
-		(m_nOldWaterLevel != WL_NotInWater && player->GetWaterLevel() == WL_NotInWater))
-	{
-		PlaySwimSound();
-#if !defined( CLIENT_DLL )
-		player->Splash();
-#endif
-	}
-}
-
-void CEmulsionGameMovement::StickMove()
-{
-	Vector nAxis = GetGravityDir();
-	VecNeg(nAxis);
-
-	int i;
-
-	Vector wishvel;
-	float spd;
-	float fmove, smove;
-	Vector wishdir;
-	float wishspeed;
-
-	// setting vars early here to reduce if() statements later on
-	float accel = sv_accelerate.GetFloat();
-	float maxSpeed = mv->m_flMaxSpeed;
-
-	Vector dest;
-	trace_t pm;
-	Vector forward, right, up;
-	
-#ifdef GAME_DLL2
-	CSDKPlayer* pPlayer = ToSDKPlayer(player);
-	AngleVectors(pPlayer->m_vecViewAngles, &forward, &right, &up);  // Determine movement angles
-#else
-	AngleVectors(mv->m_vecViewAngles, &forward, &right, &up);  // Determine movement angles
-#endif
-
-	CHandle< CBaseEntity > oldground;
-	oldground = player->GetGroundEntity();
-
-	// Copy movement amounts
-	fmove = mv->m_flForwardMove;
-	smove = mv->m_flSideMove;
-
-	// adjust vars for speed paint, uses 1 if() statement here instead of a bunch later
-	// TODO: account for stick paint vars here when it's added
-	if (m_tCurPaintInfo.type == SPEED_POWER) {
-		accel = pl_speedPaintAcceleration.GetFloat();
-		maxSpeed = pl_speedPaintMoveSpeed.GetFloat(); // this happens twice to ensure the proper speed (no bug)
-	}
-
-	// Zero out z components of movement vectors // TODO: adapt for stick paint
-	//if (g_bMovementOptimizations)
-	//{
-	//	if (forward[2] != 0)
-	//	{
-	//		//forward[2] = 0;
-	//		forward *= nAxis;
-	//		VectorNormalize(forward);
-	//	}
-
-	//	if (right[2] != 0)
-	//	{
-	//		//right[2] = 0;
-	//		right *= nAxis;
-	//		VectorNormalize(right);
-	//	}
-	//}
-	//else
-	{
-		// TODO: adapt for stick paint
-		//forward[2] = 0;
-		//right[2] = 0;
-
-		forward *= nAxis;
-		right *= nAxis;
-
-		VectorNormalize(forward);  // Normalize remainder of vectors.
-		VectorNormalize(right);    // 
-	}
-
-	for (i = 0; i < 2; i++)       // Determine x and y parts of velocity
-		wishvel[i] = forward[i] * fmove + right[i] * smove;
-
-	wishvel *= nAxis;
-	//wishvel[2] = 0;             // Zero out z part of velocity // TODO: adapt for stick paint
-
-	VectorCopy(wishvel, wishdir);   // Determine maginitude of speed of move
-	wishspeed = VectorNormalize(wishdir);
-
-	//
-	// Clamp to server defined max speed
-	//
-	if ((wishspeed != 0.0f) && (wishspeed > maxSpeed))
-	{
-		VectorScale(wishvel, maxSpeed / wishspeed, wishvel);
-		wishspeed = maxSpeed;
-	}
-
-	// Set pmove velocity // TODO: adapt for stick paint
-	//mv->m_vecVelocity[2] = 0;
-	mv->m_vecVelocity *= nAxis;
-	Accelerate(wishdir, wishspeed, accel);
-	//mv->m_vecVelocity[2] = 0; // TODO: adapt for stick paint
-	mv->m_vecVelocity *= nAxis;
-
-	// Add in any base velocity to the current velocity.
-	VectorAdd(mv->m_vecVelocity, player->GetBaseVelocity(), mv->m_vecVelocity);
-
-	spd = VectorLength(mv->m_vecVelocity);
-
-	if (spd < 1.0f)
-	{
-		mv->m_vecVelocity.Init();
-		// Now pull the base velocity back out.   Base velocity is set if you are on a moving object, like a conveyor (or maybe another monster?)
-		VectorSubtract(mv->m_vecVelocity, player->GetBaseVelocity(), mv->m_vecVelocity);
-		return;
-	}
-
-	// first try just moving to the destination	
-	//dest[0] = mv->GetAbsOrigin()[0] + mv->m_vecVelocity[0] * gpGlobals->frametime;
-	//dest[1] = mv->GetAbsOrigin()[1] + mv->m_vecVelocity[1] * gpGlobals->frametime;
-	//dest[2] = mv->GetAbsOrigin()[2];
-
-	dest = mv->GetAbsOrigin() + (nAxis * mv->m_vecVelocity * gpGlobals->frametime);
-
-	// first try moving directly to the next spot
-	TracePlayerBBox(mv->GetAbsOrigin(), dest, PlayerSolidMask(), COLLISION_GROUP_PLAYER_MOVEMENT, pm);
-
-	// If we made it all the way, then copy trace end as new player position.
-	mv->m_outWishVel += wishdir * wishspeed;
-
-	if (pm.fraction == 1)
-	{
-		mv->SetAbsOrigin(pm.endpos);
-		// Now pull the base velocity back out.   Base velocity is set if you are on a moving object, like a conveyor (or maybe another monster?)
-		VectorSubtract(mv->m_vecVelocity, player->GetBaseVelocity(), mv->m_vecVelocity);
-
-		StayOnGround();
-		return;
-	}
-
-	// Don't walk up stairs if not on ground.
-	if (oldground == NULL && player->GetWaterLevel() == 0)
-	{
-		// Now pull the base velocity back out.   Base velocity is set if you are on a moving object, like a conveyor (or maybe another monster?)
-		VectorSubtract(mv->m_vecVelocity, player->GetBaseVelocity(), mv->m_vecVelocity);
-		return;
-	}
-
-	// If we are jumping out of water, don't do anything more.
-	if (player->m_flWaterJumpTime)
-	{
-		// Now pull the base velocity back out.   Base velocity is set if you are on a moving object, like a conveyor (or maybe another monster?)
-		VectorSubtract(mv->m_vecVelocity, player->GetBaseVelocity(), mv->m_vecVelocity);
-		return;
-	}
-
-	//StepMove(dest, pm);
-
-	// Now pull the base velocity back out.   Base velocity is set if you are on a moving object, like a conveyor (or maybe another monster?)
-	VectorSubtract(mv->m_vecVelocity, player->GetBaseVelocity(), mv->m_vecVelocity);
-
-	//StayOnGround();
-}
+extern float g_flCurStickTransitionTime;
 
 void CEmulsionGameMovement::AirMove()
 {
@@ -1076,7 +821,14 @@ void CEmulsionGameMovement::Friction()
 	drop = 0;
 
 	// apply ground friction
-	if (player->GetGroundEntity() != NULL)  // On an entity that is the ground
+	if (m_tCurPaintInfo.type == PORTAL_POWER && m_bIsTouchingStickParent) {
+		friction = sv_friction.GetFloat() * 1.2f;// player->m_surfaceFriction;
+		control = (speed < sv_stopspeed.GetFloat()) ? sv_stopspeed.GetFloat() : speed;
+
+		// Add the amount to the drop amount.
+		drop += control * friction * gpGlobals->frametime;
+	}
+	else if (player->GetGroundEntity() != NULL)  // On an entity that is the ground
 	{
 		if (m_tCurPaintInfo.type == SPEED_POWER)
 			friction = (sv_friction.GetFloat() * (player->m_surfaceFriction * pl_speedPaintFrictionDivisor.GetFloat()));/* / pl_speedPaintFrictionDivisor.GetFloat();*/
@@ -1236,21 +988,21 @@ void CEmulsionGameMovement::CheckFalling()
 
 #ifdef GAME_DLL
 		switch (m_tCurPaintInfo.type) {
-			case BOUNCE_POWER:
-				if (player->m_nButtons & IN_DUCK)
-					break;
+		case BOUNCE_POWER:
+			if (player->m_nButtons & IN_DUCK)
+				break;
 
-				// todo: play bounce sound
-				BouncePlayer(m_tCurPaintInfo.plane); 
-				return;
-			case SPEED_POWER:
-				PlayPaintEntrySound(SPEED_POWER, true); // force the entry sound here
-				break;
-			case PORTAL_POWER:
-				PlayPaintEntrySound(PORTAL_POWER, true); // force the entry sound here
-				break;
-			default:
-				break;
+			// todo: play bounce sound
+			BouncePlayer(m_tCurPaintInfo.plane);
+			return;
+		case SPEED_POWER:
+			PlayPaintEntrySound(SPEED_POWER, true); // force the entry sound here
+			break;
+		case PORTAL_POWER:
+			PlayPaintEntrySound(PORTAL_POWER, true); // force the entry sound here
+			break;
+		default:
+			break;
 		}
 #endif
 
@@ -1309,12 +1061,12 @@ void CEmulsionGameMovement::StayOnGround()
 	Vector nAxis = GetGravityDir();
 
 	VecNeg(nAxis);
-	
+
 	//start.z += 2;
 	//end.z -= player->GetStepSize();
 
 	start += nAxis * 2;
-	end -= GetGravityDir() * player->GetStepSize();
+	end -= (-1 * GetGravityDir()) * player->GetStepSize();
 
 	// See how far up we can go without getting stuck
 
@@ -1323,15 +1075,13 @@ void CEmulsionGameMovement::StayOnGround()
 
 	// using trace.startsolid is unreliable here, it doesn't get set when
 	// tracing bounding box vs. terrain
-
-	//Msg("GravSlope: %f\n", (trace.plane.normal * GetGravityDir()).Length());
-
+	
 	// Now trace down from a known safe position
 	TracePlayerBBox(start, end, PlayerSolidMask(), COLLISION_GROUP_PLAYER_MOVEMENT, trace);
 	if (trace.fraction > 0.0f &&			// must go somewhere
 		trace.fraction < 1.0f &&			// must hit something
 		!trace.startsolid &&				// can't be embedded in a solid
-		(trace.plane.normal * GetGravityDir()).Length() >= 0.7)		// can't hit a steep slope that we can't stand on anyway
+		(trace.plane.normal * (-1 * GetGravityDir())).Length() >= 0.7)		// can't hit a steep slope that we can't stand on anyway
 		//trace.plane.normal[2] >= 0.7)		// can't hit a steep slope that we can't stand on anyway
 	{
 		//float flDelta = fabs(mv->GetAbsOrigin().z - trace.endpos.z);
@@ -1366,7 +1116,7 @@ void CEmulsionGameMovement::FinishGravity() {
 
 	float pGrav = player->GetGravity();
 	float ent_gravity = pGrav ? pGrav : 1.0f;
-	
+
 	// Get the correct velocity for the end of the dt 
 	mv->m_vecVelocity += GetGravityDir() * (ent_gravity * sv_gravity.GetFloat() * gpGlobals->frametime * 0.5);
 
@@ -1483,10 +1233,10 @@ bool CEmulsionGameMovement::CheckJumpButton() {
 
 	// In the air now.
 	SetGroundEntity(NULL);
-	if(m_tCurPaintInfo.type != BOUNCE_POWER)
+	if (m_tCurPaintInfo.type != BOUNCE_POWER)
 		player->PlayStepSound((Vector&)mv->GetAbsOrigin(), player->m_pSurfaceData, 1.0, true);
 	MoveHelper()->PlayerSetAnimation(PLAYER_JUMP);
-	
+
 	float flGroundFactor = sv_jumpFactor.GetFloat();
 	float flMul;
 
@@ -1495,7 +1245,6 @@ bool CEmulsionGameMovement::CheckJumpButton() {
 		PlaySoundInternal("Player.JumpPowerUse");
 		BouncePlayer(m_tCurPaintInfo.plane);
 		goto J;
-		//m_bInManualBounce = true;
 	}
 	else {
 		if (g_bMovementOptimizations)
@@ -1503,7 +1252,7 @@ bool CEmulsionGameMovement::CheckJumpButton() {
 		else
 			flMul = sqrt(2 * sv_gravity.GetFloat() * GAMEMOVEMENT_JUMP_HEIGHT);
 	}
-		
+
 	// Acclerate upward
 	// If we are ducking...
 	float startz = mv->m_vecVelocity[2];
@@ -1516,13 +1265,14 @@ bool CEmulsionGameMovement::CheckJumpButton() {
 		// v^2 = g * g * 2.0 * 45 / g
 		// v = sqrt( g * 2.0 * 45 )
 		mv->m_vecVelocity[2] = flGroundFactor * flMul;  // 2 * gravity * height
+		mv->m_vecVelocity += (-1 * m_vecGravity) * flGroundFactor * flMul;  // 2 * gravity * height
 	}
 	else
 	{
 		if (m_tCurPaintInfo.type == BOUNCE_POWER)
 			mv->m_vecVelocity += player->Forward() * mv->m_vecVelocity.Length() / (flGroundFactor * 2.5f);
 
-		mv->m_vecVelocity[2] += flGroundFactor * flMul;
+		mv->m_vecVelocity += (-1 * m_vecGravity) * flGroundFactor * flMul;
 	}
 
 	FinishGravity();
@@ -1786,9 +1536,12 @@ int CEmulsionGameMovement::TryPlayerMove(Vector* pFirstDest, trace_t* pFirstTrac
 
 	if (doBounce)
 		BouncePlayer(m_tCurPaintInfo.plane);
-	
+
 	return blocked;
 }
+
+static const float g_flStickTransitionTime = 10.0f;
+static float g_flCurStickTransitionTime = 0.0f;
 
 void CEmulsionGameMovement::ProcessPowerUpdate() {
 #ifdef GAME_DLL
@@ -1798,42 +1551,48 @@ void CEmulsionGameMovement::ProcessPowerUpdate() {
 	//debugoverlay->AddBoxOverlay(mv->GetAbsOrigin(), pPlayer->GetPlayerMins(), pPlayer->GetPlayerMaxs(), QAngle(0, 0, 1), 0, 255, 0, 150, 0);
 	//Msg("player origin: %f, %f, %f\n", mv->GetAbsOrigin().x, mv->GetAbsOrigin().y, mv->GetAbsOrigin().z);
 
+	if (m_tCurPaintInfo.type == PORTAL_POWER)
+		g_flCurStickTransitionTime -= gpGlobals->frametime;
+
 	switch (m_tNewInfo.type) {
 	case BOUNCE_POWER:
 		if (m_tCurPaintInfo.type == SPEED_POWER) {
 			BouncePlayer(m_tNewInfo.plane);
 			break;
 		}
-		if (player->GetGroundEntity() != NULL)
+		else if (player->GetGroundEntity() != NULL) {
 			PlayPaintEntrySound(m_tNewInfo.type);
+		}
 		break;
 	case SPEED_POWER:
-		if (player->GetGroundEntity() != NULL)
+		if (player->GetGroundEntity() != NULL) {
 			PlayPaintEntrySound(m_tNewInfo.type);
+		}
 		break;
 	case PORTAL_POWER:
 		if (m_tCurPaintInfo.type != PORTAL_POWER) {
 			StickPlayer(m_tNewInfo);
 			PlayPaintEntrySound(m_tNewInfo.type);
+			g_flCurStickTransitionTime = g_flStickTransitionTime;
 		}
 		break;
 	default:
-		if (m_tCurPaintInfo.type == PORTAL_POWER)
+		if (m_tCurPaintInfo.type == PORTAL_POWER && g_flCurStickTransitionTime <= 0.0f)
 			UnStickPlayer();
 		DetermineExitSound(m_tNewInfo.type);
 		break;
 	}
-	
+
 	m_tCurPaintInfo = m_tNewInfo;
-	pPlayer->m_iPaintPower.Set((int)m_tCurPaintInfo.type);
+	pPlayer->m_nPaintPower = (int)m_tCurPaintInfo.type;
 #endif
 }
 
-void CEmulsionGameMovement::BouncePlayer(cplane_t plane, short n) {
-	
+void CEmulsionGameMovement::BouncePlayer(cplane_t plane) {
+
 	Vector modVel = (mv->m_vecVelocity.Normalized() * (-1 * GetGravityDir())) * (pl_bouncePaintWallFactor.GetFloat());
 	modVel = (modVel.x + modVel.y + modVel.z) < 0 ? modVel * -1 : modVel;
-	
+
 	Vector result = (plane.normal * (pl_bouncePaintFactor.GetFloat() * sqrt(mv->m_vecVelocity.Length()))) + modVel;
 
 	mv->m_vecVelocity += result;
@@ -1849,17 +1608,16 @@ void CEmulsionGameMovement::BouncePlayer(cplane_t plane, short n) {
 
 void CEmulsionGameMovement::StickPlayer(PaintInfo_t info) {
 
-	if(pl_showStickPowerNormal.GetBool())
+	if (pl_showStickPowerNormal.GetBool())
 		Msg("(%f, %f, %f)\n", info.plane.normal.x, info.plane.normal.y, info.plane.normal.z);
 
 #ifdef GAME_DLL
 	CEmulsionPlayer* pPlayer = ToEmulsionPlayer(player);
 	pPlayer->SetGravityDir(-1 * info.plane.normal);
 	pPlayer->SetStickParent(info.m_pEnt);
-	SetGravityDir(-1 * info.plane.normal);
-#endif
 
-	//player->SetGroundEntity(NULL);
+#endif
+	SetGravityDir(-1 * info.plane.normal);
 	player->SetMoveType(MOVETYPE_STICK);
 }
 
@@ -1869,10 +1627,9 @@ void CEmulsionGameMovement::UnStickPlayer() {
 	CEmulsionPlayer* pPlayer = ToEmulsionPlayer(player);
 	pPlayer->SetGravityDir(Vector(0, 0, -1));
 	pPlayer->SetStickParent(NULL);
-	SetGravityDir(Vector(0, 0, -1));
-#endif
 
-	//player->SetGroundEntity(NULL);
+#endif
+	SetGravityDir(Vector(0, 0, -1));
 	player->SetMoveType(MOVETYPE_WALK);
 }
 
@@ -1883,15 +1640,15 @@ void CEmulsionGameMovement::PlayPaintEntrySound(PaintPowerType type, bool force)
 		return;
 
 	switch (type) {
-		case BOUNCE_POWER:
-			entrySound = "Player.EnterBouncePaint";
-			break;
-		case SPEED_POWER:
-			entrySound = "Player.EnterSpeedPaint";
-			break;
-		case PORTAL_POWER:
-			entrySound = "Player.EnterStickPaint";
-			break;
+	case BOUNCE_POWER:
+		entrySound = "Player.EnterBouncePaint";
+		break;
+	case SPEED_POWER:
+		entrySound = "Player.EnterSpeedPaint";
+		break;
+	case PORTAL_POWER:
+		entrySound = "Player.EnterStickPaint";
+		break;
 	}
 
 	PlaySoundInternal(entrySound);
@@ -1904,15 +1661,15 @@ void CEmulsionGameMovement::PlayPaintExitSound(PaintPowerType type) {
 		return;
 
 	switch (type) {
-		case BOUNCE_POWER:
-			exitSound = "Player.ExitBouncePaint";
-			break;
-		case SPEED_POWER:
-			exitSound = "Player.ExitSpeedPaint";
-			break;
-		case PORTAL_POWER:
-			exitSound = "Player.ExitStickPaint";
-			break;
+	case BOUNCE_POWER:
+		exitSound = "Player.ExitBouncePaint";
+		break;
+	case SPEED_POWER:
+		exitSound = "Player.ExitSpeedPaint";
+		break;
+	case PORTAL_POWER:
+		exitSound = "Player.ExitStickPaint";
+		break;
 	}
 
 	PlaySoundInternal(exitSound);
@@ -1965,9 +1722,6 @@ void CEmulsionGameMovement::PlaySoundInternal(const char* sound) {
 
 #ifdef GAME_DLL
 
-int g_pBatch = 0;
-int g_pBatch0 = 0;
-
 // check if paint a is better than paint b
 static bool IsPaintHigherPriority(PaintPowerType a, PaintPowerType b) {
 
@@ -1998,83 +1752,77 @@ static bool IsPaintHigherPriority(PaintPowerType a, PaintPowerType b) {
 PaintInfo_t CEmulsionGameMovement::CheckPaintedSurface() {
 
 	PaintInfo_t info = PaintInfo_t();
+
+	if (mv == NULL)
+		return info;
+
+	if (g_bInStickTransition)
+		return m_tCurPaintInfo;
+
+	CalculateStickAngles();
+
 	CUtlVector<unsigned char>* m_pPowers = new CUtlVector<unsigned char>();
-	CUtlVector<unsigned char>* m_pPowers2 = new CUtlVector<unsigned char>();
-	
-	Vector nAxis = GetGravityDir();
-	Vector flatvel = mv->m_vecVelocity;
-	Vector halfHeight = (GetPlayerMins() + GetPlayerMaxs()) * 0.5;
-	Vector vecStart;
+	CEmulsionPlayer* pPlayer = (CEmulsionPlayer*)UTIL_GetLocalPlayer();
+
+	Vector vecVel = mv->m_vecVelocity;
+	Vector vecStart = mv->GetAbsOrigin() + (m_tCurPaintInfo.plane.normal * player->GetViewOffset().Length()) * 0.75f;
 	Vector vecEnd;
 	trace_t tr;
-	trace_t tr2;
+	float reach = 26.0f; // 24.0f;
 
-	VecNeg(nAxis);
-	vecStart = mv->GetAbsOrigin() + halfHeight;
-	
-	float reach = 8.0f;
-	float reach2 = halfHeight.Length();
+	VectorNormalize(vecVel);
+	if (m_tCurPaintInfo.type == PORTAL_POWER)
+		VectorMA(vecStart, reach, vecVel * reach, vecEnd);
+	else
+		VectorMA(vecStart, reach, vecVel, vecEnd);
 
-	g_pBatch = 0;
-	g_pBatch0 = 0;
-
-	VectorNormalize(flatvel);
-	VectorMA(vecStart, reach, flatvel, vecEnd);
-	
-	// check for paints under us if we're on the ground
-	//{//if (player->GetGroundEntity()) {
-	//	//TracePlayerBBox(vecStart, mv->GetAbsOrigin() + (halfHeight * (m_vecGravity * reach)), PlayerSolidMask(), COLLISION_GROUP_PLAYER_MOVEMENT, tr);
-	//	TracePlayerBBox(vecStart, mv->GetAbsOrigin() + (m_vecGravity * reach), PlayerSolidMask(), COLLISION_GROUP_PLAYER_MOVEMENT, tr);
-
-	//	if (tr.m_pEnt && tr.m_pEnt->IsBSPModel())
-	//		engine->SphereTracePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, tr.plane.normal, pl_paintTraceRadius.GetFloat(), *m_pPowers);
-
-	//	g_pBatch0 = m_pPowers->Count();
-	//}
-
-	//TracePlayerBBox(vecStart, vecEnd, PlayerSolidMask(), COLLISION_GROUP_PLAYER_MOVEMENT, tr2);
-	//if (tr2.m_pEnt && tr2.m_pEnt->IsBSPModel())
-	//	engine->SphereTracePaintSurface(tr2.m_pEnt->GetModel(), tr2.endpos, tr2.plane.normal, pl_paintTraceRadius.GetFloat(), *m_pPowers2);
 	TracePlayerBBox(vecStart, vecEnd, PlayerSolidMask(), COLLISION_GROUP_PLAYER_MOVEMENT, tr);
+
 	if (tr.m_pEnt && tr.m_pEnt->IsBSPModel())
 		engine->SphereTracePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, tr.plane.normal, pl_paintTraceRadius.GetFloat(), *m_pPowers);
-	
-	if (player->GetGroundEntity()) {
-		TracePlayerBBox(vecStart, mv->GetAbsOrigin() + (halfHeight * (m_vecGravity * reach)), PlayerSolidMask(), COLLISION_GROUP_PLAYER_MOVEMENT, tr);
-		//TracePlayerBBox(vecStart, mv->GetAbsOrigin() + (m_vecGravity * reach), PlayerSolidMask(), COLLISION_GROUP_PLAYER_MOVEMENT, tr);
+
+	// check for paints under us if we're on the ground
+	if (player->GetGroundEntity() != NULL || m_bIsTouchingStickParent) {
+		TracePlayerBBox(vecStart, mv->GetAbsOrigin() + (reach * m_vecGravity), PlayerSolidMask(), COLLISION_GROUP_PLAYER_MOVEMENT, tr);
 
 		if (tr.m_pEnt && tr.m_pEnt->IsBSPModel())
 			engine->SphereTracePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, tr.plane.normal, pl_paintTraceRadius.GetFloat(), *m_pPowers);
+	}
+	
+	if (m_tCurPaintInfo.type == PORTAL_POWER) {
+		trace_t str;
+		Vector forward, right, up;
+		CUtlVector<unsigned char>* m_pStickPowers = new CUtlVector<unsigned char>();
 
-		g_pBatch0 = m_pPowers->Count();
+		// TODO: replace the EyeAngles bullshit here, it breaks the move check when on walls
+		AngleVectors(m_angStickAngles, &forward, &right, &up);
+		//UTIL_TraceLine(vecStart, pPlayer->GetForward_Stick() * 750, MASK_ALL, pPlayer, COLLISION_GROUP_PLAYER_MOVEMENT, &str); // no.
+		TracePlayerBBox(vecStart, vecStart + (forward * reach), PlayerSolidMask(), COLLISION_GROUP_PLAYER_MOVEMENT, str);
+
+		if (str.m_pEnt && str.m_pEnt->IsBSPModel())
+			engine->SphereTracePaintSurface(str.m_pEnt->GetModel(), str.endpos, str.plane.normal, pl_paintTraceRadius.GetFloat(), *m_pStickPowers);
+
+
+		if (m_pStickPowers->Count() > 0)
+			if ((PaintPowerType)m_pStickPowers->Tail() == PORTAL_POWER) {
+				info.type = PORTAL_POWER;
+				info.tr = &str;
+				info.m_pEnt = str.m_pEnt;
+				info.plane = str.plane;
+				info.pos = str.endpos;
+				info.m_bIsPainted = true;
+
+				return info;
+			}
 	}
 
-	PaintPowerType batch0 = GetHighestPriorityPaint(m_pPowers);
-	//PaintPowerType batch1 = GetHighestPriorityPaint(m_pPowers2);
+	info.type = GetHighestPriorityPaint(m_pPowers);
 
-	//info.type = batch0;
-
-	//if (!IsPaintHigherPriority(batch1, batch0) && batch1 != NO_POWER) {
-	//	info.type = batch1;
-	//	info.plane = tr2.plane;
-	//	info.pos = tr2.endpos;
-	//	info.m_pEnt = tr2.m_pEnt;
-	//	info.tr = &tr2;
-	//}
-	//else {
-	//	info.type = batch0;
-	//	info.plane = tr.plane;
-	//	info.pos = tr.endpos;
-	//	info.m_pEnt = tr.m_pEnt;
-	//	info.tr = &tr;
-	//}
-
-	info.type = batch0;
+	info.tr = &tr;
+	info.m_pEnt = tr.m_pEnt;
 	info.plane = tr.plane;
 	info.pos = tr.endpos;
-	info.m_pEnt = tr.m_pEnt;
-	info.tr = &tr;
-	
+
 	if (m_pPowers->Count() > 0)
 		info.m_bIsPainted = true;
 
@@ -2092,7 +1840,6 @@ PaintPowerType CEmulsionGameMovement::GetHighestPriorityPaint(CUtlVector<unsigne
 		PaintPowerType temp = (PaintPowerType)m_pPowers->Element(i);
 		if (!IsPaintHigherPriority((PaintPowerType)m_pPowers->Element(i), curBest)) {
 			curBest = temp;
-			g_pBatch = i;
 		}
 	}
 
@@ -2101,47 +1848,26 @@ PaintPowerType CEmulsionGameMovement::GetHighestPriorityPaint(CUtlVector<unsigne
 
 #endif
 
-// this version feels good for wall jumps n shit
-/*void CEmulsionGameMovement::BouncePlayer(cplane_t plane, short n) {
-	
-	float flMul =  pl_bouncePaintFactor.GetFloat();
-	Vector modVel = (mv->m_vecVelocity.Normalized() * (-1 * GetGravityDir())) * (pl_bouncePaintFactor.GetFloat() * 5);
-	modVel = modVel.x + modVel.y + modVel.z < 0 ? modVel * -1 : modVel;
-	Vector result = (plane.normal * (flMul * sqrt(mv->m_vecVelocity.Length()))) + modVel;
+void CEmulsionGameMovement::CalculateStickAngles() {
 
-	mv->m_vecVelocity += result;
+	if (m_angDefaultAngles == QAngle(0, 0, 0))
+		m_angDefaultAngles = mv->m_vecViewAngles;
 
-	m_bCancelNextExitSound = true;
-	PlaySoundInternal("Player.JumpPowerUse");
+	QAngle stickAngles = player->EyeAngles();
+	Vector vecAxisOfRotation = CrossProduct(Vector(0, 0, 1), -1 * m_vecGravity);
+	float flAngleOfRotation = RAD2DEG(acos(DotProduct(Vector(0, 0, 1), -1 * m_vecGravity)));
 
-	if (pl_showBouncePowerNormal.GetBool())
-		Msg("(%f, %f, %f)\n", result.x, result.y, result.z);
+	//Msg("(%f, %f, %f)\n", m_vecGravity.x, m_vecGravity.y, m_vecGravity.z);
 
-	SetGroundEntity(NULL);
-}*/
+	VMatrix eyerotmat;
+	MatrixBuildRotationAboutAxis(eyerotmat, vecAxisOfRotation, flAngleOfRotation);
 
-/*
-void CEmulsionGameMovement::BouncePlayer(cplane_t plane, short n) {
-	
-	//float flMul = pl_bouncePaintFactor.GetFloat();
-	//float flMul = pl_bouncePaintFactor.GetFloat();
-	//float flGrav = plane.normal == -1 * GetGravityDir() ? sv_gravity.GetFloat() * 0.75f : sv_gravity.GetFloat() * 0.5f;
-	//Vector result = plane.normal * (flMul + mv->m_vecVelocity.Length() + flGrav);
+	Vector vecForward, vecUp;
+	AngleVectors(stickAngles, &vecForward, nullptr, &vecUp);
+	VectorRotate(vecForward, eyerotmat.As3x4(), vecForward);
+	VectorRotate(vecUp, eyerotmat.As3x4(), vecUp);
 
-	float flMul =  pl_bouncePaintFactor.GetFloat();// *(plane.normal == -GetGravityDir() ? 0.5f : 0.5f);
-	Vector modVel;
-	Vector result = (plane.normal * (flMul * sqrt(mv->m_vecVelocity.Length())));// +(-m_vecGravity * sv_gravity.GetFloat() / 2);
-	//float opvel = flMul * sqrt(mv->m_vecVelocity.Length());
-	//Vector advel = (plane.normal * opvel);
-	//Vector result = advel + (m_vecGravity * sv_gravity.GetFloat() / 2);
-
-	mv->m_vecVelocity += (mv->m_vecVelocity) + result;
-
-	m_bCancelNextExitSound = true;
-	PlaySoundInternal("Player.JumpPowerUse");
-
-	if (pl_showBouncePowerNormal.GetBool())
-		Msg("(%f, %f, %f)\n", result.x, result.y, result.z);
-
-	SetGroundEntity(NULL);
-}*/
+	VectorAngles(vecForward, vecUp, m_angStickAngles);
+	m_vecStickForward = vecForward;
+	m_vecStickUp = vecUp;
+}
