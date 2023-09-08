@@ -51,3 +51,22 @@ config.cfg
 
 # shader files
 *.tmp
+*.vpc_crc
+*.filters
+*.pdb
+*.sentinel
+*.db
+src/.vs/Game_Emulsion-2013/v17/fileList.bin
+src/.vs/Game_Emulsion-2013/v17/HierarchyCache.v1.txt
+src/.vs/Game_Emulsion-2013/v17/fileList.bin
+src/.vs/Game_Emulsion-2013/v17/HierarchyCache.v1.txt
+src/.vs/Game_Emulsion-2013/v17/Preview/Browse.VC.db
+src/game/client/client_emulsion.vcxproj.filters
+src/game/client/client_emulsion.vcxproj.vpc_crc
+src/game/client/client_emulsion.vpc.sentinel
+src/game/client/Debug_emulsion/vc120.pdb
+src/game/server/Debug_emulsion/vc120.pdb
+src/game/server/server_emulsion.vcxproj.filters
+src/game/server/server_emulsion.vcxproj.vpc_crc
+src/game/server/server_emulsion.vpc.sentinel
+*.db
