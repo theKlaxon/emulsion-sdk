@@ -51,3 +51,10 @@ config.cfg
 
 # shader files
 *.tmp
+*.vpc_crc
+*.filters
+*.pdb
+*.sentinel
+*.db
+src/.vs/Game_Emulsion-2013/v17/fileList.bin
+src/.vs/Game_Emulsion-2013/v17/HierarchyCache.v1.txt
