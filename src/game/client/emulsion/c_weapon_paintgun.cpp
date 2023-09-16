@@ -7,8 +7,8 @@
 #define	HL2_BOB			0.002f
 #define	HL2_BOB_UP		0.5f
 
-static float	g_lateralBob;
-static float	g_verticalBob;
+float	g_lateralBob;
+float	g_verticalBob;
 
 #define	HL2_BOB_CYCLE_MIN	1.0f
 #define	HL2_BOB_CYCLE_MAX	0.45f

@@ -307,6 +307,9 @@ public:
 	virtual void			*VCollideAllocUserData( vcollide_t *pVCollide, size_t userDataSize ) = 0;
 	virtual void			VCollideFreeUserData( vcollide_t *pVCollide ) = 0;
 	virtual void			VCollideCheck( vcollide_t *pVCollide, const char *pName ) = 0;
+
+	// p2
+	virtual bool			TraceBoxAA(const Ray_t& ray, const CPhysCollide* pCollide, trace_t* ptr) = 0;
 };
 
 // this can be used to post-process a collision model
@@ -1129,6 +1132,10 @@ struct convertconvexparams_t
 	bool		buildDragAxisAreas;
 	bool		buildOptimizedTraceTables;
 	bool		checkOptimalTracing;
+
+	bool		bUseFastApproximateInertiaTensor;
+	bool		bBuildAABBTree;
+
 	float		dragAreaEpsilon;
 	CPhysConvex *pForcedOuterHull;
 
@@ -1139,6 +1146,10 @@ struct convertconvexparams_t
 		buildDragAxisAreas = false;
 		buildOptimizedTraceTables = false;
 		checkOptimalTracing = false;
+
+		bUseFastApproximateInertiaTensor = false;
+		bBuildAABBTree = false;
+
 		pForcedOuterHull = NULL;
 	}
 };

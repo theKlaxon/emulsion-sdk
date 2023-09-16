@@ -2,6 +2,8 @@
 #include "singleplay_gamerules.h"
 #include "ammodef.h"
 
+#include "portal_gamerules.h"
+
 #ifdef GAME_DLL
 	#include "voice_gamemgr.h"
 #endif
@@ -10,9 +12,8 @@
 	#define C_EmulsionGameRules CEmulsionGameRules
 #endif
 
-class CEmulsionGameRules : public CSingleplayRules
-{
-	DECLARE_CLASS(CEmulsionGameRules, CSingleplayRules);
+class CEmulsionGameRules : public CPortalGameRules { //CSingleplayRules {
+	DECLARE_CLASS(CEmulsionGameRules, CPortalGameRules);
 public:
 
 	virtual bool IsMultiplayer(void) { return false; }

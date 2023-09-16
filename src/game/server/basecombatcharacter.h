@@ -22,9 +22,12 @@
 #include <limits.h>
 #include "weapon_proficiency.h"
 
+#ifdef PORTAL2
+#include "portal_shareddefs.h"
+#endif
 
 // HACK, Should come from game specific enum...
-#define WEAPON_MAX 32   
+//#define WEAPON_MAX 32   
 
 
 class CScriptedTarget;
@@ -461,7 +464,7 @@ protected:
 	string_t	m_RelationshipString;	// Used to load up relationship keyvalues
 	float		m_impactEnergyScale;// scale the amount of energy used to calculate damage this ent takes due to physics
 
-	byte		m_weaponIDToIndex[WEAPON_MAX];
+	byte		m_weaponIDToIndex[2];
 
 public:
 	static int					GetInteractionID();	// Returns the next interaction #

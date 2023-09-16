@@ -1,9 +1,9 @@
 #include "cbase.h"
+#include "c_portal_player.h"
 
-class C_EmulsionPlayer : public C_BasePlayer
-{
+class C_EmulsionPlayer : public C_Portal_Player { //C_BasePlayer {
 public:
-	DECLARE_CLASS(C_EmulsionPlayer, C_BasePlayer );
+	DECLARE_CLASS(C_EmulsionPlayer, C_Portal_Player );// C_BasePlayer );
 	DECLARE_NETWORKCLASS();
 	
 	C_EmulsionPlayer();

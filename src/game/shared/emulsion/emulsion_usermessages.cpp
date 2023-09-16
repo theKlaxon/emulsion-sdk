@@ -38,4 +38,8 @@ void RegisterUserMessages()
 	usermessages->Register( "UpdateJalopyRadar", -1 );
 	usermessages->Register( "CurrentTimescale", 4 );	// Send one float for the new timescale
 	usermessages->Register( "DesiredTimescale", 13 );	// Send timescale and some blending vars
+
+	// portal
+	usermessages->Register("EntityPortalled", sizeof(long) + sizeof(long) + sizeof(Vector) + sizeof(QAngle)); //something got teleported through a portal
+	usermessages->Register("KillCam", -1);
 }

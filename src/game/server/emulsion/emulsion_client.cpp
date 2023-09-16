@@ -7,7 +7,7 @@ extern bool	g_fGameOver;
 
 const char* GetGameDescription()
 {
-	return "Source 2011";
+	return "Emulsion";//"Source 2011";
 }
 
 void InstallGameRules()
@@ -18,6 +18,22 @@ void InstallGameRules()
 void ClientGamePrecache()
 {
 	CBaseEntity::PrecacheModel(DEFAULT_PLAYER_MODEL);
+	CBaseEntity::PrecacheModel("models/gibs/agibs.mdl");
+	CBaseEntity::PrecacheModel("models/weapons/v_hands.mdl");
+
+	CBaseEntity::PrecacheScriptSound("HUDQuickInfo.LowAmmo");
+	CBaseEntity::PrecacheScriptSound("HUDQuickInfo.LowHealth");
+
+	CBaseEntity::PrecacheScriptSound("Missile.ShotDown");
+	CBaseEntity::PrecacheScriptSound("Bullets.DefaultNearmiss");
+	CBaseEntity::PrecacheScriptSound("Bullets.GunshipNearmiss");
+	CBaseEntity::PrecacheScriptSound("Bullets.StriderNearmiss");
+
+	CBaseEntity::PrecacheScriptSound("Geiger.BeepHigh");
+	CBaseEntity::PrecacheScriptSound("Geiger.BeepLow");
+
+	CBaseEntity::PrecacheModel("models/portals/portal1.mdl");
+	CBaseEntity::PrecacheModel("models/portals/portal2.mdl");
 }
 
 void GameStartFrame()
@@ -60,6 +76,7 @@ void FinishClientPutInServer( CBasePlayer* pPlayer )
 void ClientActive( edict_t* pEdict, bool bLoadGame )
 {
 	CBasePlayer* pPlayer = ToBasePlayer( CBaseEntity::Instance( pEdict ) );
+	//pPlayer->InitialSpawn();
 	FinishClientPutInServer( pPlayer );
 }
 

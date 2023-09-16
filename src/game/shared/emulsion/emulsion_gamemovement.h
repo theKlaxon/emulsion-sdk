@@ -4,12 +4,13 @@
 #include "vphysics_interface.h"
 #include "game/shared/portal2/paint_enum.h"
 #include "emulsion_shareddefs.h"
+#include "portal_gamemovement.h"
 
 static bool g_bInStickTransition = false;
 
-class CEmulsionGameMovement : public CGameMovement {
+class CEmulsionGameMovement : public CPortalGameMovement { //CGameMovement {
 public:
-	DECLARE_CLASS(CEmulsionGameMovement, CGameMovement);
+	DECLARE_CLASS(CEmulsionGameMovement, CPortalGameMovement);
 
 	CEmulsionGameMovement();
 

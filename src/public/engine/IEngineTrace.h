@@ -130,9 +130,56 @@ public:
 
 struct BrushSideInfo_t
 {
-	Vector4D plane;			// The plane of the brush side
+	//Vector4D plane;			// The plane of the brush side
+	cplane_t plane;			// this may be a cplane_t in p2, guessing that cause it's use strangely for a v4d in some portal files
 	unsigned short bevel;	// Bevel plane?
 	unsigned short thin;	// Thin?
+};
+
+// took from csgo for some portal 2 stuff
+class CBrushQuery
+{
+public:
+	CBrushQuery(void)
+	{
+		m_iCount = 0;
+		m_pBrushes = NULL;
+		m_iMaxBrushSides = 0;
+		m_pReleaseFunc = NULL;
+		m_pData = NULL;
+	}
+	~CBrushQuery(void)
+	{
+		ReleasePrivateData();
+	}
+	void ReleasePrivateData(void)
+	{
+		if (m_pReleaseFunc)
+		{
+			m_pReleaseFunc(this);
+		}
+
+		m_iCount = 0;
+		m_pBrushes = NULL;
+		m_iMaxBrushSides = 0;
+		m_pReleaseFunc = NULL;
+		m_pData = NULL;
+	}
+
+	inline int Count(void) const { return m_iCount; }
+	inline uint32* Base(void) { return m_pBrushes; }
+	inline uint32 operator[](int iIndex) const { return m_pBrushes[iIndex]; }
+	inline uint32 GetBrushNumber(int iIndex) const { return m_pBrushes[iIndex]; }
+
+	//maximum number of sides of any 1 brush in the query results
+	inline int MaxBrushSides(void) const { return m_iMaxBrushSides; }
+
+protected:
+	int m_iCount;
+	uint32* m_pBrushes;
+	int m_iMaxBrushSides;
+	void (*m_pReleaseFunc)(CBrushQuery*); //release function is almost always in a different dll than calling code
+	void* m_pData;
 };
 
 //-----------------------------------------------------------------------------
@@ -189,9 +236,10 @@ public:
 	// HACKHACK: Temp for performance measurments
 	virtual int GetStatByIndex( int index, bool bClear ) = 0;
 
-
+	// p2 update
 	//finds brushes in an AABB, prone to some false positives
-	virtual void GetBrushesInAABB( const Vector &vMins, const Vector &vMaxs, CUtlVector<int> *pOutput, int iContentsMask = 0xFFFFFFFF ) = 0;
+	//virtual void GetBrushesInAABB( const Vector &vMins, const Vector &vMaxs, CUtlVector<int> *pOutput, int iContentsMask = 0xFFFFFFFF ) = 0;
+	virtual void GetBrushesInAABB( const Vector &vMins, const Vector &vMaxs, CBrushQuery &pOutput, int iContentsMask = 0xFFFFFFFF, int something = 0 ) = 0;
 
 	//Creates a CPhysCollide out of all displacements wholly or partially contained in the specified AABB
 	virtual CPhysCollide* GetCollidableFromDisplacementsInAABB( const Vector& vMins, const Vector& vMaxs ) = 0;
@@ -202,8 +250,10 @@ public:
 	// gets a specific diplacement mesh
 	virtual void GetDisplacementMesh( int nIndex, virtualmeshlist_t *pMeshTriList ) = 0;
 	
+	// p2 update
 	//retrieve brush planes and contents, returns true if data is being returned in the output pointers, false if the brush doesn't exist
-	virtual bool GetBrushInfo( int iBrush, CUtlVector<BrushSideInfo_t> *pBrushSideInfoOut, int *pContentsOut ) = 0;
+	//virtual bool GetBrushInfo(int iBrush, CUtlVector<BrushSideInfo_t>* pBrushSideInfoOut, int pContentsOut) = 0;
+	virtual bool GetBrushInfo(int iBrush, int& iBrushContents, BrushSideInfo_t* pBrushSideInfoOut, int something ) = 0;// int* pContentsOut ) = 0;
 
 	virtual bool PointOutsideWorld( const Vector &ptTest ) = 0; //Tests a point to see if it's outside any playable area
 
@@ -215,6 +265,10 @@ public:
 
 	/// Used only in debugging: get/set/clear/increment the trace debug counter. See comment below for details.
 	virtual int GetSetDebugTraceCounter( int value, DebugTraceCounterBehavior_t behavior ) = 0;
+
+	// new p2
+	virtual int GetMeshesFromDisplacementsInAABB(const Vector& vMins, const Vector& vMaxs, virtualmeshlist_t* pOut, int maxmeshesithink) = 0;
+	virtual void GetBrushesInCollideable(ICollideable* pCollide, CBrushQuery& brush) = 0;
 };
 
 /// IEngineTrace::GetSetDebugTraceCounter

@@ -157,7 +157,7 @@ void CEmulsionPlayer::FireBullets(const FireBulletsInfo_t& info) {
 }
 
 // hl2 player pickup code
-
+#ifdef NO_PORTALS
 CBaseEntity* GetPlayerHeldEntity(CBasePlayer* pPlayer)
 {
 	CBaseEntity* pObject = NULL;
@@ -287,6 +287,8 @@ float CEmulsionPlayer::GetHeldObjectMass(IPhysicsObject* pHeldObject)
 {
 	return  PlayerPickupGetHeldObjectMass(m_hUseEntity, pHeldObject);
 }
+
+#endif
 
 extern CViewVectors* GetViewVectors();
 extern void VecNeg(Vector& v);

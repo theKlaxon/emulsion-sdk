@@ -146,6 +146,8 @@ public:
 	virtual const char *GetActivationEventName() =0;
 	virtual const char *GetEvaluationEventName() =0;
 
+	friend class CTriggerPortalCleanser;
+
 protected:
 	void Activate();
 

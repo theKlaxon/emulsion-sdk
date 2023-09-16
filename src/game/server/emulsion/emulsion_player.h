@@ -4,12 +4,13 @@
 #include "emulsion_pickupcontroller.h"
 #include "emulsion_gamemovement.h"
 #include "igamemovement.h"
+#include "portal_player.h"
 
 extern IGameMovement* g_pGameMovement;
 
-class CEmulsionPlayer : public CBasePlayer {
+class CEmulsionPlayer : public CPortal_Player {//CBasePlayer {
 public:
-	DECLARE_CLASS(CEmulsionPlayer, CBasePlayer );
+	DECLARE_CLASS(CEmulsionPlayer, CPortal_Player );// CBasePlayer );
 	DECLARE_NETWORKCLASS();
 
 	CEmulsionPlayer();
@@ -25,10 +26,12 @@ public:
 	virtual void	EndTouch(CBaseEntity* pOther) override;
 	void			FireBullets(const FireBulletsInfo_t& info);
 
+#ifdef NO_PORTALS
 	virtual void	PlayerUse();
 	virtual void	PickupObject(CBaseEntity* pObject, bool bLimitMassAndSize);
 	virtual	bool	IsHoldingEntity(CBaseEntity* pEnt);
 	virtual float	GetHeldObjectMass(IPhysicsObject* pHeldObject);
+#endif
 
 	void			SetGravityDir(Vector axis);
 	void			SetStickParent(CBaseEntity* pParent);
