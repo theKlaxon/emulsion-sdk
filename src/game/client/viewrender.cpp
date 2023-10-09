@@ -3731,9 +3731,9 @@ void CRendering3dView::BuildRenderableRenderLists( int viewID )
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void CRendering3dView::DrawWorld( float waterZAdjust )
+void CRendering3dView::DrawWorld( IMatRenderContext* pRenderContext, float waterZAdjust )
 {
-	CMatRenderContextPtr pRenderContext(materials);
+	//CMatRenderContextPtr pRenderContext(materials);
 
 	VPROF_INCREMENT_COUNTER( "RenderWorld", 1 );
 	VPROF_BUDGET( "DrawWorld", VPROF_BUDGETGROUP_WORLD_RENDERING );
@@ -5061,7 +5061,7 @@ void CSkyboxView::DrawInternal( view_id_t iSkyBoxViewID, bool bInvokePreAndPostR
 		g_pClientShadowMgr->ComputeShadowTextures( (*this), m_pWorldListInfo->m_LeafCount, m_pWorldListInfo->m_pLeafDataList );
 	}
 
-	DrawWorld( 0.0f );
+	DrawWorld( pRenderContext, 0.0f );
 
 	// Iterate over all leaves and render objects in those leaves
 	//DrawOpaqueRenderables( false );
@@ -5221,7 +5221,7 @@ void CShadowDepthView::Draw()
 	pRenderContext.GetFrom(materials);
 	pRenderContext->PushRenderTargetAndViewport(m_pRenderTarget, m_pDepthTexture, 0, 0, m_pDepthTexture->GetMappingWidth(), m_pDepthTexture->GetMappingWidth());
 
-	pRenderContext.SafeRelease();
+	//pRenderContext.SafeRelease();
 
 	SetupCurrentView( origin, angles, VIEW_SHADOW_DEPTH_TEXTURE );
 
@@ -5243,7 +5243,7 @@ void CShadowDepthView::Draw()
 
 	{
 		VPROF_BUDGET( "DrawWorld", VPROF_BUDGETGROUP_SHADOW_DEPTH_TEXTURING );
-		DrawWorld( 0.0f );
+		DrawWorld( pRenderContext, 0.0f );
 	}
 
 	// Draw opaque and translucent renderables with appropriate override materials
@@ -5545,7 +5545,8 @@ void CBaseWorldView::DrawSetup( float waterHeight, int nSetupFlags, float waterZ
 void CBaseWorldView::DrawExecute( float waterHeight, view_id_t viewID, float waterZAdjust )
 {
 	// @MULTICORE (toml 8/16/2006): rethink how, where, and when this is done...
-	g_pClientShadowMgr->ComputeShadowTextures( *this, m_pWorldListInfo->m_LeafCount, m_pWorldListInfo->m_pLeafDataList );
+	if(!(m_DrawFlags & (DF_DRAW_SIMPLE_WORLD_MODEL | DF_DRAW_SIMPLE_WORLD_MODEL_WATER)))
+		g_pClientShadowMgr->ComputeShadowTextures( *this, m_pWorldListInfo->m_LeafCount, m_pWorldListInfo->m_pLeafDataList );
 
 	// Make sure sound doesn't stutter
 	engine->Sound_ExtraUpdate();
@@ -5567,11 +5568,12 @@ void CBaseWorldView::DrawExecute( float waterHeight, view_id_t viewID, float wat
 
 	ITexture *pSaveFrameBufferCopyTexture = pRenderContext->GetFrameBufferCopyTexture( 0 );
 	pRenderContext->SetFrameBufferCopyTexture( GetPowerOfTwoFrameBufferTexture() );
-	pRenderContext.SafeRelease();
+	//pRenderContext.SafeRelease();
 
 	Begin360ZPass();
 	m_DrawFlags |= DF_SKIP_WORLD_DECALS_AND_OVERLAYS;
-	DrawWorld( waterZAdjust );
+	DrawWorld( pRenderContext, waterZAdjust );
+
 	m_DrawFlags &= ~DF_SKIP_WORLD_DECALS_AND_OVERLAYS;
 	if ( m_DrawFlags & DF_DRAW_ENTITITES )
 	{
@@ -5583,10 +5585,17 @@ void CBaseWorldView::DrawExecute( float waterHeight, view_id_t viewID, float wat
 	// Only draw decals on opaque surfaces after now. Benefit is two-fold: Early Z benefits on PC, and
 	// we're pulling out stuff that uses the dynamic VB from the 360 Z pass
 	// (which can lead to rendering corruption if we overflow the dyn. VB ring buffer).
+	//m_DrawFlags |= DF_SKIP_WORLD;
+	//DrawWorld( pRenderContext, waterZAdjust );
+	//m_DrawFlags &= ~DF_SKIP_WORLD;
+	
 	m_DrawFlags |= DF_SKIP_WORLD;
-	DrawWorld( waterZAdjust );
+	if (!(m_DrawFlags & (DF_DRAW_SIMPLE_WORLD_MODEL | DF_DRAW_SIMPLE_WORLD_MODEL_WATER)))
+	{
+		DrawWorld(pRenderContext, waterZAdjust);
+	}
 	m_DrawFlags &= ~DF_SKIP_WORLD;
-		
+
 	if ( !m_bDrawWorldNormal )
 	{
 		if ( m_DrawFlags & DF_DRAW_ENTITITES )
@@ -5699,9 +5708,10 @@ void CSimpleWorldView::Draw()
 		unsigned char ucFogColor[3];
 		pRenderContext->GetFogColor( ucFogColor );
 		pRenderContext->ClearColor4ub( ucFogColor[0], ucFogColor[1], ucFogColor[2], 255 );
+		pRenderContext.SafeRelease();
 	}
 
-	pRenderContext.SafeRelease();
+	
 
 	DrawExecute( 0, CurrentViewID(), 0 );
 

@@ -301,8 +301,8 @@ void CTextureAllocator::InitRenderTargets( void )
 {
 #if !defined( _X360 )
 	// don't need depth buffer for shadows
-	//m_TexturePage.InitRenderTarget( TEXTURE_PAGE_SIZE, TEXTURE_PAGE_SIZE, RT_SIZE_NO_CHANGE, IMAGE_FORMAT_ARGB8888, MATERIAL_RT_DEPTH_NONE, false, "_rt_Shadows" );
-	m_TexturePage.InitRenderTarget( TEXTURE_PAGE_SIZE, TEXTURE_PAGE_SIZE, RT_SIZE_NO_CHANGE, IMAGE_FORMAT_R32F, MATERIAL_RT_DEPTH_SEPARATE, false, "_rt_Shadows" );
+	m_TexturePage.InitRenderTarget( TEXTURE_PAGE_SIZE, TEXTURE_PAGE_SIZE, RT_SIZE_NO_CHANGE, IMAGE_FORMAT_ARGB8888, MATERIAL_RT_DEPTH_NONE, false, "_rt_Shadows" );
+	//m_TexturePage.InitRenderTarget( TEXTURE_PAGE_SIZE, TEXTURE_PAGE_SIZE, RT_SIZE_NO_CHANGE, IMAGE_FORMAT_R32F, MATERIAL_RT_DEPTH_SEPARATE, false, "_rt_Shadows" );
 #else
 	// unfortunate explicit management required for this render target
 	// 32bpp edram is only largest shadow fragment, but resolved to actual shadow atlas
@@ -1720,7 +1720,7 @@ void CClientShadowMgr::InitRenderToTextureShadows()
 		//m_RenderShadow.Init( "Decals/simpleshadow", TEXTURE_GROUP_DECAL );
 		//m_RenderModelShadow.Init( "Decals/simpleshadow", TEXTURE_GROUP_DECAL );
 
-		m_RenderShadow.Init("Decals/simpleshadow", TEXTURE_GROUP_DECAL);
+		m_RenderShadow.Init("Decals/rendermodelshadow", TEXTURE_GROUP_DECAL);
 		m_RenderModelShadow.Init("Decals/rendermodelshadow", TEXTURE_GROUP_DECAL);
 
 		// TODO: create a shadow like env_projected does but for the phys props n shit
@@ -5772,7 +5772,7 @@ void CClientShadowMgr::ComputeShadowTextures( const CViewSetup &view, int leafCo
 	int nSlot = GET_ACTIVE_SPLITSCREEN_SLOT();
 
 	VPROF_BUDGET( "CClientShadowMgr::ComputeShadowTextures", VPROF_BUDGETGROUP_SHADOW_RENDERING );
-
+	
 	if ( !m_RenderToTextureActive || (r_shadows.GetInt() == 0) || r_shadows_gamecontrol.GetInt() == 0 )
 		return;
 

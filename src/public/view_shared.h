@@ -69,6 +69,8 @@ public:
 		//m_bRenderFlashlightDepthTranslucents = false;
 	}
 
+	float ComputeViewMatrices(VMatrix* p1, VMatrix* p2, VMatrix* p3) {}
+
 	// from SourceAutoRecord
 	int x;
 	int m_nUnscaledX;
@@ -78,21 +80,26 @@ public:
 	int m_nUnscaledWidth;
 	int height;
 	int m_nUnscaledHeight;
+
 	bool m_bOrtho;
 	float m_OrthoLeft;
 	float m_OrthoTop;
 	float m_OrthoRight;
 	float m_OrthoBottom;
+
 	bool m_bCustomViewMatrix;
 	matrix3x4_t	m_matCustomViewMatrix;
+
 	float fov;
 	float fovViewmodel;
 	Vector origin;
 	QAngle angles;
+
 	float zNear;
 	float zFar;
 	float zNearViewmodel;
 	float zFarViewmodel;
+
 	float m_flAspectRatio;
 	float m_flNearBlurDepth;
 	float m_flNearFocusDepth;
@@ -100,8 +107,10 @@ public:
 	float m_flFarBlurDepth;
 	float m_flNearBlurRadius;
 	float m_flFarBlurRadius;
+
 	int m_nDoFQuality;
-	int m_nMotionBlurMode;
+	MotionBlurMode_t m_nMotionBlurMode;
+
 	float m_flShutterTime;
 	Vector m_vShutterOpenPosition;
 	QAngle m_shutterOpenAngles;

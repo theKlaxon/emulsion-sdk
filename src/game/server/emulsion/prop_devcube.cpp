@@ -87,14 +87,16 @@ void CPropDevCube::Precache() {
 
 void CPropDevCube::Spawn() {
 	Precache();
-	BaseClass::Spawn();
 
 	CubeChooseModel();
-	VPhysicsInitNormal(SOLID_VPHYSICS, FSOLID_TRIGGER, false);
+	SetSolid(SOLID_VPHYSICS);
+	VPhysicsInitNormal(SOLID_VPHYSICS, 0, false);
 	
 	SetUse(&CPropDevCube::Use);
 	m_nSkin = (int)CUBE_WEIGHTED_DEFAULT;
 	
+	BaseClass::Spawn();
+
 	//DispatchParticleEffect("debug_sc_position", GetAbsOrigin() + Vector(0, 0, 10), GetAbsAngles());
 }
 
@@ -167,12 +169,24 @@ void CPropDevCube::CubeDeactivate() {
 	}
 }
 
+#include "prop_floorbutton.h"
+
 void CPropDevCube::StartTouch(CBaseEntity* pOther) {
 	// HACK: I'm forching the touch code to go, bc apparently something with vphysics flags is broken
-	pOther->StartTouch(this);
+	//if(pOther->ClassMatches("trigger_floor_button"))
+		//pOther->StartTouch(this);
+
+	//CTriggerFloorButton* pTrigger = assert_cast<CTriggerFloorButton*>(pOther);
+	//if (pTrigger)
+	//	pTrigger->StartTouch(pOther);
 }
 
 void CPropDevCube::EndTouch(CBaseEntity* pOther) {
 	// HACK: I'm forching the touch code to go, bc apparently something with vphysics flags is broken
-	pOther->EndTouch(this);
+	//if (pOther->ClassMatches("trigger_floor_button"))
+		//pOther->EndTouch(this);
+
+	//CTriggerFloorButton* pTrigger = assert_cast<CTriggerFloorButton*>(pOther);
+	//if (pTrigger)
+	//	pTrigger->EndTouch(pOther);
 }

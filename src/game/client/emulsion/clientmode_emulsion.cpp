@@ -11,7 +11,7 @@ DECLARE_HUDELEMENT (CBaseHudChat);
 
 // sometimes better than messing with an autoexec or a stupid default config file
 static void OverrideDefaultConVars() {
-	//engine->ClientCmd_Unrestricted("r_shadowrendertotexture 1");
+	engine->ClientCmd_Unrestricted("r_shadowrendertotexture 1");
 }
 
 void ClientModeEmulsion::InitViewport()

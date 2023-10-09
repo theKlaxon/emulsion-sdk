@@ -14,46 +14,27 @@ enum BUTTON_FLOOR_SKIN {
 	BUTTON_ACTIVE
 };
 
-// had to make this so only the top of the button does the thing
-class CTriggerFloorButton : public CBaseTrigger {
-	DECLARE_CLASS(CTriggerFloorButton, CBaseTrigger)
-public:
-	
-	virtual void Spawn();
-	virtual bool PassesTriggerFilters(CBaseEntity* pOther);
-	virtual void StartTouch(CBaseEntity* pOther);
-	virtual void EndTouch(CBaseEntity* pOther);
-	
-	CPropFloorButton* m_pOwnerButton;
-};
-
 LINK_ENTITY_TO_CLASS(trigger_floor_button, CTriggerFloorButton)
 
 void CTriggerFloorButton::Spawn() {
-	//BaseClass::Spawn();
+
+	BaseClass::Spawn();
 
 	SetSolid(SOLID_BBOX);
-	AddSolidFlags(FSOLID_TRIGGER | FSOLID_NOT_SOLID);
-	AddSpawnFlags(SF_TRIGGER_ALLOW_PHYSICS | SF_TRIGGER_ALLOW_CLIENTS );
+	AddSolidFlags(FSOLID_TRIGGER);
+	AddSpawnFlags(SF_TRIGGER_ALLOW_ALL);// SF_TRIGGER_ALLOW_PHYSICS | SF_TRIGGER_ALLOW_CLIENTS);
 }
 
 bool CTriggerFloorButton::PassesTriggerFilters(CBaseEntity* pOther)
 {
-	//bool bPassedFilter = BaseClass::PassesTriggerFilters(pOther);
-
-	//// did I fail the baseclass filter check?
-	//if (!bPassedFilter)
-	//	return false;
-	
-	if (pOther->IsPlayer() || pOther->GetClassname() == "prop_weighted_cube")
+	if (pOther->IsPlayer() || pOther->ClassMatches("prop_weighted_cube"))
 		return true;
 	
-	// failed filter check
 	return false;
 }
 
 void CTriggerFloorButton::StartTouch(CBaseEntity* pOther) {
-	if (pOther->IsPlayer() || pOther->GetClassname() == "prop_weighted_cube") {
+	if (PassesTriggerFilters(pOther)) {
 
 		if (m_pOwnerButton->touching < 1)
 			if (m_pOwnerButton)
@@ -61,19 +42,16 @@ void CTriggerFloorButton::StartTouch(CBaseEntity* pOther) {
 
 		m_pOwnerButton->touching++;
 	}
-		
 }
 
 void CTriggerFloorButton::EndTouch(CBaseEntity* pOther) {
-	if (pOther->IsPlayer() || pOther->ClassMatches("prop_weighted_cube")) {
+	if (PassesTriggerFilters(pOther)) {
 
 		m_pOwnerButton->touching--;
 
 		if (m_pOwnerButton->touching < 1)
 			if (m_pOwnerButton)
 				m_pOwnerButton->ButtonDeactivate();
-
-		
 	}
 }
 
@@ -90,30 +68,26 @@ void CPropFloorButton::Spawn() {
 	SetModel(BUTTON_FLOOR_MDL);
 	SetSolid(SOLID_VPHYSICS);
 	SetThink(&CPropFloorButton::Think);
-	
-	
+
 	m_seqUp = LookupSequence("up");
 	m_seqDown = LookupSequence("down");
 	ResetSequence(m_seqUp);
 	m_bActive = false;
 
-	//VPhysicsInitNormal(,);
-	AddSolidFlags(FSOLID_TRIGGER);
 	CreateVPhysics();
-	//PhysicsTouchTriggers();
-
 	
-
 	// create the trigger for this button
-	//m_hButtonTrigger = (CTriggerFloorButton*)CreateEntityByName("trigger_floor_button");
-	//DispatchSpawn(m_hButtonTrigger.Get());
+	CTriggerFloorButton* pTrigger = (CTriggerFloorButton*)CreateEntityByName("trigger_floor_button");
 
-	//m_hButtonTrigger.Get()->SetParent(this);
-	//m_hButtonTrigger.Get()->m_pOwnerButton = this;
-	//m_hButtonTrigger.Get()->SetAbsOrigin(GetAbsOrigin());
-	//m_hButtonTrigger.Get()->SetAbsAngles(GetAbsAngles());
-	//m_hButtonTrigger.Get()->SetSize(BUTTON_FLOOR_MINS, BUTTON_FLOOR_MAXS);
-	//m_hButtonTrigger.Get()->Enable();
+	pTrigger->SetAbsOrigin(GetAbsOrigin());
+	pTrigger->SetSize(BUTTON_FLOOR_MINS, BUTTON_FLOOR_MAXS);
+	pTrigger->SetParent(this);
+	
+	pTrigger->m_pOwnerButton = this;
+	//pTrigger->Enable();
+
+	m_hButtonTrigger = pTrigger;
+	DispatchSpawn(m_hButtonTrigger.Get());
 
 	SetNextThink(gpGlobals->curtime + 0.1f);
 }
@@ -158,22 +132,22 @@ bool CPropFloorButton::PassesTriggerFilters(CBaseEntity* pOther)
 
 void CPropFloorButton::StartTouch(CBaseEntity* pOther) {
 
-	if (!pOther->IsPlayer() && !pOther->ClassMatches("prop_weighted_cube"))
-		return;
+	//if (!pOther->IsPlayer() && !pOther->ClassMatches("prop_weighted_cube"))
+	//	return;
 
-	if (touching < 1)
-		ButtonActivate();
+	//if (touching < 1)
+	//	ButtonActivate();
 
-	touching++;
+	//touching++;
 }
 
 void CPropFloorButton::EndTouch(CBaseEntity* pOther) {
 
-	if (!pOther->IsPlayer() && !pOther->ClassMatches("prop_weighted_cube"))
-		return;
+	//if (!pOther->IsPlayer() && !pOther->ClassMatches("prop_weighted_cube"))
+	//	return;
 
-	touching--;
+	//touching--;
 
-	if (touching < 1)
-		ButtonDeactivate();
+	//if (touching < 1)
+	//	ButtonDeactivate();
 }

@@ -233,7 +233,7 @@ protected:
 	// More concise version of the above BuildRenderableRenderLists().  Called for shadow depth map rendering
 	void			BuildShadowDepthRenderableRenderLists();
 
-	void			DrawWorld( float waterZAdjust );
+	void			DrawWorld( IMatRenderContext* pRenderContext, float waterZAdjust );
 
 	// Draws all opaque/translucent renderables in leaves that were rendered
 	void			DrawOpaqueRenderables( bool bShadowDepth );

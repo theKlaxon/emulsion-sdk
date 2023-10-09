@@ -78,6 +78,11 @@ public:
 	// Frees shadow depth textures for use in subsequent view/frame
 	virtual void UnlockAllShadowDepthTextures() = 0;
 	
+	// new p2
+	virtual void LockShadowDepthTextureEx(FlashlightState_t& p1, CTextureReference* p2, CTextureReference* p3) {}
+	virtual void UnlockShadowDepthTextureEx(CTextureReference* p1) {}
+	// ------
+
 	// Renders the shadow texture to screen...
 	virtual void RenderShadowTexture( int w, int h ) = 0;
 

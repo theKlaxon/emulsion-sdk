@@ -1,6 +1,8 @@
 #pragma once
 #include "props.h"
+#include "triggers.h"
 
+// had to make this so only the top of the button does the thing
 class CTriggerFloorButton;
 
 class CPropFloorButton : public CDynamicProp {
@@ -26,7 +28,7 @@ public:
 	virtual void EndTouch(CBaseEntity* pOther);
 
 protected:
-	friend class CTriggerFLoorButton;
+	friend class CTriggerFloorButton;
 	int touching;
 
 private:
@@ -35,4 +37,16 @@ private:
 	int m_seqUp, m_seqDown;
 	CHandle<CTriggerFloorButton> m_hButtonTrigger;
 
+};
+
+class CTriggerFloorButton : public CBaseTrigger {
+	DECLARE_CLASS(CTriggerFloorButton, CBaseTrigger)
+public:
+
+	virtual void Spawn();
+	virtual bool PassesTriggerFilters(CBaseEntity* pOther);
+	virtual void StartTouch(CBaseEntity* pOther);
+	virtual void EndTouch(CBaseEntity* pOther);
+
+	CPropFloorButton* m_pOwnerButton;
 };
