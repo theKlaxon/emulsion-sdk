@@ -147,6 +147,7 @@
 
 #if defined(P2_DLL)
 #include "c_discord.h"
+#include "c_fastsphere.h"
 #endif
 
 #include "tier1/UtlDict.h"
@@ -1018,6 +1019,10 @@ bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 
 #if defined( CLIENT_DLL ) && defined( COPY_CHECK_STRESSTEST )
 	IGameSystem::Add( GetPredictionCopyTester() );
+#endif
+
+#ifdef P2_DLL
+	IGameSystem::Add( FastSphereManager() );
 #endif
 
 	ActivityList_Init();

@@ -137,13 +137,13 @@ ConVar r_flashlightdepthtexture( "r_flashlightdepthtexture", "1" );
 #if defined( _X360 )
 ConVar r_flashlightdepthreshigh( "r_flashlightdepthreshigh", "512" );
 #else
-ConVar r_flashlightdepthreshigh( "r_flashlightdepthreshigh", "4096" ); // 4096
+ConVar r_flashlightdepthreshigh( "r_flashlightdepthreshigh", "1024" ); // 4096
 #endif
 
 #if defined( _X360 )
 ConVar r_flashlightdepthres( "r_flashlightdepthres", "512" );
 #else
-ConVar r_flashlightdepthres( "r_flashlightdepthres", "4096" ); // 4096
+ConVar r_flashlightdepthres( "r_flashlightdepthres", "1024" ); // 4096
 #endif
 
 #if defined( _X360 )
@@ -1717,11 +1717,11 @@ void CClientShadowMgr::InitRenderToTextureShadows()
 		g_pMaterialSystem->EndRenderTargetAllocation();
 
 		// TODO: fix rendershadow and rendermodelshadow
-		//m_RenderShadow.Init( "Decals/simpleshadow", TEXTURE_GROUP_DECAL );
-		//m_RenderModelShadow.Init( "Decals/simpleshadow", TEXTURE_GROUP_DECAL );
+		m_RenderShadow.Init( "Decals/simpleshadow", TEXTURE_GROUP_DECAL );
+		m_RenderModelShadow.Init( "Decals/simpleshadow", TEXTURE_GROUP_DECAL );
 
-		m_RenderShadow.Init("Decals/rendermodelshadow", TEXTURE_GROUP_DECAL);
-		m_RenderModelShadow.Init("Decals/rendermodelshadow", TEXTURE_GROUP_DECAL);
+		//m_RenderShadow.Init("Decals/rendershadow", TEXTURE_GROUP_DECAL);
+		//m_RenderModelShadow.Init("Decals/rendermodelshadow", TEXTURE_GROUP_DECAL);
 
 		// TODO: create a shadow like env_projected does but for the phys props n shit
 
