@@ -561,11 +561,11 @@ void CBaseShader::BindTexture( Sampler_t sampler1, Sampler_t sampler2, int nText
 
 		if ( sampler2 == -1 )
 		{
-			GetShaderSystem()->BindTexture( sampler1, pTextureVar->GetTextureValue(), nFrame );
+			GetShaderSystem()->BindTexture( sampler1, TEXTURE_BINDFLAGS_NONE, pTextureVar->GetTextureValue(), nFrame );
 		}
 		else
 		{
-			GetShaderSystem()->BindTexture( sampler1, sampler2, pTextureVar->GetTextureValue(), nFrame );
+			GetShaderSystem()->BindTexture( sampler1, sampler2, TEXTURE_BINDFLAGS_NONE, pTextureVar->GetTextureValue(), nFrame );
 		}
 	}
 }
@@ -582,11 +582,11 @@ void CBaseShader::BindTexture( Sampler_t sampler1, Sampler_t sampler2, ITexture 
 
 	if ( sampler2 == -1 )
 	{
-		GetShaderSystem()->BindTexture( sampler1, pTexture, nFrame );
+		GetShaderSystem()->BindTexture( sampler1, TEXTURE_BINDFLAGS_NONE, pTexture, nFrame );
 	}
 	else
 	{
-		GetShaderSystem()->BindTexture( sampler1, sampler2, pTexture, nFrame );
+		GetShaderSystem()->BindTexture( sampler1, sampler2, TEXTURE_BINDFLAGS_NONE, pTexture, nFrame );
 	}
 }
 

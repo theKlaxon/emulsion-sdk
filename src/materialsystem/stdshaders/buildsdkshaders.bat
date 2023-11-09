@@ -19,7 +19,7 @@ set GAMEDIR=
 rem == Set the relative path to steamapps\common\Alien Swarm\bin ==
 rem == As above, this path does not support long directory names or spaces ==
 rem == e.g. ..\..\..\..\..\PROGRA~2\Steam\steamapps\common\ALIENS~1\bin ==
-set SDKBINDIR=..\..\..\..\STEAME~1\steamapps\common\ALIENS~1\bin
+set SDKBINDIR=D:\theKlaxon\emulsion-sdk\game\bin
 
 rem ==  Set the Path to your mods root source code ==
 rem this should already be correct, accepts relative paths only!

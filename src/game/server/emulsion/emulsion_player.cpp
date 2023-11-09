@@ -89,7 +89,7 @@ void CEmulsionPlayer::Spawn() {
 
 	engine->ClientCommand(edict(), "bind l create_flashlight");
 	engine->ClientCommand(edict(), "bind n tog_noclip");
-	//engine->ClientCommand(edict(), "give weapon_paintgun");
+	engine->ClientCommand(edict(), "give weapon_paintgun");
 	engine->ClientCommand(edict(), "bind 0 exit2");
 	engine->ClientCommand(edict(), "bind 8 disconnect");
 	engine->ClientCommand(edict(), "bind mwheeldown paintgun_next");

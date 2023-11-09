@@ -7,12 +7,14 @@
 #include "shaderlib/ShaderDLL.h"
 #include "materialsystem/IShader.h"
 #include "tier1/utlvector.h"
+#include "tier1/utllinkedlist.h"
 #include "tier0/dbg.h"
 #include "materialsystem/imaterialsystemhardwareconfig.h"
 #include "materialsystem/materialsystem_config.h"
 #include "IShaderSystem.h"
 #include "materialsystem/ishaderapi.h"
 #include "shaderlib_cvar.h"
+#include "shadercombosemantics.h"
 #include "mathlib/mathlib.h"
 #include "tier2/tier2.h"
 
@@ -33,13 +35,19 @@ public:
 	virtual int ShaderCount() const;
 	virtual IShader *GetShader( int nShader );
 
+	int ShaderComboSemanticsCount() const;
+	const ShaderComboSemantics_t* GetComboSemantics(int n);
+
 	// methods of IShaderDLLInternal
 	virtual bool Connect( CreateInterfaceFn factory, bool bIsMaterialSystem );
 	virtual void Disconnect( bool bIsMaterialSystem );
 	virtual void InsertShader( IShader *pShader );
 
+	virtual void AddShaderComboInformation(const ShaderComboSemantics_t* pSemantics);
+
 private:
 	CUtlVector< IShader * >	m_ShaderList;
+	CUtlLinkedList< const ShaderComboSemantics_t* > m_ShaderComboSemantics;
 };
 
 
@@ -167,3 +175,26 @@ void CShaderDLL::InsertShader( IShader *pShader )
 	m_ShaderList.AddToTail( pShader );
 }
 
+//-----------------------------------------------------------------------------
+// Iterates over all shader semantics
+//-----------------------------------------------------------------------------
+int CShaderDLL::ShaderComboSemanticsCount() const
+{
+	return m_ShaderComboSemantics.Count();
+}
+
+const ShaderComboSemantics_t* CShaderDLL::GetComboSemantics(int n)
+{
+	if ((n < 0) || (n >= m_ShaderComboSemantics.Count()))
+		return NULL;
+
+	return m_ShaderComboSemantics[n];
+}
+
+//-----------------------------------------------------------------------------
+// Adds to the shader combo semantics list
+//-----------------------------------------------------------------------------
+void CShaderDLL::AddShaderComboInformation(const ShaderComboSemantics_t* pSemantics)
+{
+	m_ShaderComboSemantics.AddToTail(pSemantics);
+}

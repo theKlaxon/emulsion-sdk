@@ -45,6 +45,8 @@ void C_FastSphereManager::Shutdown() {
 	m_Clusters.Purge();
 }
 
+#ifdef CLIENT_DLL
+
 // calculate new particle positions
 void C_FastSphereManager::PreRender() {
 	for (int i = 0; i < m_Clusters.Count(); i++)
@@ -53,6 +55,8 @@ void C_FastSphereManager::PreRender() {
 
 // Gets called each frame
 void C_FastSphereManager::Update(float frametime) {
+	// was gonna use plain phys for this here, but thats stupid.
+	// ima just make the server instantiate physics objects for each thingy.
 	//for (int i = 0; i < m_Clusters.Count(); i++)
 	//	for (int j = 0; j < m_Clusters[i].m_Particles.Count(); j++)
 	//		UpdateParticlePosition(i, j);
@@ -62,6 +66,8 @@ void C_FastSphereManager::Update(float frametime) {
 void C_FastSphereManager::PostRender() {
 
 }
+
+#endif
 
 void C_FastSphereManager::AddParticle(PaintPowerType type, Vector start, Vector velocity, float rad) {
 

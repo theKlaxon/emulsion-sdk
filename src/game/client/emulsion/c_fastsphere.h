@@ -50,6 +50,7 @@ public:
 	virtual void PostInit();
 	virtual void Shutdown();
 
+#ifdef CLIENT_DLL
 	// Called before rendering
 	virtual void PreRender();
 
@@ -58,6 +59,7 @@ public:
 
 	// Called after rendering
 	virtual void PostRender();
+#endif
 	
 	void AddParticle(PaintPowerType type, Vector start, Vector velocity, float rad);
 	void AddParticle(kFastParticle particle);
