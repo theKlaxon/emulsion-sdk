@@ -147,7 +147,7 @@
 
 #if defined(P2_DLL)
 #include "c_discord.h"
-#include "c_fastsphere.h"
+//#include "c_fastsphere.h"
 #endif
 
 #include "tier1/UtlDict.h"
@@ -1022,7 +1022,7 @@ bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 #endif
 
 #ifdef P2_DLL
-	IGameSystem::Add( FastSphereManager() );
+	//IGameSystem::Add( FastSphereManager() );
 #endif
 
 	ActivityList_Init();
