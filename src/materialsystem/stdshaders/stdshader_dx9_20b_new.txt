@@ -8,3 +8,4 @@
 //	    _vs20.vcs
 //
 Water_ps2x.fxc
+Bloom_ps2x.fxc

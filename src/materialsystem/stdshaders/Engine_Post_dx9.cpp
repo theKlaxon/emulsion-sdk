@@ -8,7 +8,7 @@
 #include "basevsshader.h"
 
 #include "screenspaceeffect_vs20.inc"
-#include "Engine_Post_ps20.inc"
+//#include "Engine_Post_ps20.inc"
 #include "Engine_Post_ps20b.inc"
 
 #include "..\materialsystem_global.h"
@@ -338,20 +338,20 @@ BEGIN_VS_SHADER_FLAGS( Engine_Post_dx9, "Engine post-processing effects (softwar
 			DECLARE_STATIC_VERTEX_SHADER( screenspaceeffect_vs20 );
 			SET_STATIC_VERTEX_SHADER( screenspaceeffect_vs20 );
 
-			if( g_pHardwareConfig->SupportsPixelShaders_2_b() )
+			//if( g_pHardwareConfig->SupportsPixelShaders_2_b() )
 			{
-				DECLARE_STATIC_PIXEL_SHADER( engine_post_ps20b );
+				DECLARE_STATIC_PIXEL_SHADER( Engine_Post_ps20b );
 				SET_STATIC_PIXEL_SHADER_COMBO( TOOL_MODE, bToolMode );
 				SET_STATIC_PIXEL_SHADER_COMBO( DEPTH_BLUR_ENABLE, bDepthBlurEnable );
-				SET_STATIC_PIXEL_SHADER( engine_post_ps20b );
+				SET_STATIC_PIXEL_SHADER( Engine_Post_ps20b );
 			}
-			else
-			{
-				DECLARE_STATIC_PIXEL_SHADER( engine_post_ps20 );
-				SET_STATIC_PIXEL_SHADER_COMBO( TOOL_MODE, bToolMode );
-				SET_STATIC_PIXEL_SHADER_COMBO( DEPTH_BLUR_ENABLE, false );
-				SET_STATIC_PIXEL_SHADER( engine_post_ps20 );
-			}
+			//else
+			//{
+			//	DECLARE_STATIC_PIXEL_SHADER( engine_post_ps20 );
+			//	SET_STATIC_PIXEL_SHADER_COMBO( TOOL_MODE, bToolMode );
+			//	SET_STATIC_PIXEL_SHADER_COMBO( DEPTH_BLUR_ENABLE, false );
+			//	SET_STATIC_PIXEL_SHADER( engine_post_ps20 );
+			//}
 		}
 		DYNAMIC_STATE
 		{
@@ -623,9 +623,9 @@ BEGIN_VS_SHADER_FLAGS( Engine_Post_dx9, "Engine post-processing effects (softwar
 			// JasonM - double check this if the SFM needs to use the engine post FX clip in main
 			bool bConvertToLinear = bToolMode && bConvertFromLinear && ( g_pHardwareConfig->GetHDRType() == HDR_TYPE_FLOAT );
 
-			if ( g_pHardwareConfig->SupportsPixelShaders_2_b() )
+			//if ( g_pHardwareConfig->SupportsPixelShaders_2_b() )
 			{
-				DECLARE_DYNAMIC_PIXEL_SHADER( engine_post_ps20b );
+				DECLARE_DYNAMIC_PIXEL_SHADER( Engine_Post_ps20b );
 				SET_DYNAMIC_PIXEL_SHADER_COMBO( AA_ENABLE,						aaEnabled );
 				SET_DYNAMIC_PIXEL_SHADER_COMBO( COL_CORRECT_NUM_LOOKUPS,		colCorrectNumLookups );
 				SET_DYNAMIC_PIXEL_SHADER_COMBO( CONVERT_FROM_LINEAR,			bConvertFromLinear );
@@ -639,16 +639,16 @@ BEGIN_VS_SHADER_FLAGS( Engine_Post_dx9, "Engine post-processing effects (softwar
 				SET_DYNAMIC_PIXEL_SHADER_COMBO( TV_GAMMA,						params[TV_GAMMA]->GetIntValue() && bToolMode ? 1 : 0 );
 				SET_DYNAMIC_PIXEL_SHADER_COMBO( DESATURATEENABLE,				bDesaturateEnable );
 #endif
-				SET_DYNAMIC_PIXEL_SHADER( engine_post_ps20b );
+				SET_DYNAMIC_PIXEL_SHADER( Engine_Post_ps20b );
 			}
-			else
-			{
-				DECLARE_DYNAMIC_PIXEL_SHADER( engine_post_ps20 );
-				SET_DYNAMIC_PIXEL_SHADER_COMBO( AA_ENABLE,						aaEnabled );
-				SET_DYNAMIC_PIXEL_SHADER_COMBO( COL_CORRECT_NUM_LOOKUPS,		colCorrectNumLookups );
-				SET_DYNAMIC_PIXEL_SHADER_COMBO( VOMIT_ENABLE,					bVomitEnable );
-				SET_DYNAMIC_PIXEL_SHADER( engine_post_ps20 );
-			}
+			//else
+			//{
+			//	DECLARE_DYNAMIC_PIXEL_SHADER( engine_post_ps20 );
+			//	SET_DYNAMIC_PIXEL_SHADER_COMBO( AA_ENABLE,						aaEnabled );
+			//	SET_DYNAMIC_PIXEL_SHADER_COMBO( COL_CORRECT_NUM_LOOKUPS,		colCorrectNumLookups );
+			//	SET_DYNAMIC_PIXEL_SHADER_COMBO( VOMIT_ENABLE,					bVomitEnable );
+			//	SET_DYNAMIC_PIXEL_SHADER( engine_post_ps20 );
+			//}
 
 			DECLARE_DYNAMIC_VERTEX_SHADER( screenspaceeffect_vs20 );
 			SET_DYNAMIC_VERTEX_SHADER( screenspaceeffect_vs20 );

@@ -5568,7 +5568,8 @@ void CBaseWorldView::DrawExecute( float waterHeight, view_id_t viewID, float wat
 
 	ITexture *pSaveFrameBufferCopyTexture = pRenderContext->GetFrameBufferCopyTexture( 0 );
 	pRenderContext->SetFrameBufferCopyTexture( GetPowerOfTwoFrameBufferTexture() );
-	//pRenderContext.SafeRelease();
+	pRenderContext.SafeRelease();
+	pRenderContext.GetFrom(materials);
 
 	Begin360ZPass();
 	m_DrawFlags |= DF_SKIP_WORLD_DECALS_AND_OVERLAYS;
@@ -5585,17 +5586,10 @@ void CBaseWorldView::DrawExecute( float waterHeight, view_id_t viewID, float wat
 	// Only draw decals on opaque surfaces after now. Benefit is two-fold: Early Z benefits on PC, and
 	// we're pulling out stuff that uses the dynamic VB from the 360 Z pass
 	// (which can lead to rendering corruption if we overflow the dyn. VB ring buffer).
-	//m_DrawFlags |= DF_SKIP_WORLD;
-	//DrawWorld( pRenderContext, waterZAdjust );
-	//m_DrawFlags &= ~DF_SKIP_WORLD;
-	
 	m_DrawFlags |= DF_SKIP_WORLD;
-	if (!(m_DrawFlags & (DF_DRAW_SIMPLE_WORLD_MODEL | DF_DRAW_SIMPLE_WORLD_MODEL_WATER)))
-	{
-		DrawWorld(pRenderContext, waterZAdjust);
-	}
+	DrawWorld( pRenderContext, waterZAdjust );
 	m_DrawFlags &= ~DF_SKIP_WORLD;
-
+	
 	if ( !m_bDrawWorldNormal )
 	{
 		if ( m_DrawFlags & DF_DRAW_ENTITITES )

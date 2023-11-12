@@ -10,7 +10,7 @@
 #include "shaderlib/CShader.h"
 
 #include "eyeglint_vs20.inc"
-#include "eyeglint_ps20.inc"
+//#include "eyeglint_ps20.inc"
 #include "eyeglint_ps20b.inc"
 
 // NOTE: This has to be the last file included!
@@ -51,7 +51,7 @@ SHADER_DRAW
 		DECLARE_STATIC_VERTEX_SHADER( eyeglint_vs20 );
 		SET_STATIC_VERTEX_SHADER( eyeglint_vs20 );
 
-		SET_STATIC_PS2X_PIXEL_SHADER_NO_COMBOS( eyeglint );
+		SET_STATIC_PS2X_PIXEL_SHADER_NO_COMBOS_2BONLY( eyeglint );
 	}
 
 	DYNAMIC_STATE
@@ -59,7 +59,7 @@ SHADER_DRAW
 		DECLARE_DYNAMIC_VERTEX_SHADER( eyeglint_vs20 );
 		SET_DYNAMIC_VERTEX_SHADER( eyeglint_vs20 );
 
-		SET_DYNAMIC_PS2X_PIXEL_SHADER_NO_COMBOS( eyeglint );
+		SET_DYNAMIC_PS2X_PIXEL_SHADER_NO_COMBOS_2BONLY( eyeglint );
 	}
 	Draw();
 }

@@ -8,7 +8,7 @@
 
 #include "BaseVSShader.h"
 
-#include "debugmrttexture_ps20.inc"
+//#include "debugmrttexture_ps20.inc"
 #include "debugmrttexture_ps20b.inc"
 #include "debugmrttexture_vs20.inc"
 
@@ -46,18 +46,18 @@ BEGIN_VS_SHADER_FLAGS( DebugMRTTexture, "Help for DebugMRTTexture", SHADER_NOT_E
 			DECLARE_STATIC_VERTEX_SHADER( debugmrttexture_vs20 );
 			SET_STATIC_VERTEX_SHADER( debugmrttexture_vs20 );
 
-			if( g_pHardwareConfig->SupportsPixelShaders_2_b() )
+			//if( g_pHardwareConfig->SupportsPixelShaders_2_b() )
 			{
 				DECLARE_STATIC_PIXEL_SHADER( debugmrttexture_ps20b );
 				SET_STATIC_PIXEL_SHADER_COMBO( MRTINDEX,  params[MRTINDEX]->GetIntValue() );
 				SET_STATIC_PIXEL_SHADER( debugmrttexture_ps20b );
 			}
-			else
-			{
-				DECLARE_STATIC_PIXEL_SHADER( debugmrttexture_ps20 );
-				SET_STATIC_PIXEL_SHADER_COMBO( MRTINDEX,  params[MRTINDEX]->GetIntValue() );
-				SET_STATIC_PIXEL_SHADER( debugmrttexture_ps20 );
-			}
+			//else
+			//{
+			//	DECLARE_STATIC_PIXEL_SHADER( debugmrttexture_ps20 );
+			//	SET_STATIC_PIXEL_SHADER_COMBO( MRTINDEX,  params[MRTINDEX]->GetIntValue() );
+			//	SET_STATIC_PIXEL_SHADER( debugmrttexture_ps20 );
+			//}
 
 			int numTexCoords = 2;
 			pShaderShadow->VertexShaderVertexFormat( VERTEX_POSITION, numTexCoords, 0, 0 );
@@ -69,16 +69,16 @@ BEGIN_VS_SHADER_FLAGS( DebugMRTTexture, "Help for DebugMRTTexture", SHADER_NOT_E
 			DECLARE_DYNAMIC_VERTEX_SHADER( debugmrttexture_vs20 );
 			SET_DYNAMIC_VERTEX_SHADER( debugmrttexture_vs20 );
 
-			if( g_pHardwareConfig->SupportsPixelShaders_2_b() )
+			//if( g_pHardwareConfig->SupportsPixelShaders_2_b() )
 			{
 				DECLARE_DYNAMIC_PIXEL_SHADER( debugmrttexture_ps20b );
 				SET_DYNAMIC_PIXEL_SHADER( debugmrttexture_ps20b );
 			}
-			else
-			{
-				DECLARE_DYNAMIC_PIXEL_SHADER( debugmrttexture_ps20 );
-				SET_DYNAMIC_PIXEL_SHADER( debugmrttexture_ps20 );
-			}
+			//else
+			//{
+			//	DECLARE_DYNAMIC_PIXEL_SHADER( debugmrttexture_ps20 );
+			//	SET_DYNAMIC_PIXEL_SHADER( debugmrttexture_ps20 );
+			//}
 		}
 		Draw();
 	}

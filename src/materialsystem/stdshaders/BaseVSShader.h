@@ -47,6 +47,12 @@
 			SET_STATIC_PIXEL_SHADER( basename##_ps20 );			\
 		}
 
+#define SET_STATIC_PS2X_PIXEL_SHADER_NO_COMBOS_2BONLY( basename ) \
+		{														\
+			DECLARE_STATIC_PIXEL_SHADER( basename##_ps20b );	\
+			SET_STATIC_PIXEL_SHADER( basename##_ps20b );		\
+		}														\
+
 #define SET_DYNAMIC_PS2X_PIXEL_SHADER_NO_COMBOS( basename )		\
 		if( g_pHardwareConfig->SupportsPixelShaders_2_b() )		\
 		{														\
@@ -59,6 +65,11 @@
 			SET_DYNAMIC_PIXEL_SHADER( basename##_ps20 );			\
 		}
 
+#define SET_DYNAMIC_PS2X_PIXEL_SHADER_NO_COMBOS_2BONLY( basename ) \
+		{														\
+			DECLARE_DYNAMIC_PIXEL_SHADER( basename##_ps20b );	\
+			SET_DYNAMIC_PIXEL_SHADER( basename##_ps20b );		\
+		}														\
 
 //-----------------------------------------------------------------------------
 // Base class for shaders, contains helper methods.

@@ -10,6 +10,8 @@
 
 #include "common_ps_fxc.h"
 
+#define SHADOW_EPSILON_DV 4096.0f
+#define SHADOW_EPSILON_DV_HALF 2048.0f
 
 // Superellipse soft clipping
 //
@@ -74,8 +76,10 @@ float uberlight(float3 PL,					// Point in light space
 float DoShadow( sampler DepthSampler, float4 texCoord )
 {
 	const float g_flShadowBias = 0.0005f;
-	float2 uoffset = float2( 0.5f/512.f, 0.0f );
-	float2 voffset = float2( 0.0f, 0.5f/512.f );
+	//float2 uoffset = float2( 0.5f/512.f, 0.0f );
+	//float2 voffset = float2( 0.0f, 0.5f/512.f );
+	float2 uoffset = float2(0.5f / SHADOW_EPSILON_DV_HALF, 0.0f);
+	float2 voffset = float2(0.0f, 0.5f / SHADOW_EPSILON_DV_HALF);
 	float3 projTexCoord = texCoord.xyz / texCoord.w;
 	float4 flashlightDepth = float4(	tex2D( DepthSampler, projTexCoord + uoffset + voffset ).x,
 										tex2D( DepthSampler, projTexCoord + uoffset - voffset ).x,
@@ -122,7 +126,8 @@ float DoShadowNvidiaRAWZOneTap( sampler DepthSampler, const float4 shadowMapPos 
 
 float DoShadowNvidiaRAWZ( sampler DepthSampler, const float4 shadowMapPos )
 {
-	float fE = 1.0f / 512.0f;	 // Epsilon
+	//float fE = 1.0f / 512.0f;	 // Epsilon
+	float fE = 1.0f / SHADOW_EPSILON_DV_HALF;	 // Epsilon
 
 	float ooW = 1.0f / shadowMapPos.w;								// 1 / w
 	float3 shadowMapCenter_objDepth = shadowMapPos.xyz * ooW;		// Do both projections at once
@@ -142,7 +147,8 @@ float DoShadowNvidiaRAWZ( sampler DepthSampler, const float4 shadowMapPos )
 
 float DoShadowNvidiaCheap( sampler DepthSampler, const float4 shadowMapPos )
 {
-	float fTexelEpsilon = 1.0f / 1024.0f;
+	//float fTexelEpsilon = 1.0f / 1024.0f;
+	float fTexelEpsilon = 1.0f / SHADOW_EPSILON_DV;
 
 	float ooW = 1.0f / shadowMapPos.w;								// 1 / w
 	float3 shadowMapCenter_objDepth = shadowMapPos.xyz * ooW;		// Do both projections at once
@@ -161,7 +167,8 @@ float DoShadowNvidiaCheap( sampler DepthSampler, const float4 shadowMapPos )
 
 float DoShadowNvidiaPCF3x3Box( sampler DepthSampler, const float4 shadowMapPos )
 {
-	float fTexelEpsilon = 1.0f / 1024.0f;
+	//float fTexelEpsilon = 1.0f / 1024.0f;
+	float fTexelEpsilon = 1.0f / SHADOW_EPSILON_DV;
 
 	float ooW = 1.0f / shadowMapPos.w;								// 1 / w
 	float3 shadowMapCenter_objDepth = shadowMapPos.xyz * ooW;		// Do both projections at once
@@ -199,7 +206,8 @@ float DoShadowNvidiaPCF3x3Box( sampler DepthSampler, const float4 shadowMapPos )
 //
 float DoShadowNvidiaPCF5x5Gaussian( sampler DepthSampler, const float4 shadowMapPos )
 {
-	float fEpsilon    = 1.0f / 512.0f;
+	//float fEpsilon    = 1.0f / 512.0f;
+	float fEpsilon    = 1.0f / SHADOW_EPSILON_DV_HALF;
 	float fTwoEpsilon = 2.0f * fEpsilon;
 
 	float ooW = 1.0f / shadowMapPos.w;								// 1 / w
