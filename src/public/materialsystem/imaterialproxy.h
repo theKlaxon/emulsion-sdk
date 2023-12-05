@@ -24,7 +24,7 @@ public:
 	virtual void Release() = 0;
 	virtual IMaterial *	GetMaterial() = 0;
 
-	virtual bool CanBeCalledAsync() const { return false; }
+	//virtual bool CanBeCalledAsync() const { return false; }
 
 protected:
 	// no one should call this directly

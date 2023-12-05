@@ -130,7 +130,7 @@ info:    vertexAttributeInstanceRateZeroDivisor : 1
 info:  Queue families:
 info:    Graphics : 0
 info:    Transfer : 1
-info:  DXVK: Read 274 valid state cache entries
+info:  DXVK: Read 592 valid state cache entries
 info:  DXVK: Using 7 compiler threads
 info:  D3D9DeviceEx::ResetSwapChain:
 info:    Requested Presentation Parameters

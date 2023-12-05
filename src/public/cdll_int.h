@@ -661,7 +661,8 @@ public:
 	virtual void SetBlurFade( float amount ) = 0; 
 	virtual bool IsTransitioningToLoad() = 0;
 
-	virtual void FFFFFFFFFFFFFFFFBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB() = 0;
+	//virtual void FFFFFFFFFFFFFFFFBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB() = 0;
+	virtual void SearchPathsChangedAfterInstall() = 0; // i guess i removed a stock asw func on accident, causing me to go insane temporarily and write the above
 
 	//virtual void test() = 0;
 	virtual void ConfigureSystemLevel( int nCPULevel, int nGPULevel ) = 0;
