@@ -46,7 +46,7 @@ ConVar sv_jumpFactor("sv_jumpfactor", "1.1f", FCVAR_REPLICATED | FCVAR_CHEAT);
 ConVar pl_fallpunchthreshold("pl_fallpunchthreshold", "150", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
 
 // paint
-ConVar pl_normspeed("pl_normspeed", "200", FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_CHEAT);
+ConVar pl_normspeed("pl_normspeed", "175.0f", FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_CHEAT);
 ConVar pl_paintTraceRadius("pl_paintTraceRadius", "26.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY); // 26.0f worked good for a while // 20.0f while making stick
 ConVar pl_bouncePaintFactor("pl_bouncePaintFactor", "30.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
 ConVar pl_bouncePaintWallFactor("pl_bouncePaintFactor", "150.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);

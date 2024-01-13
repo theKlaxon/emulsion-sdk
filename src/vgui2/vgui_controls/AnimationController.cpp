@@ -147,7 +147,7 @@ bool AnimationController::LoadScriptFile(const char *fileName)
 	int size = g_pFullFileSystem->Size(f);
 	// read into temporary memory block
 	int nBufSize = size+1;
-	if ( IsXbox() )
+	if ( IsX360() )
 	{
 		nBufSize = AlignValue( nBufSize, 512 );
 	}

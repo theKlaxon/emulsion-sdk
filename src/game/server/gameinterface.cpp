@@ -1133,6 +1133,7 @@ bool CServerGameDLL::LevelInit( const char *pMapName, char const *pMapEntities, 
 		CMapLoadEntityFilter filter;
 		MapEntity_ParseAllEntities( pMapEntities, &filter );
 
+		// TODO: fixme
 		g_pServerBenchmark->StartBenchmark();
 
 		// Now call the mod specific parse

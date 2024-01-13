@@ -52,7 +52,7 @@ struct VideoConfigSetting_t
 	bool		m_bChooseLower;
 	bool		m_bSaved;
 	bool		m_bConVar;
-	bool		m_bUseAutoOption;
+
 };
 
 struct RatioToAspectMode_t
@@ -65,21 +65,21 @@ struct RatioToAspectMode_t
 static VideoConfigSetting_t s_pVideoConfigSettingsWhitelist[] =
 {
 	// ConVars.
-	{ "setting.cpu_level",										true,		true,		true,	true },				
-	{ "setting.gpu_level",										true,		true,		true,	true },					
-	{ "setting.mat_antialias",									true,		true,		true,	true },				
-	{ "setting.mat_aaquality",									true,		true,		true,	true },				
-	{ "setting.mat_forceaniso",									true,		true,		true,	true },				
+	{ "setting.cpu_level",										true,		true,		true },				
+	{ "setting.gpu_level",										true,		true,		true },					
+	{ "setting.mat_antialias",									true,		true,		true },				
+	{ "setting.mat_aaquality",									true,		true,		true },				
+	{ "setting.mat_forceaniso",									true,		true,		true },				
 	{ "setting.mat_vsync",										true,		true,		true },
 	{ "setting.mat_triplebuffered",								true,		true,		true },
 	{ "setting.mat_grain_scale_override",						true,		true,		true },
 //	{ "setting.mat_monitorgamma",								true,		true,		true },
-	{ "setting.gpu_mem_level",									true,		true,		true,	true },
+	{ "setting.gpu_mem_level",									true,		true,		true },
 	{ "setting.mem_level",										true,		true,		true },
 	{ "setting.videoconfig_version",							true,		true,		true },
 	{ "setting.mat_queue_mode",									true,		true,		true },
 	{ "setting.mat_tonemapping_occlusion_use_stencil",			false,		false,		true },
-	{ "setting.csm_quality_level",								true,		true,		true,	true },
+//	{ "setting.csm_quality_level",								true,		true,		true,	true },
 	{ "setting.mat_software_aa_strength",						true,		true,		true },
 	{ "setting.mat_motion_blur_enabled",						true,		true,		true },
 
@@ -710,7 +710,7 @@ bool VerifyDefaultVideoConfig( VidMatConfigData_t &configData )
 			// Preserve all settings that support auto, but user had on a custom setting
 			for ( int k = 0; k < Q_ARRAYSIZE( s_pVideoConfigSettingsWhitelist ); ++ k )
 			{
-				if ( !s_pVideoConfigSettingsWhitelist[k].m_bUseAutoOption ) continue;
+				//if ( !s_pVideoConfigSettingsWhitelist[k].m_bUseAutoOption ) continue;
 				int nUserPreferenceValue = kvPreviousVideoCfg->GetInt( s_pVideoConfigSettingsWhitelist[k].m_pSettingVar, 9999999 );
 				if ( nUserPreferenceValue != 9999999 )
 				{
@@ -731,22 +731,22 @@ bool VerifyDefaultVideoConfig( VidMatConfigData_t &configData )
 				}
 			}
 		}
-		else
-		{
-			FOR_EACH_SUBKEY( configData.pConfigKeys, kvSubKey )
-			{
-				if ( VideoConfigSetting_t const *pSetting = VideoConfigSettingFindWhitelistEntryByName( kvSubKey->GetName() ) )
-				{
-					if ( pSetting->m_bUseAutoOption )
-					{
-						char chNewAutoName[ 128 ];
-						// e.g.: "setting.cpu_level" -> "setauto.cpu_level"
-						sprintf_s( chNewAutoName, "setauto.%s", pSetting->m_pSettingVar + 8 );
-						kvSubKey->SetName( chNewAutoName );
-					}
-				}
-			}
-		}
+		//else
+		//{
+		//	FOR_EACH_SUBKEY( configData.pConfigKeys, kvSubKey )
+		//	{
+		//		if ( VideoConfigSetting_t const *pSetting = VideoConfigSettingFindWhitelistEntryByName( kvSubKey->GetName() ) )
+		//		{
+		//			if ( pSetting->m_bUseAutoOption )
+		//			{
+		//				char chNewAutoName[ 128 ];
+		//				// e.g.: "setting.cpu_level" -> "setauto.cpu_level"
+		//				sprintf_s( chNewAutoName, "setauto.%s", pSetting->m_pSettingVar + 8 );
+		//				kvSubKey->SetName( chNewAutoName );
+		//			}
+		//		}
+		//	}
+		//}
 		kvPreviousVideoCfg->deleteThis();
 		buf.Purge();
 		configData.pConfigKeys->RecursiveSaveToFile( buf, 0 );
@@ -812,19 +812,19 @@ bool CreateDefaultVideoConfig( VidMatConfigData_t &configData )
 	//
 	// Now write the file with user settings skipping the settings that support "AUTO" in options
 	//
-	FOR_EACH_SUBKEY( configData.pConfigKeys, kvSubKey )
-	{
-		if ( VideoConfigSetting_t const *pSetting = VideoConfigSettingFindWhitelistEntryByName( kvSubKey->GetName() ) )
-		{
-			if ( pSetting->m_bUseAutoOption )
-			{
-				char chNewAutoName[128];
-				// e.g.: "setting.cpu_level" -> "setauto.cpu_level"
-				sprintf_s( chNewAutoName, "setauto.%s", pSetting->m_pSettingVar + 8 );
-				kvSubKey->SetName( chNewAutoName );
-			}
-		}
-	}
+	//FOR_EACH_SUBKEY( configData.pConfigKeys, kvSubKey )
+	//{
+	//	if ( VideoConfigSetting_t const *pSetting = VideoConfigSettingFindWhitelistEntryByName( kvSubKey->GetName() ) )
+	//	{
+	//		if ( pSetting->m_bUseAutoOption )
+	//		{
+	//			char chNewAutoName[128];
+	//			// e.g.: "setting.cpu_level" -> "setauto.cpu_level"
+	//			sprintf_s( chNewAutoName, "setauto.%s", pSetting->m_pSettingVar + 8 );
+	//			kvSubKey->SetName( chNewAutoName );
+	//		}
+	//	}
+	//}
 	buf.Purge();
 	configData.pConfigKeys->RecursiveSaveToFile( buf, 0 );
 	WriteVideoCfgDataToFile( VIDEOCONFIG_FILENAME, buf );
@@ -970,15 +970,15 @@ bool UpdateCurrentVideoConfig( int nWidth, int nHeight, int nAspectRatioMode, bo
 		bool bAutodetectedSetting = false;
 		{
 			char szConVarRestart[ 256 ];
-			if ( s_pVideoConfigSettingsWhitelist[ iVar ].m_bUseAutoOption )
-			{
-				V_snprintf( szConVarRestart, sizeof( szConVarRestart ), "%s_optionsui", szConVarName );
-				ConVarRef cvOptionsUi( szConVarRestart );
-				if ( cvOptionsUi.IsValid() )
-				{
-					bAutodetectedSetting = ( cvOptionsUi.GetInt() == 9999999 );
-				}
-			}
+			//if ( s_pVideoConfigSettingsWhitelist[ iVar ].m_bUseAutoOption )
+			//{
+			//	V_snprintf( szConVarRestart, sizeof( szConVarRestart ), "%s_optionsui", szConVarName );
+			//	ConVarRef cvOptionsUi( szConVarRestart );
+			//	if ( cvOptionsUi.IsValid() )
+			//	{
+			//		bAutodetectedSetting = ( cvOptionsUi.GetInt() == 9999999 );
+			//	}
+			//}
 			if ( bUseRestartConvars )
 			{
 				V_snprintf( szConVarRestart, sizeof( szConVarRestart ), "%s_restart", szConVarName );
@@ -1104,27 +1104,27 @@ bool UpdateVideoConfigConVars( KeyValues *pConfigKeys )
 			}
 		}
 
-		if ( s_pVideoConfigSettingsWhitelist[iVar].m_bUseAutoOption )
-		{
-			char szConVarOptionsUi[ 256 ];
-			sprintf_s( szConVarOptionsUi, "%s_optionsui", szConVarName );
-			if ( ConVar *pVarOptionsUi = g_pCVar->FindVar( szConVarOptionsUi ) )
-			{
-				if ( pVarOptionsUiCallback )
-					pVarOptionsUiCallback->SetValue( 1 );
+		//if ( s_pVideoConfigSettingsWhitelist[iVar].m_bUseAutoOption )
+		//{
+		//	char szConVarOptionsUi[ 256 ];
+		//	sprintf_s( szConVarOptionsUi, "%s_optionsui", szConVarName );
+		//	if ( ConVar *pVarOptionsUi = g_pCVar->FindVar( szConVarOptionsUi ) )
+		//	{
+		//		if ( pVarOptionsUiCallback )
+		//			pVarOptionsUiCallback->SetValue( 1 );
 
-				// Check if the config instructs the convar to list as "AUTO"?
-				char chSettingAutoName[128];
-				sprintf_s( chSettingAutoName, "setauto.%s", s_pVideoConfigSettingsWhitelist[iVar].m_pSettingVar + 8 );
-				if ( pConfigKeys->FindKey( chSettingAutoName ) )
-					pVarOptionsUi->SetValue( 9999999 );
-				else
-					pVarOptionsUi->SetValue( pFindKey->GetString() );
+		//		// Check if the config instructs the convar to list as "AUTO"?
+		//		char chSettingAutoName[128];
+		//		sprintf_s( chSettingAutoName, "setauto.%s", s_pVideoConfigSettingsWhitelist[iVar].m_pSettingVar + 8 );
+		//		if ( pConfigKeys->FindKey( chSettingAutoName ) )
+		//			pVarOptionsUi->SetValue( 9999999 );
+		//		else
+		//			pVarOptionsUi->SetValue( pFindKey->GetString() );
 
-				if ( pVarOptionsUiCallback )
-					pVarOptionsUiCallback->SetValue( 0 );
-			}
-		}
+		//		if ( pVarOptionsUiCallback )
+		//			pVarOptionsUiCallback->SetValue( 0 );
+		//	}
+		//}
 	}
 
 	// If we created it - destroy it!
@@ -1299,7 +1299,7 @@ SystemLevelConvar_t s_pConVarsAllowedInSystemLevel[] =
 	{ "r_paintblob_highres_cube",							 false, true },
 	{ "r_paintblob_force_single_pass",						 true, true },
 	{ "r_paintblob_max_number_of_threads",					 true, true },
-	{ "cl_csm_enabled",										 true, true },
+	//{ "cl_csm_enabled",										 true, true },
 };
 
 void PerformSystemConfiguration( KeyValues *pResult, int nSystemLevel, const char *pConfigFile, const char *pModName, bool bUseSplitScreenCfg, bool bVGUIIsSplitscreen )

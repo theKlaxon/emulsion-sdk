@@ -198,7 +198,6 @@ if "%valveTmpIsReadOnlyLetter%"=="R" (
     <ClCompile Include="builtin_particle_forces.cpp" />
     <ClCompile Include="builtin_particle_ops.cpp" />
     <ClCompile Include="builtin_particle_render_ops.cpp" />
-    <ClCompile Include="def_renderblobs_2.cpp" />
     <ClCompile Include="particles.cpp" />
     <ClCompile Include="particle_snapshot.cpp" />
     <ClCompile Include="particle_sort.cpp" />

@@ -30,6 +30,8 @@ enum CUBE_SKIN_WEIGHTED {
 	CUBE_WEIGHTED_ACTIVE_PROPULSIVE,
 };
 
+ConVar sv_portal2_pickup_hint_range("sv_portal2_pickup_hint_range", "350.0f", FCVAR_CHEAT | FCVAR_REPLICATED);
+
 //enum CUBE_SKIN_LASER {
 //	DEFAULT = 0,
 //	DILAPIDATED,
@@ -46,6 +48,7 @@ enum CUBE_SKIN_WEIGHTED {
 
 class CPropDevCube : public CBaseAnimating {
 	DECLARE_CLASS(CPropDevCube, CBaseAnimating);
+	DECLARE_SERVERCLASS()
 public:
 
 	CPropDevCube();
@@ -74,6 +77,9 @@ protected:
 };
 
 LINK_ENTITY_TO_CLASS(prop_weighted_cube, CPropDevCube);
+
+IMPLEMENT_SERVERCLASS_ST(CPropDevCube, DT_PropDevCube)
+END_SEND_TABLE()
 
 CPropDevCube::CPropDevCube() {
 	m_tType = CUBE_TYPE::CUBE_WEIGHTED;

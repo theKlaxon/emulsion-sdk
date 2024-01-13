@@ -15,7 +15,7 @@
 #include <intrin.h>	// get __rdtsc
 #endif
 
-#if !defined(_CERT) && ( defined( WIN32 ) || defined( _X360 ) ) //	&& !defined(_LINUX)
+#if !defined(_CERT) && ( defined( WIN32 ) || defined( _X360 ) ) && !defined(EMULSION_DLL)//	&& !defined(_LINUX)
 #define ENABLE_HARDWARE_PROFILER 1
 #else
 #define ENABLE_HARDWARE_PROFILER 0

@@ -5064,8 +5064,8 @@ void CSkyboxView::DrawInternal( view_id_t iSkyBoxViewID, bool bInvokePreAndPostR
 	DrawWorld( pRenderContext, 0.0f );
 
 	// Iterate over all leaves and render objects in those leaves
-	//DrawOpaqueRenderables( false );
-	DrawOpaqueRenderables( true ); // was false
+	DrawOpaqueRenderables( false );
+	//DrawOpaqueRenderables( true ); // was false
 
 	// Iterate over all leaves and render objects in those leaves
 	DrawTranslucentRenderables( true, false );

@@ -14,8 +14,8 @@ cl : Command line warning D9002: ignoring unknown option '/Gw'
 cl : Command line warning D9002: ignoring unknown option '/Gw'
   BuildModeDialog.cpp
 cl : Command line warning D9002: ignoring unknown option '/Gw'
-  Button.cpp
 cl : Command line warning D9002: ignoring unknown option '/Gw'
+  Button.cpp
   CheckButton.cpp
 cl : Command line warning D9002: ignoring unknown option '/Gw'
   CheckButtonList.cpp
@@ -29,8 +29,8 @@ d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\button.cpp(609): warning C4800
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\button.cpp(629): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\button.cpp(631): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\button.cpp(896): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-  ControllerMap.cpp
 d:\theklaxon\emulsion-sdk\src\public\localize\ilocalize.h(149): warning C4717: 'ILocalize::ConstructString' : recursive on all control paths, function will cause runtime stack overflow
+  ControllerMap.cpp
   controls.cpp
   CvarToggleCheckButton.cpp
   DirectorySelectDialog.cpp
@@ -55,14 +55,15 @@ d:\theklaxon\emulsion-sdk\src\public\localize\ilocalize.h(149): warning C4717: '
   ListPanel.cpp
   ListViewPanel.cpp
   Menu.cpp
-  MenuBar.cpp
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(292): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(293): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(295): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(296): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(297): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+  MenuBar.cpp
   MenuButton.cpp
   MenuItem.cpp
+  MessageBox.cpp
 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(72): warning C4005: 'INT8_MIN' : macro redefinition
           d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(73): warning C4005: 'INT16_MIN' : macro redefinition
@@ -87,14 +88,14 @@ c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(150): wa
           d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(290) : see previous definition of 'INT64_MAX'
 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(151): warning C4005: 'UINT64_MAX' : macro redefinition
           d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
-  MessageBox.cpp
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\listpanel.cpp(609): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\listpanel.cpp(612): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-  MessageDialog.cpp
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
+  MessageDialog.cpp
   Panel.cpp
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\html.cpp(2010): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(72): warning C4005: 'INT8_MIN' : macro redefinition
           d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(73): warning C4005: 'INT16_MIN' : macro redefinition
@@ -123,7 +124,9 @@ c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(151): wa
   patch.cpp
   PerforceFileExplorer.cpp
   PerforceFileList.cpp
-d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\html.cpp(2010): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
   perforcefilelistframe.cpp
 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(72): warning C4005: 'INT8_MIN' : macro redefinition
           d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(292) : see previous definition of 'INT8_MIN'
@@ -149,9 +152,6 @@ c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(150): wa
           d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(290) : see previous definition of 'INT64_MAX'
 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(151): warning C4005: 'UINT64_MAX' : macro redefinition
           d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
-d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
-d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
-d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
   ProgressBar.cpp
   ProgressBox.cpp
   PropertyDialog.cpp
@@ -161,6 +161,7 @@ d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): wa
   PropertyPage.cpp
   PropertySheet.cpp
   QueryBox.cpp
+  RadioButton.cpp
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(1355): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(1363): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(3338): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
@@ -168,7 +169,6 @@ d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(4580): warning C4800
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(4582): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(4683): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(5281): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-  RadioButton.cpp
   RichText.cpp
   RotatingProgressBar.cpp
 d:\theklaxon\emulsion-sdk\src\public\localize\ilocalize.h(149): warning C4717: 'ILocalize::ConstructString' : recursive on all control paths, function will cause runtime stack overflow
@@ -217,13 +217,13 @@ c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(150): wa
 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(151): warning C4005: 'UINT64_MAX' : macro redefinition
           d:\theklaxon\emulsion-sdk\src\public\tier0\platform.h(300) : see previous definition of 'UINT64_MAX'
   URLLabel.cpp
-  vgui_key_translation.cpp
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\richtext.cpp(2272): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+  vgui_key_translation.cpp
   WizardPanel.cpp
   WizardSubPanel.cpp
-d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\richtext.cpp(2272): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\textentry.cpp(3742): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\textentry.cpp(3743): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\textentry.cpp(3745): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)

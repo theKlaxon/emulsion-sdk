@@ -471,6 +471,7 @@
 		
 		"success_limit"		"3"
 		
+		"void is multiplayer"	"void"
 		"binding"			"+use"
 		"onscreen_icon"		"use_binding"
 		"offscreen_icon"	"icon_interact"

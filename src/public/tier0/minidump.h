@@ -26,21 +26,9 @@ PLATFORM_INTERFACE void CatchAndWriteMiniDump( FnWMain pfn, int argc, tchar *arg
 
 // The ExceptionInfo_t struct is a typeless data struct
 // which is OS-dependent and should never be used by external code.
-// Just pass it back into MinidumpSetUnhandledExceptionFunction
-//struct ExceptionInfo_t;
-struct _EXCEPTION_POINTERS;
-typedef _EXCEPTION_POINTERS ExceptionInfo_t;
+// Just pass it back into MinidumpSetUnhandledExceptionFunction 
+struct ExceptionInfo_t;
 
-typedef void(*FnWMain)(int, tchar* []);
-typedef int(*FnWMainIntRet)(int, tchar* []);
-typedef void(*FnVoidPtrFn)(void*);
-
-enum ECatchAndWriteMinidumpAction
-{
-	k_ECatchAndWriteMiniDumpAbort = 0,
-	k_ECatchAndWriteMiniDumpReThrow = 1,
-	k_ECatchAndWriteMiniDumpIgnore = 2,
-};
 
 // Replaces the current function pointer with the one passed in.
 // Returns the previously-set function.

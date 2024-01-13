@@ -16,7 +16,7 @@
 #include "texture_group_names.h"
 #include "tier0/icommandline.h"
 
-#define MAX_FARZ 6000
+#define MAX_FARZ 2000
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"

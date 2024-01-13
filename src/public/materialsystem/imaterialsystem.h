@@ -379,20 +379,19 @@ struct FlashlightState_t
 {
 	FlashlightState_t()
 	{
-		m_bEnableShadows = true;						// Provide reasonable defaults for shadow depth mapping parameters
+		m_bEnableShadows = false;						// Provide reasonable defaults for shadow depth mapping parameters
 		m_bDrawShadowFrustum = false;
-		m_flShadowMapResolution = 4096.0f;// 1024.0f;
-		//m_flShadowFilterSize = 3.0;
-		m_flShadowFilterSize = 0.2f;
+		m_flShadowMapResolution = 1024.0f;
+		m_flShadowFilterSize = 3.0f;
 		m_flShadowSlopeScaleDepthBias = 16.0f;
 		m_flShadowDepthBias = 0.0005f;
 		m_flShadowJitterSeed = 0.0f;
 		m_flShadowAtten = 0.0f;
 		m_flAmbientOcclusion = 0.0f;
 		m_nShadowQuality = 0;
-		m_bShadowHighRes = true;
+		m_bShadowHighRes = false;
 
-		m_bScissor = false; 
+		m_bScissor = false;
 		m_nLeft = -1;
 		m_nTop = -1;
 		m_nRight = -1;
@@ -400,7 +399,7 @@ struct FlashlightState_t
 
 		m_bUberlight = false;
 
-		m_bVolumetric = false; // true is still experimental -Klax
+		m_bVolumetric = false;
 		m_flNoiseStrength = 0.8f;
 		m_flFlashlightTime = 0.0f;
 		m_nNumPlanes = 64;
@@ -419,8 +418,8 @@ struct FlashlightState_t
 		m_bGlobalLight = false;
 
 		//m_bSimpleProjection = false;
-		//m_flProjectionSize = 500.0f;
-		//m_flProjectionRotation = 0.0f;
+		m_flProjectionSize = 500.0f;
+		m_flProjectionRotation = 0.0f;
 	}
 
 	Vector m_vecLightOrigin;
@@ -442,10 +441,11 @@ struct FlashlightState_t
 	float m_FarZAtten;
 	float m_Color[4];
 	float m_fBrightnessScale;
-	ITexture *m_pSpotlightTexture;
-	IMaterial *m_pProjectedMaterial;
+	ITexture* m_pSpotlightTexture;
+	IMaterial* m_pProjectedMaterial;
 	int m_nSpotlightTextureFrame;
-	
+	//bool m_bGlobalLight;
+
 	// Shadow depth mapping parameters
 	bool  m_bEnableShadows;
 	bool  m_bDrawShadowFrustum;
@@ -460,6 +460,7 @@ struct FlashlightState_t
 	bool  m_bShadowHighRes;
 
 	// simple projection
+	//bool	m_bSimpleProjection;
 	float	m_flProjectionSize;
 	float	m_flProjectionRotation;
 
@@ -473,7 +474,8 @@ struct FlashlightState_t
 	int m_nNumPlanes;
 	float m_flPlaneOffset;
 	float m_flVolumetricIntensity;
-	bool m_bGlobalLight;
+
+	bool m_bGlobalLight; // m_bShareBetweenSplitScreenPlayers in p2
 
 	// Getters for scissor members
 	bool DoScissor() const { return m_bScissor; }
@@ -486,13 +488,13 @@ private:
 
 	friend class CShadowMgr;
 
-	bool m_bScissor; 
+	bool m_bScissor;
 	int m_nLeft;
 	int m_nTop;
 	int m_nRight;
 	int m_nBottom;
 
-	IMPLEMENT_OPERATOR_EQUAL( FlashlightState_t );
+	IMPLEMENT_OPERATOR_EQUAL(FlashlightState_t);
 };
 
 //-----------------------------------------------------------------------------

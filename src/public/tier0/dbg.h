@@ -28,16 +28,6 @@
 // dll export stuff
 //-----------------------------------------------------------------------------
 
-#ifdef TIER0_DLL_EXPORT
-#define DBG_INTERFACE	DLL_EXPORT
-#define DBG_OVERLOAD	DLL_GLOBAL_EXPORT
-#define DBG_CLASS		DLL_CLASS_EXPORT
-#else
-#define DBG_INTERFACE	DLL_IMPORT
-#define DBG_OVERLOAD	DLL_GLOBAL_IMPORT
-#define DBG_CLASS		DLL_CLASS_IMPORT
-#endif
-
 class Color;
 
 
@@ -366,7 +356,9 @@ PLATFORM_INTERFACE void _AssertValidStringPtr( const tchar* ptr, int maxchar = 0
 template<class T> inline void AssertValidReadPtr( T* ptr, int count = 1 )		     { _AssertValidReadPtr( (void*)ptr, count ); }
 template<class T> inline void AssertValidWritePtr( T* ptr, int count = 1 )		     { _AssertValidWritePtr( (void*)ptr, count ); }
 template<class T> inline void AssertValidReadWritePtr( T* ptr, int count = 1 )	     { _AssertValidReadWritePtr( (void*)ptr, count ); }
-template<class T> inline void AssertValidStringPtr( const tchar* ptr, int maxchar = 0xFFFFFF )	     { _AssertValidStringPtr( ptr, maxchar ); }
+#ifdef EMULSION_DLL
+template<class T> inline void AssertValidStringPtr(const tchar* ptr, int maxchar = 0xFFFFFF) { _AssertValidStringPtr(ptr, maxchar); }
+#endif // EMULSION_DLL
 
 #define AssertValidThis() AssertValidReadWritePtr(this,sizeof(*this))
 

@@ -349,8 +349,8 @@ CBaseModPanel::CBaseModPanel(): BaseClass(0, "CBaseModPanel"),
 	m_FooterPanel = new CBaseModFooterPanel( this, "FooterPanel" );
 
 	m_pTransitionPanel = new CBaseModTransitionPanel( "TransitionPanel" );
-	m_pTransitionPanel->SetParent(GetVPanel());
-	//m_pTransitionPanel->SetParent( enginevguifuncs->GetPanel((VGuiPanel_t)0) ); // TODO:
+	//m_pTransitionPanel->SetParent(GetVPanel());
+	m_pTransitionPanel->SetParent( enginevguifuncs->GetPanel( PANEL_TRANSITIONEFFECT ) ); // TODO:
 
 	m_hOptionsDialog = NULL;
 

@@ -1647,7 +1647,7 @@ bool CSceneEntity::GetSoundNameForPlayer( CChoreoEvent *event, CBasePlayer *play
 	Q_strncpy( buf, event->GetParameters(), buflen );
 
 	bool usingEnglish = true;
-	if ( !IsXbox() )
+	if ( !IsX360() )
 	{
 		char const *cvarvalue = engine->GetClientConVarValue( player->entindex(), "english" );
 		if ( cvarvalue && *cvarvalue && Q_atoi( cvarvalue ) != 1 )

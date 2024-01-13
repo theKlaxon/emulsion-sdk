@@ -2718,7 +2718,7 @@ void CHudCloseCaption::OnFinishAsyncLoad( int nFileIndex, int nBlockNum, AsyncCa
 //-----------------------------------------------------------------------------
 void CHudCloseCaption::Lock( void )
 {
-	if ( !IsXbox() )
+	if ( !IsX360() )
 		m_bLocked = true;
 }
 

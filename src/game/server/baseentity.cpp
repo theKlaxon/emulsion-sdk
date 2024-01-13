@@ -3303,7 +3303,7 @@ bool CBaseEntity::FVisible( CBaseEntity *pEntity, int traceMask, CBaseEntity **p
 	Vector vecTargetOrigin = pEntity->EyePosition();
 
 	trace_t tr;
-	if ( !IsXbox() && ai_LOS_mode.GetBool() )
+	if ( !IsX360() && ai_LOS_mode.GetBool() )
 	{
 		UTIL_TraceLine(vecLookerOrigin, vecTargetOrigin, traceMask, this, COLLISION_GROUP_NONE, &tr);
 	}

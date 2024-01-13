@@ -473,13 +473,6 @@ public:
 	//-----------------------------------------------------------------------------
 	bool HasTag( LoggingChannelID_t channelID, const char *pTag ) const { return GetChannel( channelID )->HasTag( pTag ); }
 	
-	// yoinked thisnfrom csgo
-	//-----------------------------------------------------------------------------
-	// Returns true if the given channel has been initialized.
-	// The main purpose is catching m_nChannelCount being zero because no channels have been registered.
-	//-----------------------------------------------------------------------------
-	bool IsValidChannelID(LoggingChannelID_t channelID) const { return (channelID >= 0) && (channelID < m_nChannelCount); }
-
 	//-----------------------------------------------------------------------------
 	// Returns true if the given channel will spew at the given severity level.
 	//-----------------------------------------------------------------------------
@@ -544,7 +537,7 @@ public:
 	//-----------------------------------------------------------------------------
 	// Returns whether the specified logging listener is registered.
 	//-----------------------------------------------------------------------------
-	bool IsListenerRegistered(ILoggingListener* pListener);// const;
+	bool IsListenerRegistered( ILoggingListener *pListener ) const;
 
 	//-----------------------------------------------------------------------------
 	// Clears out all of the current logging state (removes all listeners, 

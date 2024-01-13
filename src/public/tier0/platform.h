@@ -166,7 +166,7 @@ typedef void * HINSTANCE;
 #define IsPosix()	IsPlatformPosix()
 #define IsX360()	IsPlatformX360()
 #define IsPS3()		IsPlatformPS3()
-#define IsGameConsole() IsX360()
+#define IsGameConsole() false
 
 // Setup platform defines.
 #ifdef COMPILER_MSVC
@@ -282,7 +282,7 @@ typedef unsigned int		uint;
 
 
 // Maximum and minimum representable values
-#if !defined(PLATFORM_OSX) && !defined(GAME_2011) 
+#ifndef PLATFORM_OSX
 
 #define  INT8_MAX			SCHAR_MAX
 #define  INT16_MAX			SHRT_MAX
@@ -323,14 +323,9 @@ typedef unsigned int		uint;
 #define offsetof(s,m)	(size_t)&(((s *)0)->m)
 #endif
 
+
 #define  FLOAT32_MIN		FLT_MIN
 #define  FLOAT64_MIN		DBL_MIN
-
-//-----------------------------------------------------------------------------
-// Convert int<-->pointer, avoiding 32/64-bit compiler warnings:
-//-----------------------------------------------------------------------------
-#define INT_TO_POINTER( i ) (void *)( ( i ) + (char *)NULL )
-#define POINTER_TO_INT( p ) ( (int)(uint64)( p ) )
 
 	// On OSX, SIGTRAP doesn't really stop the thread cold when debugging.
 	// So if being debugged, use INT3 which is precise.
@@ -1466,6 +1461,7 @@ private:
 };
 #endif
 
+
 //-----------------------------------------------------------------------------
 // What OS version are we?
 //-----------------------------------------------------------------------------
@@ -1607,7 +1603,5 @@ int	_V_stricmp_NegativeForUnequal	  ( const char *s1, const char *s2 );
 #define strcmpi(s1,s2) _V_stricmp(s1, s2)
 #define strnicmp V_strncasecmp 
 #endif
-
-PLATFORM_INTERFACE char const* Plat_GetEnv(char const* pEnvVarName);
 
 #endif /* PLATFORM_H */

@@ -29,17 +29,9 @@
 
 #if defined( _MEMTEST )
 #ifdef _WIN32
-//#define USE_MEM_DEBUG 1 // TODO: REENABLE
+#define USE_MEM_DEBUG 1
 #endif
 #endif
-
-#if defined( STEAM_SHARES_GAME_ALLOCATOR )
-#define MBYTES_STEAM_SBH_USAGE 2
-#define MBYTES_STEAM_MBH_USAGE 4
-#else // STEAM_SHARES_GAME_ALLOCATOR
-#define MBYTES_STEAM_SBH_USAGE 0
-#define MBYTES_STEAM_MBH_USAGE 0
-#endif // STEAM_SHARES_GAME_ALLOCATOR
 
 // Undefine this if using a compiler lacking threadsafe RTTI (like vc6)
 #define MEM_DEBUG_CLASSNAME 1
@@ -60,14 +52,30 @@ struct _CrtMemState;
 
 typedef size_t (*MemAllocFailHandler_t)( size_t );
 
+class IVirtualMemorySection {
+public:
+
+	virtual void*			GetBaseAddress() = 0;
+	virtual unsigned int	GetPageSize() = 0;
+	virtual unsigned int	GetTotalSize() = 0;
+
+	virtual bool CommitPages(void* par1, unsigned int par2) = 0;
+	virtual void DecommitPages(void* par1, unsigned int par2) = 0;
+	virtual void Release() = 0;
+};
+
+struct GenericMemoryStat_t {
+	char*	name;
+	int		value;
+};
+
 //-----------------------------------------------------------------------------
 // NOTE! This should never be called directly from leaf code
 // Just use new,delete,malloc,free etc. They will call into this eventually
 //-----------------------------------------------------------------------------
-#define ASSERT_MEMALLOC_WILL_ALIGN( T )	COMPILE_TIME_ASSERT( __alignof( T ) <= 16 )
 abstract_class IMemAlloc
 {
-protected:
+private:
 	// Release versions
 	virtual void *Alloc( size_t nSize ) = 0;
 public:
@@ -76,7 +84,7 @@ public:
 	virtual void Free( void *pMem ) = 0;
     virtual void *Expand_NoLongerSupported( void *pMem, size_t nSize ) = 0;
 
-protected:
+private:
 	// Debug versions
     virtual void *Alloc( size_t nSize, const char *pFileName, int nLine ) = 0;
 public:
@@ -85,7 +93,7 @@ public:
     virtual void *Expand_NoLongerSupported( void *pMem, size_t nSize, const char *pFileName, int nLine ) = 0;
 
 	inline void *IndirectAlloc( size_t nSize )										{ return Alloc( nSize ); }
-	inline void* IndirectAlloc(size_t nSize, const char* pFileName, int nLine)		{ return Alloc(nSize, pFileName, nLine ); }
+	inline void *IndirectAlloc( size_t nSize, const char *pFileName, int nLine )	{ return Alloc( nSize, pFileName, nLine ); }
 
 	// Returns size of a particular allocation
 	virtual size_t GetSize( void *pMem ) = 0;
@@ -132,7 +140,7 @@ public:
 
 	virtual void DumpBlockStats( void * ) = 0;
 
-#if defined( _MEMTEST )	
+#if defined( _MEMTEST )
 	virtual void SetStatsExtraInfo( const char *pMapName, const char *pComment ) = 0;
 #endif
 
@@ -149,6 +157,14 @@ public:
 
 	// Replacement for ::GlobalMemoryStatus which accounts for unused memory in our system
 	virtual void GlobalMemoryStatus( size_t *pUsedMemory, size_t *pFreeMemory ) = 0;
+
+	// Obtain virtual memory manager interface
+	virtual IVirtualMemorySection* AllocateVirtualMemorySection(size_t numMaxBytes) = 0;
+
+	// Request 'generic' memory stats (returns a list of N named values; caller should assume this list will change over time)
+	virtual int GetGenericMemoryStats(GenericMemoryStat_t** ppMemoryStats) = 0;
+
+	virtual ~IMemAlloc() { };
 };
 
 //-----------------------------------------------------------------------------
@@ -403,11 +419,7 @@ public:
 
 	#pragma warning(disable:4290)
 	#pragma warning(push)
-#ifdef GAME_2011
-	#include <typeinfo>
-#else
 	#include <typeinfo.h>
-#endif
 
 	// MEM_DEBUG_CLASSNAME is opt-in.
 	// Note: typeid().name() is not threadsafe, so if the project needs to access it in multiple threads

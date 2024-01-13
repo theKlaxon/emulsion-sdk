@@ -114,7 +114,7 @@ static ConVar r_disable_update_shadow("r_disable_update_shadow", "0", FCVAR_CHEA
 static ConVar r_flashlightdrawfrustum( "r_flashlightdrawfrustum", "0" );
 static ConVar r_flashlightdrawfrustumbbox( "r_flashlightdrawfrustumbbox", "0" );
 static ConVar r_flashlightmodels( "r_flashlightmodels", "1" );
-static ConVar r_shadowrendertotexture( "r_shadowrendertotexture", "0" );
+static ConVar r_shadowrendertotexture( "r_shadowrendertotexture", "1" );
 static ConVar r_shadow_lightpos_lerptime( "r_shadow_lightpos_lerptime", "0.5" );
 static ConVar r_shadowfromworldlights_debug( "r_shadowfromworldlights_debug", "0", FCVAR_CHEAT );
 static ConVar r_shadowfromanyworldlight( "r_shadowfromanyworldlight", "1", FCVAR_CHEAT );
@@ -301,8 +301,7 @@ void CTextureAllocator::InitRenderTargets( void )
 {
 #if !defined( _X360 )
 	// don't need depth buffer for shadows
-	m_TexturePage.InitRenderTarget( TEXTURE_PAGE_SIZE, TEXTURE_PAGE_SIZE, RT_SIZE_NO_CHANGE, IMAGE_FORMAT_ARGB8888, MATERIAL_RT_DEPTH_NONE, false, "_rt_Shadows" );
-	//m_TexturePage.InitRenderTarget( TEXTURE_PAGE_SIZE, TEXTURE_PAGE_SIZE, RT_SIZE_NO_CHANGE, IMAGE_FORMAT_R32F, MATERIAL_RT_DEPTH_SEPARATE, false, "_rt_Shadows" );
+	m_TexturePage.InitRenderTarget(TEXTURE_PAGE_SIZE, TEXTURE_PAGE_SIZE, RT_SIZE_NO_CHANGE, IMAGE_FORMAT_ARGB8888, MATERIAL_RT_DEPTH_NONE, false, "_rt_Shadows");
 #else
 	// unfortunate explicit management required for this render target
 	// 32bpp edram is only largest shadow fragment, but resolved to actual shadow atlas
@@ -771,7 +770,12 @@ void CTextureAllocator::GetTextureRect(TextureHandle_t handle, int& x, int& y, i
 // Defines how big of a shadow texture we should be making per caster...
 //-----------------------------------------------------------------------------
 //#define TEXEL_SIZE_PER_CASTER_SIZE 512.0f //2.0f 
-#define TEXEL_SIZE_PER_CASTER_SIZE 2048.0f
+//#define TEXEL_SIZE_PER_CASTER_SIZE 2048.0f
+//#define MAX_FALLOFF_AMOUNT 240
+//#define MAX_CLIP_PLANE_COUNT 4
+//#define SHADOW_CULL_TOLERANCE 0.5f
+
+#define TEXEL_SIZE_PER_CASTER_SIZE	2.0f 
 #define MAX_FALLOFF_AMOUNT 240
 #define MAX_CLIP_PLANE_COUNT 4
 #define SHADOW_CULL_TOLERANCE 0.5f
@@ -1653,7 +1657,7 @@ void CClientShadowMgr::PreCacheDepthTex(int count) {
 }
 
 // the number of pre allocated depth texture, new shadows after this allocate new ones
-#define PREPREP_DEPTH_SHADOW_CNT 12
+#define PREPREP_DEPTH_SHADOW_CNT 4
 
 //-----------------------------------------------------------------------------
 // Initialize, shutdown depth-texture shadows
@@ -1677,7 +1681,7 @@ void CClientShadowMgr::InitDepthTextureShadows()
 		return;
 
 	if( !m_bDepthTexturesAllocated || m_nDepthTextureResolution != r_flashlightdepthres.GetInt() || m_nDepthTextureResolutionHigh != r_flashlightdepthreshigh.GetInt() )
-		PreCacheDepthTex(PREPREP_DEPTH_SHADOW_CNT);
+		PreCacheDepthTex( PREPREP_DEPTH_SHADOW_CNT);
 
 	timer.End();
 	DevMsg("InitDepthTextureShadows took %.2f msec\n", timer.GetDuration().GetMillisecondsF());
@@ -1717,13 +1721,12 @@ void CClientShadowMgr::InitRenderToTextureShadows()
 		g_pMaterialSystem->EndRenderTargetAllocation();
 
 		// TODO: fix rendershadow and rendermodelshadow
-		m_RenderShadow.Init( "Decals/simpleshadow", TEXTURE_GROUP_DECAL );
-		m_RenderModelShadow.Init( "Decals/simpleshadow", TEXTURE_GROUP_DECAL );
+		//m_RenderShadow.Init( "Decals/simpleshadow", TEXTURE_GROUP_DECAL );
+		//m_RenderModelShadow.Init( "Decals/simpleshadow", TEXTURE_GROUP_DECAL );
 
-		//m_RenderShadow.Init("Decals/rendershadow", TEXTURE_GROUP_DECAL);
-		//m_RenderModelShadow.Init("Decals/rendermodelshadow", TEXTURE_GROUP_DECAL);
-
-		// TODO: create a shadow like env_projected does but for the phys props n shit
+		m_RenderShadow.Init("Decals/rendershadow", TEXTURE_GROUP_DECAL);
+		m_RenderModelShadow.Init("Decals/rendermodelshadow", TEXTURE_GROUP_DECAL);
+		
 
 		m_ShadowAllocator.Reset();
 		m_bRenderTargetNeedsClear = true;

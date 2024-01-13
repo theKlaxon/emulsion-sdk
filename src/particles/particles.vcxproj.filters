@@ -65,9 +65,6 @@
     <ClCompile Include="builtin_particle_render_ops.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="def_renderblobs_2.cpp">
-      <Filter>Source Files\portal2</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\lib\public\bitmap.lib">

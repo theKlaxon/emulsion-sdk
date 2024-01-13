@@ -961,6 +961,8 @@ abstract_class IClientMaterialSystem
 public:
 	virtual HTOOLHANDLE GetCurrentRecordingEntity() = 0;
 	virtual void PostToolMessage( HTOOLHANDLE hEntity, KeyValues *pMsg ) = 0;
+
+	virtual void SetMaterialProxyData(void* pProxyData) = 0; // portal2
 };
 
 #define VCLIENTMATERIALSYSTEM_INTERFACE_VERSION "VCLIENTMATERIALSYSTEM001"

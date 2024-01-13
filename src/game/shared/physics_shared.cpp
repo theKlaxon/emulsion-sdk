@@ -495,7 +495,7 @@ void AddSurfacepropFile( const char *pFileName, IPhysicsSurfaceProps *pProps, IF
 
 		// read the file
 		int nBufSize = len+1;
-		if ( IsXbox() )
+		if (IsX360() )
 		{
 			nBufSize = AlignValue( nBufSize , 512 );
 		}

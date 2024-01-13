@@ -3220,6 +3220,13 @@ class CClientMaterialSystem : public IClientMaterialSystem
 	{
 		ToolFramework_PostToolMessage( hEntity, pMsg );
 	}
+
+	virtual void SetMaterialProxyData(void* pProxyData)
+	{
+		m_pProxyData = pProxyData;
+	}
+
+	void* m_pProxyData;
 };
 
 //-----------------------------------------------------------------------------

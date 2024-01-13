@@ -114,8 +114,8 @@ void Video::ApplySchemeSettings( vgui::IScheme *pScheme )
 
 	if ( m_drpSplitScreenDirection )
 	{
-		//const AspectRatioInfo_t &aspectRatioInfo = materials->GetAspectRatioInfo();
-		bool bWidescreen = true;// aspectRatioInfo.m_bIsWidescreen;
+		const AspectRatioInfo_t &aspectRatioInfo = materials->GetAspectRatioInfo();
+		bool bWidescreen = aspectRatioInfo.m_bIsWidescreen;
 
 		if ( !bWidescreen )
 		{
@@ -157,25 +157,25 @@ bool Video::GetRecommendedSettings( void )
 	m_nRecommendedPowerSavingsMode = 0;
 
 	// makes crashy no good :(
-//#if !defined( _GAMECONSOLE )
-//	KeyValues *pConfigKeys = new KeyValues( "VideoConfig" );
-//	if ( !pConfigKeys )
-//		return false;
-//
-//	if ( !ReadCurrentVideoConfig( pConfigKeys, true ) )
-//	{
-//		pConfigKeys->deleteThis();
-//		return false;
-//	}
-//
-//	m_iRecommendedResolutionWidth = pConfigKeys->GetInt( "setting.defaultres", m_iRecommendedResolutionWidth );
-//	m_iRecommendedResolutionHeight = pConfigKeys->GetInt( "setting.defaultresheight", m_iRecommendedResolutionHeight );
-//	m_iRecommendedAspectRatio = GetScreenAspectMode( m_iRecommendedResolutionWidth, m_iRecommendedResolutionHeight );
-//	m_bRecommendedWindowed = !pConfigKeys->GetBool( "setting.fullscreen", !m_bRecommendedWindowed );
-//	m_bRecommendedNoBorder = pConfigKeys->GetBool( "setting.nowindowborder", m_bRecommendedNoBorder );
-//
-//	pConfigKeys->deleteThis();
-//#endif
+#if !defined( _GAMECONSOLE )
+	KeyValues *pConfigKeys = new KeyValues( "VideoConfig" );
+	if ( !pConfigKeys )
+		return false;
+
+	if ( !ReadCurrentVideoConfig( pConfigKeys, true ) )
+	{
+		pConfigKeys->deleteThis();
+		return false;
+	}
+
+	m_iRecommendedResolutionWidth = pConfigKeys->GetInt( "setting.defaultres", m_iRecommendedResolutionWidth );
+	m_iRecommendedResolutionHeight = pConfigKeys->GetInt( "setting.defaultresheight", m_iRecommendedResolutionHeight );
+	m_iRecommendedAspectRatio = GetScreenAspectMode( m_iRecommendedResolutionWidth, m_iRecommendedResolutionHeight );
+	m_bRecommendedWindowed = !pConfigKeys->GetBool( "setting.fullscreen", !m_bRecommendedWindowed );
+	m_bRecommendedNoBorder = pConfigKeys->GetBool( "setting.nowindowborder", m_bRecommendedNoBorder );
+
+	pConfigKeys->deleteThis();
+#endif
 
 	return true;
 }

@@ -615,12 +615,12 @@ public:
 	virtual bool			WasReloadedFromWhitelist() = 0;
 	
 	// not in p2 vtable
-	//virtual bool			SetTempExcluded(bool bSet, int nExcludedDimensionLimit = 0) {}
+	virtual bool			SetTempExcluded(bool bSet, int nExcludedDimensionLimit = 0) = 0;// {}
 
 	// 0x00007270
 	virtual int				GetReferenceCount() const = 0;
 
-	//virtual void			SetEnumerationID(int id);
+	virtual void			SetEnumerationID(int id) = 0;
 };
 
 
