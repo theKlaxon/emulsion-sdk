@@ -127,7 +127,7 @@
 #include "viewpostprocess.h"
 
 #ifdef EMULSION_DLL
-//#include "c_discord.h"
+#include "c_discord.h"
 #include "blob_manager.h"
 #endif
 
@@ -1262,7 +1262,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 
 #ifdef EMULSION_DLL
 	engine->EnablePaintmapRender();
-	//g_pDiscord->Init();
+	g_pDiscord->Init();
 #endif
 
 	COM_TimestampedLog( "InitGameSystems" );
@@ -1362,7 +1362,7 @@ void CHLClient::Shutdown( void )
 	UncacheAllMaterials();
 
 #ifdef EMULSION_DLL
-	//g_pDiscord->Shutdown();
+	g_pDiscord->Shutdown();
 #endif
 
 	IGameSystem::ShutdownAllSystems();
@@ -1906,7 +1906,7 @@ void CHLClient::LevelInitPreEntity( char const* pMapName )
 	g_RagdollLVManager.SetLowViolence( pMapName );
 
 #ifdef EMULSION_DLL
-	//g_pDiscord->LevelInitPreEntity(pMapName);
+	g_pDiscord->LevelInitPreEntity(pMapName);
 #endif
 
 	for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
@@ -2020,8 +2020,8 @@ void CHLClient::LevelShutdown( void )
 		GetCenterPrint()->Clear();
 	}
 
-#ifdef EMULSION_DLL//
-	//g_pDiscord->LevelShutdown();
+#ifdef EMULSION_DLL
+	g_pDiscord->LevelShutdown();
 #endif
 
 	ClientVoiceMgr_LevelShutdown();

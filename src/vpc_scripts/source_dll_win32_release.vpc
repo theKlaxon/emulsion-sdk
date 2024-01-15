@@ -72,10 +72,10 @@ $Configuration "Release"
 		$UseUNICODEResponseFiles
 
 		// Optimization
-		$Optimization						"Maximize Speed (/O2)"
-		$InlineFunctionExpansion			"Any Suitable (/Ob2)"
-		$EnableIntrinsicFunctions			"Yes (/Oi)"
-		$FavorSizeOrSpeed					"Favor Fast Code (/Ot)"
+		$Optimization						"Disabled (/Od)"
+		$InlineFunctionExpansion
+		$EnableIntrinsicFunctions
+		$FavorSizeOrSpeed
 		$OmitFramePointers
 		$EnableFiberSafeOptimizations
 		$WholeProgramOptimization

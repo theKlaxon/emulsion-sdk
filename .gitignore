@@ -81,3 +81,5 @@ src/game/client/Debug_skeleton/
 src/game/server/Debug_skeleton/
 src/game/client/Release_skeleton/
 src/game/server/Release_skeleton/
+*.opendb
+*.db-shm
