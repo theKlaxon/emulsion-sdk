@@ -31,7 +31,6 @@ public:
 
 	void		Get( void *pValue, int nMaxLen ) const;
 	void		Set( const void *pValue, int nLen );
-	void		Set2( const void *pValue, int nLen );
 	const void	*Get( ) const;
 	void		*Get( );
 
@@ -45,6 +44,10 @@ public:
 	void		Purge();
 
 	bool		IsReadOnly() const;
+
+#ifdef EMULSION_DLL
+	void Set2(const void* pValue, int nLen);
+#endif
 
 	CUtlBinaryBlock &operator=( const CUtlBinaryBlock &src );
 
@@ -124,8 +127,11 @@ public:
 
 	const char	*Get( ) const;
 	void		Set( const char *pValue );
-	void		Set2( const char *pValue );
 	
+#ifdef EMULSION_DLL
+	void Set2(const char* pValue);
+#endif
+
 	// Set directly and don't look for a null terminator in pValue.
 	void		SetDirect( const char *pValue, int nChars );
 
@@ -152,9 +158,6 @@ public:
 	CUtlString &operator=( const CUtlString &src );
 	CUtlString &operator=( const char *src );
 
-	// NOT FOR SUBTRACTING THINGS, HACKED UP TO OVERRIDE THE NORMAL OP=
-	CUtlString &operator-=( const char *src );
-
 	// Test for equality
 	bool operator==( const CUtlString &src ) const;
 	bool operator==( const char *src ) const;
@@ -166,6 +169,10 @@ public:
 	CUtlString &operator+=( char c );
 	CUtlString &operator+=( int rhs );
 	CUtlString &operator+=( double rhs );
+
+#ifdef EMULSION_DLL
+	CUtlString& operator-=(const char* src);
+#endif
 
 	CUtlString operator+( const char *pOther );
 	CUtlString operator+( int rhs );

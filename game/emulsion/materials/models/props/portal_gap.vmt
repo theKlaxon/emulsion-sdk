@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/props/portal_gap"
-$surfaceprop default
-}

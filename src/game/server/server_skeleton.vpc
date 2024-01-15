@@ -1,0 +1,97 @@
+//-----------------------------------------------------------------------------
+//	SERVER_TEMPLATE.VPC
+//
+//	Project Script
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR		"..\.."
+$Macro GAMENAME 	"skeleton"
+
+$Include "$SRCDIR\game\server\server_base.vpc"
+
+$Configuration
+{
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"$BASE;.\hl2;$SRCDIR\game\shared\hl2;.\skeleton;.\multiplayer;$SRCDIR\game\shared\multiplayer;$SRCDIR\game\shared\skeleton;$SRCDIR\game\shared\swarm"
+		$PreprocessorDefinitions		"$BASE;EMULSION_DLL;SWARM_DLL;"
+	}
+}
+
+$Project "Server (Skeleton)"
+{
+	$Folder	"Source Files"
+	{
+		$Folder "Blobulator"
+		{
+			$Folder "Headers"
+			{
+				$Folder "implicit"
+				{
+					$File "$SRCDIR\common\blobulator\implicit\imp_particle.h"
+					$File "$SRCDIR\common\blobulator\implicit\imp_renderer.h"
+					$File "$SRCDIR\common\blobulator\implicit\imp_tiler.h"
+					$File "$SRCDIR\common\blobulator\implicit\sweep_renderer.h"
+				}
+
+				$Folder "physics"
+				{
+					$File "$SRCDIR\common\blobulator\physics\phys_particle.h"
+					$File "$SRCDIR\common\blobulator\physics\phys_particle_cache.h"
+					$File "$SRCDIR\common\blobulator\physics\phys_tiler.h"
+				}
+
+				$File "$SRCDIR\common\blobulator\blob_batch.h"
+				$File "$SRCDIR\common\blobulator\blob_networked_batch.h"
+				$File "$SRCDIR\common\blobulator\blob_manager.h"
+				$File "$SRCDIR\common\blobulator\blob_physics.h"
+				$File "$SRCDIR\common\blobulator\index_tri_vertex_buffer.h"
+				$File "$SRCDIR\common\blobulator\parented_func.h"
+				$File "$SRCDIR\common\blobulator\point_3D.h"
+				$File "$SRCDIR\common\blobulator\smartarray.h"
+			}
+			
+			$File "$SRCDIR\common\blobulator\blob_batch.cpp"
+			$File "$SRCDIR\common\blobulator\blob_networked_batch.cpp"
+			$File "$SRCDIR\common\blobulator\blob_manager.cpp"
+			$File "$SRCDIR\common\blobulator\blob_physics.cpp"
+		}
+
+		$Folder "Skeleton"
+		{
+			$Folder "Shared"
+			{
+				$File	"$SRCDIR\game\shared\skeleton\skeleton_gamemovement.cpp"
+				$File	"$SRCDIR\game\shared\skeleton\skeleton_gamerules.cpp"
+				$File	"$SRCDIR\game\shared\skeleton\skeleton_usermessages.cpp"
+				$File	"$SRCDIR\game\shared\skeleton\skeleton_parsers.cpp"
+				$File 	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
+			}
+
+			$Folder "Multiplayer"
+			{
+				$Folder "Shared" 
+				{
+					$File	"$SRCDIR\game\shared\skeleton\multiplayer\basenetworkedplayer_gamemove.cpp"	
+					$File	"$SRCDIR\game\shared\skeleton\multiplayer\basenetworkedplayer_gamemove.h"	
+					$File	"$SRCDIR\game\shared\skeleton\multiplayer\basenetworkedplayer_shared.cpp"	
+					$File	"$SRCDIR\game\shared\skeleton\multiplayer\basenetworkedplayer_shared.h"	
+					$File	"$SRCDIR\game\shared\skeleton\multiplayer\multiplayer_animstate.cpp"	
+					$File	"$SRCDIR\game\shared\skeleton\multiplayer\multiplayer_animstate.h"	
+				}
+
+				$File "skeleton\multiplayer\basenetworkedplayer.cpp"
+				$File "skeleton\multiplayer\basenetworkedplayer.h"
+				$File "skeleton\multiplayer\basenetworkedragdoll.cpp"
+				$File "skeleton\multiplayer\basenetworkedragdoll.h"
+			}
+			
+			$File	"skeleton\skeleton_client.cpp"
+			$File	"skeleton\skeleton_eventlog.cpp"
+			$File	"skeleton\skeleton_player.h"
+			$File	"skeleton\skeleton_player.cpp"
+			$File	"skeleton\skeleton_playermove.cpp"
+			$File 	"skeleton\prop_devcube.cpp"
+		}
+	}
+}

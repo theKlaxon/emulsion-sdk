@@ -1,6 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/props/Laser_emitter_rusted"
-$surfaceprop default
-$selfillum 1
-}

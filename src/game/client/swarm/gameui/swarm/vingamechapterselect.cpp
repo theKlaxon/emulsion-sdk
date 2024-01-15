@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VInGameChapterSelect.h"
 #include "VFooterPanel.h"
 #include "EngineInterface.h"
@@ -80,7 +80,6 @@ void InGameChapterSelect::ApplySchemeSettings(vgui::IScheme *pScheme)
 	if ( !GameModeIsSingleChapter( szGameMode ) )
 		pGameSettings->SetInt( "game/chapter", 1 );
 
-#ifdef SWARM_DLL
 	// Get mission and campaign info
 	KeyValues *pInfoMission = NULL;
 	KeyValues *pInfoChapter = g_pMatchExtSwarm->GetMapInfo( pGameSettings, &pInfoMission );
@@ -145,7 +144,6 @@ void InGameChapterSelect::ApplySchemeSettings(vgui::IScheme *pScheme)
 		// Chapters are directly selectable only in some game modes
 		pChapterDropDown->SetEnabled( GameModeIsSingleChapter( szGameMode ) );
 	}
-#endif
 
 	SetPaintBackgroundEnabled( true );
 	SetupAsDialogStyle();
@@ -185,7 +183,6 @@ void InGameChapterSelect::OnCommand(const char *command)
 					pAddonBtn->SetEnabled( false );
 				}
 
-#ifdef SWARM_DLL
 				// Disable all other campaigns that cannot be used for a vote
 				for ( int k = 0, kNum = missionFlyout->GetChildCount(); k < kNum; ++ k )
 				{
@@ -206,7 +203,6 @@ void InGameChapterSelect::OnCommand(const char *command)
 						}
 					}
 				}
-#endif
 			}
 		}
 
@@ -240,12 +236,10 @@ void InGameChapterSelect::OnCommand(const char *command)
 
 			engine->ClientCmd( CFmtStr( "callvote %s %s;", szVoteCommand, m_chCampaign ) );
 		}
-#ifdef SWARM_DLL
 		else if ( KeyValues *pInfoMap = g_pMatchExtSwarm->GetMapInfo( pGameSettings ) )
 		{
 			engine->ClientCmd( CFmtStr( "callvote %s %s;", szVoteCommand, pInfoMap->GetString( "map" ) ) );
 		}
-#endif
 
 		GameUI().AllowEngineHideGameUI();
 		engine->ClientCmd( "gameui_hide" );

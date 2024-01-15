@@ -3,7 +3,6 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
 #include <tier0/platform.h>
 #ifdef IS_WINDOWS_PC
 #include "windows.h"

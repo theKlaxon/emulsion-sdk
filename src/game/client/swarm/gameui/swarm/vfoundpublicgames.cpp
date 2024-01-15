@@ -195,7 +195,6 @@ bool FoundPublicGames::ShouldShowPublicGame( KeyValues *pGameDetails )
 	DevMsg( "FoundPublicGames::ShouldShowPublicGame\n" );
 	KeyValuesDumpAsDevMsg( pGameDetails );
 
-#ifdef SWARM_DLL
 	IASW_Mission_Chooser_Source *pSource = missionchooser ? missionchooser->LocalMissionSource() : NULL;
 	if ( !pSource )
 		return false;
@@ -227,9 +226,6 @@ bool FoundPublicGames::ShouldShowPublicGame( KeyValues *pGameDetails )
 	// if no mission and no website, skip it
 	//if ( !pInstalledMission && !*szWebsite )
 		//return false;
-#else
-	return false;
-#endif
 
 	return true;
 }

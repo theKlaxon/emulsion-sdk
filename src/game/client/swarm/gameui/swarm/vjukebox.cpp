@@ -5,7 +5,6 @@
 //=====================================================================================//
 #undef fopen
 
-#include "cbase.h"
 #include <tier0/platform.h>
 #ifdef IS_WINDOWS_PC
 #include "windows.h"
@@ -34,6 +33,7 @@
 #include "nb_button.h"
 #include "cdll_util.h"
 #include "asw_vgui_music_importer.h"
+#include "c_asw_jukebox.h"
 #include <vgui_controls/ListPanel.h>
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -147,9 +147,7 @@ BaseClass(parent, panelName)
 void JukeboxListItem::SetTrackIndex( int nTrackIndex )
 {
 	m_nTrackIndex = nTrackIndex;
-#ifdef SWARM_DLL
 	m_LblName->SetText( g_ASWJukebox.GetTrackName( m_nTrackIndex ) );
-#endif
 }
 
 //=============================================================================
@@ -271,9 +269,8 @@ BaseClass( parent, panelName, false, true )
 	m_GplTrackList->SetSortColumn( s_nLastSortColumn );
 	m_GplTrackList->SetMultiselectEnabled( true );
 	m_GplTrackList->SetColumnHeaderHeight( ScreenHeight()*0.04 );
-#ifdef SWARM_DLL
-	m_GplTrackList->SetVScrollBarTextures("scroll_up", "scroll_down", "scroll_line", "scroll_box");
-#endif
+	m_GplTrackList->SetVScrollBarTextures( "scroll_up", "scroll_down", "scroll_line", "scroll_box" );
+
 	m_pAddTrackButton = new CNB_Button( this, "AddTrackButton", "", this, "AddTrackButton" );
 	m_pRemoveTrackButton = new CNB_Button( this, "RemoveTrackButton", "", this, "RemoveTrackButton" );
 
@@ -300,10 +297,8 @@ void VJukebox::Activate()
 	BaseClass::Activate();
 
 	// Reload the music playlist
-#ifdef SWARM_DLL
 	if( g_ASWJukebox.GetTrackCount() == 0 )
 		g_ASWJukebox.Init();
-#endif
 
 	UpdateTrackList();
 }
@@ -314,19 +309,13 @@ void VJukebox::UpdateTrackList()
 
 	
 	// Add the addons to the list panel 
-#ifdef SWARM_DLL
 	int nTracks = g_ASWJukebox.GetTrackCount();
-#else
-	int nTracks = 0;
-#endif
 
 	KeyValues *kv = new KeyValues("item");
 
 	for ( int i = 0; i < nTracks; i++ )
 	{		
-#ifdef SWARM_DLL
 		g_ASWJukebox.PrepareTrackKV( i, kv );
-#endif
 		m_GplTrackList->AddItem(kv, 0, false, false);
 	}
 
@@ -378,26 +367,19 @@ void VJukebox::OnCommand(const char *command)
 	{
 		// Act as though 360 back button was pressed
 		OnKeyCodePressed( KEY_XBUTTON_B );
-#ifdef SWARM_DLL
 		g_ASWJukebox.SavePlaylist();
-#endif
 	}
 	else if ( FStrEq( command, "AddTrackButton" ) )
 	{
-#ifdef SWARM_DLL
 		MusicImporterDialog::OpenImportDialog( this );
-#endif
 	}
 	else if ( FStrEq( command, "RemoveTrackButton" ) )
 	{
-#ifdef SWARM_DLL
 		for( int i=0; i<m_GplTrackList->GetSelectedItemsCount(); ++i )
 		{
 			g_ASWJukebox.MarkTrackForDeletion( m_GplTrackList->GetSelectedItem( i ) );
 		}
 		g_ASWJukebox.Cleanup();
-
-#endif
 		UpdateTrackList();
 	}
 	else

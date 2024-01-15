@@ -23,7 +23,7 @@
 #define SOUNDGENDER_MACRO_LENGTH 7		// Length of above including $
 
 class KeyValues;
-typedef unsigned int HSOUNDSCRIPTHANDLE;
+typedef unsigned int HSOUNDSCRIPTHANDLE; // was type 'short' in asw and previous
 #define SOUNDEMITTER_INVALID_HANDLE	(HSOUNDSCRIPTHANDLE)-1
 
 
@@ -64,6 +64,7 @@ struct CSoundParameters
 	int				count;
 	char 			soundname[ 128 ];
 	int				delay_msec;
+
 
 	HSOUNDSCRIPTHANDLE m_hSoundScriptHash;
 	int			    m_nSoundEntryVersion;
@@ -265,22 +266,20 @@ public:
 	//  .txt files that are read into the sound emitter system
 	virtual unsigned int	GetManifestFileTimeChecksum() = 0;
 
-	//// Called from both client and server (single player) or just one (server only in dedicated server and client only if connected to a remote server)
-	//// Called by LevelInitPreEntity to override sound scripts for the mod with level specific overrides based on custom mapnames, etc.
+	// Called from both client and server (single player) or just one (server only in dedicated server and client only if connected to a remote server)
+	// Called by LevelInitPreEntity to override sound scripts for the mod with level specific overrides based on custom mapnames, etc.
 	//virtual void			AddSoundOverrides( char const *scriptfile ) = 0;
 
-	//// Called by either client or server in LevelShutdown to clear out custom overrides
+	// Called by either client or server in LevelShutdown to clear out custom overrides
 	//virtual void			ClearSoundOverrides() = 0;
 
 	virtual bool			GetParametersForSoundEx( const char *soundname, HSOUNDSCRIPTHANDLE& handle, CSoundParameters& params, gender_t gender, bool isbeingemitted = false ) = 0;
 	virtual soundlevel_t	LookupSoundLevelByHandle( char const *soundname, HSOUNDSCRIPTHANDLE& handle ) = 0;
 
-	virtual void*			GetOperatorKVByHandle(unsigned int p1) = 0;
+	virtual void* GetOperatorKVByHandle(unsigned int p1) = 0;
 
 	virtual char const		*GetSoundNameForHash( unsigned int hash ) = 0; // Returns NULL if hash not found!!!
-	
-	virtual const char*		GetSoundIndexForHash(unsigned int par1) = 0;
-	
+	virtual const char*		GetSoundIndexForHash(unsigned int p1) = 0;
 	virtual unsigned int	HashSoundName( char const *pchSndName ) = 0;
 	virtual bool			IsValidHash( unsigned int hash ) = 0;
 

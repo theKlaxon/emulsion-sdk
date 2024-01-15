@@ -18,23 +18,14 @@
 #include "vprof.h"
 #include "datacache/iresourceaccesscontrol.h"
 #include "tier2/tier2.h"
-#include "viewrender.h"
-
-#if defined( PORTAL )
-#include "c_portal_player.h"//
-#endif
 
 // NOTE: This has to be the last file included!
 #include "tier0/memdbgon.h"
 
-#ifdef PORTAL
-#include "portalrender.h"
-#endif
-
 
 extern ConVar cl_particleeffect_aabb_buffer;
 extern ConVar cl_particles_show_bbox;
-ConVar cl_particles_show_controlpoints( "cl_particles_show_controlpoints", "0", FCVAR_CHEAT );
+
 
 //-----------------------------------------------------------------------------
 // Constructor, destructor
@@ -78,7 +69,7 @@ CNewParticleEffect::CNewParticleEffect( CBaseEntity *pOwner, int nPrecacheIndex 
 			// This is the error effect
 			pDef = g_pParticleSystemMgr->FindParticleSystem( "error" );
 		}
-	} 
+	}
 
 	Init( pDef );
 	Construct();
@@ -90,8 +81,6 @@ CNewParticleEffect *CNewParticleEffect::CreateOrAggregate( CBaseEntity *pOwner, 
 																	 Vector const &vecAggregatePosition, const char *pDebugName,
 																	 int nSplitScreenSlot )
 {
-	if (!pDef) { return NULL; }
-
 	CNewParticleEffect *pAggregateTarget = NULL;
 	// see if we should aggregate
 	bool bCanAggregate = ( pOwner == NULL ) && ( pDef->m_flAggregateRadius > 0.0 ) && ( cl_aggregate_particles.GetInt() != 0 );
@@ -284,16 +273,6 @@ int CNewParticleEffect::IsReleased()
 {
 	return m_RefCount == 0;
 }
-
-
-//void CNewParticleEffect::SetOwner( CBaseEntity *pOwner ) 
-//{ 
-//	if ( m_hOwner.Get()	!= pOwner )
-//	{
-//		m_hOwner = pOwner; 
-//		ClientLeafSystem()->RenderInFastReflections( RenderHandle(), true );
-//	}
-//}
 
 
 //-----------------------------------------------------------------------------
@@ -602,22 +581,11 @@ int CNewParticleEffect::DrawModel( int flags, const RenderableInstance_t &instan
 	if ( !GetClientMode()->ShouldDrawParticles() || !ParticleMgr()->ShouldRenderParticleSystems() )
 		return 0;
 
-	if ( flags & ( STUDIO_SHADOWDEPTHTEXTURE ) )
+	if( flags & STUDIO_SHADOWDEPTHTEXTURE )
 		return 0;
 
 	if ( m_hOwner && m_hOwner->IsDormant() )
 		return 0;
-
-	int nViewRecursionLevel = 0;
-#ifdef PORTAL
-	nViewRecursionLevel = g_pPortalRender->GetViewRecursionLevel();
-	if ( m_pDef->GetMaxRecursionDepth() < nViewRecursionLevel )
-	{
-		//DevMsg( "---Aborted at Particle Portal Recursion Level : %d - Max : %d\n", g_pPortalRender->GetViewRecursionLevel(), m_pDef->GetMaxRecursionDepth() );
-		return 0;
-	}
-#endif
-
 	
 	// do distance cull check here. We do it here instead of in particles so we can easily only do
 	// it for root objects, not bothering to cull children individually
@@ -630,60 +598,26 @@ int CNewParticleEffect::DrawModel( int flags, const RenderableInstance_t &instan
 			return 0;
 	}
 
-	if ( m_pDef->IsViewModelEffect() )
-	{
-		C_BasePlayer* pPlayer = C_BasePlayer::GetLocalPlayer();
-		if ( !pPlayer || !pPlayer->IsAlive() )
-			return 0;
-
-		C_BaseAnimating *pRenderedWeaponModel = pPlayer->GetRenderedWeaponModel();
-		if ( !pRenderedWeaponModel || !pRenderedWeaponModel->IsViewModel() )
-			return 0;
-	}
-
 	if ( ( flags & STUDIO_TRANSPARENCY ) || !IsBatchable() || !m_pDef->IsDrawnThroughLeafSystem() )
 	{
-		C_BaseEntity *pCameraObject = GetSplitScreenViewPlayer();
-		if( ((C_BasePlayer *)pCameraObject)->GetViewEntity() )
-		{
-			pCameraObject = ((C_BasePlayer *)pCameraObject)->GetViewEntity();
-		}
-
-		C_BaseEntity *pSkipRenderObject = ( m_pDef->m_nSkipRenderControlPoint != -1 ) ? GetControlPointEntity( m_pDef->m_nSkipRenderControlPoint ).Get() : nullptr;
-		C_BaseEntity *pAllowRenderObject = ( m_pDef->m_nAllowRenderControlPoint != -1 ) ? GetControlPointEntity( m_pDef->m_nAllowRenderControlPoint ).Get() : nullptr;
-		if ( pSkipRenderObject && ( pSkipRenderObject->IsBaseCombatWeapon() || ( pSkipRenderObject->GetBaseAnimating() && pSkipRenderObject->GetBaseAnimating()->IsViewModel() ) ) )
-			pSkipRenderObject = pSkipRenderObject->GetOwnerEntity();
-		if ( pAllowRenderObject && ( pAllowRenderObject->IsBaseCombatWeapon() || ( pAllowRenderObject->GetBaseAnimating() && pAllowRenderObject->GetBaseAnimating()->IsViewModel() ) ) )
-			pAllowRenderObject = pAllowRenderObject->GetOwnerEntity();
-
+		int viewentity = render->GetViewEntity();
+		C_BaseEntity *pCameraObject = cl_entitylist->GetEnt( viewentity );
 		// apply logic that lets you skip rendering a system if the camera is attached to its entity
-		if ( pCameraObject )
-		{
-			if ( pCameraObject == pSkipRenderObject )
-			{
-#if defined( PORTAL )
-				if ( pSkipRenderObject->IsPlayer() )
-				{
-					if ( ((C_Portal_Player *)pSkipRenderObject)->ShouldSkipRenderingViewpointPlayerForThisView() )
-						return 0;
-				}
-				else
-#endif
-				{
-					if ( nViewRecursionLevel == 0 )
-						return 0;
-				}
-			}
-
-			if ( pAllowRenderObject && (pCameraObject != pAllowRenderObject) )
-				return 0;
-		}
+		if   ( ( ( pCameraObject &&
+			 ( m_pDef->m_nSkipRenderControlPoint != -1 ) &&
+			 ( m_pDef->m_nSkipRenderControlPoint <= m_nHighestCP ) &&
+			 ( GetControlPointEntity( m_pDef->m_nSkipRenderControlPoint ) == pCameraObject ) ) ) ||
+			 ( ( pCameraObject &&
+			 ( m_pDef->m_nAllowRenderControlPoint != -1 ) &&
+			 ( m_pDef->m_nAllowRenderControlPoint <= m_nHighestCP ) &&
+			 ( GetControlPointEntity( m_pDef->m_nAllowRenderControlPoint ) != pCameraObject ) ) ) )
+			return 0;
 
 		Vector4D vecDiffuseModulation( 1.0f, 1.0f, 1.0f, 1.0f ); //instance.m_nAlpha / 255.0f );
 		pRenderContext->MatrixMode( MATERIAL_MODEL );
 		pRenderContext->PushMatrix();
 		pRenderContext->LoadIdentity();
-		Render( nViewRecursionLevel, pRenderContext, vecDiffuseModulation, ( flags & STUDIO_TRANSPARENCY ) ? IsTwoPass() : false, pCameraObject );
+		Render( 0, pRenderContext, vecDiffuseModulation, ( flags & STUDIO_TRANSPARENCY ) ? IsTwoPass() : false, pCameraObject );
 		pRenderContext->MatrixMode( MATERIAL_MODEL );
 		pRenderContext->PopMatrix();
 	}
@@ -716,21 +650,6 @@ int CNewParticleEffect::DrawModel( int flags, const RenderableInstance_t &instan
 		debugoverlay->AddTextOverlayRGB( center, 0, 0, r, g, 0, 64, "%s:(%d)", GetEffectName(),
 										 m_nActiveParticles );
 	}
-	if ( cl_particles_show_controlpoints.GetBool() )
-	{
-		for ( int i = 0; i < MAX_PARTICLE_CONTROL_POINTS; ++i )
-		{
-			if ( ReadsControlPoint( i ) )
-			{
-				Vector vecPos = GetControlPointAtCurrentTime( i );
-				Vector vecForward, vecRight, vecUp;
-				GetControlPointOrientationAtCurrentTime( i, &vecForward, &vecRight, &vecUp );
-				NDebugOverlay::Line( vecPos, vecPos + ( vecForward * 4.0f ), 255, 0, 0, true, 0.05f );
-				NDebugOverlay::Line( vecPos, vecPos + ( vecRight * 4.0f ), 0, 255, 0, true, 0.05f );
-				NDebugOverlay::Line( vecPos, vecPos + ( vecUp * 4.0f ), 0, 0, 255, true, 0.05f );
-			}
-		}
-	}
 
 	return 1;
 }
@@ -753,6 +672,8 @@ bool CNewParticleEffect::ShouldDrawForSplitScreenUser( int nSlot )
 		return true;
 	return m_nSplitScreenUser == nSlot;
 }
+
+
 
 bool CNewParticleEffect::SetupBones( matrix3x4a_t *pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime )
 {

@@ -205,7 +205,6 @@ public:
 abstract_class IClientLeafSystem : public IClientLeafSystemEngine, public IGameSystemPerFrame
 {
 public:
-
 	// Adds and removes renderables from the leaf lists
 	virtual void AddRenderable( IClientRenderable* pRenderable, bool bRenderWithViewModels, RenderableTranslucencyType_t nType, RenderableModelType_t nModelType, uint32 nSplitscreenEnabled = 0xFFFFFFFF ) = 0;
 

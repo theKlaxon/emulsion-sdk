@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VGameOptions.h"
 #include "VSpinnerControl.h"
 #include "VFooterPanel.h"

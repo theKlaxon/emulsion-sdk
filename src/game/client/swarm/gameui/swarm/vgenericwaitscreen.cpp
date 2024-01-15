@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VGenericWaitScreen.h"
 #include "EngineInterface.h"
 #include "tier1/KeyValues.h"

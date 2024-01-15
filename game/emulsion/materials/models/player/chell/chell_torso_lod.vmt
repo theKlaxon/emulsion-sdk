@@ -1,6 +1,0 @@
-vertexlitgeneric
-{
-$basetexture "models\player\chell\chell_torso_diffuse"
-$color2 "[.82 .82 .82]"
-$halflambert 1
-}

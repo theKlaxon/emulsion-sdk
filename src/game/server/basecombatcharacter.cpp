@@ -304,7 +304,7 @@ public:
 };
 
 static CUtlRBTree<VisibilityCacheEntry_t, unsigned short, CVisibilityCacheEntryLess> g_VisibilityCache;
-const float VIS_CACHE_ENTRY_LIFE = ( !IsX360() ) ? .090 : .500;
+const float VIS_CACHE_ENTRY_LIFE = ( !IsXbox() ) ? .090 : .500;
 
 bool CBaseCombatCharacter::FVisible( CBaseEntity *pEntity, int traceMask, CBaseEntity **ppBlocker )
 {

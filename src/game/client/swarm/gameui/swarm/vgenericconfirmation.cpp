@@ -4,7 +4,6 @@
 //
 //=====================================================================================//
 
-#include "cbase.h"
 #include "VGenericConfirmation.h"
 
 #include "vgui_controls/Label.h"

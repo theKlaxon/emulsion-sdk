@@ -15,7 +15,6 @@
 #include "engine/ICollideable.h"
 #include "mathlib/vector.h"
 #include "ispatialpartition.h"
-//#include "baseentity.h"
 
 
 //-----------------------------------------------------------------------------
@@ -90,12 +89,13 @@ public:
 	virtual int				GetCollisionGroup() const;
 	virtual void			WorldSpaceSurroundingBounds( Vector *pVecMins, Vector *pVecMaxs );
 
-	virtual unsigned GetRequiredTriggerFlags() const { return m_usSolidFlags; }
+	virtual unsigned GetRequiredTriggerFlags() const {
+		return m_usSolidFlags;
+	}
 
-	/*virtual */bool			ShouldTouchTrigger( int triggerSolidFlags ) const; // not in p2 vtable
+	/*virtual */bool			ShouldTouchTrigger( int triggerSolidFlags ) const;
 	virtual const matrix3x4_t *GetRootParentToWorldTransform() const;
-	IPhysicsObject* GetVPhysicsObject() const;
-
+	virtual IPhysicsObject* GetVPhysicsObject() const;
 public:
 	// Spatial partition management
 	void			CreatePartitionHandle();

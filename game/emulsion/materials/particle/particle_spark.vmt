@@ -1,7 +1,0 @@
-SpriteCard
-{
-
-$basetexture "effects/spark"
-$additive 1
-$splinetype 2
-}

@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VSignInDialog.h"
 #include "VAttractScreen.h"
 #include "tier1/KeyValues.h"
@@ -63,7 +63,7 @@ void SignInDialog::OnCommand( const char *command )
 
 	if( ! Q_strcmp( command, "Play" ) )
 	{
-		if ( iUser != (int) XBX_GetActiveUserId() )
+		if ( iUser != (int) XBX_GetPrimaryUserId() )
 		{
 			CBaseModPanel::GetSingleton().PlayUISound( UISOUND_INVALID );
 			return;
@@ -77,7 +77,7 @@ void SignInDialog::OnCommand( const char *command )
 	}
 	else if( ! Q_strcmp( command, "PlayAsGuest" ) )
 	{
-		if ( iUser != (int) XBX_GetActiveUserId() )
+		if ( iUser != (int) XBX_GetPrimaryUserId() )
 		{
 			CBaseModPanel::GetSingleton().PlayUISound( UISOUND_INVALID );
 			return;

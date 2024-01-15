@@ -1105,7 +1105,6 @@ void CGameMovement::CheckParameters( void )
 {
 	QAngle	v_angle;
 
-	// TODO: isolate the bad math happening in here, if enabled this stops player movement
 	if ( player->GetMoveType() != MOVETYPE_ISOMETRIC &&
 		 player->GetMoveType() != MOVETYPE_NOCLIP &&
 		 player->GetMoveType() != MOVETYPE_OBSERVER )
@@ -1314,7 +1313,6 @@ void CGameMovement::ProcessMovement( CBasePlayer *pPlayer, CMoveData *pMove )
 	player = pPlayer;
 
 	mv = pMove;
-
 	mv->m_flMaxSpeed = sv_maxspeed.GetFloat();
 	m_bProcessingMovement = true;
 	m_bInStuckTest = false;
@@ -2097,7 +2095,7 @@ void CGameMovement::WalkMove( void )
 	Vector dest;
 	trace_t pm;
 	Vector forward, right, up;
-	
+
 	AngleVectors (mv->m_vecViewAngles, &forward, &right, &up);  // Determine movement angles
 
 	CHandle< CBaseEntity > oldground;
@@ -2546,9 +2544,6 @@ void CGameMovement::PlaySwimSound()
 	MoveHelper()->StartSound( mv->GetAbsOrigin(), "Player.Swim" );
 }
 
-#ifdef P2_DLL
-extern ConVar sv_jumpFactor;
-#endif
 
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -2626,20 +2621,18 @@ bool CGameMovement::CheckJumpButton( void )
 	MoveHelper()->PlayerSetAnimation( PLAYER_JUMP );
 
 	float flGroundFactor = 1.0f;
-
-#ifndef P2_DLL
 	if (player->m_pSurfaceData)
 	{
 		flGroundFactor = player->m_pSurfaceData->game.jumpFactor; 
 	}
-#else 
-	flGroundFactor = sv_jumpFactor.GetFloat();
-#endif
 
 	float flMul;
 	if ( g_bMovementOptimizations )
 	{
-#if defined(HL2_DLL) || defined(HL2_CLIENT_DLL)
+#if defined(EMULSION_DLL)
+		Assert(sv_gravity.GetFloat() == 600.0f);
+		flMul = 220.0f;	
+#elif defined(HL2_DLL) || defined(HL2_CLIENT_DLL)
 		Assert( sv_gravity.GetFloat() == 600.0f );
 		flMul = 160.0f;	// approx. 21 units.
 #else
@@ -2668,7 +2661,7 @@ bool CGameMovement::CheckJumpButton( void )
 	}
 	else
 	{
-		mv->m_vecVelocity[2] += flGroundFactor * flMul;
+		mv->m_vecVelocity[2] += flGroundFactor * flMul;  // 2 * gravity * height
 	}
 
 	// Add a little forward velocity based on your current forward velocity - if you are not sprinting.
@@ -3791,29 +3784,29 @@ bool CGameMovement::CheckWater( void )
 		}
 
 		// Adjust velocity based on water current, if any.
-		//if ( cont & MASK_CURRENT )
-		//{
-		//	Vector v;
-		//	VectorClear(v);
-		//	if ( cont & CONTENTS_CURRENT_0 )
-		//		v[0] += 1;
-		//	if ( cont & CONTENTS_CURRENT_90 )
-		//		v[1] += 1;
-		//	if ( cont & CONTENTS_CURRENT_180 )
-		//		v[0] -= 1;
-		//	if ( cont & CONTENTS_CURRENT_270 )
-		//		v[1] -= 1;
-		//	if ( cont & CONTENTS_CURRENT_UP )
-		//		v[2] += 1;
-		//	if ( cont & CONTENTS_CURRENT_DOWN )
-		//		v[2] -= 1;
+		if ( cont & MASK_CURRENT )
+		{
+			Vector v;
+			VectorClear(v);
+			if ( cont & CONTENTS_CURRENT_0 )
+				v[0] += 1;
+			if ( cont & CONTENTS_CURRENT_90 )
+				v[1] += 1;
+			if ( cont & CONTENTS_CURRENT_180 )
+				v[0] -= 1;
+			if ( cont & CONTENTS_CURRENT_270 )
+				v[1] -= 1;
+			if ( cont & CONTENTS_CURRENT_UP )
+				v[2] += 1;
+			if ( cont & CONTENTS_CURRENT_DOWN )
+				v[2] -= 1;
 
-		//	// BUGBUG -- this depends on the value of an unspecified enumerated type
-		//	// The deeper we are, the stronger the current.
-		//	Vector temp;
-		//	VectorMA( player->GetBaseVelocity(), 50.0*player->GetWaterLevel(), v, temp );
-		//	player->SetBaseVelocity( temp );
-		//}
+			// BUGBUG -- this depends on the value of an unspecified enumerated type
+			// The deeper we are, the stronger the current.
+			Vector temp;
+			VectorMA( player->GetBaseVelocity(), 50.0*player->GetWaterLevel(), v, temp );
+			player->SetBaseVelocity( temp );
+		}
 	}
 
 	// if we just transitioned from not in water to in water, record the time it happened
@@ -4742,7 +4735,7 @@ void CGameMovement::Duck( void )
 	}
 }
 
-/*static */ConVar sv_optimizedmovement( "sv_optimizedmovement", "1", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY );
+ConVar sv_optimizedmovement( "sv_optimizedmovement", "1", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY );
 
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -4801,7 +4794,7 @@ void CGameMovement::PlayerMove( void )
 			SetGroundEntity( NULL );
 		}
 	}
-	
+
 	// Store off the starting water level
 	m_nOldWaterLevel = player->GetWaterLevel();
 
@@ -4900,7 +4893,7 @@ void CGameMovement::PerformFlyCollisionResolution( trace_t &pm, Vector &move )
 		Assert(0);
 		break;
 
-	case MOVECOLLIDE_FLY_BOUNCE:
+	case MOVECOLLIDE_FLY_BOUNCE:	
 	case MOVECOLLIDE_DEFAULT:
 		{
 			if (player->GetMoveCollide() == MOVECOLLIDE_FLY_BOUNCE)

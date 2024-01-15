@@ -85,7 +85,6 @@ private:
 	CNetworkVar( bool, m_bStartDark );
 	CNetworkVar( bool, m_bColdWorld );
 	CNetworkVar( int, m_iTimeOfDay );
-	CNetworkVar(int, m_iMaxBlobs);
 	bool m_bDisplayTitle;
 };
 

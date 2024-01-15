@@ -1711,8 +1711,7 @@ static ConVar r_queued_post_processing( "r_queued_post_processing", "0" );
 // This has really marginal effects, but 4x1 does seem vaguely better for post-processing
 static ConVar mat_postprocess_x( "mat_postprocess_x", "4" );
 static ConVar mat_postprocess_y( "mat_postprocess_y", "1" );
-static ConVar mat_postprocess_enable( "mat_postprocess_enable", "1", FCVAR_CHEAT ); // TODO: RE-ENABLE POST PROCESS
-//static ConVar mat_postprocess_enable( "mat_postprocess_enable", "0", FCVAR_CHEAT );
+static ConVar mat_postprocess_enable( "mat_postprocess_enable", "1", FCVAR_CHEAT );
 
 void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, bool bPostVGui )
 {
@@ -1850,8 +1849,6 @@ void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, b
 
 		ITexture *dest_rt1 = materials->FindTexture( "_rt_SmallFB1", TEXTURE_GROUP_RENDER_TARGET );
 
-
-
 		if ( !s_bScreenEffectTextureIsUpdated )
 		{
 			UpdateScreenEffectTexture( 0, x, y, w, h, false );
@@ -1910,7 +1907,7 @@ void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, b
 		// a frame, ensuring we don't get the weird texture crash we otherwise would.
 		// FIXME: This will be removed when the true cause is found [added: Main CL 144694]
 		static bool bFirstFrame = !IsX360();
-		if ( !bFirstFrame || !bPerformColCorrect )
+		if ( false )//!bFirstFrame || !bPerformColCorrect ) // TODO: fix the crash with the DrawScreenSpaceRectangle
 		{
 			HDRType_t hdrType = g_pMaterialSystemHardwareConfig->GetHDRType();
 			if ( hdrType == HDR_TYPE_FLOAT )
@@ -1926,17 +1923,15 @@ void DoEnginePostProcessing( int x, int y, int w, int h, bool bFlashlightIsOn, b
 
 			CEnginePostMaterialProxy::SetupEnginePostMaterial( fullViewportPostSrcRect, v4dFullViewportPostDestRect, destTexSize, bPerformSoftwareAA, bPerformBloom, bPerformColCorrect, flAAStrength, flBloomScale );
 
-			// nScreenMinX - nViewportX, nScreenMinY - nViewportY,
-			// TODO: RE-ENABLE AND FIX!
-			//pRenderContext->DrawScreenSpaceRectangle( pPostMat,
-			//										  220, 40,
-			//										  partialViewportPostDestRect.width, partialViewportPostDestRect.height,
-			//										  fullViewportPostSrcRect.x, fullViewportPostSrcRect.y,
-			//										  fullViewportPostSrcRect.z, fullViewportPostSrcRect.w,
+			pRenderContext->DrawScreenSpaceRectangle( pPostMat,
+													  0, 0,
+													  partialViewportPostDestRect.width, partialViewportPostDestRect.height,
+													  fullViewportPostSrcRect.x, fullViewportPostSrcRect.y,
+													  fullViewportPostSrcRect.z, fullViewportPostSrcRect.w,
 
-			//										  dest_rt1->GetActualWidth(), dest_rt1->GetActualHeight(),
-			//										  GetClientWorldEntity()->GetClientRenderable(),
-			//										  mat_postprocess_x.GetInt(), mat_postprocess_y.GetInt() );
+													  dest_rt1->GetActualWidth(), dest_rt1->GetActualHeight(),
+													  GetClientWorldEntity()->GetClientRenderable(),
+													  mat_postprocess_x.GetInt(), mat_postprocess_y.GetInt() );
 		}
 		bFirstFrame = false;
 	}
@@ -2459,38 +2454,37 @@ void DoImageSpaceMotionBlur( const CViewSetup &view )
 		}
 	}
 
-	// TODO: fix the DrawScreenSpaceRectangle and re enable motion blur
 	//=============================================================================================//
 	// Render quad and let material proxy pick up the g_vMotionBlurValues[4] values just set above //
 	//=============================================================================================//
-	//if ( true )
-	//{
-	//	CMatRenderContextPtr pRenderContext( materials );
-	//	//pRenderContext->PushRenderTargetAndViewport();
+	if ( true )
+	{
+		CMatRenderContextPtr pRenderContext( materials );
+		pRenderContext->PushRenderTargetAndViewport();
+		ITexture *pSrc = materials->FindTexture( "_rt_FullFrameFB", TEXTURE_GROUP_RENDER_TARGET );
+		int nSrcWidth = pSrc->GetActualWidth();
+		int nSrcHeight = pSrc->GetActualHeight();
+		int nViewportWidth, nViewportHeight, nDummy;
+		pRenderContext->GetViewport( nDummy, nDummy, nViewportWidth, nViewportHeight );
 
-	//	ITexture *pSrc = materials->FindTexture( "_rt_FullFrameFB", TEXTURE_GROUP_RENDER_TARGET );
-	//	int nSrcWidth = pSrc->GetActualWidth();
-	//	int nSrcHeight = pSrc->GetActualHeight();
-	//	int nViewportWidth, nViewportHeight, nDummy;
-	//	pRenderContext->GetViewport( nDummy, nDummy, nViewportWidth, nViewportHeight );
+		UpdateScreenEffectTexture( 0, x, y, w, h, false );
 
-	//	UpdateScreenEffectTexture( 0, x, y, w, h, false );
+		// Get material pointer
+		IMaterial *pMatMotionBlur = materials->FindMaterial( "dev/motion_blur", TEXTURE_GROUP_OTHER, true );
 
-	//	// Get material pointer
-	//	IMaterial *pMatMotionBlur = materials->FindMaterial( "dev/motion_blur", TEXTURE_GROUP_OTHER, true );
+		//SetRenderTargetAndViewPort( dest_rt0 );
+		pRenderContext->PopRenderTargetAndViewport();
 
-	//	//SetRenderTargetAndViewPort( dest_rt0 );
-	//	//pRenderContext->PopRenderTargetAndViewport();
-
-	//	if ( pMatMotionBlur != NULL && nSrcWidth > 0 && nSrcHeight > 0 )
-	//	{
-	//		pRenderContext->DrawScreenSpaceRectangle(
-	//			pMatMotionBlur,
-	//			0, 0, nViewportWidth, nViewportHeight,
-	//			x, y, x + w - 1, y + h - 1,
-	//			nSrcWidth, nSrcHeight, GetClientWorldEntity()->GetClientRenderable());
-	//	}
-	//}
+		// TODO: fix!!!!!!
+		if ( pMatMotionBlur != NULL )
+		{
+			pRenderContext->DrawScreenSpaceRectangle(
+				pMatMotionBlur,
+				0, 0, nViewportWidth, nViewportHeight,
+				x, y, x + w-1, y + h-1,
+				nSrcWidth, nSrcHeight, GetClientWorldEntity()->GetClientRenderable() );
+		}
+	}
 }
 
 //=====================================================================================================================

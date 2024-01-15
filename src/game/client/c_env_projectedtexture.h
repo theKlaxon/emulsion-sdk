@@ -75,8 +75,6 @@ private:
 	int			m_nSpotlightTextureFrame;
 	int			m_nShadowQuality;
 
-	CMaterialReference m_pProjectedMaterial;
-
 	// simple projection
 	IMaterial	*m_pMaterial;
 	float		m_flProjectionSize;

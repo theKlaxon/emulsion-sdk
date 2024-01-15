@@ -116,7 +116,7 @@ void CNB_Skill_Panel::OnThink()
 			g_hBriefingTooltip->SetParent( GetParent() );
 		}
 
-		if ( g_hBriefingTooltip.Get()/* && IsFullyVisible()*/ &&
+		if ( g_hBriefingTooltip.Get() && IsFullyVisible() &&
 			g_hBriefingTooltip.Get()->GetTooltipPanel() != this )
 		{	
 			int tx, ty, w, h;

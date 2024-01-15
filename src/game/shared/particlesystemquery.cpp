@@ -25,7 +25,7 @@
 
 
 #ifdef SWARM_DLL
-//#include "asw_shareddefs.h"
+#include "asw_shareddefs.h"
 #endif
 
 #ifdef GAME_DLL
@@ -61,21 +61,21 @@ typedef struct SProjectedTextureInfo
 class CParticleSystemQuery : public CBaseAppSystem< IParticleSystemQuery >
 {
 public:
-	virtual bool IsEditor( ) { return false; }
+	virtual bool IsEditor() { return false; }
 
 	// Inherited from IParticleSystemQuery
-	virtual void GetLightingAtPoint( const Vector& vecOrigin, Color &cTint );
-	virtual void TraceLine( const Vector& vecAbsStart,
-							const Vector& vecAbsEnd, unsigned int mask, 
-							const IHandleEntity *ignore,
-							int collisionGroup, CBaseTrace *ptr );
+	virtual void GetLightingAtPoint(const Vector& vecOrigin, Color& cTint);
+	virtual void TraceLine(const Vector& vecAbsStart,
+		const Vector& vecAbsEnd, unsigned int mask,
+		const IHandleEntity* ignore,
+		int collisionGroup, CBaseTrace* ptr);
 
 	virtual bool IsPointInSolid(const Vector& vecPos, const int nContentsMask) { return false; }
 
-	virtual bool MovePointInsideControllingObject( CParticleCollection *pParticles,
-												   void *pObject,
-												   Vector *pPnt );
-	virtual void GetRandomPointsOnControllingObjectHitBox( 
+	virtual bool MovePointInsideControllingObject(CParticleCollection* pParticles,
+		void* pObject,
+		Vector* pPnt);
+	virtual void GetRandomPointsOnControllingObjectHitBox(
 		CParticleCollection* pParticles,
 		int nControlPointNumber,
 		int nNumPtsOut,
@@ -99,47 +99,47 @@ public:
 		int nDesiredHitbox,
 		const char* pszHitboxSetName);
 
-	virtual int GetRayTraceEnvironmentFromName( const char *pszRtEnvName );
+	virtual int GetRayTraceEnvironmentFromName(const char* pszRtEnvName);
 
-	virtual int GetCollisionGroupFromName( const char *pszCollisionGroupName );
+	virtual int GetCollisionGroupFromName(const char* pszCollisionGroupName);
 
 
 	virtual int GetControllingObjectHitBoxInfo(
-		CParticleCollection *pParticles,
+		CParticleCollection* pParticles,
 		int nControlPointNumber,
 		int nBufSize,										// # of output slots available
-		ModelHitBoxInfo_t *pHitBoxOutputBuffer );
+		ModelHitBoxInfo_t* pHitBoxOutputBuffer);
 
-	virtual	bool IsPointInControllingObjectHitBox( 
-		CParticleCollection *pParticles,
-		int nControlPointNumber, Vector vecPos, bool bBBoxOnly );
+	virtual	bool IsPointInControllingObjectHitBox(
+		CParticleCollection* pParticles,
+		int nControlPointNumber, Vector vecPos, bool bBBoxOnly);
 
-	virtual	void CParticleSystemQuery::GetControllingObjectOBBox( 
-		CParticleCollection *pParticles,
-		int nControlPointNumber, Vector vecMin, Vector vecMax );
-	
+	virtual	void CParticleSystemQuery::GetControllingObjectOBBox(
+		CParticleCollection* pParticles,
+		int nControlPointNumber, Vector vecMin, Vector vecMax);
+
 	// Traces Four Rays against a defined RayTraceEnvironment
-	virtual void TraceAgainstRayTraceEnv( int envnumber, const FourRays &rays, fltx4 TMin, fltx4 TMax,
-		RayTracingResult *rslt_out, int32 skip_id ) const ;
+	virtual void TraceAgainstRayTraceEnv(int envnumber, const FourRays& rays, fltx4 TMin, fltx4 TMax,
+		RayTracingResult* rslt_out, int32 skip_id) const;
 
-	virtual Vector GetLocalPlayerPos( void );
-	virtual void GetLocalPlayerEyeVectors( Vector *pForward, Vector *pRight = NULL, Vector *pUp = NULL );
+	virtual Vector GetLocalPlayerPos(void);
+	virtual void GetLocalPlayerEyeVectors(Vector* pForward, Vector* pRight = NULL, Vector* pUp = NULL);
 
 	virtual Vector GetCurrentViewOrigin();
 
 	virtual int GetActivityCount();
-	virtual const char *GetActivityNameFromIndex( int nActivityIndex );
+	virtual const char* GetActivityNameFromIndex(int nActivityIndex);
 
-	virtual float GetPixelVisibility( int *pQueryHandle, const Vector &vecOrigin, float flScale );
-	virtual void SetUpLightingEnvironment( const Vector& pos );
+	virtual float GetPixelVisibility(int* pQueryHandle, const Vector& vecOrigin, float flScale);
+	virtual void SetUpLightingEnvironment(const Vector& pos);
 
-	virtual void PreSimulate( );
+	virtual void PreSimulate();
 
-	virtual void PostSimulate( );
+	virtual void PostSimulate();
 
-	virtual void DebugDrawLine( const Vector &origin, const Vector &target, int r, int g, int b, bool noDepthTest, float duration );
+	virtual void DebugDrawLine(const Vector& origin, const Vector& target, int r, int g, int b, bool noDepthTest, float duration);
 
-	virtual void BeginDrawModels( int nMaxNumToDraw, Vector const &vecCenterPosition, CParticleCollection *pParticles )
+	virtual void BeginDrawModels(int nMaxNumToDraw, Vector const& vecCenterPosition, CParticleCollection* pParticles)
 	{
 	}
 
@@ -147,19 +147,19 @@ public:
 		int nSkin, int nAnimationSequence = 0, float flAnimationRate = 30.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
 
 
-	virtual void FinishDrawModels( CParticleCollection *pParticles )
+	virtual void FinishDrawModels(CParticleCollection* pParticles)
 	{
 	}
 
-	virtual void *GetModel( char const *pMdlName );
+	virtual void* GetModel(char const* pMdlName);
 
-	virtual void UpdateProjectedTexture( const int nParticleID, IMaterial *pMaterial, Vector &vOrigin, float flRadius, float flRotation, float r, float g, float b, float a, void *&pUserVar );
+	virtual void UpdateProjectedTexture(const int nParticleID, IMaterial* pMaterial, Vector& vOrigin, float flRadius, float flRotation, float r, float g, float b, float a, void*& pUserVar);
 
 private:
 #if defined( CLIENT_DLL )
 
-	CTSQueue< TProjectedTextureInfo * > m_ProjectedInfoAdds;
-	CUtlVector< TProjectedTextureInfo * > m_ActiveProjectedInfos;
+	CTSQueue< TProjectedTextureInfo* > m_ProjectedInfoAdds;
+	CUtlVector< TProjectedTextureInfo* > m_ActiveProjectedInfos;
 
 #endif // #if defined( CLIENT_DLL )
 };
@@ -864,6 +864,10 @@ static CollisionGroupNameRecord_t s_NameMap[]={
 	{ "NPC", COLLISION_GROUP_NPC },
 	{ "ACTOR", COLLISION_GROUP_NPC_ACTOR },
 	{ "PASSABLE", COLLISION_GROUP_PASSABLE_DOOR },	
+
+#if defined( SWARM_DLL )
+	{ "SENTRYPROJ", ASW_COLLISION_GROUP_SENTRY_PROJECTILE },
+#endif
 };
 
 

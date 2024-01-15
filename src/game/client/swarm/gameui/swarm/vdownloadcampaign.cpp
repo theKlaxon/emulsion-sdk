@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VDownloadCampaign.h"
 
 #include "EngineInterface.h"

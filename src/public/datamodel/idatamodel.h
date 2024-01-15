@@ -15,7 +15,7 @@
 #include "tier1/utlsymbollarge.h"
 #include "appframework/IAppSystem.h"
 #include "datamodel/dmattributetypes.h"
-//#include "datamodel/dmxheader.h"
+#include "datamodel/dmxheader.h"
 
 //-----------------------------------------------------------------------------
 // Forward declarations: 
@@ -42,35 +42,6 @@ class CElementIdHash;
 #define DMX_PROFILE_SCOPE( name )
 #endif
 
-
-// GOTCHA BITCH - found these mfs in se2007 >:) (valve likes removing critical stuff)
-//-----------------------------------------------------------------------------
-// file id - also used to refer to elements that don't have file associations
-//-----------------------------------------------------------------------------
-enum
-{
-	DMX_MAX_FORMAT_NAME_MAX_LENGTH = 64,
-	DMX_MAX_HEADER_LENGTH = 40 + 2 * DMX_MAX_FORMAT_NAME_MAX_LENGTH,
-};
-
-struct DmxHeader_t
-{
-	char encodingName[DMX_MAX_FORMAT_NAME_MAX_LENGTH];
-	int nEncodingVersion;
-	char formatName[DMX_MAX_FORMAT_NAME_MAX_LENGTH];
-	int nFormatVersion;
-
-	DmxHeader_t() : nEncodingVersion(-1), nFormatVersion(-1)
-	{
-		encodingName[0] = formatName[0] = '\0';
-	}
-};
-
-enum DmFileId_t
-{
-	DMFILEID_INVALID = 0xffffffff
-};
-// end se2007
 
 //-----------------------------------------------------------------------------
 // element framework phases
@@ -489,7 +460,7 @@ public:
 	// Handles to attributes
 	virtual CDmAttribute *	GetAttribute( DmAttributeHandle_t h ) = 0;
 	virtual bool			IsAttributeHandleValid( DmAttributeHandle_t h ) const = 0;
-	
+
 	// file id reference methods
 	virtual int					NumFileIds() = 0;
 	virtual DmFileId_t			GetFileId( int i ) = 0;

@@ -1,5 +1,0 @@
-unlitGeneric
-{
-$baseTexture "vgui/store/store_saxton_thumbs_up"
-$translucent 1
-}

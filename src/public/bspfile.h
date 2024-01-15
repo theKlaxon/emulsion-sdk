@@ -17,7 +17,6 @@
 #include "datamap.h"
 #include "mathlib/bumpvects.h"
 #include "mathlib/compressed_light_cube.h"
-//#include "datalinker_interface.h"
 
 // little-endian "VBSP"
 #define IDBSPHEADER	(('P'<<24)+('S'<<16)+('B'<<8)+'V')		
@@ -302,10 +301,16 @@ enum
 	LUMP_BRUSHSIDES					= 19,	// *
 	LUMP_AREAS						= 20,	// *
 	LUMP_AREAPORTALS				= 21,	// *
-	LUMP_PROPCOLLISION				= 22,	// static props convex hull lists
-	LUMP_PROPHULLS					= 23,	// static prop convex hulls
-	LUMP_PROPHULLVERTS				= 24,	// static prop collision verts
-	LUMP_PROPTRIS					= 25,	// static prop per hull triangle index start/count
+
+	// small portal 2 change (this sucked to hunt down)
+	LUMP_FACEBRUSHES				= 22,
+	LUMP_FACEBRUSHLIST				= 23,
+	LUMP_UNUSED1					= 24,
+	LUMP_UNUSED2					= 25,
+	//LUMP_PROPCOLLISION				= 22,	// static props convex hull lists
+	//LUMP_PROPHULLS					= 23,	// static prop convex hulls
+	//LUMP_PROPHULLVERTS				= 24,	// static prop collision verts
+	//LUMP_PROPTRIS					= 25,	// static prop per hull triangle index start/count
 
 	LUMP_DISPINFO					= 26,
 	LUMP_ORIGINALFACES				= 27,
@@ -475,11 +480,11 @@ struct DiskPhysics2Polytope_t
 	int32 offsetInertia;
 };
 
-
+/*
 struct DiskPhysics2LevelMesh_t
 {
 	DECLARE_BYTESWAP_DATADESC();
-	//DataLinker::Offset_t<void> polymesh; // this is polysoup in data version 0xC0000002, and polytope in 0xC0000001
+	DataLinker::Offset_t<void> polymesh; // this is polysoup in data version 0xC0000002, and polytope in 0xC0000001
 	int32 flags;
 
 	enum { FLAG_RESERVED = 1, FLAG_FORCE_POLYSOUP = 1 << 1, FLAG_FORCE_POLYTOPE = 1 << 2 }; 
@@ -494,17 +499,17 @@ struct dphyslevelV0_t
 	int32 dataVersion; // change this for backward-incompatible changes
 	int32 sizeofDiskPhysics2LevelMesh;
 	int32 buildTime;
-	//DataLinker::OffsetAndSize_t<DiskPhysics2LevelMesh_t> levelMeshes;
-	//DataLinker::Offset_t<void> polysoup;
-	//DataLinker::Offset_t<void> mopp;
-	//DataLinker::Offset_t<void> displacementMesh;
-	//DataLinker::Offset_t<void> staticProps; // serialized polysoup
-	//DataLinker::OffsetAndSize_t<DiskPhysics2LevelMesh_t> levelWaterMeshes;
-	//DataLinker::OffsetAndSize_t< DiskPhysics2LevelMesh_t > levelCModels; // the entities that belong to bsp, implementing features from old physics
-	//DataLinker::OffsetAndSize_t< DataLinker::Offset_t<char> > levelStaticModels;
+	DataLinker::OffsetAndSize_t<DiskPhysics2LevelMesh_t> levelMeshes;
+	DataLinker::Offset_t<void> polysoup;
+	DataLinker::Offset_t<void> mopp;
+	DataLinker::Offset_t<void> displacementMesh;
+	DataLinker::Offset_t<void> staticProps; // serialized polysoup
+	DataLinker::OffsetAndSize_t<DiskPhysics2LevelMesh_t> levelWaterMeshes;
+	DataLinker::OffsetAndSize_t< DiskPhysics2LevelMesh_t > levelCModels; // the entities that belong to bsp, implementing features from old physics
+	DataLinker::OffsetAndSize_t< DataLinker::Offset_t<char> > levelStaticModels;
 	int32 nReserved2[8];
 };
-
+*/
 
 
 // contains the binary blob for each displacement surface's virtual hull

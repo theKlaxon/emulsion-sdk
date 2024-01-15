@@ -7,7 +7,7 @@ extern bool	g_fGameOver;
 
 const char* GetGameDescription()
 {
-	return "Source 2011";
+	return "Emulsion";
 }
 
 void InstallGameRules()

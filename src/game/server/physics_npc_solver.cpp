@@ -431,7 +431,7 @@ void CPhysicsEntitySolver::Spawn()
 	m_hPhysicsBlocker->SetCollisionGroup( COLLISION_GROUP_DEBRIS );
 	if ( m_hPhysicsBlocker->VPhysicsGetObject() )
 	{
-		m_hPhysicsBlocker->VPhysicsGetObject()->RecheckContactPoints(true);
+		m_hPhysicsBlocker->VPhysicsGetObject()->RecheckContactPoints();
 	}
 }
 

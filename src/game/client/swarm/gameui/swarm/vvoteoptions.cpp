@@ -4,7 +4,6 @@
 //
 //=====================================================================================//
 
-#include "cbase.h"
 #include "VVoteOptions.h"
 #include "VFooterPanel.h"
 #include "VGenericConfirmation.h"

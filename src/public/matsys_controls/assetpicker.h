@@ -11,7 +11,7 @@
 #endif
 
 #include "matsys_controls/baseassetpicker.h"
-#include "vgui_controls/MessageMap.h"
+
 
 //-----------------------------------------------------------------------------
 // Forward declarations
@@ -19,7 +19,7 @@
 namespace vgui
 {
 	class Panel;
-};
+}
 
 
 //-----------------------------------------------------------------------------

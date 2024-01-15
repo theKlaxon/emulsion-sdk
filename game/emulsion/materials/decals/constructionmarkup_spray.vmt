@@ -1,7 +1,0 @@
-LightmappedGeneric
-{
-$basetexture decals/constructionMarkup_spray
-$surfaceprop concrete
-$translucent 1
-$decal 1
-}

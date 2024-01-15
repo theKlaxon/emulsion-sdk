@@ -153,7 +153,7 @@ public:
 	// along the ray. The material is the decal material, the radius is the
 	// radius of the decal to create.
 	virtual void AddDecal( ModelInstanceHandle_t handle, Ray_t const& ray, 
-		Vector const& decalUp, int decalIndex, int body, bool noPokeThru = false, int maxLODToDecal = ADDDECAL_TO_ALL_LODS ) = 0; // c
+		Vector const& decalUp, int decalIndex, int body, bool noPokeThru = false, int maxLODToDecal = ADDDECAL_TO_ALL_LODS ) = 0;
 
 	// Removes all the decals on a model instance
 	virtual void RemoveAllDecals( ModelInstanceHandle_t handle ) = 0;
@@ -174,10 +174,10 @@ public:
 	// Extended version of drawmodel
 	virtual int	DrawModelEx( ModelRenderInfo_t &pInfo ) = 0;
 
-	virtual int	DrawModelExStaticProp(IMatRenderContext* pRenderContext, ModelRenderInfo_t &pInfo ) = 0;
+	virtual int	DrawModelExStaticProp( IMatRenderContext* pRenderContext, ModelRenderInfo_t &pInfo ) = 0;
 
-	virtual bool DrawModelSetup(IMatRenderContext* pRenderContext, ModelRenderInfo_t &pInfo, DrawModelState_t *pState, matrix3x4_t **ppBoneToWorldOut ) = 0;
-	virtual void DrawModelExecute(IMatRenderContext* pRenderContext, const DrawModelState_t &state, const ModelRenderInfo_t &pInfo, matrix3x4_t *pCustomBoneToWorld = NULL ) = 0;
+	virtual bool DrawModelSetup( IMatRenderContext* pRenderContext, ModelRenderInfo_t &pInfo, DrawModelState_t *pState, matrix3x4_t **ppBoneToWorldOut ) = 0;
+	virtual void DrawModelExecute( IMatRenderContext* pRenderContext, const DrawModelState_t &state, const ModelRenderInfo_t &pInfo, matrix3x4_t *pCustomBoneToWorld = NULL ) = 0;
 
 	// Sets up lighting context for a point in space
 	virtual void SetupLighting( const Vector &vecCenter ) = 0;
@@ -211,7 +211,7 @@ public:
 	// the color meshes return from ComputeStaticLightingState has been issued
 	virtual void CleanupStaticLightingState( int nCount, DataCacheHandle_t *pColorMeshHandles ) = 0;
 
-	virtual void* GetItemName(unsigned int p1, void const* p2, char* p3, unsigned int p4) = 0;
+	virtual void* GetItemName(unsigned int p1, void const* p2, char* p3, unsigned int p4) = 0; // p2sdk
 };
 
 

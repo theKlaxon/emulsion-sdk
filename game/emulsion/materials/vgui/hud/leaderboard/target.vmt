@@ -1,6 +1,0 @@
-unlitGeneric
-{
-$baseTexture "vgui/hud/leaderboard/target"
-$vertexalpha 1
-$translucent 1
-}

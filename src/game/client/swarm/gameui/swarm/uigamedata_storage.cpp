@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "basemodpanel.h"
 #include "basemodframe.h"
 #include "UIGameData.h"

@@ -25,8 +25,6 @@
 #include "materialsystem/materialsystem_config.h"
 
 #include "gameui_util.h"
-#include "gameconsoledialog.h"
-#include "gameconsole.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -57,19 +55,19 @@ BaseClass( parent, panelName, false, true )
 //=============================================================================
 static void LeaveGameOkCallback()
 {
-	COM_TimestampedLog("Exit Game");
+	COM_TimestampedLog( "Exit Game" );
 
-	InGameMainMenu* self =
-		static_cast<InGameMainMenu*>(CBaseModPanel::GetSingleton().GetWindow(WT_INGAMEMAINMENU));
+	InGameMainMenu* self = 
+		static_cast< InGameMainMenu* >( CBaseModPanel::GetSingleton().GetWindow( WT_INGAMEMAINMENU ) );
 
-	if (self)
+	if ( self )
 	{
 		self->Close();
 	}
 
-	engine->ExecuteClientCmd("gameui_hide");
+	engine->ExecuteClientCmd( "gameui_hide" );
 
-	if (IMatchSession* pMatchSession = g_pMatchFramework->GetMatchSession())
+	if ( IMatchSession *pMatchSession = g_pMatchFramework->GetMatchSession() )
 	{
 		// Closing an active session results in disconnecting from the game.
 		g_pMatchFramework->CloseSession();
@@ -79,17 +77,16 @@ static void LeaveGameOkCallback()
 		// On PC people can be playing via console bypassing matchmaking
 		// and required session settings, so to leave game duplicate
 		// session closure with an extra "disconnect" command.
-		engine->ExecuteClientCmd("disconnect");
+		engine->ExecuteClientCmd( "disconnect" );
 	}
 
-	engine->ExecuteClientCmd("gameui_activate");
+	engine->ExecuteClientCmd( "gameui_activate" );
 
 	CBaseModPanel::GetSingleton().CloseAllWindows();
 	CBaseModPanel::GetSingleton().OpenFrontScreen();
 }
 
-// Why wsn't this just stubbed out to begin with? wtf
-void ShowPlayerList() {}
+void ShowPlayerList();
 
 //=============================================================================
 void InGameMainMenu::OnCommand( const char *command )
@@ -111,9 +108,6 @@ void InGameMainMenu::OnCommand( const char *command )
 	if ( !Q_strcmp( command, "ReturnToGame" ) )
 	{
 		engine->ClientCmd("gameui_hide");
-		SetGameUIActiveSplitScreenPlayerSlot(iOldSlot);
-
-		return;
 	}
 	else if ( !Q_strcmp( command, "GoIdle" ) )
 	{
@@ -279,8 +273,6 @@ void InGameMainMenu::OnCommand( const char *command )
 	}
 	else if ( !Q_strcmp( command, "EnableSplitscreen" ) || !Q_strcmp( command, "DisableSplitscreen" ) )
 	{
-		GameUI().PreventEngineHideGameUI();
-
 		GenericConfirmation* confirmation = 
 			static_cast< GenericConfirmation* >( CBaseModPanel::GetSingleton().OpenWindow( WT_GENERICCONFIRMATION, this, true ) );
 
@@ -399,7 +391,6 @@ void InGameMainMenu::OnKeyCodePressed( KeyCode code )
 		CBaseModPanel::GetSingleton().PlayUISound( UISOUND_BACK );
 		OnCommand( "ReturnToGame" );
 		break;
-		break;
 	default:
 		BaseClass::OnKeyCodePressed( code );
 		break;
@@ -429,35 +420,18 @@ void InGameMainMenu::ApplySchemeSettings( vgui::IScheme *pScheme )
 void InGameMainMenu::OnOpen()
 {
 	BaseClass::OnOpen();
-	
-	//SetWindowPriority(WPRI_NONE);
+
 	SetFooterState();
-
-	//if (!GameConsole().IsConsoleVisible())
-	//	return;
-
-	//GameConsole().Activate();
-	//GameConsole().SetParent(GetVPanel());
-	//GameConsole().m_pConsole->SetPos(400, 0);
-
-	//GameConsole().m_pConsole->MoveToFront();
-
 }
 
 void InGameMainMenu::OnClose()
 {
-	//if (GameConsole().IsConsoleVisible()) {
-	//	GameConsole().Hide();
-	//	GameConsole().SetParent((vgui::VPANEL)NULL);
-	//}
-
 	Unpause();
 
 	// During shutdown this calls delete this, so Unpause should occur before this call
 	BaseClass::OnClose();
 }
 
-bool isConsoleInFront = false;
 
 void InGameMainMenu::OnThink()
 {
@@ -483,12 +457,6 @@ void InGameMainMenu::OnThink()
 	SetControlEnabled( "BtnInviteFriends", bCanInvite );
 	SetControlEnabled( "BtnLeaderboard", CUIGameData::Get()->SignedInToLive() && !Q_stricmp( szGameMode, "survival" ) );
 
-	if (GameConsole().m_pConsole->IsFullyVisible() && !isConsoleInFront) {
-		GameConsole().m_pConsole->MoveToFront();
-		GameConsole().m_pConsole->SetEnabled(true);
-		isConsoleInFront = true;
-	}
-		
 	{
 		BaseModHybridButton *button = dynamic_cast< BaseModHybridButton* >( FindChildByName( "BtnOptions" ) );
 		if ( button )
@@ -586,7 +554,7 @@ void InGameMainMenu::PerformLayout( void )
 
 	bool bPlayOffline = !Q_stricmp( "offline", szNetwork );
 
-	bool bInCommentary = false;// engine->IsInCommentaryMode();
+	bool bInCommentary = engine->IsInCommentaryMode();
 
 	bool bCanInvite = !Q_stricmp( "LIVE", szNetwork );
 	SetControlEnabled( "BtnInviteFriends", bCanInvite );

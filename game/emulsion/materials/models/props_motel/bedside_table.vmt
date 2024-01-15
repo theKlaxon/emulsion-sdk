@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$baseTexture "models/props_motel/bedside_table_main"
-$surfaceprop metal
-}

@@ -10,6 +10,7 @@
 #pragma once
 #endif
 
+#include "icliententity.h"
 #include "basetypes.h"
 #include "interface.h"
 #include "mathlib/mathlib.h"
@@ -20,7 +21,6 @@
 #include "inputsystem/ButtonCode.h"
 #include "string_t.h"
 #include "toolframework/itoolentity.h"
-#include "utlvector.h"
 
 #if !defined( _X360 )
 #include "xbox/xboxstubs.h"
@@ -234,9 +234,7 @@ public:
 	// Given an input text buffer data pointer, parses a single token into the variable token and returns the new
 	//  reading position
 	virtual const char			*ParseFile( const char *data, char *token, int maxlen ) = 0;
-	//virtual bool				CopyFile( const char *source, const char *destination ) = 0;
-	
-	virtual bool				CopyLocalFile( const char *source, const char *destination ) = 0;
+	virtual bool				CopyLocalFile(const char* source, const char* destination) = 0;
 
 	// Gets the dimensions of the game window
 	virtual void				GetScreenSize( int& width, int& height ) = 0;
@@ -325,8 +323,7 @@ public:
 	// Get the current game directory ( e.g., hl2, tf2, cstrike, hl1 )
 	virtual const char			*GetGameDirectory( void ) = 0;
 
-	// TODO: GetDemoHeaderInfo
-	virtual void GetDemoHeaderInfo(const char* par1, KeyValues* par2) = 0;
+	virtual void				GetDemoHeaderInfo(const char* par1, KeyValues* par2) = 0; // p2sdk
 
 	// Get access to the world to screen transformation matrix
 	virtual const VMatrix& 		WorldToScreenMatrix() = 0;
@@ -453,7 +450,7 @@ public:
 	// Is this a HLTV broadcast ?
 	virtual bool		IsHLTV( void ) = 0;
 	// Is this a Replay demo?
-	// moved virtual bool		IsReplay( void ) = 0;
+	//virtual bool		IsReplay( void ) = 0; // moved
 	// is this level loaded as just the background to the main menu? (active, but unplayable)
 	virtual bool		IsLevelMainMenuBackground( void ) = 0;
 	// returns the name of the background level
@@ -508,7 +505,7 @@ public:
 
 	// This version does NOT check against FCVAR_CLIENTCMD_CAN_EXECUTE.
 	virtual void			ClientCmd_Unrestricted( const char *szCmdString ) = 0;
-
+	
 	// This used to be accessible through the cl_restrict_server_commands cvar.
 	// By default, Valve games restrict the server to only being able to execute commands marked with FCVAR_SERVER_CAN_EXECUTE.
 	// By default, mods are allowed to execute any server commands, and they can restrict the server's ability to execute client
@@ -527,7 +524,6 @@ public:
 	// Causes the engine to read in the user's configuration on disk
 	virtual void			ReadConfiguration( const int iController, const bool readDefault ) = 0; 
 
-	// removed from vtable
 	//virtual void SetAchievementMgr( IAchievementMgr *pAchievementMgr ) = 0;
 	//virtual IAchievementMgr *GetAchievementMgr() = 0;
 
@@ -535,22 +531,18 @@ public:
 	virtual void			SetMapLoadFailed( bool bState ) = 0;
 	
 	virtual bool			IsLowViolence() = 0;
-	//virtual const char		*GetMostRecentSaveGame( void ) = 0;
-	virtual const char		*GetMostRecentSaveGame( bool p1 = false ) = 0;
+	virtual const char		*GetMostRecentSaveGame( bool p1 = false ) = 0; // p1 for p2sdk
 	virtual void			SetMostRecentSaveGame( const char *lpszFilename ) = 0;
 
 	virtual void			StartXboxExitingProcess() = 0;
 	virtual bool			IsSaveInProgress() = 0;
 
-	// vtable update
-	virtual bool			IsAutoSaveDangerousInProgress() = 0;
+	virtual bool			IsAutoSaveDangerousInProgress() = 0; // p2sdk
 
 	virtual uint			OnStorageDeviceAttached( int iController ) = 0;
 	virtual void			OnStorageDeviceDetached( int iController ) = 0;
 
-	// TODO: check on this type again, showing undefined / void in ghidra
-	// but this makes the most sense :/
-	virtual const char*		GetSaveDirName();
+	virtual const char*		GetSaveDirName() = 0;
 
 	// generic screenshot writing
 	virtual void			WriteScreenshot( const char *pFilename ) = 0;
@@ -605,8 +597,6 @@ public:
 	virtual int GetMixLayerIndex( const char *szmixlayername ) = 0;
 	virtual void SetMixLayerLevel(int index, float level ) = 0;
 
-	// vtable update
-	// TODO: when back from walmart, get the params for these
 	virtual int  GetMixGroupIndex(char* par1) = 0;
 	virtual void SetMixLayerTriggerFactor(int par1, int par2, float par3) = 0;
 	virtual void SetMixLayerTriggerFactor(char* par1, char* par2, float par3) = 0;
@@ -620,15 +610,13 @@ public:
 	virtual void SetGamestatsData( CGamestatsData *pGamestatsData ) = 0;
 	virtual CGamestatsData *GetGamestatsData() = 0;
 
-	virtual float GetMouseDelta(int *par1, int *par2, bool par3) = 0;
+	virtual float GetMouseDelta(int* par1, int* par2, bool par3) = 0;
 
 	// Given the string pBinding which may be bound to a key, 
 	//  returns the string name of the key to which this string is bound. Returns NULL if no such binding exists
 	// Increment start count to iterate through multiple keys bound to the same binding
 	// iAllowJoystick defaults to -1 witch returns joystick and non-joystick binds, 0 returns only non-joystick, 1 returns only joystick
 	virtual	const char *Key_LookupBindingEx( const char *pBinding, int iUserId = -1, int iStartCount = 0, int iAllowJoystick = -1 ) = 0;
-
-	// par4 is BindingLookupOption_t, TODO: find struct def for it 
 	virtual const char* Key_CodeForBinding(char* par1, int par2, int par3, void* par4) = 0;
 
 	// Updates dynamic light state. Necessary for light cache to work properly for d- and elights
@@ -637,7 +625,7 @@ public:
 	// Methods to get bug count for internal dev work stat tracking.
 	// Will get the bug count and clear it every map transition
 	virtual int			GetBugSubmissionCount() const = 0;
-	// virtual void		ClearBugSubmissionCount() = 0; // TODO: REENABLE AFTER SHORT TEST!!!!!!!!!!!
+	//virtual void		ClearBugSubmissionCount() = 0;
 
 	// Is there water anywhere in the level?
 	virtual bool	DoesLevelContainWater() const = 0;
@@ -648,12 +636,8 @@ public:
 	virtual void SolidMoved( class IClientEntity *pSolidEnt, class ICollideable *pSolidCollide, const Vector* pPrevAbsOrigin, bool accurateBboxTriggerChecks ) = 0;
 	virtual void TriggerMoved( class IClientEntity *pTriggerEnt, bool accurateBboxTriggerChecks ) = 0;
 
-	//virtual void something() = 0;
-
 	// Using area bits, check whether the area of the specified point flows into the other areas
 	virtual void ComputeLeavesConnected( const Vector &vecOrigin, int nCount, const int *pLeafIndices, bool *pIsConnected ) = 0;
-
-	//virtual void FFFFFFFFFFFFFFFFBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB() = 0;
 
 	// Is the engine in Commentary mode?
 	virtual bool IsInCommentaryMode( void ) = 0;
@@ -661,9 +645,8 @@ public:
 	virtual void SetBlurFade( float amount ) = 0; 
 	virtual bool IsTransitioningToLoad() = 0;
 
-	virtual void FFFFFFFFFFFFFFFFBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB() = 0;
+	virtual void SearchPathsChangedAfterInstall() = 0;
 
-	//virtual void test() = 0;
 	virtual void ConfigureSystemLevel( int nCPULevel, int nGPULevel ) = 0;
 
 	virtual void SetConnectionPassword( char const *pchCurrentPW ) = 0;
@@ -677,8 +660,7 @@ public:
 	//	pKeyValues	- key values to be serialized and sent to server
 	//				  the pointer is deleted inside the function: pKeyValues->deleteThis()
 	virtual void ServerCmdKeyValues( KeyValues *pKeyValues ) = 0;
-	
-	// NEW PAINT STUFF
+
 	virtual void SpherePaintSurface(model_t* param_1, Vector* param_2, unsigned char param_3, float param_4, float param_5) = 0;
 	virtual bool HasPaintmap() = 0;
 	virtual void EnablePaintmapRender() = 0;
@@ -686,14 +668,6 @@ public:
 	virtual void RemoveAllPaint() = 0;
 	virtual void PaintAllSurfaces(unsigned char par1) = 0;
 	virtual void RemovePaint(model_t* param_1) = 0;
-
-	// old paint stuff
-	//// Tells the engine what and where to paint
-	//virtual void PaintSurface( const model_t *model, const Vector& position, const Color& color, float radius ) = 0;
-	//// Enable paint in the engine for project Paint
-	//virtual void EnablePaintmapRender() = 0;
-	//virtual void TracePaintSurface( const model_t *model, const Vector& position, float radius, CUtlVector<Color>& surfColors ) = 0;
-	//virtual void RemoveAllPaint() = 0;
 
 	virtual bool IsActiveApp() = 0;
 
@@ -707,9 +681,9 @@ public:
 	virtual InputContextHandle_t GetInputContext( EngineInputContextId_t id ) = 0;
 
 	// let client lock mouse to the window bounds
-	// removed from vtable
 	//virtual void SetMouseWindowLock( bool bLockToWindow ) = 0;
 
+	// a lump of stuff from the original p2sdk
 	virtual void GetStartupImage(char* par1, int par2) = 0;
 	virtual bool IsUsingLocalNetworkBackdoor() = 0;
 	virtual bool SaveGame(char* param_1, bool param_2, char* param_3, int param_4, char* param_5, int param_6) = 0;
@@ -738,7 +712,7 @@ abstract_class IBaseClientDLL
 public:
 	// Connect appsystem components, get global interfaces, don't run any other init code
 	virtual int				Connect( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGlobals ) = 0;
-	virtual void				Disconnect() = 0;
+	virtual void			Disconnect() = 0;
 
 	// run other init code here
 	virtual int				Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGlobals ) = 0;
@@ -757,7 +731,7 @@ public:
 
 	// Request a pointer to the list of client datatable classes
 	virtual ClientClass		*GetAllClasses( void ) = 0;
-	
+
 	// Called once per level to re-initialize any hud element drawing stuff
 	virtual int				HudVidInit( void ) = 0;
 	// Called by the engine when gathering user input
@@ -769,7 +743,7 @@ public:
 	// Display a hud text message
 	virtual void			HudText( const char * message ) = 0;
 
-	virtual bool ShouldDrawDropdownConsole() = 0;
+	virtual bool 			ShouldDrawDropdownConsole() = 0; // p2sdk
 
 	// Mouse Input Interfaces
 	// Activate the mouse (hides the cursor and locks it to the center of the screen)
@@ -896,9 +870,9 @@ public:
 	// save game screenshot writing
 	virtual void			WriteSaveGameScreenshotOfSize( const char *pFilename, int width, int height ) = 0;
 
-	// these 2 new
-	virtual void WriteReplayScreenshot() = 0;
-	virtual void UpdateReplayScreenshotCache() = 0;
+	// these 2 p2sdk
+	virtual void 			WriteReplayScreenshot() = 0;
+	virtual void 			UpdateReplayScreenshotCache() = 0;
 
 	// Gets the current view
 	virtual bool			GetPlayerView( CViewSetup &playerView ) = 0;
@@ -912,7 +886,7 @@ public:
 	virtual void			OnActiveSplitscreenPlayerChanged( int nNewSlot ) = 0;
 	// We are entering into/leaving split screen mode (or # of players is changing)
 	virtual void			OnSplitScreenStateChanged() = 0;
-	
+
 	virtual void			CenterStringOff() = 0;
 
 	virtual void			OnScreenSizeChanged( int nOldWidth, int nOldHeight ) = 0;
@@ -921,7 +895,7 @@ public:
 
 	virtual vgui::VPANEL	GetFullscreenClientDLLVPanel( void ) = 0;
 
-	// The engine wants to mark two entities as touching//
+	// The engine wants to mark two entities as touching
 	virtual void			MarkEntitiesAsTouching( IClientEntity *e1, IClientEntity *e2 ) = 0;
 
 	virtual void			OnKeyBindingChanged( ButtonCode_t buttonCode, char const *pchKeyName, char const *pchNewBinding ) = 0;

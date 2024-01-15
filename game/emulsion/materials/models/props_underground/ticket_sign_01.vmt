@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/props_underground/ticket_sign_01"
-$surfaceprop default
-}

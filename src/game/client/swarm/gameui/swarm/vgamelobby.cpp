@@ -4,7 +4,6 @@
 //
 //=====================================================================================//
 
-#include "cbase.h"
 #include "VGameLobby.h"
 #include "KeyValues.h"
 #include "VGenericConfirmation.h"
@@ -1044,7 +1043,7 @@ void GameLobby::OpenPlayerFlyout( CPlayerItem *pPlayerItem )
 
 	KeyValues *pPlayer = pPlayerItem->GetPlayerInfo();
 	XUID xuidPlayer = pPlayer->GetUint64( "xuid", 0ull );
-	XUID xuidSelf = g_pMatchFramework->GetMatchSystem()->GetPlayerManager()->GetLocalPlayer( XBX_GetActiveUserId() )->GetXUID();
+	XUID xuidSelf = g_pMatchFramework->GetMatchSystem()->GetPlayerManager()->GetLocalPlayer( XBX_GetPrimaryUserId() )->GetXUID();
 
 	FlyoutMenu *flyoutLeader = dynamic_cast< FlyoutMenu * >( FindChildByName( "FlmPlayerFlyoutLeader" ) );
 	FlyoutMenu *flyout = dynamic_cast< FlyoutMenu * >( FindChildByName( "FlmPlayerFlyout" ) );

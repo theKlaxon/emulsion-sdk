@@ -342,8 +342,6 @@ public:
 		m_nUserID = 0;
 #endif
 	}
-	virtual ~CFunctor() {} // vtable update
-
 	virtual void operator()() = 0;
 
 	unsigned m_nUserID; // For debugging
@@ -559,7 +557,7 @@ protected:
 		bool bMatch = !Q_stricmp( pDataString, pCallbackString );
 		if ( !bMatch )
 		{
-			Warning( (tchar*)"Functor doesn't match data!\n\tExpected:\t%s\n\tEncountered:\t%s\n",
+			Warning( "Functor doesn't match data!\n\tExpected:\t%s\n\tEncountered:\t%s\n",
 				pCallbackString, pDataString );
 			Assert( 0 );
 		}

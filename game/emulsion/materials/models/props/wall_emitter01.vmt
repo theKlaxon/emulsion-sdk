@@ -1,7 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/props/wall_emitter01"
-$surfaceprop default
-$selfillum 1
-$phong 1
-}

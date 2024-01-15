@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VAudioVideo.h"
 #include "VFooterPanel.h"
 #include "VDropDownMenu.h"
@@ -523,7 +523,7 @@ Panel* AudioVideo::NavigateBack()
 		// Write only video config
 		if ( CBaseModPanel::GetSingleton().IsReadyToWriteConfig() )
 		{
-			engine->ClientCmd_Unrestricted( VarArgs( "host_writeconfig_video_ss %d", XBX_GetActiveUserId() ) );
+			engine->ClientCmd_Unrestricted( VarArgs( "host_writeconfig_video_ss %d", XBX_GetPrimaryUserId() ) );
 		}
 	}
 

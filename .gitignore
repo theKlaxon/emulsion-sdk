@@ -2,7 +2,6 @@
 *.suo
 *.user
 *.sln.docstates
-*.obj
 *.pch
 *.tlog
 *.log
@@ -16,7 +15,10 @@ ipch
 *.opensdf
 *.idb
 *.vcxproj
+*.vcproj
 *.sln
+
+# DO NOT ADD .obj TO THE EXCLUDES, some are in the sdk on purpose =)
 
 # OSX/Linux build products
 *.mak
@@ -56,5 +58,26 @@ config.cfg
 *.pdb
 *.sentinel
 *.db
-src/.vs/Game_Emulsion-2013/v17/fileList.bin
-src/.vs/Game_Emulsion-2013/v17/HierarchyCache.v1.txt
+src/.vs/Game_Emulsion-2010/v17/fileList.bin
+src/.vs/Game_Emulsion-2010/v17/HierarchyCache.v1.txt
+
+src/.vs/Game_Skeleton-2010/v17/fileList.bin
+src/.vs/Game_Skeleton-2010/v17/HierarchyCache.v1.txt
+
+game/emulsion/gameinfo.txt
+game/skeleton/gameinfo.txt
+
+src/game/client/Debug_swarm/
+src/game/server/Debug_swarm/
+src/game/client/Release_swarm/
+src/game/server/Release_swarm/
+
+src/game/client/Debug_emulsion/
+src/game/server/Debug_emulsion/
+src/game/client/Release_emulsion/
+src/game/server/Release_emulsion/
+
+src/game/client/Debug_skeleton/
+src/game/server/Debug_skeleton/
+src/game/client/Release_skeleton/
+src/game/server/Release_skeleton/

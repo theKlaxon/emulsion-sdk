@@ -18,10 +18,8 @@
 #include "EngineInterface.h"
 #include "VLoadingProgress.h"
 #include "VGenericConfirmation.h"
-#ifdef SWARM_DLL
 #include "nb_select_mission_panel.h"
 #include "nb_select_campaign_panel.h"
-#endif
 
 #include "vgui_controls/ImagePanel.h"
 #include "vgui_controls/Button.h"
@@ -31,11 +29,8 @@
 
 #include "matchmaking/swarm/imatchext_swarm.h"
 
-#ifdef SWARM_DLL
 #include "missionchooser/iasw_mission_chooser.h"
 #include "missionchooser/iasw_mission_chooser_source.h"
-#endif
-
 #include "nb_header_footer.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -500,6 +495,29 @@ void GameSettings::OnCommand(const char *command)
 		V_StripExtension( szCampaignSelected, stripped, MAX_PATH );
 		pSettings->SetString( "update/game/campaign", stripped );
 
+		// set the current mission to the first real mission in the campaign
+		IASW_Mission_Chooser_Source *pSource = missionchooser ? missionchooser->LocalMissionSource() : NULL;
+		if ( pSource )
+		{
+			KeyValues *pCampaignDetails = pSource->GetCampaignDetails( szCampaignSelected );
+			bool bSkippedFirst = false;
+			for ( KeyValues *pMission = pCampaignDetails->GetFirstSubKey(); pMission; pMission = pMission->GetNextKey() )
+			{
+				if ( !Q_stricmp( pMission->GetName(), "MISSION" ) )
+				{
+					if ( !bSkippedFirst )
+					{
+						bSkippedFirst = true;
+					}
+					else
+					{
+						pSettings->SetString( "update/game/mission", pMission->GetString( "MapName", "asi-jac1-landingbay01" ) );
+						break;
+					}
+				}
+			}
+		}
+
 		UpdateSessionSettings( pSettings );
 		UpdateMissionImage();
 	}
@@ -933,7 +951,6 @@ void GameSettings::OnNotifyChildFocus( vgui::Panel* child )
 
 void GameSettings::UpdateMissionImage()
 {	
-#ifdef SWARM_DLL
 	vgui::ImagePanel* imgLevelImage = dynamic_cast< vgui::ImagePanel* >( FindChildByName( "ImgLevelImage" ) );
 	if( !imgLevelImage )
 		return;
@@ -996,7 +1013,6 @@ void GameSettings::UpdateMissionImage()
 			m_drpStartingMission->SetVisible( false );
 		}
 	}
-#endif
 }
 
 void GameSettings::UpdateFooter()
@@ -1079,7 +1095,6 @@ void GameSettings::UpdateSelectMissionButton()
 
 void GameSettings::ShowMissionSelect()
 {
-#ifdef SWARM_DLL
 	if ( m_hSubScreen.Get() )
 	{
 		m_hSubScreen->MarkForDeletion();
@@ -1108,25 +1123,23 @@ void GameSettings::ShowMissionSelect()
 
 			m_hSubScreen = pPanel;
 		}
-	}
-#endif
+	}	
 }
 
 void GameSettings::ShowStartingMissionSelect()
 {
-#ifdef SWARM_DLL
 	if ( m_hSubScreen.Get() )
 	{
 		m_hSubScreen->MarkForDeletion();
 	}
 
-	if (m_pSettings)
+	if ( m_pSettings )
 	{
-		const char* szGameType = m_pSettings->GetString("game/mode", "campaign");
-		if (!Q_stricmp(szGameType, "campaign"))
+		const char *szGameType = m_pSettings->GetString( "game/mode", "campaign" );
+		if ( !Q_stricmp( szGameType, "campaign" ) )
 		{
-			CNB_Select_Mission_Panel* pPanel = new CNB_Select_Mission_Panel(this, "Select_Mission_Panel");
-			pPanel->SelectMissionsFromCampaign(m_pSettings->GetString("game/campaign", "jacob"));
+			CNB_Select_Mission_Panel *pPanel = new CNB_Select_Mission_Panel( this, "Select_Mission_Panel" );
+			pPanel->SelectMissionsFromCampaign( m_pSettings->GetString( "game/campaign", "jacob" ) );
 			pPanel->InitList();
 			pPanel->MoveToFront();
 
@@ -1134,8 +1147,7 @@ void GameSettings::ShowStartingMissionSelect()
 
 			m_hSubScreen = pPanel;
 		}
-	}
-#endif
+	}	
 }
 
 static void ShowGameSettings()

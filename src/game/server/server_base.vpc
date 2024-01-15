@@ -33,8 +33,8 @@ $Configuration
 {
 	$Compiler
 	{
-		$AdditionalIncludeDirectories	"$BASE;.\;$SRCDIR\game\shared;$SRCDIR\utils\common;$SRCDIR\game\shared\econ;$SRCDIR\game\server\NextBot"
-		$PreprocessorDefinitions		"$BASE;_CRT_NO_VA_START_VALIDATION;GAME_DLL;VECTOR;VERSION_SAFE_STEAM_API_INTERFACES;PROTECTED_THINGS_ENABLE;sprintf=use_Q_snprintf_instead_of_sprintf;strncpy=use_Q_strncpy_instead;_snprintf=use_Q_snprintf_instead"
+		$AdditionalIncludeDirectories	"$BASE;.\;$SRCDIR\game\shared;$SRCDIR\utils\common;$SRCDIR\game\shared\econ;$SRCDIR\game\server\NextBot;$SRCDIR\common\blobulator"
+		$PreprocessorDefinitions		"$BASE;_CRT_NO_VA_START_VALIDATION;GAME_DLL;USE_VOLT;VECTOR;VERSION_SAFE_STEAM_API_INTERFACES;PROTECTED_THINGS_ENABLE;sprintf=use_Q_snprintf_instead_of_sprintf;strncpy=use_Q_strncpy_instead;_snprintf=use_Q_snprintf_instead"
 		$PreprocessorDefinitions		"$BASE;fopen=dont_use_fopen"
 		$Create/UsePrecompiledHeader	"Use Precompiled Header (/Yu)"
 		$Create/UsePCHThroughFile		"cbase.h"
@@ -49,26 +49,9 @@ $Configuration
 
 $Project
 {
-	$Folder "Patches"
-	{
-		$File	"$SRCDIR\tier1\uniqueid.cpp" \
-				"$SRCDIR\tier1\utlstring.cpp" \
-				"$SRCDIR\tier1\KeyValues.cpp" \
-				"$SRCDIR\tier0\dbg_patch.cpp" \
-				"$SRCDIR\public\materialsystem\materialsystemutil.cpp"
-				{
-					$Configuration
-					{
-						$Compiler
-						{
-							$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
-						}
-					}
-				}
-	}
-
 	$Folder	"Source Files"
 	{
+		$File	"$SRCDIR\public\materialsystem\materialsystemutil.cpp"
 		$File	"ai_addon.cpp"
 		$File	"ai_addon.h"
 		$File	"ai_agent.cpp"

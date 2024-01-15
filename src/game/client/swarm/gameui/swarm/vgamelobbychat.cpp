@@ -4,7 +4,6 @@
 //
 //=====================================================================================//
 
-#include "cbase.h"
 #include "vgui_controls/ScrollBar.h"
 
 #include "IEngineVGUI.h"

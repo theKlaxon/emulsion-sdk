@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VFlyoutMenu.h"
 #include "VGenericPanelList.h"
 #include "VFooterPanel.h"
@@ -379,12 +379,10 @@ void FlyoutMenu::LoadControlSettings( const char *dialogResourceName, const char
 		}
 		if ( bSuccess )
 		{
-#ifdef SWARM_DLL
 			if ( IsX360() )
 			{
 				rDat->ProcessResolutionKeys( surface()->GetResolutionKey() );
 			}
-#endif
 		}
 
 
@@ -546,21 +544,15 @@ void FlyoutMenu::OnKeyCodePressed( vgui::KeyCode code )
 	switch( basecode )
 	{
 	case KEY_XBUTTON_B:
-		//if ( !s_NavLock )
-		//{
-		//	//s_NavLock = 2;
-		//	CBaseModPanel::GetSingleton().PlayUISound( UISOUND_BACK );
-		//	CloseMenu( m_navFrom );
-		//	if( m_listener )
-		//	{
-		//		m_listener->OnFlyoutMenuCancelled();
-		//	}
-		//}
-		CBaseModPanel::GetSingleton().PlayUISound(UISOUND_BACK);
-		CloseMenu(m_navFrom);
-		if (m_listener)
+		if ( !s_NavLock )
 		{
-			m_listener->OnFlyoutMenuCancelled();
+			s_NavLock = 2;
+			CBaseModPanel::GetSingleton().PlayUISound( UISOUND_BACK );
+			CloseMenu( m_navFrom );
+			if( m_listener )
+			{
+				m_listener->OnFlyoutMenuCancelled();
+			}
 		}
 		break;
 
@@ -581,7 +573,7 @@ void FlyoutMenu::OnCommand( const char* command )
 {
 	if ( m_navFrom )
 	{
-		//s_NavLock = 2;
+		s_NavLock = 2;
 		CloseMenu( m_navFrom );
 		if ( m_navFrom->GetParent() )
 		{

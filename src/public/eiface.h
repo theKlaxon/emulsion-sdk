@@ -303,7 +303,7 @@ public:
 	virtual bool		IsPaused() = 0;
 
 	// What is the game timescale multiplied with the host_timescale?
-	virtual float GetTimescale( void ) const = 0;
+	virtual float		GetTimescale( void ) const = 0;
 	
 	// Marks the filename for consistency checking.  This should be called after precaching the file.
 	virtual void		ForceExactFile( const char *s ) = 0;
@@ -352,6 +352,11 @@ public:
 
 	// Cleans up the cluster list
 	virtual void CleanUpEntityClusterList( PVSInfo_t *pPVSInfo ) = 0;
+
+#ifndef EMULSION_DLL
+	virtual void SetAchievementMgr( IAchievementMgr *pAchievementMgr ) =0;
+	virtual IAchievementMgr *GetAchievementMgr() = 0;
+#endif
 
 	virtual int	GetAppID() = 0;
 	
@@ -425,16 +430,22 @@ public:
 	// Update the 360 pacifier/spinner
 	virtual void RefreshScreenIfNecessary() = 0;
 
+#ifdef EMULSION_DLL
 	// Tells the engine to allocate paint surfaces
 	virtual bool HasPaintmap() = 0;
-	
-	// TODO: see why this returns bool. maybe if painting == success????
-	virtual bool SpherePaintSurface( const model_t *model, const Vector& pos, unsigned char color, float rad, float harndess) = 0;
+	virtual bool SpherePaintSurface(const model_t* model, const Vector& pos, unsigned char color, float rad, float harndess) = 0;
 
-	virtual void SphereTracePaintSurface( const model_t *model, const Vector& pos, const Vector& norm, float rad, CUtlVector<unsigned char>& color) = 0;
+	virtual void SphereTracePaintSurface(const model_t* model, const Vector& pos, const Vector& norm, float rad, CUtlVector<unsigned char>& color) = 0;
 	virtual void RemoveAllPaint() = 0;
-	virtual void PaintAllSurfaces( unsigned char color) = 0;
-	virtual void RemovePaint( const model_t *model ) = 0;
+	virtual void PaintAllSurfaces(unsigned char color) = 0;
+	virtual void RemovePaint(const model_t* model) = 0;
+#else
+	// Tells the engine to allocate paint surfaces
+	virtual bool HasPaintMap() = 0;
+	virtual void PaintSurface( const model_t *model, const Vector& position, const Color& color, float radius ) = 0;
+	virtual void TracePaintSurface( const model_t *model, const Vector& position, float radius, CUtlVector<Color>& surfColor ) = 0;
+	virtual void RemoveAllPaint() = 0;
+#endif
 
 	// Send a client command keyvalues
 	// keyvalues are deleted inside the function
@@ -443,16 +454,14 @@ public:
 	// Returns the XUID of the specified player. It'll be NULL if the player hasn't connected yet.
 	virtual uint64 GetClientXUID( edict_t *pPlayerEdict ) = 0;
 	virtual bool IsActiveApp() = 0;
-	
-	virtual void SetNoClipEnabled( bool bEnabled ) = 0;
-	
-	virtual void GetPaintmapDataRLE( CUtlVector<unsigned int> &mapdata ) = 0;
-	virtual void LoadPaintmapDataRLE( CUtlVector<unsigned int> &mapdata ) = 0;
-	virtual void SendPaintmapDataToClient( edict_t *pEdict ) = 0;
-	
-	virtual float GetLatencyForChoreoSounds() = 0;
-	
-	virtual int GetClientCrossPlayPlatform( int client_index ) = 0;
+
+#ifdef EMULSION_DLL
+	virtual void SetNoClipEnabled(bool bEnabled) = 0;
+
+	virtual void GetPaintmapDataRLE(CUtlVector<unsigned int>& mapdata) = 0;
+	virtual void LoadPaintmapDataRLE(CUtlVector<unsigned int>& mapdata) = 0;
+	virtual void SendPaintmapDataToClient(edict_t* pEdict) = 0;
+#endif
 };
 
 #define INTERFACEVERSION_SERVERGAMEDLL				"ServerGameDLL005"
@@ -575,7 +584,15 @@ public:
 
 	virtual void			ServerHibernationUpdate( bool bHibernating ) = 0;
 
+	//virtual void			GetMatchmakingGameData( char *buf, size_t bufSize ) = 0;
+
 	virtual bool			ShouldPreferSteamAuth() = 0;
+
+	//// does this game support randomly generated maps?
+	//virtual bool			SupportsRandomMaps() = 0;
+
+	//// return true to disconnect client due to timeout (used to do stricter timeouts when the game is sure the client isn't loading a map)
+	//virtual bool			ShouldTimeoutClient( int nUserID, float flTimeSinceLastReceived ) = 0;
 };
 
 //-----------------------------------------------------------------------------

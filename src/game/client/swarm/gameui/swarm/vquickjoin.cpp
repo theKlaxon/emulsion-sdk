@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VQuickJoin.h"
 #include "VGenericPanelList.h"
 #include "VHybridButton.h"

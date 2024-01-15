@@ -290,8 +290,7 @@ bool CEngineSprite::Init( const char *pName )
 		}
 
 		KeyValues *kv = new KeyValues( "vmt" );
-		//if ( !kv->LoadFromFile( g_pFullFileSystem, pMaterialPath, "GAME" ) )
-		if ( !kv->LoadFromFileEX( g_pFullFileSystem, pMaterialPath, "GAME" ) )
+		if ( !kv->LoadFromFile( g_pFullFileSystem, pMaterialPath, "GAME" ) ) // was EX
 		{
 			Warning( "Unable to load sprite material %s!\n", pMaterialPath );
 			return false;

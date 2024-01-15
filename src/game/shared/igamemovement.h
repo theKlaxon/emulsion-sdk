@@ -59,8 +59,11 @@ public:
 	// Variables from the player edict (sv_player) or entvars on the client.
 	// These are copied in here before calling and copied out after calling.
 	Vector			m_vecVelocity;		// edict::velocity		// Current movement direction.
+
+	// off1-2 are p2sdk only
 	Vector			off1;
 	float			off2;
+
 	QAngle			m_vecAngles;		// edict::angles
 	QAngle			m_vecOldAngles;
 	
@@ -79,8 +82,7 @@ public:
 	void			SetAbsOrigin( const Vector &vec );
 	const Vector	&GetAbsOrigin() const;
 
-//private:
-public:
+private:
 	Vector			m_vecAbsOrigin;		// edict::origin
 };
 

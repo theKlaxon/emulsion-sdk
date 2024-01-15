@@ -620,9 +620,6 @@ CBasePlayer::CBasePlayer( )
 	m_nBodyPitchPoseParam = -1;
 	m_flForwardMove = 0;
 	m_flSideMove = 0;
-	//m_vecVelocity.Set(0, 0);
-	//m_vecVelocity.Set(1, 0);
-	//m_vecVelocity.Set(2, 0);
 
 	m_vecConstraintCenter = vec3_origin;
 
@@ -1716,7 +1713,7 @@ void CBasePlayer::Event_Killed( const CTakeDamageInfo &info )
 	IPhysicsObject *pObject = VPhysicsGetObject();
 	if ( pObject )
 	{
-		pObject->RecheckContactPoints(true);
+		pObject->RecheckContactPoints();
 	}
 
 	SetMoveType( MOVETYPE_FLYGRAVITY );
@@ -4963,8 +4960,9 @@ void CBasePlayer::Spawn( void )
 	m_vecAdditionalPVSOrigin = vec3_origin;
 	m_vecCameraPVSOrigin = vec3_origin;
 
-	//if ( !m_fGameHUDInitialized )
-	g_pGameRules->SetDefaultPlayerTeam( this );
+	if ( !m_fGameHUDInitialized )
+		g_pGameRules->SetDefaultPlayerTeam( this );
+
 	g_pGameRules->GetPlayerSpawnSpot( this );
 
 	m_Local.m_bDucked = false;// This will persist over round restart if you hold duck otherwise. 
@@ -5041,7 +5039,7 @@ void CBasePlayer::Spawn( void )
 	m_vecSmoothedVelocity = vec3_origin;
 	InitVCollision( GetAbsOrigin(), GetAbsVelocity() );
 
-	IGameEvent *event = gameeventmanager->CreateEvent( "player_spawn", true );
+	IGameEvent *event = gameeventmanager->CreateEvent( "player_spawn" );
 	
 	if ( event )
 	{
@@ -7922,7 +7920,7 @@ REGISTER_SEND_PROXY_NON_MODIFIED_POINTER( SendProxy_SendNonLocalDataTable );
 	BEGIN_SEND_TABLE_NOBASE( CBasePlayer, DT_LocalPlayerExclusive )
 
 		SendPropDataTable	( SENDINFO_DT(m_Local), &REFERENCE_SEND_TABLE(DT_Local) ),
-
+		
 // If HL2_DLL is defined, then baseflex.cpp already sends these.
 #ifndef HL2_DLL
 		//SendPropFloat		( SENDINFO_VECTORELEM(m_vecViewOffset, 0), 8, SPROP_ROUNDDOWN, -32.0, 32.0f),
@@ -8283,7 +8281,7 @@ void CBasePlayer::VPhysicsShadowUpdate( IPhysicsObject *pPhysics )
 		if ( trace.allsolid || trace.startsolid )
 		{
 			// STUCK!?!?!
-			Warning( "Checkstuck failed.  Stuck on %s!!\n", trace.m_pEnt->GetClassname() );
+			//Warning( "Checkstuck failed.  Stuck on %s!!\n", trace.m_pEnt->GetClassname() );
 			SetAbsOrigin( lastValidPosition );
 		}
 	}

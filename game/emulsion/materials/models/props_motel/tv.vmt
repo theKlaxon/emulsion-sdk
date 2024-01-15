@@ -1,6 +1,0 @@
-VertexLitGeneric
-{
-$baseTexture "models/props_motel/tv_main"
-$surfaceprop metal
-$selfillum 1
-}

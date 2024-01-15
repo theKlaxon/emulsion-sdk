@@ -42,21 +42,17 @@ public:
 	void Init( CMaterialReference& ref );
 	void Init( const char *pMaterialName, const char *pTextureGroupName, KeyValues *pVMTKeyValues );
 
-	// Detach from a material // moved down for p2
-	//void Shutdown( bool bDeleteIfUnreferenced = false );
-	//bool IsValid() { return m_pMaterial != 0; }
+	// Detach from a material
+	void Shutdown( bool bDeleteIfUnreferenced = false );
+	bool IsValid() { return m_pMaterial != 0; }
 
 	// Automatic casts to IMaterial
 	operator IMaterial*() { return m_pMaterial; }
-	operator const IMaterial const*() const { return m_pMaterial; } // generates a warning, ignore it
+	operator IMaterial const*() const { return m_pMaterial; } // const IMaterial consy* ???
 	IMaterial* operator->() { return m_pMaterial; }
 
 	// Assignment operator
 	const CMaterialReference& operator=( const CMaterialReference &ref );
-
-	// Detach from a material
-	void Shutdown(bool bDeleteIfUnreferenced = false);
-	bool IsValid() { return m_pMaterial != 0; }
 	
 private:
 	CMaterialReference( CMaterialReference &ref ) { }

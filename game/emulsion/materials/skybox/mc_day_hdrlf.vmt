@@ -1,5 +1,0 @@
-Sky
-{
-	$hdrbasetexture	"skybox/mc_day"
-	$basetexture		"skybox/mc_day"
-}

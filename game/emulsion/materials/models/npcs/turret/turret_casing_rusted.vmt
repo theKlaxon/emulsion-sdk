@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/npcs/turret/turret_casing_rusted"
-$surfaceprop default
-}

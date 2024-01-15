@@ -179,8 +179,9 @@ enum DataCacheAddFlags_t
 abstract_class IDataCacheSection
 {
 public:
-	virtual ~IDataCacheSection() { };
-	
+
+	//virtual ~IDataCacheSection() { };
+
 	//--------------------------------------------------------
 
 	virtual IDataCache *GetSharedCache() = 0;
@@ -329,8 +330,6 @@ public:
 abstract_class IDataCacheClient
 {
 public:
-	virtual ~IDataCacheClient() { };
-
 	//--------------------------------------------------------
 	// 
 	//--------------------------------------------------------
@@ -356,10 +355,6 @@ public:
 		case DC_FLUSH_DISCARD:
 		case DC_REMOVED:
 			Assert ( 0 );
-			return false;
-		case DC_NONE:
-		case DC_RELOCATE:
-		case DC_PRINT_INF0:
 			return false;
 		}
 		return false;

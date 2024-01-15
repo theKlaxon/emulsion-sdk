@@ -1,6 +1,0 @@
-LightMappedGeneric
-{
-$basetexture "metal/underground_metal_ceiling001"
-$surfaceprop default
-"%noportal" 1
-}

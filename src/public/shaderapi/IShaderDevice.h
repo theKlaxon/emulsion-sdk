@@ -197,9 +197,6 @@ public:
 	virtual ImageFormat GetBackBufferFormat() const = 0;
 	virtual void GetBackBufferDimensions( int& width, int& height ) const = 0;
 
-	// 0x00033e70
-	virtual const AspectRatioInfo_t GetAspectRatioInfo() = 0;
-
 	// Returns the current adapter in use
 	virtual int GetCurrentAdapter() const = 0;
 

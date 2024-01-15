@@ -33,6 +33,7 @@
 #include "env_wind_shared.h"
 #include "detailobjectsystem.h"
 #include "soundEnvelope.h"
+#include "soundinfo.h"
 #include "c_basetempentity.h"
 #include "materialsystem/imaterialsystemstub.h"
 #include "vguimatsurface/IMatSystemSurface.h"
@@ -86,13 +87,12 @@
 #include "ihudlcd.h"
 #include "toolframework_client.h"
 #include "hltvcamera.h"
-#include "soundinfo.h"
 #if defined( REPLAY_ENABLED )
 #include "replaycamera.h"
 #include "replay_ragdoll.h"
 #include "replay_ragdoll.h"
 #include "qlimits.h"
-#include "..\public\engine\ireplayhistorymanager.h"
+#include "engine/ireplayhistorymanager.h"
 #endif
 #include "ixboxsystem.h"
 #include "matchmaking/imatchframework.h"
@@ -106,17 +106,13 @@
 #include "eventlist.h"
 #ifdef GAMEUI_UISYSTEM2_ENABLED
 #include "gameui.h"
-#include "BasePanel.h"
 #endif
 #ifdef GAMEUI_EMBEDDED
 
-#if defined( SWARM_DLL )
+#if defined( SWARM_DLL ) || defined(EMULSION_DLL)
 #include "swarm/gameui/swarm/basemodpanel.h"
 #else
-#undef INFESTED_PARTICLES
-#ifndef P2_DLL
 #error "GAMEUI_EMBEDDED"
-#endif
 #endif
 #endif
 
@@ -130,7 +126,10 @@
 #include "c_rumble.h"
 #include "viewpostprocess.h"
 
-
+#ifdef EMULSION_DLL
+//#include "c_discord.h"
+#include "blob_manager.h"
+#endif
 
 #ifdef INFESTED_PARTICLES
 #include "c_asw_generic_emitter.h"
@@ -141,14 +140,9 @@
 
 #endif
 
-#if defined( GAMEPADUI )
-#include "../gamepadui/igamepadui.h"
-#endif // GAMEPADUI
-
-#if defined(P2_DLL)
-#include "c_discord.h"
-//#include "c_fastsphere.h"
-#endif
+// source 2 experimenting
+//#include "worldrenderer/iworldrenderermgr.h"
+// 
 
 #include "tier1/UtlDict.h"
 #include "keybindinglistener.h"
@@ -196,10 +190,6 @@ IASW_Mission_Chooser *missionchooser = NULL;
 #if defined( REPLAY_ENABLED )
 IReplayHistoryManager *g_pReplayHistoryManager = NULL;
 #endif
-
-#if defined(GAMEPADUI)
-IGamepadUI* g_pGamepadUI = nullptr;
-#endif // GAMEPADUI
 
 IScriptManager *scriptmanager = NULL;
 
@@ -308,26 +298,8 @@ bool g_bTextMode = false;
 
 static ConVar *g_pcv_ThreadMode = NULL;
 
-// GAMEPADUI TODO - put this somewhere better. (Madi)
-#if defined( GAMEPADUI )
-const bool IsSteamDeck()
-{
-	if (CommandLine()->FindParm("-gamepadui"))
-		return true;
-
-	if (CommandLine()->FindParm("-nogamepadui"))
-		return false;
-
-	const char* pszSteamDeckEnv = getenv("SteamDeck");
-	if (pszSteamDeckEnv && *pszSteamDeckEnv)
-		return atoi(pszSteamDeckEnv) != 0;
-
-	return false;
-}
-#endif
-
 // implements ACTIVE_SPLITSCREEN_PLAYER_GUARD (cdll_client_int.h)
-CSetActiveSplitScreenPlayerGuard::CSetActiveSplitScreenPlayerGuard( char const *pchContext, int nLine, int slot, int nOldSlot, bool bSetVguiScreenSize ) : 
+CSetActiveSplitScreenPlayerGuard::CSetActiveSplitScreenPlayerGuard( char const *pchContext, int nLine, int slot, int nOldSlot, bool bSetVguiScreenSize ) :
 	CVGuiScreenSizeSplitScreenPlayerGuard( bSetVguiScreenSize, slot, nOldSlot )
 {
 	if ( nOldSlot == slot && engine->IsLocalPlayerResolvable() )
@@ -707,94 +679,94 @@ class CHLClient : public IBaseClientDLL
 public:
 	CHLClient();
 
-	virtual int						Connect( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGlobals );
+	virtual int						Connect(CreateInterfaceFn appSystemFactory, CGlobalVarsBase* pGlobals);
 	virtual void					Disconnect() {}
-	virtual int						Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGlobals );
+	virtual int						Init(CreateInterfaceFn appSystemFactory, CGlobalVarsBase* pGlobals);
 
 	virtual void					PostInit();
-	virtual void					Shutdown( void );
+	virtual void					Shutdown(void);
 
-	virtual void					LevelInitPreEntity( const char *pMapName );
+	virtual void					LevelInitPreEntity(const char* pMapName);
 	void					LevelInitPostEntity();
-	virtual void					LevelShutdown( void );
+	virtual void					LevelShutdown(void);
 
-	virtual ClientClass				*GetAllClasses( void );
+	virtual ClientClass* GetAllClasses(void);
 
-	virtual int						HudVidInit( void );
-	virtual void					HudProcessInput( bool bActive );
-	virtual void					HudUpdate( bool bActive );
-	virtual void					HudReset( void );
-	virtual void					HudText( const char * message );
+	virtual int						HudVidInit(void);
+	virtual void					HudProcessInput(bool bActive);
+	virtual void					HudUpdate(bool bActive);
+	virtual void					HudReset(void);
+	virtual void					HudText(const char* message);
 
 	virtual bool ShouldDrawDropdownConsole() { return false; }
 
 	// Mouse Input Interfaces
-	virtual void					IN_ActivateMouse( void );
-	virtual void					IN_DeactivateMouse( void );
-	virtual void					IN_Accumulate( void );
-	virtual void					IN_ClearStates( void );
-	virtual bool					IN_IsKeyDown( const char *name, bool& isdown );
+	virtual void					IN_ActivateMouse(void);
+	virtual void					IN_DeactivateMouse(void);
+	virtual void					IN_Accumulate(void);
+	virtual void					IN_ClearStates(void);
+	virtual bool					IN_IsKeyDown(const char* name, bool& isdown);
 	// Raw signal
-	virtual int						IN_KeyEvent( int eventcode, ButtonCode_t keynum, const char *pszCurrentBinding );
-	virtual void					IN_SetSampleTime( float frametime );
-	
+	virtual int						IN_KeyEvent(int eventcode, ButtonCode_t keynum, const char* pszCurrentBinding);
+	virtual void					IN_SetSampleTime(float frametime);
+
 	// Create movement command
-	virtual void					CreateMove ( int sequence_number, float input_sample_frametime, bool active );
-	virtual void					ExtraMouseSample( float frametime, bool active );
-	virtual bool					WriteUsercmdDeltaToBuffer( int nSlot, bf_write *buf, int from, int to, bool isnewcommand );	
-	virtual void					EncodeUserCmdToBuffer( int nSlot, bf_write& buf, int slot );
-	virtual void					DecodeUserCmdFromBuffer( int nSlot, bf_read& buf, int slot );
+	virtual void					CreateMove(int sequence_number, float input_sample_frametime, bool active);
+	virtual void					ExtraMouseSample(float frametime, bool active);
+	virtual bool					WriteUsercmdDeltaToBuffer(int nSlot, bf_write* buf, int from, int to, bool isnewcommand);
+	virtual void					EncodeUserCmdToBuffer(int nSlot, bf_write& buf, int slot);
+	virtual void					DecodeUserCmdFromBuffer(int nSlot, bf_read& buf, int slot);
 
 
-	virtual void					View_Render( vrect_t *rect );
-	virtual void					RenderView( const CViewSetup &view, int nClearFlags, int whatToDraw );
-	virtual void					View_Fade( ScreenFade_t *pSF );
-	
-	virtual void					SetCrosshairAngle( const QAngle& angle );
+	virtual void					View_Render(vrect_t* rect);
+	virtual void					RenderView(const CViewSetup& view, int nClearFlags, int whatToDraw);
+	virtual void					View_Fade(ScreenFade_t* pSF);
 
-	virtual void					InitSprite( CEngineSprite *pSprite, const char *loadname );
-	virtual void					ShutdownSprite( CEngineSprite *pSprite );
+	virtual void					SetCrosshairAngle(const QAngle& angle);
 
-	virtual int						GetSpriteSize( void ) const;
+	virtual void					InitSprite(CEngineSprite* pSprite, const char* loadname);
+	virtual void					ShutdownSprite(CEngineSprite* pSprite);
 
-	virtual void					VoiceStatus( int entindex, int iSsSlot, qboolean bTalking );
+	virtual int						GetSpriteSize(void) const;
 
-	virtual void					InstallStringTableCallback( const char *tableName );
+	virtual void					VoiceStatus(int entindex, int iSsSlot, qboolean bTalking);
 
-	virtual void					FrameStageNotify( ClientFrameStage_t curStage );
+	virtual void					InstallStringTableCallback(const char* tableName);
 
-	virtual bool					DispatchUserMessage( int msg_type, bf_read &msg_data );
+	virtual void					FrameStageNotify(ClientFrameStage_t curStage);
+
+	virtual bool					DispatchUserMessage(int msg_type, bf_read& msg_data);
 
 	// Save/restore system hooks
-	virtual CSaveRestoreData  *SaveInit( int size );
-	virtual void			SaveWriteFields( CSaveRestoreData *, const char *, void *, datamap_t *, typedescription_t *, int );
-	virtual void			SaveReadFields( CSaveRestoreData *, const char *, void *, datamap_t *, typedescription_t *, int );
-	virtual void			PreSave( CSaveRestoreData * );
-	virtual void			Save( CSaveRestoreData * );
-	virtual void			WriteSaveHeaders( CSaveRestoreData * );
-	virtual void			ReadRestoreHeaders( CSaveRestoreData * );
-	virtual void			Restore( CSaveRestoreData *, bool );
+	virtual CSaveRestoreData* SaveInit(int size);
+	virtual void			SaveWriteFields(CSaveRestoreData*, const char*, void*, datamap_t*, typedescription_t*, int);
+	virtual void			SaveReadFields(CSaveRestoreData*, const char*, void*, datamap_t*, typedescription_t*, int);
+	virtual void			PreSave(CSaveRestoreData*);
+	virtual void			Save(CSaveRestoreData*);
+	virtual void			WriteSaveHeaders(CSaveRestoreData*);
+	virtual void			ReadRestoreHeaders(CSaveRestoreData*);
+	virtual void			Restore(CSaveRestoreData*, bool);
 	virtual void			DispatchOnRestore();
-	virtual void			WriteSaveGameScreenshot( const char *pFilename );
+	virtual void			WriteSaveGameScreenshot(const char* pFilename);
 
 	// Given a list of "S(wavname) S(wavname2)" tokens, look up the localized text and emit
 	//  the appropriate close caption if running with closecaption = 1
-	virtual void			EmitSentenceCloseCaption( char const *tokenstream );
-	virtual void			EmitCloseCaption( char const *captionname, float duration );
+	virtual void			EmitSentenceCloseCaption(char const* tokenstream);
+	virtual void			EmitCloseCaption(char const* captionname, float duration);
 
 	virtual CStandardRecvProxies* GetStandardRecvProxies();
 
-	virtual bool			CanRecordDemo( char *errorMsg, int length ) const;
+	virtual bool			CanRecordDemo(char* errorMsg, int length) const;
 
-	virtual void			OnDemoRecordStart( char const* pDemoBaseName );
+	virtual void			OnDemoRecordStart(char const* pDemoBaseName);
 	virtual void			OnDemoRecordStop();
-	virtual void			OnDemoPlaybackStart( char const* pDemoBaseName );
+	virtual void			OnDemoPlaybackStart(char const* pDemoBaseName);
 	virtual void			OnDemoPlaybackStop();
 
-	virtual void			RecordDemoPolishUserInput( int nCmdIndex );
+	virtual void			RecordDemoPolishUserInput(int nCmdIndex);
 
 	// Cache replay ragdolls
-	virtual bool			CacheReplayRagdolls( const char* pFilename, int nStartTick );
+	virtual bool			CacheReplayRagdolls(const char* pFilename, int nStartTick);
 
 	virtual void ReplayUI_SendMessage(KeyValues* par1) {}
 	virtual void* GetReplayFactory() { return 0; }
@@ -804,35 +776,42 @@ public:
 	virtual int GetScreenHeight() { return ScreenHeight(); }
 
 	// save game screenshot writing
-	virtual void			WriteSaveGameScreenshotOfSize( const char *pFilename, int width, int height );
+	virtual void			WriteSaveGameScreenshotOfSize(const char* pFilename, int width, int height);
 
 	virtual void WriteReplayScreenshot() {}
 	virtual void UpdateReplayScreenshotCache() {}
 
 	// Gets the location of the player viewpoint
-	virtual bool			GetPlayerView( CViewSetup &playerView );
+	virtual bool			GetPlayerView(CViewSetup& playerView);
 
-	virtual bool			ShouldHideLoadingPlaque( void );
+	virtual bool			ShouldHideLoadingPlaque(void);
 
 	virtual void			InvalidateMdlCache();
 
-	virtual void			OnActiveSplitscreenPlayerChanged( int nNewSlot );
+	virtual void			OnActiveSplitscreenPlayerChanged(int nNewSlot);
 	virtual void			OnSplitScreenStateChanged();
 
 	virtual void			CenterStringOff();
-	
-	virtual void			OnScreenSizeChanged( int nOldWidth, int nOldHeight );
-	virtual IMaterialProxy *InstantiateMaterialProxy( const char *proxyName );
 
-	virtual vgui::VPANEL	GetFullscreenClientDLLVPanel( void );
-	virtual void			MarkEntitiesAsTouching( IClientEntity *e1, IClientEntity *e2 );
+	virtual void			OnScreenSizeChanged(int nOldWidth, int nOldHeight);
+	virtual IMaterialProxy* InstantiateMaterialProxy(const char* proxyName);
 
-	virtual void			OnKeyBindingChanged( ButtonCode_t buttonCode, char const *pchKeyName, char const *pchNewBinding );
-	//virtual void			SetBlurFade(float scale);
-	virtual bool			HandleGameUIEvent( const InputEvent_t &event );
-	
-	virtual void* GetSoundSpatialization(SpatializationInfo_t par1) { return 0; }
-	virtual void Hud_MoveStarted() {}
+	virtual vgui::VPANEL	GetFullscreenClientDLLVPanel(void);
+	virtual void			MarkEntitiesAsTouching(IClientEntity* e1, IClientEntity* e2);
+
+	virtual void			OnKeyBindingChanged(ButtonCode_t buttonCode, char const* pchKeyName, char const* pchNewBinding);
+
+public:
+
+	virtual void			SetBlurFade(float scale);
+	virtual void			ResetHudCloseCaption();
+	virtual bool			HandleGameUIEvent(const InputEvent_t& event);
+
+	//virtual int GetSpectatorTarget(ClientDLLObserverMode_t* par1) {
+	//	return 0;
+	//}
+	virtual bool GetSoundSpatialization(SpatializationInfo_t& par1) { return false; }
+	virtual void Hud_SaveStarted() {}
 	virtual void ShutdownMovies() {}
 
 	virtual bool IsPuzzleMakerBlockingInGameMenu() { return false; }
@@ -841,23 +820,23 @@ public:
 	virtual bool PuzzleMakerRequestQuitGame() { return false; };
 
 public:
-	void PrecacheMaterial( const char *pMaterialName );
+	void PrecacheMaterial(const char* pMaterialName);
 
-	virtual void			SetBlurFade( float scale );
-	
-	virtual void			ResetHudCloseCaption();
+	//virtual void			SetBlurFade(float scale);
 
-	virtual bool			SupportsRandomMaps();
+	//virtual void			ResetHudCloseCaption();
+
+	//virtual bool			SupportsRandomMaps();
+	bool			SupportsRandomMaps();
 
 private:
-	void UncacheAllMaterials( );
+	void UncacheAllMaterials();
 	void ResetStringTablePointers();
 
-	CUtlRBTree< IMaterial * > m_CachedMaterials;
+	CUtlRBTree< IMaterial* > m_CachedMaterials;
 
-	CHudCloseCaption		*m_pHudCloseCaption;
+	CHudCloseCaption* m_pHudCloseCaption;
 };
-
 
 CHLClient gHLClient;
 IBaseClientDLL *clientdll = &gHLClient;
@@ -905,6 +884,7 @@ const char *GetMaterialNameFromIndex( int nIndex )
 	}
 }
 
+
 //-----------------------------------------------------------------------------
 // Precaches a particle system
 //-----------------------------------------------------------------------------
@@ -914,6 +894,7 @@ int PrecacheParticleSystem( const char *pParticleSystemName )
 	g_pParticleSystemMgr->PrecacheParticleSystem( nIndex, pParticleSystemName );
 	return nIndex;
 }
+
 
 //-----------------------------------------------------------------------------
 // Converts a previously precached particle system into an index
@@ -942,6 +923,7 @@ const char *GetParticleSystemNameFromIndex( int nIndex )
 	return "error";
 }
 
+
 //-----------------------------------------------------------------------------
 // Precache-related methods for effects
 //-----------------------------------------------------------------------------
@@ -950,6 +932,7 @@ void PrecacheEffect( const char *pEffectName )
 	// Bring in dependent resources
 	g_pPrecacheSystem->Cache( g_pPrecacheHandler, DISPATCH_EFFECT, pEffectName, true, RESOURCE_LIST_INVALID, true );
 }
+
 
 //-----------------------------------------------------------------------------
 // Returns true if host_thread_mode is set to non-zero (and engine is running in threaded mode)
@@ -975,6 +958,7 @@ CHLClient::CHLClient()
 	SetDefLessFunc( m_CachedMaterials );
 }
 
+
 extern IGameSystem *ViewportClientSystem();
 
 // enable threaded init functions on x360
@@ -994,9 +978,7 @@ bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 	if (!VGui_Startup( appSystemFactory ))
 		return false;
 
-#ifndef P2_DLL
 	vgui::VGui_InitMatSysInterfacesList( "ClientDLL", &appSystemFactory, 1 );
-#endif
 
 	// Add the client systems.	
 
@@ -1021,8 +1003,8 @@ bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 	IGameSystem::Add( GetPredictionCopyTester() );
 #endif
 
-#ifdef P2_DLL
-	//IGameSystem::Add( FastSphereManager() );
+#if defined(EMULSION_DLL)
+	IGameSystem::Add(BlobulatorSystem());
 #endif
 
 	ActivityList_Init();
@@ -1158,10 +1140,13 @@ int CHLClient::Connect( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGl
 	return true;
 }
 
-#include "c_gameinstructor.h"
+void nothing() {
+
+}
 
 int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGlobals )
 {
+
 	COM_TimestampedLog( "ClientDLL factories - Start" );
 	// We aren't happy unless we get all of our interfaces.
 	// please don't collapse this into one monolithic boolean expression (impossible to debug)
@@ -1237,12 +1222,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 		return false;
 #endif
 
-#ifdef P2_DLL
-	if (!g_pMatchFramework)
-		return false;
 
-	GameInstructor_Init();
-#endif
 
 	if ( !CommandLine()->CheckParm( "-noscripting") )
 	{
@@ -1280,12 +1260,12 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 
 	g_pcv_ThreadMode = g_pCVar->FindVar( "host_thread_mode" );
 
-	COM_TimestampedLog( "InitGameSystems" );
-
-	// enable the new p2 paint stuff
-#ifdef P2_DLL
+#ifdef EMULSION_DLL
 	engine->EnablePaintmapRender();
+	//g_pDiscord->Init();
 #endif
+
+	COM_TimestampedLog( "InitGameSystems" );
 
 	bool bInitSuccess = false;
 	if ( cl_threaded_init.GetBool() )
@@ -1300,16 +1280,11 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 		COM_TimestampedLog( "ParticleMgr()->Init" );
 		if (!ParticleMgr()->Init(MAX_TOTAL_PARTICLES, materials))
 			return false;
-
-		// TODO: see if this is used anywhere else besides the client tools thingy, and see if it works
-		ParticleMgr()->RenderParticleSystems(true);
-
 		COM_TimestampedLog( "InitGameSystems - Start" );
 		bInitSuccess = InitGameSystems( appSystemFactory );
 		COM_TimestampedLog( "InitGameSystems - End" );
 	}
-
-
+	
 #ifdef INFESTED_PARTICLES	// let the emitter cache load in our standard
 	g_ASWGenericEmitterCache.PrecacheTemplates();
 #endif
@@ -1322,12 +1297,6 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 	m_pHudCloseCaption = GET_FULLSCREEN_HUDELEMENT( CHudCloseCaption );
 
 	COM_TimestampedLog( "ClientDLL Init - Finish" );
-	DevMsg("ClientDLL Init - Finish");
-
-#ifdef P2_DLL
-	g_pDiscord->Init();
-#endif
-
 	return true;
 }
 
@@ -1338,44 +1307,6 @@ void CHLClient::PostInit()
 {
 	COM_TimestampedLog( "IGameSystem::PostInitAllSystems - Start" );
 	IGameSystem::PostInitAllSystems();
-
-#if defined(GAMEPADUI)
-	if (IsSteamDeck())
-	{
-		CSysModule* pGamepadUIModule = g_pFullFileSystem->LoadModule("gamepadui", "GAMEBIN", false);
-		if (pGamepadUIModule != nullptr)
-		{
-			GamepadUI_Log("Loaded gamepadui module.\n");
-
-			CreateInterfaceFn gamepaduiFactory = Sys_GetFactory(pGamepadUIModule);
-			if (gamepaduiFactory != nullptr)
-			{
-				g_pGamepadUI = (IGamepadUI*)gamepaduiFactory(GAMEPADUI_INTERFACE_VERSION, NULL);
-				if (g_pGamepadUI != nullptr)
-				{
-					GamepadUI_Log("Initializing IGamepadUI interface...\n");
-
-					factorylist_t factories;
-					FactoryList_Retrieve(factories);
-					g_pGamepadUI->Initialize(factories.appSystemFactory);
-				}
-				else
-				{
-					GamepadUI_Log("Unable to pull IGamepadUI interface.\n");
-				}
-			}
-			else
-			{
-				GamepadUI_Log("Unable to get gamepadui factory.\n");
-			}
-		}
-		else
-		{
-			GamepadUI_Log("Unable to load gamepadui module\n");
-		}
-	}
-#endif // GAMEPADUI
-
 	COM_TimestampedLog( "IGameSystem::PostInitAllSystems - Finish" );
 }
 
@@ -1430,16 +1361,11 @@ void CHLClient::Shutdown( void )
 	g_pParticleSystemMgr->UncacheAllParticleSystems();
 	UncacheAllMaterials();
 
-#ifdef P2_DLL
-	g_pDiscord->Shutdown();
+#ifdef EMULSION_DLL
+	//g_pDiscord->Shutdown();
 #endif
 
 	IGameSystem::ShutdownAllSystems();
-
-#if defined(GAMEPADUI)
-	if (g_pGamepadUI != nullptr)
-		g_pGamepadUI->Shutdown();
-#endif // GAMEPADUI
 
 	for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
 	{
@@ -1529,11 +1455,6 @@ void CHLClient::HudUpdate( bool bActive )
 	// I don't think this is necessary any longer, but I will leave it until
 	// I can check into this further.
 	C_BaseTempEntity::CheckDynamicTempEnts();
-
-#if defined(GAMEPADUI)
-	if (g_pGamepadUI != nullptr)
-		g_pGamepadUI->OnUpdate(frametime);
-#endif // GAMEPADUI
 }
 
 //-----------------------------------------------------------------------------
@@ -1786,7 +1707,7 @@ void CHLClient::View_Fade( ScreenFade_t *pSF )
 
 // CPU level
 //-----------------------------------------------------------------------------
-void ConfigureCurrentSystemLevel();
+void ConfigureCurrentSystemLevel( );
 void OnCPULevelChanged( IConVar *var, const char *pOldValue, float flOldValue )
 {
 	ConfigureCurrentSystemLevel();
@@ -1894,18 +1815,17 @@ void ConfigureCurrentSystemLevel()
 		nGPUMemLevel = 360;
 	}
 
-#if defined( SWARM_DLL )
+#if defined( EMULSION_DLL )
+	char szModName[32] = "emulsion";
+#elif defined( SWARM_DLL )
 	char szModName[32] = "swarm";
 #elif defined ( HL2_EPISODIC )
 	char szModName[32] = "ep2";
 #elif defined ( SDK_CLIENT_DLL )
 	char szModName[32] = "sdk";
-#elif defined (P2_DLL)
-	char szModName[32] = "p2SDK";
 #endif
 
-	//UpdateSystemLevel( nCPULevel, nGPULevel, nMemLevel, nGPUMemLevel, VGui_IsSplitScreen(), szModName );
-	UpdateSystemLevel( nCPULevel, nGPULevel, nMemLevel, nGPUMemLevel, false, szModName );
+	UpdateSystemLevel( nCPULevel, nGPULevel, nMemLevel, nGPUMemLevel, VGui_IsSplitScreen(), szModName );
 
 	if ( engine )
 	{
@@ -1985,8 +1905,8 @@ void CHLClient::LevelInitPreEntity( char const* pMapName )
 	// Check low violence settings for this map
 	g_RagdollLVManager.SetLowViolence( pMapName );
 
-#ifdef P2_DLL
-	g_pDiscord->LevelInitPreEntity(pMapName);
+#ifdef EMULSION_DLL
+	//g_pDiscord->LevelInitPreEntity(pMapName);
 #endif
 
 	for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
@@ -2005,11 +1925,6 @@ void CHLClient::LevelInitPreEntity( char const* pMapName )
 		CReplayRagdollRecorder::Instance().Init();
 	}
 #endif
-
-#if defined(GAMEPADUI)
-	if (g_pGamepadUI != nullptr)
-		g_pGamepadUI->OnLevelInitializePreEntity();
-#endif // GAMEPADUI
 }
 
 
@@ -2022,12 +1937,6 @@ void CHLClient::LevelInitPostEntity( )
 
 	IGameSystem::LevelInitPostEntityAllSystems();
 	C_PhysPropClientside::RecreateAll();
-
-#if defined(GAMEPADUI)
-	if (g_pGamepadUI != nullptr)
-		g_pGamepadUI->OnLevelInitializePostEntity();
-#endif // GAMEPADUI
-
 	for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
 	{
 		ACTIVE_SPLITSCREEN_PLAYER_GUARD( hh );
@@ -2086,7 +1995,7 @@ void CHLClient::LevelShutdown( void )
 		pClassList->LevelShutdown();
 		pClassList = pClassList->m_pNextClassList;
 	}
-	
+
 	// Now do the post-entity shutdown of all systems
 	IGameSystem::LevelShutdownPostEntityAllSystems();
 
@@ -2098,11 +2007,6 @@ void CHLClient::LevelShutdown( void )
 	{
 		StopAllRumbleEffects( hh );
 	}
-
-#if defined(GAMEPADUI)
-	if (g_pGamepadUI != nullptr)
-		g_pGamepadUI->OnLevelShutdown();
-#endif // GAMEPADUI
 
 	for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
 	{
@@ -2116,8 +2020,8 @@ void CHLClient::LevelShutdown( void )
 		GetCenterPrint()->Clear();
 	}
 
-#ifdef P2_DLL
-	g_pDiscord->LevelShutdown();
+#ifdef EMULSION_DLL//
+	//g_pDiscord->LevelShutdown();
 #endif
 
 	ClientVoiceMgr_LevelShutdown();
@@ -2520,18 +2424,13 @@ void UpdatePVSNotifiers()
 
 void OnRenderStart()
 {
-#ifdef P2_DLL
-	CMatRenderContextPtr pRenderContext(materials);
-	PIXEVENT(pRenderContext, "OnRenderStart");
-#endif
-
 	VPROF( "OnRenderStart" );
 	MDLCACHE_CRITICAL_SECTION();
 	MDLCACHE_COARSE_LOCK();
 
 
 
-	::partition->SuppressLists( PARTITION_ALL_CLIENT_EDICTS, true );
+	partition->SuppressLists( PARTITION_ALL_CLIENT_EDICTS, true );
 	C_BaseEntity::SetAbsQueriesValid( false );
 
 	Rope_ResetCounters();
@@ -2590,25 +2489,25 @@ void OnRenderStart()
 	// entities	at the correct abs position so that their attachment points
 	// are at the correct location
 	view->OnRenderStart();
-	::partition->SuppressLists( PARTITION_ALL_CLIENT_EDICTS, false );
+	partition->SuppressLists( PARTITION_ALL_CLIENT_EDICTS, false );
 
 	// Process OnDataChanged events.
 	ProcessOnDataChangedEvents();
 
 	// Reset the overlay alpha. Entities can change the state of this in their think functions.
 	g_SmokeFogOverlayAlpha = 0;	
-	g_SmokeFogOverlayColor.Init(0.0f, 0.0f, 0.0f);
-
-	// Simulate all the entities.
-	SimulateEntities();
-	PhysicsSimulate();
 
 	// This must occur prior to SimulatEntities,
 	// which is where the client thinks for c_colorcorrection + c_colorcorrectionvolumes
 	// update the color correction weights.
 	// FIXME: The place where IGameSystem::Update is called should be in here
 	// so we don't have to explicitly call ResetColorCorrectionWeights + SimulateEntities, etc.
+
 	C_BaseAnimating::ThreadedBoneSetup();
+
+	// Simulate all the entities.
+	SimulateEntities();
+	PhysicsSimulate();
 
 	{
 		VPROF_("Client TempEnts", 0, VPROF_BUDGETGROUP_CLIENT_SIM, false, BUDGETFLAG_CLIENT);
@@ -2672,6 +2571,8 @@ void OnRenderEnd()
 	DisplayBoneSetupEnts();
 }
 
+ConVar cl_desperateDebugging("cl_desperateDebugging", "0", FCVAR_CLIENTDLL);
+
 void CHLClient::FrameStageNotify( ClientFrameStage_t curStage )
 {
 	g_CurFrameStage = curStage;
@@ -2685,6 +2586,8 @@ void CHLClient::FrameStageNotify( ClientFrameStage_t curStage )
 	case FRAME_RENDER_START:
 		{
 			VPROF( "CHLClient::FrameStageNotify FRAME_RENDER_START" );
+			COM_TimestampedLog( "CHLClient::FrameStageNotify FRAME_RENDER_START" );
+
 			engine->SetLocalPlayerIsResolvable( __FILE__, __LINE__, false );
 
 			// Last thing before rendering, run simulation.
@@ -2695,6 +2598,7 @@ void CHLClient::FrameStageNotify( ClientFrameStage_t curStage )
 	case FRAME_RENDER_END:
 		{
 			VPROF( "CHLClient::FrameStageNotify FRAME_RENDER_END" );
+			COM_TimestampedLog( "CHLClient::FrameStageNotify FRAME_RENDER_END" );
 			OnRenderEnd();
 
 			engine->SetLocalPlayerIsResolvable( __FILE__, __LINE__, false );
@@ -2706,6 +2610,7 @@ void CHLClient::FrameStageNotify( ClientFrameStage_t curStage )
 	case FRAME_NET_UPDATE_START:
 		{
 			VPROF( "CHLClient::FrameStageNotify FRAME_NET_UPDATE_START" );
+			COM_TimestampedLog( "CHLClient::FrameStageNotify FRAME_NET_UPDATE_START" );
 			// disabled all recomputations while we update entities
 			C_BaseEntity::EnableAbsRecomputations( false );
 			C_BaseEntity::SetAbsQueriesValid( false );
@@ -2717,6 +2622,7 @@ void CHLClient::FrameStageNotify( ClientFrameStage_t curStage )
 		break;
 	case FRAME_NET_UPDATE_END:
 		{
+			COM_TimestampedLog("CHLClient::FrameStageNotify FRAME_NET_UPDATE_END");
 			ProcessCacheUsedMaterials();
 
 			// reenable abs recomputation since now all entities have been updated
@@ -2730,12 +2636,14 @@ void CHLClient::FrameStageNotify( ClientFrameStage_t curStage )
 	case FRAME_NET_UPDATE_POSTDATAUPDATE_START:
 		{
 			VPROF( "CHLClient::FrameStageNotify FRAME_NET_UPDATE_POSTDATAUPDATE_START" );
+			COM_TimestampedLog( "CHLClient::FrameStageNotify FRAME_NET_UPDATE_POSTDATAUPDATE_START" );
 			PREDICTION_STARTTRACKVALUE( "postdataupdate" );
 		}
 		break;
 	case FRAME_NET_UPDATE_POSTDATAUPDATE_END:
 		{
 			VPROF( "CHLClient::FrameStageNotify FRAME_NET_UPDATE_POSTDATAUPDATE_END" );
+			COM_TimestampedLog( "CHLClient::FrameStageNotify FRAME_NET_UPDATE_POSTDATAUPDATE_END" );
 			PREDICTION_ENDTRACKVALUE();
 			// Let prediction copy off pristine data
 			prediction->PostEntityPacketReceived();
@@ -2747,6 +2655,8 @@ void CHLClient::FrameStageNotify( ClientFrameStage_t curStage )
 		break;
 	case FRAME_START:
 		{
+			COM_TimestampedLog("CHLClient::FrameStageNotify FRAME_START");
+
 			// Mark the frame as open for client fx additions
 			SetFXCreationAllowed( true );
 			SetBeamCreationAllowed( true );

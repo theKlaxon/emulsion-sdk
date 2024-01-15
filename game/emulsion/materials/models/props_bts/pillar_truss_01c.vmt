@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/props_bts/pillar_truss_01c"
-$surfaceprop default
-}

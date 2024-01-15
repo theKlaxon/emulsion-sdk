@@ -6,33 +6,12 @@
 		{
 			"FileBrowserSplitter"
 			{
+				"child0"
+				{
+				}
 				"child1"
 				{
 					"PreviewSplitter"
-					{
-						"child1"
-						{
-							"ViewsSheet"
-							{
-								"SequencesPage"
-								{
-								}
-								"ActivitiesPage"
-								{
-								}
-								"SkinsPage"
-								{
-								}
-								"InfoPage"
-								{
-								}
-							}
-						}
-					}
-				}
-				"child0"
-				{
-					"AssetSplitter"
 					{
 						"child1"
 						{

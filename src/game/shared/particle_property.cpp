@@ -429,11 +429,13 @@ void CParticleProperty::OnParticleSystemUpdated( CNewParticleEffect *pEffect, fl
 		return;
 
 	UpdateParticleEffect( &m_ParticleEffects[iIndex] );
-	
+
+	/*
 	// Display the bounding box of the particle effect
-	//Vector vecMins, vecMaxs;
-	//pEffect->GetRenderBounds( vecMins, vecMaxs );
-	//debugoverlay->AddBoxOverlay( pEffect->GetRenderOrigin(), vecMins, vecMaxs, QAngle( 0, 0, 0 ), 0, 255, 255, 0, 0 );
+	Vector vecMins, vecMaxs;
+	pEffect->GetRenderBounds( vecMins, vecMaxs );
+	debugoverlay->AddBoxOverlay( pEffect->GetRenderOrigin(), vecMins, vecMaxs, QAngle( 0, 0, 0 ), 0, 255, 255, 0, 0 );
+	*/
 }
 
 //-----------------------------------------------------------------------------
@@ -465,7 +467,7 @@ void CParticleProperty::OwnerSetDormantTo( bool bDormant )
 	int nCount = m_ParticleEffects.Count();
 	for ( int i = 0; i < nCount; i++ )
 	{
-		m_ParticleEffects[i].pParticleEffect->SetShouldSimulate( !bDormant );
+		//m_ParticleEffects[i].pParticleEffect->SetShouldSimulate( !bDormant );
 		m_ParticleEffects[i].pParticleEffect->SetDormant( bDormant );
 	}
 }

@@ -1,8 +1,0 @@
-
-
-Portal
-{
-$fogcompatible 1 
-$basetexture _rt_Portal2 
-$alphamasktexture "models/portals/portal_mask" 
-}

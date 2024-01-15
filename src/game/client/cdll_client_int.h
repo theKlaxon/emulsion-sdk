@@ -299,9 +299,6 @@ inline bool IsLocalSplitScreenPlayer( void ) { return IsLocalSplitScreenPlayer( 
 // Returns XBX_GetUserId( GET_ACTIVE_SPLITSCREEN_SLOT() )
 int XBX_GetActiveUserId();
 
-
-//#define XBX_GetPrimaryUserId() _Use_XBX_GetActiveUserId_Instead
-
-#define XBX_GetPrimaryUserId() XBX_GetActiveUserId()
+#define XBX_GetPrimaryUserId() _Use_XBX_GetActiveUserId_Instead
 
 #endif // CDLL_CLIENT_INT_H

@@ -14,9 +14,9 @@
 
 #ifdef USE_BLOBULATOR
 // TODO: These should be in public by the time the SDK ships
-//#include "../common/blobulator/physics/physparticle.h"
+#include "../common/blobulator/physics/physparticle.h"
 //#include "../common/blobulator/physics/physparticlecache_inl.h"
-//#include "../common/blobulator/physics/phystiler.h"
+#include "../common/blobulator/physics/phystiler.h"
 #endif
 
 // memdbgon must be the last include file in a .cpp file!!!

@@ -1,9 +1,0 @@
-VertexlitGeneric
-{
-$basetexture "concrete/concrete_bts_floor002c"
-$surfaceprop default
-
-
-$bumpmap "models/a4_destruction/concrete_bts_floor002c_normal"
-"%keywords" "portal2 destruction underground"
-}

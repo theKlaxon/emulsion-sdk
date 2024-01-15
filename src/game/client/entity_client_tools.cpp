@@ -58,36 +58,36 @@ public:
 	virtual void			SetRecording( HTOOLHANDLE handle, bool recording );
 	virtual bool			ShouldRecord( HTOOLHANDLE handle );
 
-	virtual HTOOLHANDLE		GetToolHandleForEntityByIndex(int entindex);
-
 	virtual int				GetModelIndex( HTOOLHANDLE handle );
 	virtual const char*		GetModelName ( HTOOLHANDLE handle );
 	virtual const char*		GetClassname ( HTOOLHANDLE handle );
-	
+
+	virtual HTOOLHANDLE		GetToolHandleForEntityByIndex( int entindex );
+
 	virtual void			AddClientRenderable( IClientRenderable *pRenderable, bool bRenderWithViewModels, RenderableTranslucencyType_t nType, RenderableModelType_t nModelType );
 	virtual void			RemoveClientRenderable( IClientRenderable *pRenderable );
 	virtual void			SetTranslucencyType( IClientRenderable *pRenderable, RenderableTranslucencyType_t nType );
 	virtual void			MarkClientRenderableDirty( IClientRenderable *pRenderable );
-	virtual void			UpdateProjectedTexture(ClientShadowHandle_t h, bool bForce);
 
 	virtual bool			DrawSprite( IClientRenderable *pRenderable,
 										float scale, float frame,
 										int rendermode, int renderfx,
 										const Color &color, float flProxyRadius, int *pVisHandle );
+	virtual void DrawSprite( const Vector &vecOrigin, float flWidth, float flHeight, color32 color );
 
-	virtual void			DrawSprite( const Vector &vecOrigin, float flWidth, float flHeight, color32 color );
-	
+
+	virtual bool			GetLocalPlayerEyePosition( Vector& org, QAngle& ang, float &fov );
 	virtual EntitySearchResult	GetLocalPlayer();
-	virtual bool				GetLocalPlayerEyePosition( Vector& org, QAngle& ang, float &fov );
-	
+
 	virtual ClientShadowHandle_t	CreateShadow( CBaseHandle h, int nFlags );
-	virtual void					DestroyShadow( ClientShadowHandle_t h );
-	virtual ClientShadowHandle_t	CreateFlashlight( const FlashlightState_t &lightState );
-	virtual void					DestroyFlashlight( ClientShadowHandle_t h );
-	virtual void					UpdateFlashlightState( ClientShadowHandle_t h, const FlashlightState_t &flashlightState );
-	virtual void					AddToDirtyShadowList( ClientShadowHandle_t h, bool force = false );
-	virtual void					MarkRenderToTextureShadowDirty( ClientShadowHandle_t h );
-	
+	virtual void			DestroyShadow( ClientShadowHandle_t h );
+	virtual ClientShadowHandle_t CreateFlashlight( const FlashlightState_t &lightState );
+	virtual void			DestroyFlashlight( ClientShadowHandle_t h );
+	virtual void			UpdateFlashlightState( ClientShadowHandle_t h, const FlashlightState_t &flashlightState );
+	virtual void			AddToDirtyShadowList( ClientShadowHandle_t h, bool force = false );
+	virtual void			MarkRenderToTextureShadowDirty( ClientShadowHandle_t h );
+    virtual void			UpdateProjectedTexture( ClientShadowHandle_t h, bool bForce );
+
 	// Global toggle for recording
 	virtual void			EnableRecordingMode( bool bEnable );
 	virtual bool			IsInRecordingMode() const;

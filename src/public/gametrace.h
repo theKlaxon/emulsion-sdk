@@ -79,7 +79,6 @@ public:
 private:
 	// No copy constructors allowed
 	CGameTrace(const CGameTrace& vOther);
-	
 };
 
 

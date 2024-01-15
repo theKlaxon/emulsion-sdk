@@ -55,7 +55,7 @@ static CUserCmd *s_pRunCommandUserCmd = NULL;
 //-----------------------------------------------------------------------------
 // Auto-registration of game systems
 //-----------------------------------------------------------------------------
-static CAutoGameSystem *s_pSystemList = NULL;
+static	CAutoGameSystem *s_pSystemList = NULL;
 
 CAutoGameSystem::CAutoGameSystem( char const *name ) :
 	m_pszName( name )

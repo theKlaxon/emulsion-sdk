@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VControllerOptionsSticks.h"
 #include "VFooterPanel.h"
 #include "VSliderControl.h"

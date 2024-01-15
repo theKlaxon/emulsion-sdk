@@ -1,6 +1,0 @@
-VertexlitGeneric
-{
-$basetexture "models\props_backstage\vacum_scanner_tv_vert_box"
-$surfaceprop metal
-$selfillum 1
-}

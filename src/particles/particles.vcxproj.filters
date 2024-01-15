@@ -13,9 +13,6 @@
     <Filter Include="Source Files\asm">
       <UniqueIdentifier>{f043aaf3-502c-4720-918f-4d8460147eb5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\portal2">
-      <UniqueIdentifier>{1d9b1812-521b-4e0c-aaef-6a587933327b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\particles\particles.h">

@@ -10,11 +10,6 @@ class ISearchManager;
 class IMatchVoice;
 class IDatacenter;
 
-#ifdef P2_DLL
-//class IDlcManager;
-#include "matchmaking/idlcmanager.h"
-#endif
-
 class IMatchSystem
 {
 public:
@@ -27,10 +22,6 @@ public:
 	virtual ISearchManager * CreateGameSearchManager( KeyValues *pParams ) = 0;
 
 	virtual IDatacenter * GetDatacenter() = 0;
-
-#ifdef P2_DLL
-	virtual IDlcManager* GetDlcManager() = 0;
-#endif
 };
 
 #endif

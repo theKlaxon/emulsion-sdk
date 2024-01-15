@@ -4,7 +4,6 @@
 //
 //=====================================================================================//
 
-#include "cbase.h"
 #include "VSpinnerControl.h"
 #include "basemodui.h"
 #include "VFooterPanel.h"

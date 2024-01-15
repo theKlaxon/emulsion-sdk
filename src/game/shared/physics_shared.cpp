@@ -495,7 +495,7 @@ void AddSurfacepropFile( const char *pFileName, IPhysicsSurfaceProps *pProps, IF
 
 		// read the file
 		int nBufSize = len+1;
-		if (IsX360() )
+		if ( IsXbox() )
 		{
 			nBufSize = AlignValue( nBufSize , 512 );
 		}
@@ -515,7 +515,7 @@ void AddSurfacepropFile( const char *pFileName, IPhysicsSurfaceProps *pProps, IF
 void PhysParseSurfaceData( IPhysicsSurfaceProps *pProps, IFileSystem *pFileSystem )
 {
 	KeyValues *manifest = new KeyValues( SURFACEPROP_MANIFEST_FILE );
-	if ( manifest->LoadFromFileEX( pFileSystem, SURFACEPROP_MANIFEST_FILE, "GAME" ) )
+	if ( manifest->LoadFromFile( pFileSystem, SURFACEPROP_MANIFEST_FILE, "GAME" ) ) // was EX
 	{
 		for ( KeyValues *sub = manifest->GetFirstSubKey(); sub != NULL; sub = sub->GetNextKey() )
 		{
@@ -543,8 +543,6 @@ void PhysCreateVirtualTerrain( CBaseEntity *pWorld, const objectparams_t &defaul
 	char nameBuf[1024];
 	for ( int i = 0; i < MAX_MAP_DISPINFO; i++ )
 	{
-		// Exception thrown at 0x7B345C16 (engine.dll) in source2011.exe: 
-		// 0xC0000005: Access violation reading location 0x00000158.
 		CPhysCollide *pCollide = modelinfo->GetCollideForVirtualTerrain( i );
 		if ( pCollide )
 		{

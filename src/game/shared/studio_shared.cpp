@@ -33,7 +33,7 @@ const studiohdr_t *virtualgroup_t::GetStudioHdr( ) const
 
 byte *studiohdr_t::GetAnimBlock( int iBlock ) const
 {
-	return modelinfo->GetAnimBlock( this, iBlock, false );
+	return modelinfo->GetAnimBlock( this, iBlock );
 }
 
 int	studiohdr_t::GetAutoplayList( unsigned short **pOut ) const

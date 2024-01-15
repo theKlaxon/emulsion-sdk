@@ -1,7 +1,0 @@
-UnlitGeneric
-{
-$baseTexture "signage/indicator_unchecked"
-$surfaceprop glass
-$selfillum 1
-"%keywords" portal2
-}

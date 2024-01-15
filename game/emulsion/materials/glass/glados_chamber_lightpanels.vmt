@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "glass/refract_light_color"
-$selfillum 1
-}

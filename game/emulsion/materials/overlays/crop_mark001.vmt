@@ -1,7 +1,0 @@
-LightMappedGeneric
-{
-$basetexture "overlays/crop_mark001"
-$surfaceprop default
-$translucent 1
-$decal 1
-}

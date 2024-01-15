@@ -1,9 +1,0 @@
-UnlitGeneric
-{
-$basetexture "signage/signage_exit"
-$selfillum 1
-"%keywords" portal
-$vertexalpha 1
-$ignorez 1
-$vertexcolor 1
-}

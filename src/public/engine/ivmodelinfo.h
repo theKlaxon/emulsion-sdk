@@ -87,9 +87,9 @@ public:
 	virtual const studiohdr_t		*FindModel( const studiohdr_t *pStudioHdr, void **cache, const char *modelname ) const = 0;
 	virtual const studiohdr_t		*FindModel( void *cache ) const = 0;
 	virtual	virtualmodel_t			*GetVirtualModel( const studiohdr_t *pStudioHdr ) const = 0;
-	virtual byte					*GetAnimBlock( const studiohdr_t *pStudioHdr, int iBlock, bool p3 ) const = 0;
+	virtual byte					*GetAnimBlock( const studiohdr_t *pStudioHdr, int iBlock, bool p3 = false ) const = 0; // p3 for p2sdk
 
-	virtual bool					HadAnimBlockBeenPreloaded(studiohdr_t* param_1, int param_2) = 0;
+	virtual bool					HadAnimBlockBeenPreloaded(studiohdr_t* param_1, int param_2) = 0; // p2sdk
 
 	// Available on client only!!!
 	virtual void					GetModelMaterialColorAndLighting( const model_t *model, Vector const& origin,
@@ -127,8 +127,8 @@ public:
 
 	virtual MDLHandle_t				GetCacheHandle( const model_t *model ) const = 0;
 
-	virtual void* RegisterDynamicModel(const char* par1, bool par2) = 0;
-	virtual bool IsdynamicModelLoading(int par1) = 0;
+	//virtual void* RegisterDynamicModel(const char* par1, bool par2) = 0; // p2sdk
+	//virtual bool IsDynamicModelLoading(int par1) = 0; // p2sdk
 
 	// Returns planes of non-nodraw brush model surfaces
 	virtual int						GetBrushModelPlaneCount( const model_t *model ) const = 0;
@@ -137,7 +137,7 @@ public:
 	virtual bool					UsesEnvCubemap( const model_t *model ) const = 0;
 	virtual bool					UsesStaticLighting( const model_t *model ) const = 0;
 
-	virtual KeyValues* GetModelKeyValues(model_t* par1) = 0;
+	virtual KeyValues* GetModelKeyValues(model_t* par1) = 0; // p2sdk
 };
 
 

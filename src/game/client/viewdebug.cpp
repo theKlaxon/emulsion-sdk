@@ -74,6 +74,7 @@ public:
 		AllowCurrentViewAccess( false );
 
 		render->DrawLightmaps( m_pWorldRenderList, mat_showlightmappage.GetInt() );
+		pRenderContext.SafeRelease();
 	}
 
 

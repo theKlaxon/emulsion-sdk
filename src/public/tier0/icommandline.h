@@ -39,7 +39,7 @@ public:
 	virtual const char* GetParm( int nIndex ) const = 0;
 	
 	// copies the string passwed
-	virtual void SetParm( int nIndex, char const *pNewParm ) = 0;
+	virtual void SetParm( int nIndex, char const *pNewParm ) =0;
 };
 
 //-----------------------------------------------------------------------------

@@ -184,7 +184,6 @@ void CNB_Select_Mission_Entry::OnCommand( const char *command )
 {
 	if ( !Q_stricmp( "MissionClicked", command ) )
 	{
-#ifdef SWARM_DLL
 		IASW_Mission_Chooser_Source *pSource = missionchooser ? missionchooser->LocalMissionSource() : NULL;
 		if ( pSource )
 		{
@@ -198,6 +197,5 @@ void CNB_Select_Mission_Entry::OnCommand( const char *command )
 				}
 			}
 		}
-#endif
 	}
 }

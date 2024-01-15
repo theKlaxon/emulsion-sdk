@@ -883,11 +883,11 @@ void BuildGroup::LoadControlSettings(const char *controlResourceName, const char
 		bool bSuccess = false;
 		if (!pathID)
 		{
-			bSuccess = rDat->LoadFromFileEX(g_pFullFileSystem, controlResourceName, "SKIN");
+			bSuccess = rDat->LoadFromFile(g_pFullFileSystem, controlResourceName, "SKIN"); // was EX
 		}
 		if (!bSuccess)
 		{
-			bSuccess = rDat->LoadFromFileEX(g_pFullFileSystem, controlResourceName, pathID);
+			bSuccess = rDat->LoadFromFile(g_pFullFileSystem, controlResourceName, pathID); // was EX
 		}
 
 		if ( bSuccess )

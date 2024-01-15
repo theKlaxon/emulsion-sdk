@@ -198,11 +198,7 @@ public:
 			return false;
 
 #ifdef _DEBUG // it's safe to skip this here, since the only way to get indices after m_LastAlloc is to use MaxElementIndex
-#ifdef GAME_2011
-		if ( this->Memory().IsIdxAfter( i, this->m_LastAlloc ) )
-#else
 		if ( Memory().IsIdxAfter( i, this->m_LastAlloc ) )
-#endif
 		{
 			Assert( 0 );
 			return false; // don't read values that have been allocated, but not constructed

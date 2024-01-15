@@ -1,7 +1,0 @@
-LightmappedGeneric
-{
-$basetexture "Metal/crusher1"
-$surfaceprop metal
-"%keywords" "portal2 bts destruction"
-"%noportal" 1
-}

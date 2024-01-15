@@ -1684,7 +1684,6 @@ void CLocatorPanel::DrawStaticIcon( CLocatorTarget *pTarget )
 		if ( pchLookup[ 0 ] != '\0' )
 		{
 			bool bLookupSuccess = false;
-			// TODO: fix / replace this in vgui_controls
 			//bLookupSuccess = pVguiTarget->LookupElementBounds( pchLookup, nPanelX, nPanelY, nWide, nTall );
 
 			Assert( bLookupSuccess );
@@ -1827,7 +1826,6 @@ void CLocatorPanel::DrawDynamicIcon( CLocatorTarget *pTarget, bool bDrawCaption,
 		if ( pchLookup[ 0 ] != '\0' )
 		{
 			bool bLookupSuccess = false;
-			// TODO: fix / replace this in vgui_controls
 			//bLookupSuccess = pVguiTarget->LookupElementBounds( pchLookup, nTargetX, nTargetY, nWide, nTall );
 			Assert( bLookupSuccess );
 		}

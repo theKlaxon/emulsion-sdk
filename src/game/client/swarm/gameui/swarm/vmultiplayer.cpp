@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VMultiplayer.h"
 #include "VFooterPanel.h"
 #include "VDropDownMenu.h"
@@ -682,7 +682,7 @@ void Multiplayer::OnFlyoutMenuCancelled()
 //=============================================================================
 Panel* Multiplayer::NavigateBack()
 {
-	engine->ClientCmd_Unrestricted( VarArgs( "host_writeconfig_ss %d", XBX_GetActiveUserId() ) );
+	engine->ClientCmd_Unrestricted( VarArgs( "host_writeconfig_ss %d", XBX_GetPrimaryUserId() ) );
 
 	return BaseClass::NavigateBack();
 }

@@ -44,20 +44,12 @@
 template< class T, class I = int >
 class CUtlMemory
 {
-	template< class A, class B> friend class CUtlVector;
-	template< class A, size_t B> friend class CUtlVectorFixedGrowableCompat;
 public:
 	// constructor, destructor
 	CUtlMemory( int nGrowSize = 0, int nInitSize = 0 );
 	CUtlMemory( T* pMemory, int numElements );
 	CUtlMemory( const T* pMemory, int numElements );
 	~CUtlMemory();
-
-	//CUtlMemory(const CUtlMemory&) = delete;
-	//CUtlMemory& operator=(const CUtlMemory&) = delete;
-
-	CUtlMemory(CUtlMemory&& moveFrom);
-	CUtlMemory& operator=(CUtlMemory&& moveFrom);
 
 	// Set the size by which the memory grows
 	void Init( int nGrowSize = 0, int nInitSize = 0 );
@@ -445,39 +437,6 @@ template< class T, class I >
 CUtlMemory<T,I>::~CUtlMemory()
 {
 	Purge();
-}
-
-template< class T, class I >
-CUtlMemory<T, I>::CUtlMemory(CUtlMemory&& moveFrom)
-	: m_pMemory(moveFrom.m_pMemory)
-	, m_nAllocationCount(moveFrom.m_nAllocationCount)
-	, m_nGrowSize(moveFrom.m_nGrowSize)
-{
-	moveFrom.m_pMemory = nullptr;
-	moveFrom.m_nAllocationCount = 0;
-	moveFrom.m_nGrowSize = 0;
-}
-
-template< class T, class I >
-CUtlMemory<T, I>& CUtlMemory<T, I>::operator=(CUtlMemory&& moveFrom)
-{
-	// Copy member variables to locals before purge to handle self-assignment
-	T* pMemory = moveFrom.m_pMemory;
-	int nAllocationCount = moveFrom.m_nAllocationCount;
-	int nGrowSize = moveFrom.m_nGrowSize;
-
-	moveFrom.m_pMemory = nullptr;
-	moveFrom.m_nAllocationCount = 0;
-	moveFrom.m_nGrowSize = 0;
-
-	// If this is a self-assignment, Purge() is a no-op here
-	Purge();
-
-	m_pMemory = pMemory;
-	m_nAllocationCount = nAllocationCount;
-	m_nGrowSize = nGrowSize;
-
-	return *this;
 }
 
 template< class T, class I >

@@ -751,8 +751,10 @@ bool PhysShouldCollide( IPhysicsObject *pObj0, IPhysicsObject *pObj1 )
 
 bool PhysIsInCallback()
 {
+#ifndef USE_VOLT
 	if ( (physenv && physenv->IsInSimulation()) || g_Collisions.IsInCallback() )
 		return true;
+#endif
 
 	return false;
 }
@@ -1955,9 +1957,7 @@ void CCollisionEvent::ShutdownFriction( friction_t &friction )
 
 void CCollisionEvent::UpdateRemoveObjects()
 {
-#ifndef USE_VOLT
-	Assert(!PhysIsInCallback()); // i'll fix this after particles
-#endif
+	Assert(!PhysIsInCallback());
 	for ( int i = 0 ; i < m_removeObjects.Count(); i++ )
 	{
 		UTIL_Remove(m_removeObjects[i]);

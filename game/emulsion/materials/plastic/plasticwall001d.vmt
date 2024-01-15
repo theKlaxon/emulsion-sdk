@@ -1,6 +1,0 @@
-LightMappedGeneric
-{
-$basetexture "plastic/plasticwall001d"
-$surfaceprop default
-"%noportal" 1
-}

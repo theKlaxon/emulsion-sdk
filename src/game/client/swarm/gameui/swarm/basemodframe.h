@@ -136,7 +136,7 @@ namespace BaseModUI {
 
 		char m_ResourceName[64];
 
-	protected:
+	private:
 		friend class CBaseModPanel;
 
 		void SetWindowType(WINDOW_TYPE windowType);

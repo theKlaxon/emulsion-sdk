@@ -16,7 +16,6 @@ ITexture *GetWaterRefractionTexture( void );
 ITexture *GetFullscreenTexture( void );
 ITexture *GetCameraTexture( void );
 ITexture *GetFullFrameDepthTexture( void );
-ITexture *GetDepthDoubler( void );
 
 // SmallBufferHDRx=r16g16b16a16 quarter-sized texture
 ITexture *GetSmallBufferHDR0( void );
@@ -30,7 +29,5 @@ ITexture *GetSmallBuffer1( void );							// quarter-sized texture, same fmt as s
 ITexture *GetTeenyTexture(int which);						// tiny 32x32 texture, always 8888
 
 void ReleaseRenderTargets( void );
-
-static CTextureReference s_pDepthDoubler; // left this here for reasons -Klax
 
 #endif // RENDERTARGETS_H

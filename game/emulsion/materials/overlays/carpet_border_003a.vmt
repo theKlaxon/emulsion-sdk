@@ -1,7 +1,0 @@
-LightMappedGeneric
-{
-$basetexture "overlays/carpet_border_003a"
-$surfaceprop default
-$translucent 1
-$decal 1
-}

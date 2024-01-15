@@ -186,16 +186,11 @@ int V_snprintf( char *pDest, int destLen, const char *pFormat, ... ) FMTFUNCTION
 void V_wcsncpy( wchar_t *pDest, wchar_t const *pSrc, int maxLenInBytes );
 int V_snwprintf( wchar_t *pDest, int destLen, const wchar_t *pFormat, ... );
 
+// for 2013 compat (yes in p2)
 //#define isalpha use_V_isalpha_instead_of_isalpha
 inline bool V_isalnum(char c) { return isalnum((unsigned char)c) != 0; }
 
 #define COPY_ALL_CHARACTERS -1
-wchar_t* V_wcsncat(INOUT_Z_BYTECAP(maxLenInBytes) wchar_t*, const wchar_t*, int maxLenInBytes, int nMaxCharsToCopy = COPY_ALL_CHARACTERS);
-template <size_t cchDest> wchar_t* V_wcscat_safe(INOUT_Z_ARRAY wchar_t(&pDest)[cchDest], const wchar_t* pSrc, int nMaxCharsToCopy = COPY_ALL_CHARACTERS)
-{
-	return V_wcsncat(pDest, pSrc, static_cast<int>(cchDest), nMaxCharsToCopy);
-}
-
 char *V_strncat(char *, const char *, size_t destBufferSize, int max_chars_to_copy=COPY_ALL_CHARACTERS );
 char *V_strnlwr(char *, size_t);
 
@@ -541,7 +536,6 @@ inline BinString_t<T> MakeBinString( const T& that )
 #define Q_snwprintf				V_snwprintf
 #define Q_wcsncpy				V_wcsncpy
 #define Q_strncat				V_strncat
-#define Q_wcsncat				V_wcsncat // p2
 #define Q_strnlwr				V_strnlwr
 #define Q_vsnprintf				V_vsnprintf
 #define Q_pretifymem			V_pretifymem
@@ -582,18 +576,6 @@ inline BinString_t<T> MakeBinString( const T& that )
 #define Q_FixupPathName			V_FixupPathName
 
 #endif // !defined( VSTDLIB_DLL_EXPORT )
-
-#if defined(_PS3) || defined(POSIX)
-#define PRI_WS_FOR_WS L"%ls"
-#define PRI_WS_FOR_S "%ls"
-#define PRI_S_FOR_WS L"%s"
-#define PRI_S_FOR_S "%s"
-#else
-#define PRI_WS_FOR_WS L"%s"
-#define PRI_WS_FOR_S "%S"
-#define PRI_S_FOR_WS L"%S"
-#define PRI_S_FOR_S "%s"
-#endif
 
 
 #endif	// TIER1_STRTOOLS_H

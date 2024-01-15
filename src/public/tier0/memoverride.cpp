@@ -1180,7 +1180,7 @@ typedef struct setloc_struct {
     LCID lcidCountry;
     /* expand_locale static variables */
 #ifndef PLUGIN_DLL
-//    LC_ID       _cacheid;
+    LC_ID       _cacheid;
 #endif
 	UINT        _cachecp;
     char        _cachein[MAX_LC_LEN];

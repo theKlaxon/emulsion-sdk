@@ -193,7 +193,7 @@ enum entity_list_ids_t
 //-----------------------------------------------------------------------------
 // Purpose: Base client side entity object
 //-----------------------------------------------------------------------------
-class C_BaseEntity : public IClientEntity, public IClientModelRenderable
+class C_BaseEntity : public IClientEntity, public IClientModelRenderable // was not based on IClientModelRenderable in ASW
 {
 // Construction
 	DECLARE_CLASS_NOBASE( C_BaseEntity );
@@ -332,10 +332,10 @@ public:
 	virtual IClientEntity*			GetIClientEntity()		{ return this; }
 	virtual C_BaseEntity*			GetBaseEntity()			{ return this; }
 	virtual IClientThinkable*		GetClientThinkable()	{ return this; }
-	virtual IClientModelRenderable* GetClientModelRenderable();
+	virtual IClientModelRenderable* GetClientModelRenderable(); // was return NULL;
 	virtual IClientAlphaProperty*	GetClientAlphaProperty();
 
-	virtual bool GetRenderData(void* pData, ModelDataCategory_t nCategory);
+	virtual bool GetRenderData(void* pData, ModelDataCategory_t nCategory); // p2sdk
 
 // Methods of IClientRenderable
 public:
@@ -382,7 +382,8 @@ public:
 	// save out interpolated values
 	virtual void					PreDataUpdate( DataUpdateType_t updateType );
 	virtual void					PostDataUpdate( DataUpdateType_t updateType );
-	virtual void					OnDataUnchangedInPVS();
+
+	virtual void					OnDataUnchangedInPVS(); // p2sdk
 
 	/*virtual */void					ValidateModelIndex( void );
 
@@ -455,7 +456,7 @@ public:
 	virtual int						ObjectCaps( void );
 	// only overload these if you have special data to serialize
 	virtual int						Save( ISave &save );
-	virtual int						Restore( IRestore &restore ); 
+	virtual int						Restore( IRestore &restore );
 
 private:
 
@@ -619,7 +620,9 @@ public:
 	virtual bool					GetAttachment( int number, Vector &origin );
 	virtual	bool					GetAttachment( int number, Vector &origin, QAngle &angles );
 	virtual bool					GetAttachmentVelocity( int number, Vector &originVel, Quaternion &angleVel );
+
 	virtual bool					ComputeLightingOrigin(int nAttachmentIndex, Vector modelLightingCenter, const matrix3x4_t& matrix, Vector& transformedLightingCenter);
+
 	virtual void					InvalidateAttachments() {}
 
 	// Team handling

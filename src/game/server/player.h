@@ -220,7 +220,7 @@ public:
 	virtual const int GetHealth();
 	virtual const int GetMaxHealth();
 
-	// bot specific functions
+	// bot specific functions	
 	virtual void SetAbsOrigin( Vector & vec );
 	virtual void SetAbsAngles( QAngle & ang );
 	virtual void RemoveAllItems( bool removeSuit );

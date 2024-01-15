@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$baseTexture "models/props_motel/pink_tablelamp_main"
-$surfaceprop metal
-}

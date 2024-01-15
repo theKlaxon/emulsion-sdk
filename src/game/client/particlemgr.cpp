@@ -36,8 +36,8 @@ static int g_nParticlesDrawn;
 // CCycleCount	g_ParticleTimer;
 
 ConVar r_DrawParticles("r_drawparticles", "1", FCVAR_CHEAT, "Enable/disable particle rendering");
-static ConVar particle_simulateoverflow( "particle_simulateoverflow", "1", FCVAR_CHEAT, "Used for stress-testing particle systems. Randomly denies creation of particles." );
-ConVar cl_particles_show_bbox( "cl_particles_show_bbox", "1", FCVAR_CHEAT ); // TODO: disable after debugging
+static ConVar particle_simulateoverflow( "particle_simulateoverflow", "0", FCVAR_CHEAT, "Used for stress-testing particle systems. Randomly denies creation of particles." );
+ConVar cl_particles_show_bbox( "cl_particles_show_bbox", "0", FCVAR_CHEAT );
 ConVar cl_particle_fallback_multiplier( "cl_particle_fallback_multiplier", "1", FCVAR_NONE, "Multiplier for falling back to cheaper effects under load." ); 
 ConVar cl_particle_fallback_base( "cl_particle_fallback_base", "0", FCVAR_NONE, "Base for falling back to cheaper effects under load." ); 
 
@@ -963,6 +963,7 @@ CParticleMgr::~CParticleMgr()
 	Term();
 }
 
+
 //-----------------------------------------------------------------------------
 // Initialization and shutdown
 //-----------------------------------------------------------------------------
@@ -973,7 +974,7 @@ bool CParticleMgr::Init(unsigned long count, IMaterialSystem *pMaterials)
 	m_pMaterialSystem = pMaterials;
 
 	// Initialize the particle system
-	bool bPrecacheParticles = IsPC();// && !engine->IsCreatingXboxReslist();
+	bool bPrecacheParticles = IsPC() && !engine->IsCreatingXboxReslist();
 	g_pParticleSystemMgr->Init( g_pParticleSystemQuery, bPrecacheParticles );
 	// tell particle mgr to add the default simulation + rendering ops
 	g_pParticleSystemMgr->AddBuiltinSimulationOperators();
@@ -981,6 +982,8 @@ bool CParticleMgr::Init(unsigned long count, IMaterialSystem *pMaterials)
 
 	// Send true to load the sheets
 	ParseParticleEffects( true );
+
+
 
 	return true;
 }
@@ -1346,7 +1349,7 @@ void CParticleMgr::Simulate( float flTimeDelta )
 
 	if(!m_pMaterialSystem)
 	{
-		//Assert(false);
+		Assert(false);
 		return;
 	}
 
@@ -1431,7 +1434,7 @@ void EndSimulateParticles( void )
 }
 
 
-static ConVar r_threaded_particles( "r_threaded_particles", "0" );
+static ConVar r_threaded_particles( "r_threaded_particles", "1" );
 
 static float s_flThreadedPSystemTimeStep;
 

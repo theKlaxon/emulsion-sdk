@@ -4,7 +4,6 @@
 //
 //=====================================================================================//
 
-#include "cbase.h"
 #include "VTransitionScreen.h"
 #include "EngineInterface.h"
 #include "vgui/ISurface.h"

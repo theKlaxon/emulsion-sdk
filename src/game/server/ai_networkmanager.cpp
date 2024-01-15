@@ -1059,7 +1059,7 @@ void CAI_NetworkManager::DelayedInit( void )
 			}
 #endif
 			DevMsg( "Node Graph out of Date. Rebuilding...\n" );
-			//UTIL_CenterPrintAll( "Node Graph out of Date. Rebuilding...\n" );
+			UTIL_CenterPrintAll( "Node Graph out of Date. Rebuilding...\n" );
 			m_bNeedGraphRebuild = true;
 			g_pAINetworkManager->SetNextThink( gpGlobals->curtime + 1 );
 			return;

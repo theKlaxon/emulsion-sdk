@@ -1,6 +1,0 @@
-lightmappedGeneric
-{
-$baseTexture "overlays/urgentpaper"
-$translucent 1
-$decal 1
-}

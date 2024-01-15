@@ -1,4 +1,0 @@
-^D:\SOURCE-SDK-2011\SRC\VPHYSICS_JOLT\JOLTPHYSICS\JOLTPHYSICS_INC.VPC
-if exist "..\..\devtools\bin\vpc.exe" "..\..\devtools\bin\vpc.exe" -crc2 "joltphysics_sse42.vcxproj"
-if ERRORLEVEL 1 exit /b 1
-echo crc_complete > D:\theKlaxon\source-sdk-2011\src\vphysics_jolt\joltphysics\joltphysics_inc.vpc.sentinel

@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/npcs/glados/glados_disc_base"
-$surfaceprop default
-}

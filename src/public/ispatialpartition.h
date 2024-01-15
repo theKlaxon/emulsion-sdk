@@ -39,6 +39,7 @@ enum
 	PARTITION_CLIENT_NON_STATIC_EDICTS	= (1 << 7),		// everything except the static props
 	PARTITION_CLIENT_TRIGGER_ENTITIES   = (1 << 8),		// client side prediction related triggers
 	PARTITION_CLIENT_IK_ATTACHMENT	    = (1 << 9),		// Can be used as an IK attachment
+	PARTITION_ENGINE_PUSHABLE			= (1 << 10),	// portal 2
 };
 
 // Use this to look for all client edicts.

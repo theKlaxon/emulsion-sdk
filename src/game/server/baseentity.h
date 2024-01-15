@@ -892,9 +892,6 @@ public:
 
 	virtual bool	OnControls( CBaseEntity *pControls ) { return false; }
 	virtual bool	HasTarget( string_t targetname );
-#ifdef P2_DLL
-	virtual bool	IsWeightedCube() const { return false; }
-#endif
 	virtual	bool	IsPlayer( void ) const { return false; }
 	virtual bool	IsNetClient( void ) const { return false; }
 	virtual bool	IsTemplate( void ) { return false; }
@@ -964,7 +961,7 @@ public:
 	void					PhysicsImpact( CBaseEntity *other, trace_t &trace );
  	void					PhysicsMarkEntitiesAsTouching( CBaseEntity *other, trace_t &trace );
 	void					PhysicsMarkEntitiesAsTouchingEventDriven( CBaseEntity *other, trace_t &trace );
-	void					PhysicsTouchTriggers( const Vector *pPrevAbsOrigin = new Vector(0,0,0) ); // was = NULL but it dont like that
+	void					PhysicsTouchTriggers( const Vector *pPrevAbsOrigin = NULL );
 	virtual void			PhysicsLandedOnGround( float flFallingSpeed ) { return; }
 
 	// Physics helper

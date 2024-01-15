@@ -1,6 +1,0 @@
-UnlitGeneric
-{
-$basetexture "vgui\loadingbar_bg"
-$translucent 1
-$ignorez 1
-}

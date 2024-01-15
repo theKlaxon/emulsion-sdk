@@ -57,6 +57,8 @@ abstract_class IModelRenderSystem
 public:
 	virtual void DrawModels( ModelRenderSystemData_t *pModels, int nCount, ModelRenderMode_t renderMode ) = 0;
 
+	virtual void DrawBrushModels(ModelRenderSystemData_t* pBrushModels, int nCount, ModelRenderMode_t renderMode) = 0; // p2sdk
+
 	virtual void ComputeTranslucentRenderData( ModelRenderSystemData_t *pModels, int nCount, TranslucentInstanceRenderData_t *pRenderData, TranslucentTempData_t *pTempData ) = 0;
 	virtual void CleanupTranslucentTempData( TranslucentTempData_t *pTempData ) = 0;
 

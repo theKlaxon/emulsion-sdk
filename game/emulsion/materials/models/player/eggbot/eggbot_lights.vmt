@@ -1,7 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/player/eggbot/eggbot_lights.vtf"
-$surfaceprop metal
-$selfillum 1
-$nodecal 1
-}

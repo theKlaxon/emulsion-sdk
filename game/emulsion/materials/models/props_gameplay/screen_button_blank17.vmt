@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$baseTexture "models/props_gameplay/screen_button_blank17"
-$blendTintByBaseAlpha 1
-}

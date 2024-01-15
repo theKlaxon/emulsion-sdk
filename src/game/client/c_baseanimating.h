@@ -90,7 +90,7 @@ typedef unsigned int			ClientSideAnimationListHandle_t;
 #define		INVALID_CLIENTSIDEANIMATION_LIST_HANDLE	(ClientSideAnimationListHandle_t)~0
 
 
-class C_BaseAnimating : public C_BaseEntity
+class C_BaseAnimating : public C_BaseEntity/*, public IClientModelRenderable*/ // WAS based off of IClientModelRenderable in ASW
 {
 public:
 	DECLARE_CLASS( C_BaseAnimating, C_BaseEntity );
@@ -254,9 +254,6 @@ public:
 	virtual bool					GetAttachment( int number, Vector &origin, QAngle &angles );
 	virtual bool					GetAttachment( int number, matrix3x4_t &matrix );
 	virtual bool					GetAttachmentVelocity( int number, Vector &originVel, Quaternion &angleVel );
-
-	virtual bool					ComputeLightingOrigin(int nAttachmentIndex, Vector modelLightingCenter, const matrix3x4_t& matrix, Vector& transformedLightingCenter);
-
 	virtual void					InvalidateAttachments();
 	
 	// Returns the attachment in local space
@@ -660,13 +657,6 @@ private:
 
 	CUtlReference<CNewParticleEffect>	m_ejectBrassEffect;
 	int									m_iEjectBrassAttachment;
-
-	bool							m_bUseParentLightingOrigin;
-
-#ifdef P2_DLL
-
-	virtual bool ShouldMakeFancyShadows() const { return false; }
-#endif
 };
 
 enum 

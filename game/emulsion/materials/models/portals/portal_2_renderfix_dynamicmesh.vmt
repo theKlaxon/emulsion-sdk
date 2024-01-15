@@ -1,6 +1,0 @@
-
-Portal
-{
-$basetexture _rt_Portal2
-$renderfixz 1 
-}

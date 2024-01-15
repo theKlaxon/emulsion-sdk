@@ -269,14 +269,11 @@ void CNB_Vote_Panel::UpdateVoteLabels()
 		{
 			m_pTitle->SetText( "#asw_vote_mission_title" );
 			m_bVoteMapInstalled = true;
-#ifdef SWARM_DLL
-
 			if ( missionchooser && missionchooser->LocalMissionSource() )
 			{
 				if ( !missionchooser->LocalMissionSource()->GetMissionDetails( ASWGameRules()->GetCurrentVoteMapName() ) )
 					m_bVoteMapInstalled = false;
 			}
-#endif
 
 			if ( m_bVoteMapInstalled )
 			{

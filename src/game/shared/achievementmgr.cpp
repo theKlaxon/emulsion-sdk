@@ -121,14 +121,21 @@ bool CAchievementMgr::Init()
 	// (for single player), so register ourselves with the engine so UI has a uniform place 
 	// to go get the pointer to us
 
+#ifdef EMULSION_DLL
+	return true;
+
+#else
+
 #ifdef _DEBUG
 	// There can be only one achievement manager instance; no one else should be registered
-	//IAchievementMgr *pAchievementMgr = engine->GetAchievementMgr(); // TODO: replace this
-	//Assert( NULL == pAchievementMgr );
+	IAchievementMgr *pAchievementMgr = engine->GetAchievementMgr();
+	Assert( NULL == pAchievementMgr );
 #endif // _DEBUG
 
 	// register ourselves
-	//engine->SetAchievementMgr( this ); // TODO: replace this!
+	engine->SetAchievementMgr( this );
+
+#endif // EMULSION_DLL
 
 	// register for events
 #ifdef GAME_DLL
@@ -1729,7 +1736,6 @@ void CAchievementMgr::ResetAchievement_Internal( CBaseAchievement *pAchievement 
 }
 
 #ifdef CLIENT_DLL
-// TODO: fix the achievement manager stuff
 
 void MsgFunc_AchievementEvent( bf_read &msg )
 {
@@ -1751,7 +1757,7 @@ CON_COMMAND_F( achievement_reset_all, "Clears all achievements", FCVAR_CHEAT )
 
 CON_COMMAND_F( achievement_reset, "<internal name> Clears specified achievement", FCVAR_CHEAT )
 {
-	CAchievementMgr* pAchievementMgr = null;// dynamic_cast<CAchievementMgr *>( engine->GetAchievementMgr() );
+	CAchievementMgr* pAchievementMgr = null;// dynamic_cast<CAchievementMgr*>(engine->GetAchievementMgr());
 	if ( !pAchievementMgr )
 		return;
 
@@ -1789,7 +1795,7 @@ CON_COMMAND_F( achievement_unlock, "<internal name> Unlocks achievement", FCVAR_
 		Msg( "Usage: achievement_unlock <internal name>\n" );
 		return;
 	}
-	CBaseAchievement* pAchievement = null;// pAchievementMgr->GetAchievementByName(args[1], STEAM_PLAYER_SLOT);
+	CBaseAchievement *pAchievement = pAchievementMgr->GetAchievementByName( args[1], STEAM_PLAYER_SLOT );
 	if ( !pAchievement )
 	{
 		Msg( "Achievement %s not found\n", args[1] );

@@ -752,8 +752,6 @@ C_BaseAnimating::C_BaseAnimating() :
 	m_pJiggleBones = NULL;
 	m_isJiggleBonesEnabled = true;
 	AddToEntityList(ENTITY_LIST_SIMULATE);
-
-	m_bUseParentLightingOrigin = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -832,9 +830,6 @@ ShadowType_t C_BaseAnimating::ShadowCastType()
 
 	if ( IsEffectActive(EF_NODRAW | EF_NOSHADOW) )
 		return SHADOWS_NONE;
-
-	if (ShouldMakeFancyShadows())
-		return SHADOWS_RENDER_TO_TEXTURE;
 
 	if (pStudioHdr->GetNumSeq() == 0)
 		return SHADOWS_RENDER_TO_TEXTURE;
@@ -2106,23 +2101,6 @@ bool C_BaseAnimating::GetAttachmentVelocity( int number, Vector &originVel, Quat
 	return true;
 }
 
-bool C_BaseAnimating::ComputeLightingOrigin(int nAttachmentIndex, Vector modelLightingCenter, const matrix3x4_t& matrix, Vector& transformedLightingCenter)
-{
-	if (m_bUseParentLightingOrigin)
-	{
-		if (GetMoveParent() != NULL)
-		{
-			C_BaseAnimating* attachmentParent = GetMoveParent()->GetBaseAnimating();
-			if (NULL != attachmentParent)
-			{
-				if (attachmentParent->ComputeLightingOrigin(nAttachmentIndex, attachmentParent->GetModelPtr()->illumposition(), attachmentParent->RenderableToWorldTransform(), transformedLightingCenter))
-					return true;
-			}
-		}
-	}
-
-	return BaseClass::ComputeLightingOrigin(nAttachmentIndex, modelLightingCenter, matrix, transformedLightingCenter);
-}
 
 //-----------------------------------------------------------------------------
 // Returns the attachment in local space
@@ -3370,10 +3348,10 @@ bool C_BaseAnimating::OnInternalDrawModel( ClientModelRenderInfo_t *pInfo )
 //-----------------------------------------------------------------------------
 void C_BaseAnimating::DoInternalDrawModel( ClientModelRenderInfo_t *pInfo, DrawModelState_t *pState, matrix3x4_t *pBoneToWorldArray )
 {
+	CMatRenderContextPtr pRenderContext(materials);
+
 	if ( pState)
 	{
-		CMatRenderContextPtr pRenderContext(materials);
-
 		modelrender->DrawModelExecute( pRenderContext, *pState, *pInfo, pBoneToWorldArray );
 	}
 

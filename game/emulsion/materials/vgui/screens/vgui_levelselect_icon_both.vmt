@@ -1,8 +1,0 @@
-UnlitGeneric
-{
-$basetexture "vgui\screens\vgui_levelselect_icon_both"
-$translucent 1
-
-
-
-}

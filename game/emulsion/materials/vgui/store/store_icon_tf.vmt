@@ -1,5 +1,0 @@
-unlitGeneric
-{
-$baseTexture "vgui/store/store_icon_tf"
-$translucent 1
-}

@@ -1,6 +1,0 @@
-UnlitGeneric
-{
-$basetexture "vgui\btn_invite_over"
-$translucent 1
-$ignorez 1
-}

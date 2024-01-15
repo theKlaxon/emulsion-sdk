@@ -1,5 +1,13 @@
 creategameprojects text
 createallprojects text
+
+create_emulsion_2010 text
+create_skeleton_2010 text
+create_everything_2010 text
+
+Run-Emulsion text
+Run-Skeleton text
+
 xcode_ccache_wrapper text
 vpc text
 vpc_linux binary

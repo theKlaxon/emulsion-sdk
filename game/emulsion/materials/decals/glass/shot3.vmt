@@ -1,5 +1,0 @@
-DecalModulate
-{
-$basetexture "Decals/glass/shot3"
-$decalscale 0.11
-}

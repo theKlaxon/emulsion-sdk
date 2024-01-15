@@ -1,7 +1,0 @@
-VertexLitGeneric
-{
-$baseTexture "models\npcs\turret\turret_eye"
-$surfaceprop metal
-$selfillum 1
-$nodecal 1
-}

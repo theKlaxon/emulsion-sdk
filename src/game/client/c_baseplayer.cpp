@@ -181,7 +181,7 @@ END_RECV_TABLE()
 	BEGIN_RECV_TABLE_NOBASE( C_BasePlayer, DT_LocalPlayerExclusive )
 
 		RecvPropDataTable	( RECVINFO_DT(m_Local),0, &REFERENCE_RECV_TABLE(DT_Local) ),
-		
+
 		//RecvPropFloat		( RECVINFO(m_vecViewOffset[0]) ),
 		//RecvPropFloat		( RECVINFO(m_vecViewOffset[1]) ),
 		//RecvPropFloat		( RECVINFO(m_vecViewOffset[2]) ),
@@ -197,7 +197,6 @@ END_RECV_TABLE()
 
 		RecvPropEHandle		( RECVINFO( m_hLastWeapon ) ),
 
-		// TODO: trying something -Klax
  		//RecvPropFloat		( RECVINFO(m_vecVelocity[0]), 0, C_BasePlayer::RecvProxy_LocalVelocityX ),
  		//RecvPropFloat		( RECVINFO(m_vecVelocity[1]), 0, C_BasePlayer::RecvProxy_LocalVelocityY ),
  		//RecvPropFloat		( RECVINFO(m_vecVelocity[2]), 0, C_BasePlayer::RecvProxy_LocalVelocityZ ),
@@ -230,9 +229,9 @@ END_RECV_TABLE()
 		RecvPropDataTable( "localdata", 0, 0, &REFERENCE_RECV_TABLE(DT_LocalPlayerExclusive) ),
 
 		RecvPropDataTable(RECVINFO_DT(pl), 0, &REFERENCE_RECV_TABLE(DT_PlayerState), DataTableRecvProxy_StaticDataTable),
-		
+
 		RecvPropVectorXY(RECVINFO_NAME(m_vecNetworkOrigin, m_vecOrigin), 0, C_BasePlayer::RecvProxy_LocalOriginXY),
-		RecvPropFloat	(RECVINFO_NAME(m_vecNetworkOrigin[2], m_vecOrigin[2]), 0, C_BasePlayer::RecvProxy_LocalOriginZ),
+		RecvPropFloat(RECVINFO_NAME(m_vecNetworkOrigin[2], m_vecOrigin[2]), 0, C_BasePlayer::RecvProxy_LocalOriginZ),
 
 		RecvPropInt		(RECVINFO(m_iFOV)),
 		RecvPropInt		(RECVINFO(m_iFOVStart)),
@@ -370,7 +369,6 @@ BEGIN_PREDICTION_DATA( C_BasePlayer )
 	DEFINE_PRED_ARRAY( m_hViewModel, FIELD_EHANDLE, MAX_VIEWMODELS, FTYPEDESC_INSENDTABLE ),
 
 	DEFINE_FIELD( m_surfaceFriction, FIELD_FLOAT ),
-	
 
 END_PREDICTION_DATA()
 

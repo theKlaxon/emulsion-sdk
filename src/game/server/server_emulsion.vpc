@@ -13,8 +13,8 @@ $Configuration
 {
 	$Compiler
 	{
-		$AdditionalIncludeDirectories	"$BASE;.\hl2;$SRCDIR\game\shared\hl2;.\emulsion;.\multiplayer;$SRCDIR\game\shared\multiplayer;$SRCDIR\game\shared\emulsion"
-		$PreprocessorDefinitions		"$BASE;P2_DLL;PORTAL2;EMULSION_DLL;USE_VOLT"
+		$AdditionalIncludeDirectories	"$BASE;.\hl2;$SRCDIR\game\shared\hl2;.\emulsion;.\multiplayer;$SRCDIR\game\shared\multiplayer;$SRCDIR\game\shared\emulsion;$SRCDIR\game\shared\swarm"
+		$PreprocessorDefinitions		"$BASE;EMULSION_DLL;SWARM_DLL;"
 	}
 }
 
@@ -22,6 +22,41 @@ $Project "Server (Emulsion)"
 {
 	$Folder	"Source Files"
 	{
+		$Folder "Blobulator"
+		{
+			$Folder "Headers"
+			{
+				$Folder "implicit"
+				{
+					$File "$SRCDIR\common\blobulator\implicit\imp_particle.h"
+					$File "$SRCDIR\common\blobulator\implicit\imp_renderer.h"
+					$File "$SRCDIR\common\blobulator\implicit\imp_tiler.h"
+					$File "$SRCDIR\common\blobulator\implicit\sweep_renderer.h"
+				}
+
+				$Folder "physics"
+				{
+					$File "$SRCDIR\common\blobulator\physics\phys_particle.h"
+					$File "$SRCDIR\common\blobulator\physics\phys_particle_cache.h"
+					$File "$SRCDIR\common\blobulator\physics\phys_tiler.h"
+				}
+
+				$File "$SRCDIR\common\blobulator\blob_batch.h"
+				$File "$SRCDIR\common\blobulator\blob_networked_batch.h"
+				$File "$SRCDIR\common\blobulator\blob_manager.h"
+				$File "$SRCDIR\common\blobulator\blob_physics.h"
+				$File "$SRCDIR\common\blobulator\index_tri_vertex_buffer.h"
+				$File "$SRCDIR\common\blobulator\parented_func.h"
+				$File "$SRCDIR\common\blobulator\point_3D.h"
+				$File "$SRCDIR\common\blobulator\smartarray.h"
+			}
+			
+			$File "$SRCDIR\common\blobulator\blob_batch.cpp"
+			$File "$SRCDIR\common\blobulator\blob_networked_batch.cpp"
+			$File "$SRCDIR\common\blobulator\blob_manager.cpp"
+			$File "$SRCDIR\common\blobulator\blob_physics.cpp"
+		}
+
 		$Folder "Emulsion"
 		{
 			$Folder "Shared"

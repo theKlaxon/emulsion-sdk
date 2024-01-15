@@ -330,7 +330,7 @@ void CPDumpPanel::PredictionDumpColor( bool legend, bool predictable, bool netwo
 //-----------------------------------------------------------------------------
 void CPDumpPanel::DumpEntity( C_BaseEntity *ent, int commands_acknowledged )
 {
-	if ( IsX360() )
+	if ( IsXbox() )
 	{
 		return;
 	}

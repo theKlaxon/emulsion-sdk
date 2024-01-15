@@ -1,7 +1,0 @@
-LightMappedGeneric
-{
-$basetexture "tile/observation_tileceiling001b"
-$surfaceprop plaster
-"%keywords" "portal2 chamber"
-"%noportal" 1
-}

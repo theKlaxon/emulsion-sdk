@@ -28,6 +28,7 @@
 #include "localflexcontroller.h"
 #include "utlsymbol.h"
 
+
 #define STUDIO_ENABLE_PERF_COUNTERS
 
 #define STUDIO_SEQUENCE_ACTIVITY_LOOKUPS_ARE_SLOW 0 
@@ -906,7 +907,7 @@ struct mstudioseqdesc_t
 	int					pose;			// index of delta animation between end and nextseq
 
 	int					numikrules;
-	
+
 	int					numautolayers;	//
 	int					autolayerindex;
 	inline mstudioautolayer_t *pAutolayer( int i ) const { Assert( i >= 0 && i < numautolayers); return (mstudioautolayer_t *)(((byte *)this) + autolayerindex) + i; };
@@ -1459,7 +1460,6 @@ struct mstudiomodel_t
 
 	mstudio_modelvertexdata_t vertexdata;
 
-	//int					unused[8];		// remove as appropriate
 	int					unused[8];		// remove as appropriate
 };
 

@@ -4663,7 +4663,7 @@ void CAI_BaseNPC::CheckOnGround( void )
 							NPCPhysics_CreateSolver( this, trace.m_pEnt, true, 0.25f );
 							if ( VPhysicsGetObject() )
 							{
-								VPhysicsGetObject()->RecheckContactPoints(true);
+								VPhysicsGetObject()->RecheckContactPoints();
 							}
 						}
 						// Check to see if someone changed the ground on us...
@@ -6809,7 +6809,7 @@ void CAI_BaseNPC::CheckPhysicsContacts()
 		{
 			// turn collisions back on once we've been separated for enough time
 			NPCPhysics_CreateSolver( this, pOtherEntity, true, solverTime );
-			pPhysics->RecheckContactPoints(true);
+			pPhysics->RecheckContactPoints();
 		}
 	}
 }

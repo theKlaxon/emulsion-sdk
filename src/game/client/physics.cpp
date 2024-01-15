@@ -583,15 +583,68 @@ bool IsBlockedShouldDisableCollisions( C_BaseEntity *pEntity )
 	return false;
 }
 
+#include "..\prediction.h"
 
 void CPhysicsSystem::PhysicsSimulate()
 {
-	//CMiniProfilerGuard mpg(&g_mp_PhysicsSimulate);
+	CMiniProfilerGuard mpg(&g_mp_PhysicsSimulate); // THIS WILL MAKE THE CLIENT FREEZE!!!! VERY ICKY NO GOOD!
 	VPROF_BUDGET( "CPhysicsSystem::PhysicsSimulate", VPROF_BUDGETGROUP_PHYSICS );
 	float frametime = gpGlobals->frametime;
 
 	if ( physenv )
 	{
+		if (physenv->IsPredicted()) // from csgo
+		{
+			if (!prediction->InPrediction())
+				return;
+
+			if (!prediction->IsFirstTimePredicted())
+			{
+				//Don't actually simulate. Fake it while restoring results from the first time
+				physenv->RestorePredictedSimulation();
+
+				int activeCount = physenv->GetActiveObjectCount();
+				if (activeCount)
+				{
+					IPhysicsObject** pActiveList = NULL;
+					pActiveList = (IPhysicsObject**)stackalloc(sizeof(IPhysicsObject*) * activeCount);
+					physenv->GetActiveObjects(pActiveList);
+
+					for (int i = 0; i < activeCount; i++)
+					{
+						CBaseEntity* pEntity = reinterpret_cast<CBaseEntity*>(pActiveList[i]->GetGameData());
+						if (pEntity)
+						{
+							if (pEntity->CollisionProp()->DoesVPhysicsInvalidateSurroundingBox())
+							{
+								pEntity->CollisionProp()->MarkSurroundingBoundsDirty();
+							}
+							pEntity->VPhysicsUpdate(pActiveList[i]);
+						}
+					}
+					stackfree(pActiveList);
+				}
+
+				//if (g_ShadowEntities.Count() > 0)
+				//{
+				//	VPROF("PhysFrame VPhysicsShadowUpdate");
+				//	for (int i = g_ShadowEntities.Head(); i != g_ShadowEntities.InvalidIndex(); i = g_ShadowEntities.Next(i))
+				//	{
+				//		CBaseEntity* pEntity = g_ShadowEntities[i];
+
+				//		IPhysicsObject* pPhysics = pEntity->VPhysicsGetObject();
+				//		// apply updates
+				//		if (pPhysics && !pPhysics->IsAsleep())
+				//		{
+				//			pEntity->VPhysicsShadowUpdate(pPhysics);
+				//		}
+				//	}
+				//}
+
+				return;
+			}
+		} // from csgo
+
 		g_Collisions.BufferTouchEvents( true );
 #ifdef _DEBUG
 		physenv->DebugCheckContacts();
@@ -674,7 +727,7 @@ void CPhysicsSystem::PhysicsSimulate()
 								if ( IsBlockedShouldDisableCollisions( pEntity ) )
 								{
 									PhysDisableEntityCollisions( pEntity, pBlocker );
-									pActiveList[i]->RecheckContactPoints(true);
+									pActiveList[i]->RecheckContactPoints();
 									// GetClassname returns a pointer to the same buffer always!
 									//Msg("%s blocked !", pEntity->GetClassname() ); Msg("by %s\n", pBlocker->GetClassname() );
 								}

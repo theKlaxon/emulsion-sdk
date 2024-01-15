@@ -42,7 +42,7 @@ class CModelRenderSystem : public CAutoGameSystem, public IModelRenderSystem
 	// Methods of IModelRenderSystem
 public:
 	virtual void DrawModels( ModelRenderSystemData_t *pEntities, int nCount, ModelRenderMode_t renderMode );
-	virtual void DrawBrushModels(ModelRenderSystemData_t* pEntities, int nCount, ModelRenderMode_t renderMode) { DrawModels(pEntities, nCount, renderMode); } // new
+	virtual void DrawBrushModels(ModelRenderSystemData_t* pEntities, int nCount, ModelRenderMode_t renderMode);// { DrawModels(pEntities, nCount, renderMode); } // p2sdk
 	virtual void ComputeTranslucentRenderData( ModelRenderSystemData_t *pModels, int nCount, TranslucentInstanceRenderData_t *pRenderData, TranslucentTempData_t *pTempData );
 	virtual void CleanupTranslucentTempData( TranslucentTempData_t *pTempData );
 	virtual IMaterial *GetFastPathColorMaterial() { return m_DebugMaterial; }
@@ -511,7 +511,7 @@ void CModelRenderSystem::ComputeModelLODs( int nModelTypeCount, ModelListByType_
 		return;
 	}
 
-	int nLOD = 0;// r_lod.GetInt(); // for p2
+	int nLOD = r_lod.GetInt();
 	if ( nLOD >= 0 )
 	{
 		SlamModelLODs( nLOD, nModelTypeCount, pModelList, pModelListNode );
@@ -1163,7 +1163,6 @@ void CModelRenderSystem::SetupFlashlightsAndDecals( StudioModelArrayInfo2_t *pIn
 	StudioDecalHandle_t *pDecals = &pRenderModels->m_Decals;
 	modelrender->GetModelDecalHandles( pDecals, sizeof(RenderModelInfo_t), nTotalModelCount, pModelInstanceHandle );
 
-	// TODO: fix this!
 	// Builds a list of all flashlights affecting this model
 	uint32 *pFlashlightUsage = &pRenderModels->m_nFlashlightUsage;
 	pInfo->m_nFlashlightCount = shadowmgr->SetupFlashlightRenderInstanceInfo( pFlashlights, pFlashlightUsage, sizeof(RenderModelInfo_t), nTotalModelCount, pModelInstanceHandle );
@@ -1536,6 +1535,13 @@ void CModelRenderSystem::DrawModels( ModelRenderSystemData_t *pEntities, int nCo
 	RenderDebugOverlays( nModelTypeCount, pModelList, renderMode );
 
 	m_pRenderContext = NULL;
+}
+
+//-----------------------------------------------------------------------------
+// Draw brush models - re'd
+//-----------------------------------------------------------------------------
+void CModelRenderSystem::DrawBrushModels(ModelRenderSystemData_t* pEntities, int nCount, ModelRenderMode_t renderMode) {
+
 }
 
 //-----------------------------------------------------------------------------

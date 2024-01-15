@@ -20,5 +20,4 @@ $Group "everything"
 	"vgui_controls"
 	"particles"
 	"videocfg"
-	//"jolt"
 }

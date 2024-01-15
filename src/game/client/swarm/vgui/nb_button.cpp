@@ -55,8 +55,7 @@ void CNB_Button::Paint()
 	if ( !ShouldPaint() )
 		return; 
 
-	//BaseClass::BaseClass::Paint();  // skip drawing regular vgui::Button's focus border
-	BaseClass::Paint();  // skip drawing regular vgui::Button's focus border
+	BaseClass::BaseClass::Paint();  // skip drawing regular vgui::Button's focus border
 }
 
 void CNB_Button::DrawRoundedBox( int x, int y, int wide, int tall, Color color, float normalizedAlpha, bool bHighlightGradient, Color highlightCenterColor )

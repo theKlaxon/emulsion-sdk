@@ -931,14 +931,6 @@ public:
 
 			while( i-- )
 			{
-				// TODO: 0x00000000 crash here, check interface
-				//CJob* t = pThreadPool->QueueCall(this, &CParallelProcessor<ITEM_TYPE, ITEM_PROCESSOR_TYPE, ID_TO_PREVENT_COMDATS_IN_PROFILES>::DoExecute);
-
-				////t = pThreadPool->QueueRefCall(this, &CParallelProcessor<ITEM_TYPE, ITEM_PROCESSOR_TYPE, ID_TO_PREVENT_COMDATS_IN_PROFILES>::DoExecute);
-
-				//if (t != NULL)
-				//	jobs[i] = t;
-				// original, all lines above are testing
 				jobs[i] = pThreadPool->QueueCall( this, &CParallelProcessor<ITEM_TYPE, ITEM_PROCESSOR_TYPE, ID_TO_PREVENT_COMDATS_IN_PROFILES>::DoExecute );
 			}
 

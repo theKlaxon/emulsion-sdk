@@ -1,6 +1,0 @@
-UnlitGeneric
-{
-$basetexture "skybox/sky_blackup.vtf"
-$hdrbasetexture "skybox/sky_blackup.vtf"
-
-}

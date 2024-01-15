@@ -77,8 +77,8 @@ public:
 	{ 
 		m_Color = col; 
 	}
-
-	// derecated by new steam api
+	
+	// deprecated by new steam api
 	//void SetAvatarSize( EAvatarSize size )
 	//{
 	//	m_SourceArtSize = size;

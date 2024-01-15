@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VGenericPanelList.h"
 
 #include "vgui_controls/Label.h"
@@ -110,9 +110,9 @@ void GenericPanelList::OnKeyCodePressed( KeyCode code )
 	case KEY_XSTICK2_DOWN:
 	case KEY_XBUTTON_DOWN:
 	case KEY_DOWN:
-		if( /*!s_NavLock && */( m_ItemSelectionModeMask & GenericPanelList::ISM_PERITEM ) )
+		if( !s_NavLock && ( m_ItemSelectionModeMask & GenericPanelList::ISM_PERITEM ) )
 		{
-			//s_NavLock = 1;
+			s_NavLock = 1;
 			CBaseModPanel::GetSingleton().PlayUISound( UISOUND_FOCUS );
 			if( !m_CurrentSelectedItem && m_PanelItems.Count() > 0 )
 			{
@@ -149,20 +149,18 @@ void GenericPanelList::OnKeyCodePressed( KeyCode code )
 				BaseClass::OnKeyCodePressed( code );
 			}
 		}
-#ifdef SWARM_DLL
 		else if ( !s_NavLock && ( m_ItemSelectionModeMask & GenericPanelList::ISM_ELEVATOR ) )
 		{
 			ElevatorScroll( false );
 		}
-#endif
 		break;
 	case KEY_XSTICK1_UP:
 	case KEY_XSTICK2_UP:
 	case KEY_XBUTTON_UP:
 	case KEY_UP:
-		if( /*!s_NavLock &&*/ ( m_ItemSelectionModeMask & GenericPanelList::ISM_PERITEM ) )
+		if( !s_NavLock && ( m_ItemSelectionModeMask & GenericPanelList::ISM_PERITEM ) )
 		{
-			//s_NavLock = 1;
+			s_NavLock = 1;
 			CBaseModPanel::GetSingleton().PlayUISound( UISOUND_FOCUS );
 			if( !m_CurrentSelectedItem && m_PanelItems.Count() > 0 )
 			{
@@ -199,12 +197,10 @@ void GenericPanelList::OnKeyCodePressed( KeyCode code )
 				BaseClass::OnKeyCodePressed( code );
 			}
 		}
-#ifdef SWARM_DLL
 		else if ( !s_NavLock && ( m_ItemSelectionModeMask & GenericPanelList::ISM_ELEVATOR ) )
 		{
 			this->ElevatorScroll( true );
 		}
-#endif
 		break;
 
 	default:
@@ -597,12 +593,9 @@ void GenericPanelList::ApplySchemeSettings( IScheme *pScheme )
 		bgColor = GetSchemeColor( "GenericPanelList.BgColor", pScheme );
 	}
 
-	bgColor = Color(255, 0, 0, 255);
+	SetBorder( pScheme->GetBorder( "GenericPanelListBorder" ) );
+	SetBgColor( bgColor );
 
-	//SetBorder( pScheme->GetBorder( "GenericPanelListBorder" ) );
-	SetBgColor( bgColor ); // TODO URGENT: fix value of ESP error!!!!
-	SetBgColor( bgColor ); // TODO URGENT: fix value of ESP error!!!!
-	
 	m_LblDownArrow->SetFont( pScheme->GetFont( "GameUIButtons" ) );
 	m_LblUpArrow->SetFont( pScheme->GetFont( "GameUIButtons" ) );
 }

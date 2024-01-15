@@ -1,8 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "Models/props_office/vending_machine01"
-$surfaceprop default
-$selfillum 1
-$selfillummask "Models/props_office/vending_machine01_mask"
-$selfillumtint ".33 .33 .33"
-}

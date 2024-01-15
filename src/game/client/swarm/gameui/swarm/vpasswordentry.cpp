@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VPasswordEntry.h"
 
 #include "vgui_controls/Label.h"

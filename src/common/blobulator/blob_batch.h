@@ -17,6 +17,7 @@ typedef CBucketBlobBatch CBaseBlobBatch;
 
 class BlobData_t {
 public:
+	BlobData_t() {}
 	Vector m_Center;
 	float m_flScale;
 };
@@ -30,7 +31,7 @@ struct BlobBatchIndex_t {
 };
 
 struct BlobBucket_t {
-	BlobBucket_t() { m_nBlobCount = 0; }
+	BlobBucket_t() { m_nBlobCount = 0; /*m_Blobs = CUtlVectorFixed<BlobData_t, BLOB_BUCKET_SIZE>(); m_Blobs.EnsureCount(BLOB_BUCKET_SIZE); */ }
 	CUtlVectorFixed<BlobData_t, BLOB_BUCKET_SIZE> m_Blobs;
 	int m_nBlobCount;
 };
@@ -88,7 +89,8 @@ protected:
 	int m_nCurBucket;
 	int m_nCurBucketInnerIdx;
 	int m_nParticleCount;
+	//int m_nBukcetCnt;
 
-	SmartArray<BlobBucket_t> saBuckets;
-	SmartArray<ImpParticle> saParticles;
+	CUtlVector<BlobBucket_t> saBuckets;
+	CUtlVector<ImpParticle> saParticles;
 };

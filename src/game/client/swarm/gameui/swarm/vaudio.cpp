@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VAudio.h"
 #include "VFooterPanel.h"
 #include "VDropDownMenu.h"
@@ -931,7 +931,7 @@ Panel* Audio::NavigateBack()
 		m_pVoiceTweak->SetControlFloat( OtherSpeakerScale, flVal );
 	}
 
-	engine->ClientCmd_Unrestricted( VarArgs( "host_writeconfig_ss %d", XBX_GetActiveUserId() ) );
+	engine->ClientCmd_Unrestricted( VarArgs( "host_writeconfig_ss %d", XBX_GetPrimaryUserId() ) );
 
 	return BaseClass::NavigateBack();
 }

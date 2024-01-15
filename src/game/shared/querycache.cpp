@@ -52,8 +52,8 @@ void QueryCacheKey_t::ComputeHashIndex( void )
 	m_nHashIdx = ret % QUERYCACHE_HASH_SIZE;
 }
 
-
-ConVar	sv_disable_querycache("sv_disable_querycache", "0", FCVAR_CHEAT | FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY, "debug - disable trace query cache" );
+// was 0 in asw
+ConVar	sv_disable_querycache("sv_disable_querycache", "1", FCVAR_CHEAT | FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY, "debug - disable trace query cache" );
 
 static QueryCacheEntry_t *FindOrAllocateCacheEntry( QueryCacheKey_t const &entry )
 {
@@ -241,6 +241,7 @@ void UpdateQueryCache( void )
 			workList[i].m_nNumHashChainsToUpdate = ARRAYSIZE( s_HashChains ) - nCurEntry;
 		nCurEntry += ARRAYSIZE( s_HashChains ) / N_WAYS_TO_SPLIT_CACHE_UPDATE;
 	}
+	// SOMETHING IS FUCKY IN HERE - IT MAKE THE CRASHY CRASH - TODO: fix
 	ParallelProcess( workList, N_WAYS_TO_SPLIT_CACHE_UPDATE, ProcessQueryCacheUpdate, PreUpdateQueryCache, PostUpdateQueryCache, ( sv_disable_querycache.GetBool() ) ? 0 : INT_MAX );
 	// now, we need to take all of the obsolete cache entries each thread generated and add them to
 	// the victim cache

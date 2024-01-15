@@ -60,9 +60,8 @@
 #define	CONTENTS_MONSTERCLIP	0x20000
 
 // currents can be added to any other contents, and may be mixed
-#define	CONTENTS_BRUSH_PAINT	0x40000		// replaced this with the paint flag for p2, i dont need currents for my project
-//#define CONTENTS_CURRENT_0		0x40000
-#define CONTENTS_CURRENT_90		0x80000
+#define	CONTENTS_CURRENT_0		0x40000
+#define	CONTENTS_CURRENT_90		0x80000
 #define	CONTENTS_CURRENT_180	0x100000
 #define	CONTENTS_CURRENT_270	0x200000
 #define	CONTENTS_CURRENT_UP		0x400000
@@ -128,8 +127,6 @@
 #define MASK_VISIBLE_AND_NPCS		(MASK_OPAQUE_AND_NPCS|CONTENTS_IGNORE_NODRAW_OPAQUE)
 // bullets see these as solid
 #define	MASK_SHOT					(CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_MONSTER|CONTENTS_WINDOW|CONTENTS_DEBRIS|CONTENTS_HITBOX)
-// find floor height
-#define MASK_FLOORTRACE				(CONTENTS_SOLID|CONTENTS_MOVEABLE|                 CONTENTS_WINDOW|CONTENTS_DEBRIS)
 // bullets see these as solid, except monsters (world+brush only)
 #define MASK_SHOT_BRUSHONLY			(CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_WINDOW|CONTENTS_DEBRIS)
 // non-raycasted weapons see this as solid (includes grates)
@@ -150,7 +147,7 @@
 #define MASK_SPLITAREAPORTAL		(CONTENTS_WATER|CONTENTS_SLIME)
 
 // UNDONE: This is untested, any moving water
-#define MASK_CURRENT				(/*CONTENTS_CURRENT_0|*/CONTENTS_CURRENT_90|CONTENTS_CURRENT_180|CONTENTS_CURRENT_270|CONTENTS_CURRENT_UP|CONTENTS_CURRENT_DOWN)
+#define MASK_CURRENT				(CONTENTS_CURRENT_0|CONTENTS_CURRENT_90|CONTENTS_CURRENT_180|CONTENTS_CURRENT_270|CONTENTS_CURRENT_UP|CONTENTS_CURRENT_DOWN)
 
 // everything that blocks corpse movement
 // UNDONE: Not used yet / may be deleted

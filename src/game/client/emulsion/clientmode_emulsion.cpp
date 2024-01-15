@@ -21,8 +21,8 @@ void ClientModeEmulsion::InitViewport()
 	m_pViewport->SetPaintBackgroundEnabled(false);
 
 	char name[32];
-	V_snprintf(name,32,"Source 2011 viewport (ss slot %i)", engine->GetActiveSplitScreenPlayerSlot());
-	DevMsg("\nSource 2011 viewport (ss slot %i)", engine->GetActiveSplitScreenPlayerSlot());
+	V_snprintf(name,32,"Emulsion viewport (ss slot %i)", engine->GetActiveSplitScreenPlayerSlot());
+	DevMsg("\nEmulsion viewport (ss slot %i)", engine->GetActiveSplitScreenPlayerSlot());
 	m_pViewport->SetName(name);
 
 	// To actually support splitscreen, resize/reposition the viewport
@@ -36,7 +36,7 @@ void ClientModeEmulsionFullScreen::InitViewport()
 	m_pViewport = new CEmulsionViewportFullscreen();
 	m_pViewport->Start( gameuifuncs, gameeventmanager );
 	m_pViewport->SetPaintBackgroundEnabled(false);
-	m_pViewport->SetName( "Source 2011 viewport (fullscreen)" );
+	m_pViewport->SetName( "Emulsion viewport (fullscreen)" );
 
 	OverrideDefaultConVars();
 }
@@ -50,7 +50,6 @@ IClientMode* GetClientMode()
 {
 	ASSERT_LOCAL_PLAYER_RESOLVABLE();
 	return g_pClientMode[ engine->GetActiveSplitScreenPlayerSlot() ];
-	//return g_pClientMode[GET_ACTIVE_SPLITSCREEN_SLOT()];
 }
 
 ClientModeEmulsion g_ClientModeNormal[ MAX_SPLITSCREEN_PLAYERS ]; // The default mode
@@ -58,7 +57,6 @@ IClientMode* GetClientModeNormal()
 {
 	ASSERT_LOCAL_PLAYER_RESOLVABLE();
 	return &g_ClientModeNormal[ engine->GetActiveSplitScreenPlayerSlot() ];
-	//return &g_ClientModeNormal[GET_ACTIVE_SPLITSCREEN_SLOT()];
 }
 
 static ClientModeEmulsionFullScreen g_FullscreenClientMode; // There in also a singleton fullscreen mode which covers all splitscreen players

@@ -79,9 +79,6 @@ public:
 
 	// Bind vertex texture
 	virtual void BindVertexTexture( VertexTextureSampler_t vtSampler, ITexture *pTexture, int nFrameVar = 0 ) = 0;
-
-	// add shader combo information
-	virtual void AddShaderComboInformation(ShaderComboSemantics_t par1) = 0;
 };
 
 

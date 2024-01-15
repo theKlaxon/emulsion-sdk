@@ -1,6 +1,0 @@
-UnlitGeneric
-{
-$basetexture "vgui\loadout_header"
-$translucent 1
-$ignorez 1
-}

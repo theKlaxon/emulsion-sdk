@@ -4,7 +4,6 @@
 //
 //=====================================================================================//
 
-#include "cbase.h"
 #include "VVideo.h"
 #include "VFooterPanel.h"
 #include "VDropDownMenu.h"
@@ -1386,7 +1385,7 @@ void Video::ApplyChanges()
 	// apply changes
 	engine->ClientCmd_Unrestricted( "mat_savechanges\n" );
 
-	engine->ClientCmd_Unrestricted( VarArgs( "host_writeconfig_ss %d", XBX_GetActiveUserId() ) );
+	engine->ClientCmd_Unrestricted( VarArgs( "host_writeconfig_ss %d", XBX_GetPrimaryUserId() ) );
 	m_bDirtyValues = false;
 
 	// Update the current video config file.

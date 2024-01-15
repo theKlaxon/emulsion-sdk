@@ -82,11 +82,14 @@ public:
 	// Called when a level is shutdown (including changing levels)
 	virtual void			LevelShutdown( void ) = 0;
 
+	// Client is fully connected ( has received initial baseline of entities )
+	virtual void			ClientFullyConnect(void* pEdict) = 0; // moved for p2 compat
+
 	// Client is going active
 	virtual void			ClientActive( edict_t *pEntity ) = 0;
 
 	// Client is fully connected ( has received initial baseline of entities )
-	virtual void			ClientFullyConnect( edict_t *pEntity ) = 0;
+	//virtual void			ClientFullyConnect( edict_t *pEntity ) = 0; // asw vtable pos
 
 	// Client is disconnecting from server
 	virtual void			ClientDisconnect( edict_t *pEntity ) = 0;

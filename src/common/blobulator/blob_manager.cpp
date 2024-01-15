@@ -75,10 +75,10 @@ void CBlobManager::LevelInitPostEntity() {
 	data4.m_Center = center4;
 	data4.m_flScale = 1.75f;
 
-	m_Batches[0]->AddParticle(data);
-	m_Batches[0]->AddParticle(data2);
-	m_Batches[1]->AddParticle(data3);
-	m_Batches[1]->AddParticle(data4);
+	//m_Batches[0]->AddParticle(data);
+	//m_Batches[0]->AddParticle(data2);
+	//m_Batches[1]->AddParticle(data3);
+	//m_Batches[1]->AddParticle(data4);
 
 #else 
 
@@ -132,6 +132,16 @@ void CBlobManager::SetBlobPhysicsFunc(IParentedFuncPtr* ptr) {
 
 void CBlobManager::PreClientUpdate() {
 	pPhysicsFunc->Do(nullptr);
+}
+
+void CBlobManager::CreateBlob(Vector origin, float radius, int batch) {
+
+	BlobData_t data;
+	data.m_Center = origin;
+	data.m_flScale = radius;
+
+
+
 }
 
 #endif

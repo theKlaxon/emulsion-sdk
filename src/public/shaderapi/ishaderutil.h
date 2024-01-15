@@ -131,12 +131,6 @@ public:
 	virtual void UncacheUnusedMaterials( bool bRecomputeStateSnapshots = false ) = 0;
 
 	virtual bool IsInFrame( ) const = 0;
-
-	// TODO:
-	virtual ShaderAPITextureHandle_t GetLightmapTexture(ShaderAPITextureHandle_t nLightmapPage) = 0;
-	virtual bool IsRenderingPaint() const = 0;
-	virtual ShaderAPITextureHandle_t GetPaintmapTexture(ShaderAPITextureHandle_t nLightmapPage) = 0;
-
 };
 
 #endif // ISHADERUTIL_H

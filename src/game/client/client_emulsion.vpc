@@ -13,8 +13,8 @@ $Configuration
 {
 	$Compiler
 	{
-		$AdditionalIncludeDirectories	"$BASE;.\swarm;.\hl2;.\portal2;.\emulsion;.\swarm\vgui;$SRCDIR\game\shared\portal2;$SRCDIR\game\shared\portal;$SRCDIR\game\shared\emulsion;.\gameui;$SRCDIR\game\client\portal2\gameui;$SRCDIR\game\client\swarm\gameui\swarm;..\statemachine;"
-		$PreprocessorDefinitions		"$BASE;EMULSION_DLL;P2_DLL;PORTAL2;GAMEUI_EMBEDDED;GAMEUI_EXPORTS;SPLITSCREEN_STUBS"
+		$AdditionalIncludeDirectories	"$BASE;.\swarm;.\hl2;.\emulsion;.\swarm\vgui;$SRCDIR\game\shared\swarm;$SRCDIR\game\shared\emulsion;.\gameui;$SRCDIR\game\client\swarm\gameui;..\statemachine;"
+		$PreprocessorDefinitions		"$BASE;EMULSION_DLL;SWARM_DLL;GAMEUI_EMBEDDED;GAMEUI_EXPORTS;SPLITSCREEN_STUBS"
 	}
 }
 
@@ -27,8 +27,59 @@ $Project "Client (Emulsion)"
 
 	$Folder "Source Files"
 	{
+		$Folder "Blobulator"
+		{
+			$Folder "Headers"
+			{
+				$Folder "implicit"
+				{
+					$File "$SRCDIR\common\blobulator\implicit\imp_particle.h"
+					$File "$SRCDIR\common\blobulator\implicit\imp_renderer.h"
+					$File "$SRCDIR\common\blobulator\implicit\imp_tiler.h"
+					$File "$SRCDIR\common\blobulator\implicit\sweep_renderer.h"
+				}
+
+				$Folder "physics"
+				{
+					$File "$SRCDIR\common\blobulator\physics\phys_particle.h"
+					$File "$SRCDIR\common\blobulator\physics\phys_particle_cache.h"
+					$File "$SRCDIR\common\blobulator\physics\phys_tiler.h"
+				}
+
+				$File "$SRCDIR\common\blobulator\blob_batch.h"
+				$File "$SRCDIR\common\blobulator\blob_networked_batch.h"
+				$File "$SRCDIR\common\blobulator\blob_manager.h"
+				$File "$SRCDIR\common\blobulator\blob_render.h"
+				$File "$SRCDIR\common\blobulator\index_tri_vertex_buffer.h"
+				$File "$SRCDIR\common\blobulator\parented_func.h"
+				$File "$SRCDIR\common\blobulator\point_3D.h"
+				$File "$SRCDIR\common\blobulator\smartarray.h"
+			}
+			
+			$File "$SRCDIR\common\blobulator\blob_batch.cpp"
+			$File "$SRCDIR\common\blobulator\blob_networked_batch.cpp"
+			$File "$SRCDIR\common\blobulator\blob_manager.cpp"
+			$File "$SRCDIR\common\blobulator\blob_render.cpp"
+		}
+
 		$Folder	"Emulsion"
 		{		
+			$Folder "GameUI"
+			{
+				$File "emulsion\gameui\basemodpanel.cpp"
+				$File "emulsion\gameui\uigamedata.cpp"
+			}
+			
+			$Folder "Shared"
+			{
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_gamemovement.cpp"
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_gamerules.cpp"
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_shareddefs.h"
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_usermessages.cpp"
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_parsers.cpp"
+				$File 	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
+			}
+
 			$File	"emulsion\c_emulsion_player.h"
 			$File	"emulsion\c_emulsion_player.cpp"
 			$File	"emulsion\c_emulsion_lesson.cpp"
@@ -42,16 +93,7 @@ $Project "Client (Emulsion)"
 			$File	"emulsion\emulsion_in_main.cpp"
 			$File	"emulsion\emulsion_prediction.cpp"
 			$File	"emulsion\emulsion_rootpanel.cpp"
-			
-			$Folder "Shared"
-			{
-				$File	"$SRCDIR\game\shared\emulsion\emulsion_gamemovement.cpp"
-				$File	"$SRCDIR\game\shared\emulsion\emulsion_gamerules.cpp"
-				$File	"$SRCDIR\game\shared\emulsion\emulsion_shareddefs.h"
-				$File	"$SRCDIR\game\shared\emulsion\emulsion_usermessages.cpp"
-				$File	"$SRCDIR\game\shared\emulsion\emulsion_parsers.cpp"
-				$File 	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
-			}
+			$File	"emulsion\c_prop_devcube.cpp"
 		}
 	}
 

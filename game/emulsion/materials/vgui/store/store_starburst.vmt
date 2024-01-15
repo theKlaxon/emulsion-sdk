@@ -1,5 +1,0 @@
-unlitGeneric
-{
-$baseTexture "vgui/store/store_starburst"
-$translucent 1
-}

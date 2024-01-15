@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/props_office/sliding_door_sensor"
-$surfaceprop metal
-}

@@ -1,0 +1,56 @@
+@include "base.fgd"
+
+@PointClass base(Targetname, Parentname, Angles) iconsprite("editor/light.vmt") sphere(radius) = light_deferred
+[
+	spawnflags(flags) =
+	[
+		1 	: "Enabled" : 1
+		2 	: "Enable shadow" : 0
+		4 	: "Enable cookie" : 0
+		8 	: "Enable volumetrics" : 0
+		16	: "Enable lightstyle" : 0
+	]
+
+	light_type(Choices) : "Light type" : 0 : "" =
+	[
+		0 : "Point"
+		1 : "Spot"
+	]
+
+	diffuse(color255) : "Color diffuse" : "255 255 255 255" : ""
+	ambient(color255) : "Color ambient" : "10 10 10 255" : ""
+
+	radius(float) : "Radius" : "256.0" : ""
+	power(float) : "Falloff power" : "2.0" : ""
+
+	spot_cone_inner(float) : "Spotlight cone inner" : "35.0" : ""
+	spot_cone_outer(float) : "Spotlight cone outer" : "45.0" : ""
+
+	vis_dist(integer) : "Visible distance" : 2048 : ""
+	vis_range(integer) : "Visible fade range" : 512 : ""
+	shadow_dist(integer) : "Shadow distance" : 1536 : ""
+	shadow_range(integer) : "Shadow fade range" : 512 : ""
+
+	cookietex(string) : "Cookie texture" : : "Path to vtf or vgui projectable factory name."
+
+	style_seed(integer) : "Lightstyle seed" : -1 : ""
+	style_amt(float) : "Lightstyle amount" : "0.5" : ""
+	style_speed(float) : "Lightstyle speed" : "0.3" : ""
+	style_smooth(float) : "Lightstyle smoothing" : "0.5" : ""
+	style_random(float) : "Lightstyle random" : "0.5" : ""
+]
+
+@PointClass base(Targetname, Angles) iconsprite("editor/light_env.vmt") = light_deferred_global
+[
+	spawnflags(flags) =
+	[
+		1 	: "Enabled" : 1
+		2 	: "Enable shadow" : 1
+		4 	: "Enable transitions" : 1
+	]
+	diffuse(color255) : "Color diffuse" : "255 255 255 255" : ""
+	ambient_high(color255) : "Color ambient high" : "20 40 80 255" : ""
+	ambient_low(color255) : "Color ambient low" : "40 20 10 255" : ""
+
+	fadetime(float) : "Fade interval time" : "1.0" : ""
+]

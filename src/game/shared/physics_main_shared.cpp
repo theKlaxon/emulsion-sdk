@@ -1190,30 +1190,30 @@ bool CBaseEntity::PhysicsCheckWater( void )
 
 	// Compute current direction
 	Vector v( 0, 0, 0 );
-	//if ( cont & CONTENTS_CURRENT_0 )
-	//{
-	//	v[0] += 1;
-	//}
-	//if ( cont & CONTENTS_CURRENT_90 )
-	//{
-	//	v[1] += 1;
-	//}
-	//if ( cont & CONTENTS_CURRENT_180 )
-	//{
-	//	v[0] -= 1;
-	//}
-	//if ( cont & CONTENTS_CURRENT_270 )
-	//{
-	//	v[1] -= 1;
-	//}
-	//if ( cont & CONTENTS_CURRENT_UP )
-	//{
-	//	v[2] += 1;
-	//}
-	//if ( cont & CONTENTS_CURRENT_DOWN )
-	//{
-	//	v[2] -= 1;
-	//}
+	if ( cont & CONTENTS_CURRENT_0 )
+	{
+		v[0] += 1;
+	}
+	if ( cont & CONTENTS_CURRENT_90 )
+	{
+		v[1] += 1;
+	}
+	if ( cont & CONTENTS_CURRENT_180 )
+	{
+		v[0] -= 1;
+	}
+	if ( cont & CONTENTS_CURRENT_270 )
+	{
+		v[1] -= 1;
+	}
+	if ( cont & CONTENTS_CURRENT_UP )
+	{
+		v[2] += 1;
+	}
+	if ( cont & CONTENTS_CURRENT_DOWN )
+	{
+		v[2] -= 1;
+	}
 
 	// The deeper we are, the stronger the current.
 	Vector newBaseVelocity;

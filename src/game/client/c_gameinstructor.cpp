@@ -14,11 +14,6 @@
 #include "tier0/icommandline.h"
 #include "iclientmode.h"
 
-#ifdef P2_DLL
-#include "matchmaking/swarm/imatchext_swarm.h"
-#include "matchmaking/imatchframework.h"
-#endif
-
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -96,111 +91,7 @@ void SVGameInstructorDisable_ChangeCallback( IConVar *var, const char *pOldValue
 	}
 }
 
-void GameInstructor_KeyValueBuilder(KeyValues* pKeyValues)
-{
-	GetGameInstructor().KeyValueBuilder(pKeyValues);
-}
 
-void C_GameInstructor::KeyValueBuilder(KeyValues* pKeyValues)
-{
-
-}
-
-
-// Merged from L4D but waiting on other code to be merged before this can compile 
-class CGameInstructorUserNotificationsListener : public IMatchEventsSink
-{
-public:
-	CGameInstructorUserNotificationsListener() : m_nRefCount(0) {}
-
-public:
-	void RefCount(int nDelta);
-
-public:
-	virtual void OnEvent(KeyValues* pEvent);
-
-protected:
-	void OnGameUsersChanged();
-	void OnStorageDeviceAvailable(int iCtrlr);
-
-protected:
-	int m_nRefCount;
-};
-
-void CGameInstructorUserNotificationsListener::RefCount(int nDelta)
-{
-	if (!g_pMatchFramework)
-		return;
-
-#ifndef P2_DLL
-	if (m_nRefCount <= 0 && nDelta > 0)
-	{
-		g_pMatchFramework->GetEventsSubscription()->Subscribe(this);
-	}
-
-	if (m_nRefCount > 0 && m_nRefCount - nDelta <= 0)
-	{
-		g_pMatchFramework->GetEventsSubscription()->Unsubscribe(this);
-	}
-#endif
-
-	m_nRefCount = MAX(0, m_nRefCount + nDelta);
-}
-
-void CGameInstructorUserNotificationsListener::OnEvent(KeyValues* pEvent)
-{
-	char const* szEvent = pEvent->GetName();
-
-	if (!Q_stricmp(szEvent, "OnProfileDataLoaded"))
-	{
-		OnStorageDeviceAvailable(pEvent->GetInt("iController"));
-	}
-	else if (!Q_stricmp(szEvent, "OnProfilesChanged"))
-	{
-		OnGameUsersChanged();
-	}
-}
-
-void CGameInstructorUserNotificationsListener::OnGameUsersChanged()
-{
-	for (int i = 0; i < MAX_SPLITSCREEN_PLAYERS; ++i)
-	{
-		ACTIVE_SPLITSCREEN_PLAYER_GUARD(i);
-		GetGameInstructor().ResetDisplaysAndSuccesses();
-	}
-}
-
-void CGameInstructorUserNotificationsListener::OnStorageDeviceAvailable(int iCtrlr)
-{
-#ifdef _GAMECONSOLE
-	if (iCtrlr < 0 || iCtrlr >= XUSER_MAX_COUNT)
-		return;
-
-	int iSlot = XBX_GetSlotByUserId(iCtrlr);
-
-	if (iSlot < 0 || iSlot >= MAX_SPLITSCREEN_PLAYERS)
-		return;
-#elif !defined( SPLIT_SCREEN_STUBS )
-	int iSlot = iCtrlr;
-#endif
-
-	ACTIVE_SPLITSCREEN_PLAYER_GUARD(iSlot);
-	GetGameInstructor().RefreshDisplaysAndSuccesses();
-}
-
-CGameInstructorUserNotificationsListener s_GameInstructorUserNotificationsListener;
-
-void GameInstructor_Init()
-{
-	// Subscribe for match events
-	s_GameInstructorUserNotificationsListener.RefCount(+1);
-}
-
-void GameInstructor_Shutdown()
-{
-	// Unsubscribe for match events
-	s_GameInstructorUserNotificationsListener.RefCount(-1);
-}
 
 
 
@@ -726,8 +617,7 @@ bool C_GameInstructor::ReadSaveData( void )
 	KeyValues *data = new KeyValues( "Game Instructor Counts" );
 	KeyValues::AutoDelete autoDelete(data);
 
-	if ( data->LoadFromFileEX( g_pFullFileSystem, szFilename, NULL ) )
-	//if ( data->LoadFromFile( g_pFullFileSystem, szFilename, "SKIN" ) )
+	if ( data->LoadFromFile( g_pFullFileSystem, szFilename, NULL ) ) // was EX
 	{
 		int nVersion = 0;
 
@@ -1386,8 +1276,7 @@ void C_GameInstructor::ReadLessonsFromFile( const char *pchFileName )
 	ACTIVE_SPLITSCREEN_PLAYER_GUARD( m_nSplitScreenSlot );
 	KeyValues *pLessonKeys = new KeyValues( "instructor_lessons" );
 	KeyValues::AutoDelete autoDelete(pLessonKeys);
-	pLessonKeys->LoadFromFileEX( g_pFullFileSystem, pchFileName, NULL );
-	//pLessonKeys->LoadFromFile( g_pFullFileSystem, pchFileName, "SKIN" );
+	pLessonKeys->LoadFromFile( g_pFullFileSystem, pchFileName, NULL );
 
 	for ( m_pScriptKeys = pLessonKeys->GetFirstTrueSubKey(); m_pScriptKeys; m_pScriptKeys = m_pScriptKeys->GetNextTrueSubKey() )
 	{

@@ -152,8 +152,6 @@ public:
 	// Returns the shadow cast type
 	virtual ShadowType_t ShadowCastType() = 0;
 
-	//virtual void Unused2() {}
-
 	// Create/get/destroy model instance
 	virtual void CreateModelInstance() = 0;
 	virtual ModelInstanceHandle_t GetModelInstance() = 0;
@@ -165,8 +163,8 @@ public:
 	virtual int LookupAttachment( const char *pAttachmentName ) = 0;
 	virtual	bool GetAttachment( int number, Vector &origin, QAngle &angles ) = 0;
 	virtual bool GetAttachment( int number, matrix3x4_t &matrix ) = 0;
-	virtual bool ComputeLightingOrigin(int par1, Vector par2, const matrix3x4_t& par3, Vector& par4) { return false; }
-	//virtual bool ComputeLightingOrigin(int nAttachmentIndex, Vector modelLightingCenter, const matrix3x4_t& matrix, Vector& transformedLightingCenter) = 0;
+
+	virtual bool ComputeLightingOrigin(int par1, Vector par2, const matrix3x4_t& par3, Vector& par4) { return false; } // p2sdk
 
 	// Rendering clip plane, should be 4 floats, return value of NULL indicates a disabled render clip plane
 	virtual float *GetRenderClipPlane( void ) = 0;
@@ -314,7 +312,7 @@ public:
 	virtual uint8	OverrideAlphaModulation( uint8 nAlpha ) { return nAlpha; }
 	virtual uint8	OverrideShadowAlphaModulation( uint8 nAlpha ) { return nAlpha; }
 
-	virtual IClientModelRenderable* GetClientModelRenderable() { return 0; }
+	virtual IClientModelRenderable* GetClientModelRenderable() { return 0; } // p2 vtable pos
 
 // IClientUnknown implementation.
 public:
@@ -328,6 +326,7 @@ public:
 	virtual IClientEntity*		GetIClientEntity()		{ return 0; }
 	virtual C_BaseEntity*		GetBaseEntity()			{ return 0; }
 	virtual IClientThinkable*	GetClientThinkable()	{ return 0; }
+	//virtual IClientModelRenderable*	GetClientModelRenderable()	{ return 0; }
 	virtual IClientAlphaProperty*	GetClientAlphaProperty() { return 0; }
 
 public:

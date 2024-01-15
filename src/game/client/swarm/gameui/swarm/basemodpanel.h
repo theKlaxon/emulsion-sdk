@@ -11,8 +11,8 @@
 #include "vgui_controls/Frame.h"
 #include "vgui_controls/Button.h"
 #include "tier1/utllinkedlist.h"
-#include "../OptionsDialog.h"
-#include "../OptionsSubKeyboard.h"
+#include "OptionsDialog.h"
+#include "OptionsSubKeyboard.h"
 #include "avi/ibik.h"
 #include "ixboxsystem.h"
 #include "matchmaking/imatchframework.h"
@@ -202,9 +202,7 @@ namespace BaseModUI
 
 		static CBaseModPanel* m_CFactoryBasePanel;
 
-	public:
 		vgui::DHANDLE< CBaseModFrame > m_Frames[WT_WINDOW_COUNT];
-	private:
 		vgui::DHANDLE< CBaseModFooterPanel > m_FooterPanel;
 		WINDOW_TYPE m_ActiveWindow[WPRI_COUNT];
 		bool m_LevelLoading;

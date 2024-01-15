@@ -286,10 +286,7 @@ public:
 	void	PropSetSequence( int nSequence );
 	void	OnRestore( void );
 	bool	OverridePropdata( void );
-
 	virtual void HandleAnimEvent( animevent_t *pEvent );
-	virtual int	ShouldTransmit(const CCheckTransmitInfo* pInfo) { return 0; }
-
 
 	// baseentity - watch dynamic hierarchy updates
 	virtual void	SetParent( CBaseEntity* pNewParent, int iAttachment = -1 );

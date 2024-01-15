@@ -80,12 +80,7 @@ void ParseParticleEffects( bool bLoadSheets )
 //-----------------------------------------------------------------------------
 void PrecacheStandardParticleSystems( )
 {
-	// TODO: fix Exception thrown: read access violation.
-	// this->** m_pParticleSystemDictionary** was nullptr.
-
-//#ifdef GAME_DLL2
-
-
+#ifdef GAME_DLL
 	// Now add each particle system name to the network string pool, so we can send string_t's 
 	// down to the client instead of full particle system names.
 	for ( int i = 0; i < g_pParticleSystemMgr->GetParticleSystemCount(); i++ )
@@ -97,7 +92,7 @@ void PrecacheStandardParticleSystems( )
 			PrecacheParticleSystem( pParticleSystemName );
 		}
 	}
-//#endif
+#endif
 }
 
 

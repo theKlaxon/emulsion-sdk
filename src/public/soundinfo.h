@@ -77,7 +77,7 @@ struct SoundInfo_t
 	Vector			vOrigin;
 	Vector			vDirection;
 	Vector			vListenerOrigin;
-	const char* pszName;		// UNDONE: Make this a FilenameHandle_t to avoid bugs with arrays of these
+	const char		*pszName;		// UNDONE: Make this a FilenameHandle_t to avoid bugs with arrays of these
 	float			fVolume;
 	float			fDelay;
 	float			fTickTime;			// delay is encoded relative to this tick, fix up if packet is delayed
@@ -86,32 +86,23 @@ struct SoundInfo_t
 	int				nChannel;
 	int				nPitch;
 	int				nFlags;
-	unsigned int 	nSoundNum;
+	int 			nSoundNum;
 	int				nSpeakerEntity;
-	int				nRandomSeed;
+	int				nRandomSeed; // p2
 	soundlevel_t	Soundlevel;
 	bool			bIsSentence;
 	bool			bIsAmbient;
 	bool			bLooping;
-
-
+	
 	//---------------------------------
-
-	enum SoundInfoInit_t
+	
+	SoundInfo_t()
 	{
-		SOUNDINFO_SETDEFAULT,
-		SOUNDINFO_NO_SETDEFAULT,
-	};
-	SoundInfo_t(SoundInfoInit_t Init = SOUNDINFO_SETDEFAULT)
-	{
-		if (Init == SOUNDINFO_SETDEFAULT)
-		{
-			SetDefault();
-		}
+		SetDefault();
 	}
 
-	void Set(int newEntity, int newChannel, const char* pszNewName, const Vector& newOrigin, const Vector& newDirection,
-		float newVolume, soundlevel_t newSoundLevel, bool newLooping, int newPitch, const Vector& vecListenerOrigin, int speakerentity, int nSeed)
+	void Set(int newEntity, int newChannel, const char *pszNewName, const Vector &newOrigin, const Vector& newDirection, 
+			float newVolume, soundlevel_t newSoundLevel, bool newLooping, int newPitch, const Vector &vecListenerOrigin, int speakerentity, int nSeed )
 	{
 		nEntityIndex = newEntity;
 		nChannel = newChannel;
@@ -144,11 +135,11 @@ struct SoundInfo_t
 		nRandomSeed = 0;
 
 		pszName = NULL;
-
+	
 		bLooping = false;
 		bIsSentence = false;
 		bIsAmbient = false;
-
+		
 		vOrigin.Init();
 		vDirection.Init();
 		vListenerOrigin.Init();
@@ -391,13 +382,13 @@ struct SpatializationInfo_t
 	SoundInfo_t			info;
 
 	// Requested Outputs ( NULL == not requested )
-	Vector* pOrigin;
-	QAngle* pAngles;
-	float* pflRadius;
+	Vector				*pOrigin;
+	QAngle				*pAngles;
+	float				*pflRadius;
 
-	CUtlVector< Vector >* m_pUtlVecMultiOrigins;
-	CUtlVector< QAngle >* m_pUtlVecMultiAngles;
-
+	// new for p2sdk
+	CUtlVector<Vector>* m_pUtlVecMultiOrigins;
+	CUtlVector<QAngle>* m_pUtlVecMultiAngles;
 };
 #pragma pack()
 

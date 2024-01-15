@@ -44,9 +44,6 @@ class CUtlVector
 public:
 	typedef T ElemType_t;
 
-	typedef T* iterator;
-	typedef const T* const_iterator;
-
 	// constructor, destructor
 	CUtlVector( int growSize = 0, int initSize = 0 );
 	CUtlVector( T* pMemory, int allocationCount, int numElements = 0 );
@@ -64,11 +61,6 @@ public:
 	const T& Head() const;
 	T& Tail();
 	const T& Tail() const;
-
-	iterator begin()				{ return Base(); }
-	const_iterator begin() const	{ return Base(); }
-	iterator end()					{ return Base() + Count(); }
-	const_iterator end() const		{ return Base() + Count(); }
 
 	// Gets the base address (can change when adding elements!)
 	T* Base()								{ return m_Memory.Base(); }

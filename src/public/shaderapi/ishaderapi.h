@@ -362,8 +362,7 @@ public:
 	virtual void ForceDepthFuncEquals( bool bEnable ) = 0;
 
 	// Forces Z buffering to be on or off
-	//virtual void OverrideDepthEnable( bool bEnable, bool bDepthEnable ) = 0;
-	virtual void OverrideDepthEnable( bool bEnable, bool bDepthEnable, bool p3 = false ) = 0;
+	virtual void OverrideDepthEnable( bool bEnable, bool bDepthEnable ) = 0;
 
 	virtual void SetHeightClipZ( float z ) = 0; 
 	virtual void SetHeightClipMode( enum MaterialHeightClipMode_t heightClipMode ) = 0; 

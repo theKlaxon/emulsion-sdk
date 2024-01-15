@@ -13,14 +13,14 @@ class vgui::Label;
 class vgui::Panel;
 class vgui::Button;
 class vgui::ImagePanel;
-//class CNB_Lobby_Row;
-//class CNB_Lobby_Row_Small;
-//class CNB_Lobby_Tooltip;
-//class CNB_Mission_Summary;
+class CNB_Lobby_Row;
+class CNB_Lobby_Row_Small;
+class CNB_Lobby_Tooltip;
+class CNB_Mission_Summary;
 class CNB_Header_Footer;
 class CNB_Button;
 // == MANAGED_CLASS_DECLARATIONS_END ==
-//class CNB_Vote_Panel;
+class CNB_Vote_Panel;
 class CBitmapButton;
 
 class CNB_Main_Panel : public vgui::EditablePanel
@@ -49,18 +49,18 @@ public:
 	vgui::Label	*m_pLeaderLabel;
 	
 	vgui::ImagePanel	*m_pReadyCheckImage;
-	//CNB_Lobby_Row	*m_pLobbyRow0;
-	//CNB_Lobby_Row_Small	*m_pLobbyRow1;
-	//CNB_Lobby_Row_Small	*m_pLobbyRow2;
-	//CNB_Lobby_Row_Small	*m_pLobbyRow3;
-	//CNB_Lobby_Tooltip	*m_pLobbyTooltip;
-	//CNB_Mission_Summary	*m_pMissionSummary;
+	CNB_Lobby_Row	*m_pLobbyRow0;
+	CNB_Lobby_Row_Small	*m_pLobbyRow1;
+	CNB_Lobby_Row_Small	*m_pLobbyRow2;
+	CNB_Lobby_Row_Small	*m_pLobbyRow3;
+	CNB_Lobby_Tooltip	*m_pLobbyTooltip;
+	CNB_Mission_Summary	*m_pMissionSummary;
 	// == MANAGED_MEMBER_POINTERS_END ==
 	CNB_Button	*m_pReadyButton;
 	CNB_Button	*m_pMissionDetailsButton;
 	CNB_Button	*m_pFriendsButton;
 	CNB_Button	*m_pPromotionButton;
-	//CNB_Vote_Panel *m_pVotePanel;
+	CNB_Vote_Panel *m_pVotePanel;
 	CBitmapButton *m_pChatButton;
 	CBitmapButton *m_pVoteButton;
 

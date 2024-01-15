@@ -4045,17 +4045,6 @@ FORCEINLINE int BoxOnPlaneSideSIMD( const fltx4& emins, const fltx4& emaxs, cons
 	return sides[0];
 }
 
-inline bool IsVector3LessThan(const fltx4& v1, const fltx4& v2)
-{
-	fltx4 isOut = CmpLtSIMD(v1, v2);
-	return IsAnyNegative(isOut);
-}
-
-inline bool IsVector4LessThan(const fltx4& v1, const fltx4& v2)
-{
-	fltx4 isOut = CmpLtSIMD(v1, v2);
-	return IsAnyNegative(isOut);
-}
 
 // k-dop bounding volume. 26-dop bounds with 13 plane-pairs plus 3 other "arbitrary bounds". The arbitrary values could be used to hold type info, etc,
 // which can compare against "for free"

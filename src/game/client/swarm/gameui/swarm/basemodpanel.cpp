@@ -79,7 +79,6 @@
 #include "fmtstr.h"
 #include "smartptr.h"
 #include "nb_header_footer.h"
-#include "GameUI/IGameConsole.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -90,9 +89,7 @@ using namespace vgui;
 //setup in GameUI_Interface.cpp
 extern class IMatchSystem *matchsystem;
 extern const char *COM_GetModDirectory( void );
-#ifdef SWARM_DLL
 extern IGameConsole *IGameConsole();
-#endif
 
 //=============================================================================
 CBaseModPanel* CBaseModPanel::m_CFactoryBasePanel = 0;
@@ -191,7 +188,7 @@ CBaseModPanel::CBaseModPanel(): BaseClass(0, "CBaseModPanel"),
 	IScheme *pScheme = vgui::scheme()->GetIScheme( m_UIScheme );
 	m_hDefaultFont = pScheme->GetFont( "Default", true );
 	vgui::surface()->PrecacheFontCharacters( m_hDefaultFont, NULL );
-	vgui::surface()->PrecacheFontCharacters( pScheme->GetFont("DefaultBold", true), NULL );
+	vgui::surface()->PrecacheFontCharacters( pScheme->GetFont( "DefaultBold", true ), NULL );
 	vgui::surface()->PrecacheFontCharacters( pScheme->GetFont( "DefaultLarge", true ), NULL );
 	vgui::surface()->PrecacheFontCharacters( pScheme->GetFont( "FrameTitle", true ), NULL );
 
@@ -548,8 +545,7 @@ CBaseModFrame* CBaseModPanel::OpenWindow(const WINDOW_TYPE & wt, CBaseModFrame *
 
 		newNav->SetWindowPriority( nWindowPriority );
 		newNav->SetWindowType(wt);
-		//newNav->SetVisible( false );
-		newNav->SetVisible( true );
+		newNav->SetVisible( false );
 	}
 
 	newNav->SetDataSettings( pParameters );
@@ -586,7 +582,7 @@ CBaseModFrame* CBaseModPanel::OpenWindow(const WINDOW_TYPE & wt, CBaseModFrame *
 	else if (caller != 0)
 	{
 		caller->FindAndSetActiveControl();
-		caller->SetAlpha(128);
+		//caller->SetAlpha(128);
 	}
 
 	// Check if a higher priority window is open
@@ -602,7 +598,7 @@ CBaseModFrame* CBaseModPanel::OpenWindow(const WINDOW_TYPE & wt, CBaseModFrame *
 
 		// There's a higher priority window that was open at the moment,
 		// hide our window for now, it will get restored later.
-		newNav->SetVisible( false );
+		// newNav->SetVisible( false );
 	}
 	else
 	{
@@ -676,7 +672,7 @@ void CBaseModPanel::SetActiveWindow( CBaseModFrame * frame )
 				GetActiveWindowPriority(), frame->GetName() );
 		}
 
-		frame->SetVisible( false );
+		// frame->SetVisible( false );
 	}
 	else
 	{
@@ -728,7 +724,7 @@ void CBaseModPanel::OnFrameClosed( WINDOW_PRIORITY pri, WINDOW_TYPE wt )
 		if ( !pFrame )
 			continue;
 
-		pFrame->AddActionSignalTarget(this);
+		// pFrame->AddActionSignalTarget(this);
 
 		pFrame->InvalidateLayout(false, false);
 		pFrame->OnOpen();
@@ -882,8 +878,11 @@ bool CBaseModPanel::ActivateBackgroundEffects()
 
 //=============================================================================
 void CBaseModPanel::OnGameUIActivated()
-{ 
-	DevMsg("[GAMEUI] CBaseModPanel::OnGameUIActivated( delay = %d )\n", m_DelayActivation);
+{
+	if ( UI_IsDebug() )
+	{
+		Msg( "[GAMEUI] CBaseModPanel::OnGameUIActivated( delay = %d )\n", m_DelayActivation );
+	}
 
 	if ( m_DelayActivation )
 	{
@@ -982,18 +981,18 @@ void CBaseModPanel::OnGameUIHidden()
 	g_pXboxInstaller->Stop();
 #endif
 
- 	// We want to check here if we have any pending message boxes and
- 	// if so, then we cannot just simply destroy all the UI elements
- 	for ( int k = WPRI_NORMAL + 1; k < WPRI_LOADINGPLAQUE; ++ k )
- 	{
- 		WINDOW_TYPE wt = m_ActiveWindow[k];
- 		if ( wt != WT_NONE )
- 		{
- 			Msg( "[GAMEUI] CBaseModPanel::OnGameUIHidden() - not destroying UI because of wt %d pri %d\n",
- 				wt, k );
- 			return;
- 		}
- 	}
+// 	// We want to check here if we have any pending message boxes and
+// 	// if so, then we cannot just simply destroy all the UI elements
+// 	for ( int k = WPRI_NORMAL + 1; k < WPRI_LOADINGPLAQUE; ++ k )
+// 	{
+// 		WINDOW_TYPE wt = m_ActiveWindow[k];
+// 		if ( wt != WT_NONE )
+// 		{
+// 			Msg( "[GAMEUI] CBaseModPanel::OnGameUIHidden() - not destroying UI because of wt %d pri %d\n",
+// 				wt, k );
+// 			return;
+// 		}
+// 	}
 
 	SetVisible(false);
 	
@@ -1065,10 +1064,10 @@ void CBaseModPanel::OpenFrontScreen()
 //=============================================================================
 void CBaseModPanel::RunFrame()
 {
-	//if (s_NavLock > 0 )
-	//{
-	//	--s_NavLock; // i just used a pre proc def for this to fix a batch of errors
-	//}
+	if ( s_NavLock > 0 )
+	{
+		--s_NavLock;
+	}
 
 	GetAnimationController()->UpdateAnimations( Plat_FloatTime() );
 
@@ -1081,7 +1080,10 @@ void CBaseModPanel::RunFrame()
 		m_DelayActivation--;
 		if ( !m_LevelLoading && !m_DelayActivation )
 		{
-			DevMsg("[GAMEUI] Executing delayed UI activation\n");
+			if ( UI_IsDebug() )
+			{
+				Msg( "[GAMEUI] Executing delayed UI activation\n");
+			}
 			OnGameUIActivated();
 		}
 	}
@@ -1108,8 +1110,6 @@ void CBaseModPanel::RunFrame()
 	{
 		bDoBlur = GameClientExports()->ClientWantsBlurEffect();
 	}
-
-	m_flBlurScale = 0.0f;
 
 	float nowTime = Plat_FloatTime();
 	float deltaTime = nowTime - m_flLastBlurTime;
@@ -1171,8 +1171,11 @@ void CBaseModPanel::OnLevelLoadingStarted( char const *levelName, bool bShowProg
 
 	CloseAllWindows();
 
-	DevMsg("[GAMEUI] OnLevelLoadingStarted - opening loading progress (%s)...\n",
-		levelName ? levelName : "<< no level specified >>");
+	if ( UI_IsDebug() )
+	{
+		Msg( "[GAMEUI] OnLevelLoadingStarted - opening loading progress (%s)...\n",
+			levelName ? levelName : "<< no level specified >>" );
+	}
 
 	LoadingProgress *pLoadingProgress = static_cast<LoadingProgress*>( OpenWindow( WT_LOADINGPROGRESS, 0 ) );
 
@@ -1214,8 +1217,7 @@ void CBaseModPanel::OnLevelLoadingStarted( char const *levelName, bool bShowProg
 				pGameSettings->SetString( "game/mode", r_mp_gamemode.GetString() );
 			}
 		}
-
-#ifdef SWARM_DLL
+		
 		KeyValues::AutoDelete autodelete_pGameSettings( pGameSettings );
 		if ( pGameSettings )
 		{
@@ -1225,10 +1227,8 @@ void CBaseModPanel::OnLevelLoadingStarted( char const *levelName, bool bShowProg
 			pChapterInfo = g_pMatchExtSwarm->GetMapInfoByBspName( pGameSettings, levelName, &pMissionInfo );
 			Q_strncpy( chGameMode, pGameSettings->GetString( "game/mode", "" ), ARRAYSIZE( chGameMode ) );
 		}
-#endif
 	}
 	
-#ifdef SWARM_DLL
 	IMatchSession *pSession = g_pMatchFramework->GetMatchSession();
 	if ( !pChapterInfo && pSession  )
 	{
@@ -1238,7 +1238,6 @@ void CBaseModPanel::OnLevelLoadingStarted( char const *levelName, bool bShowProg
 			Q_strncpy( chGameMode, pSettings->GetString( "game/mode", "" ), ARRAYSIZE( chGameMode ) );
 		}
 	}
-#endif
 
 	//
 	// If we are just loading into some unknown map, then fake chapter information
@@ -1827,7 +1826,7 @@ void CBaseModPanel::ApplySchemeSettings(IScheme *pScheme)
 	surface()->GetScreenSize( screenWide, screenTall );
 
 	char filename[MAX_PATH];
-	V_snprintf( filename, sizeof( filename ), "VGUI/loading_screens/loadingscreen_a1_1" ); // TODO: engine->GetStartupImage( filename, sizeof( filename ), screenWide, screenTall );
+	V_snprintf( filename, sizeof( filename ), "VGUI/swarm/loading/BGFX01" ); // TODO: engine->GetStartupImage( filename, sizeof( filename ), screenWide, screenTall );
 	m_iBackgroundImageID = surface()->CreateNewTextureID();
 	surface()->DrawSetTextureFile( m_iBackgroundImageID, filename, true, false );
 
@@ -1993,7 +1992,6 @@ void CBaseModPanel::PaintBackground()
 		int wide, tall;
 		GetSize( wide, tall );
 
-#ifdef SWARM_DLL
 		if ( engine->IsTransitioningToLoad() )
 		{
 			// ensure the background is clear
@@ -2004,9 +2002,7 @@ void CBaseModPanel::PaintBackground()
 			surface()->DrawTexturedRect( 0, 0, wide, tall );
 		}
 		else
-#endif
 		{
-			// TODOl: fix the broken music shit called here
 			ActivateBackgroundEffects();
 
 			if ( ASWBackgroundMovie() )

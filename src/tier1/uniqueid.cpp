@@ -6,7 +6,6 @@
 //
 // Unique ID generation
 //=============================================================================//
-#include "cbase.h"
 #include "tier0/platform.h"
 #include "tier0/dbg.h"
 #include <strtools.h>

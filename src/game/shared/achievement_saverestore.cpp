@@ -35,49 +35,52 @@ public:
 
 	void Save( ISave *pSave )
 	{
-		// TODO: replace this!!!!
-		//CAchievementMgr *pAchievementMgr = dynamic_cast<CAchievementMgr *>( engine->GetAchievementMgr() );
-		//if ( !pAchievementMgr )
-		//	return;
+#ifdef EMULSION_DLL
+		return;
+#else
+		CAchievementMgr *pAchievementMgr = dynamic_cast<CAchievementMgr *>( engine->GetAchievementMgr() );
+		if ( !pAchievementMgr )
+			return;
 
-		//// save global achievement mgr state to separate file if there have been any changes, so in case of a crash
-		//// the global state is consistent with last save game
-		//pAchievementMgr->SaveGlobalStateIfDirty();
+		// save global achievement mgr state to separate file if there have been any changes, so in case of a crash
+		// the global state is consistent with last save game
+		pAchievementMgr->SaveGlobalStateIfDirty();
 
-		//pSave->StartBlock( "Achievements" );
-		//int iTotalAchievements = pAchievementMgr->GetAchievementCount();
-		//short nSaveCount = 0;
-		//// count how many achievements should be saved. 
-		//for ( int i = 0; i < iTotalAchievements; i++ )
-		//{
-		//	// We only save games in SP games so the assumption of SINGLE_PLAYER_SLOT is valid
-		//	IAchievement *pAchievement = pAchievementMgr->GetAchievementByIndex( i, SINGLE_PLAYER_SLOT );
-		//	if ( pAchievement->ShouldSaveWithGame() )
-		//	{
-		//		nSaveCount++;
-		//	}
-		//}
-		//// Write # of saved achievements
-		//pSave->WriteShort( &nSaveCount );
-		//// Write out each achievement
-		//for ( int i = 0; i < iTotalAchievements; i++ )
-		//{
-		//	// We only save games in SP games so the assumption of SINGLE_PLAYER_SLOT is valid
-		//	IAchievement *pAchievement = pAchievementMgr->GetAchievementByIndex( i, SINGLE_PLAYER_SLOT );
-		//	if ( pAchievement->ShouldSaveWithGame() )
-		//	{				
-		//		CBaseAchievement *pBaseAchievement = dynamic_cast< CBaseAchievement * >( pAchievement );
-		//		if ( pBaseAchievement )
-		//		{
-		//			short iAchievementID = (short) pBaseAchievement->GetAchievementID();
-		//			// write the achievement ID
-		//			pSave->WriteShort( &iAchievementID );
-		//			// write the achievement data
-		//			pSave->WriteAll( pBaseAchievement, pBaseAchievement->GetDataDescMap() );
-		//		}
-		//	}
-		//}
-		//pSave->EndBlock();
+		pSave->StartBlock( "Achievements" );
+		int iTotalAchievements = pAchievementMgr->GetAchievementCount();
+		short nSaveCount = 0;
+		// count how many achievements should be saved. 
+		for ( int i = 0; i < iTotalAchievements; i++ )
+		{
+			// We only save games in SP games so the assumption of SINGLE_PLAYER_SLOT is valid
+			IAchievement *pAchievement = pAchievementMgr->GetAchievementByIndex( i, SINGLE_PLAYER_SLOT );
+			if ( pAchievement->ShouldSaveWithGame() )
+			{
+				nSaveCount++;
+			}
+		}
+		// Write # of saved achievements
+		pSave->WriteShort( &nSaveCount );
+		// Write out each achievement
+		for ( int i = 0; i < iTotalAchievements; i++ )
+		{
+			// We only save games in SP games so the assumption of SINGLE_PLAYER_SLOT is valid
+			IAchievement *pAchievement = pAchievementMgr->GetAchievementByIndex( i, SINGLE_PLAYER_SLOT );
+			if ( pAchievement->ShouldSaveWithGame() )
+			{				
+				CBaseAchievement *pBaseAchievement = dynamic_cast< CBaseAchievement * >( pAchievement );
+				if ( pBaseAchievement )
+				{
+					short iAchievementID = (short) pBaseAchievement->GetAchievementID();
+					// write the achievement ID
+					pSave->WriteShort( &iAchievementID );
+					// write the achievement data
+					pSave->WriteAll( pBaseAchievement, pBaseAchievement->GetDataDescMap() );
+				}
+			}
+		}
+		pSave->EndBlock();
+#endif
 	}
 
 	//---------------------------------
@@ -104,43 +107,47 @@ public:
 
 	void Restore( IRestore *pRestore, bool createPlayers )
 	{
-		// TODO: replace this!!!!!!!!
-		//CAchievementMgr *pAchievementMgr = dynamic_cast<CAchievementMgr *>( engine->GetAchievementMgr() );
-		//if ( !pAchievementMgr )
-		//	return;
+#ifdef EMULSION_DLL
+		return;
+#else
 
-		//if ( m_fDoLoad )
-		//{
-		//	pAchievementMgr->PreRestoreSavedGame();
+		CAchievementMgr *pAchievementMgr = dynamic_cast<CAchievementMgr *>( engine->GetAchievementMgr() );
+		if ( !pAchievementMgr )
+			return;
 
-		//	pRestore->StartBlock();
-		//	// read # of achievements
-		//	int nSavedAchievements = pRestore->ReadShort();
-		//	
-		//	while ( nSavedAchievements-- )
-		//	{
-		//		// read achievement ID
-		//		int iAchievementID = pRestore->ReadShort();
-		//		// find the corresponding achievement object
-		//		// We only save games in SP games so the assumption of SINGLE_PLAYER_SLOT is valid
-		//		CBaseAchievement *pAchievement = pAchievementMgr->GetAchievementByID( iAchievementID, SINGLE_PLAYER_SLOT );				
-		//		Assert( pAchievement );		// It's a bug if we don't understand this achievement
-		//		if ( pAchievement )
-		//		{
-		//			// read achievement data
-		//			pRestore->ReadAll( pAchievement, pAchievement->GetDataDescMap() );
-		//		}
-		//		else
-		//		{
-		//			// if we don't recognize the achievement for some reason, read and discard the data and keep going
-		//			CBaseAchievement ignored;
-		//			pRestore->ReadAll( &ignored, ignored.GetDataDescMap() );
-		//		}
-		//	}
-		//	pRestore->EndBlock();
+		if ( m_fDoLoad )
+		{
+			pAchievementMgr->PreRestoreSavedGame();
 
-		//	pAchievementMgr->PostRestoreSavedGame();
-		//}
+			pRestore->StartBlock();
+			// read # of achievements
+			int nSavedAchievements = pRestore->ReadShort();
+			
+			while ( nSavedAchievements-- )
+			{
+				// read achievement ID
+				int iAchievementID = pRestore->ReadShort();
+				// find the corresponding achievement object
+				// We only save games in SP games so the assumption of SINGLE_PLAYER_SLOT is valid
+				CBaseAchievement *pAchievement = pAchievementMgr->GetAchievementByID( iAchievementID, SINGLE_PLAYER_SLOT );				
+				Assert( pAchievement );		// It's a bug if we don't understand this achievement
+				if ( pAchievement )
+				{
+					// read achievement data
+					pRestore->ReadAll( pAchievement, pAchievement->GetDataDescMap() );
+				}
+				else
+				{
+					// if we don't recognize the achievement for some reason, read and discard the data and keep going
+					CBaseAchievement ignored;
+					pRestore->ReadAll( &ignored, ignored.GetDataDescMap() );
+				}
+			}
+			pRestore->EndBlock();
+
+			pAchievementMgr->PostRestoreSavedGame();
+		}
+#endif
 	}
 
 private:

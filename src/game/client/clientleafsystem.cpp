@@ -126,6 +126,9 @@ public:
 	virtual void RenderWithViewModels( ClientRenderHandle_t handle, bool bEnable );
 	virtual bool IsRenderingWithViewModels( ClientRenderHandle_t handle ) const;
 	virtual void SetTranslucencyType( ClientRenderHandle_t handle, RenderableTranslucencyType_t nType );
+
+	virtual void RenderInFastReflections(unsigned short p1, bool p2) {}
+
 	virtual RenderableTranslucencyType_t GetTranslucencyType( ClientRenderHandle_t handle ) const;
 	virtual void SetModelType( ClientRenderHandle_t handle, RenderableModelType_t nType );
 	virtual void EnableSplitscreenRendering( ClientRenderHandle_t handle, uint32 nFlags );
@@ -151,8 +154,6 @@ public:
 
 	//Assuming the renderable would be in a properly built render list, generate a render list entry
 	virtual RenderGroup_t GenerateRenderListEntry( IClientRenderable *pRenderable, CClientRenderablesList::CEntry &entryOut );
-
-	void RenderInFastReflections(unsigned short p1, bool p2) {}
 
 	// methods of ISpatialLeafEnumerator
 public:
@@ -2247,12 +2248,10 @@ int CClientLeafSystem::ComputeTranslucency( int nFrameNumber, int nViewID, int n
 		if ( !pAlphaProp || ( pAlphaInfo[i].m_pAlphaProperty->m_hShadowHandle == CLIENTSHADOW_INVALID_HANDLE ) )
 			continue;
 
-		
-
 		int nAlpha = pRLInfo[i].m_nAlpha;
 		if ( pAlphaProp->m_bShadowAlphaOverride )
 		{
- 			nAlpha = pAlphaProp->m_pOuter->GetClientRenderable()->OverrideShadowAlphaModulation( nAlpha );
+			nAlpha = pAlphaProp->m_pOuter->GetClientRenderable()->OverrideShadowAlphaModulation( nAlpha );
 			nAlpha = clamp( nAlpha, 0, 255 );
 		}
 		g_pClientShadowMgr->SetFalloffBias( pAlphaInfo[i].m_pAlphaProperty->m_hShadowHandle, (255 - nAlpha) );

@@ -1,9 +1,0 @@
-LightmappedGeneric
-{
-$basetexture "buildings/vertigo_insulation_front"
-$bumpmap "buildings/vertigo_insulation_front_N"
-$surfaceprop upholstery
-
-
-
-}

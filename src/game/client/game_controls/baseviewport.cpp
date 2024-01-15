@@ -125,11 +125,8 @@ return true;
 bool CBaseViewport::LoadHudAnimations( void )
 {
 	const char *HUDANIMATION_MANIFEST_FILE = "scripts/hudanimations_manifest.txt";
-	KeyValues *manifest = new KeyValues( HUDANIMATION_MANIFEST_FILE );
-
-	// TODO: figure out why using pathID "GAME" crashes this shit 
-	if ( manifest->LoadFromFileEX( g_pFullFileSystem, HUDANIMATION_MANIFEST_FILE, "GAME" ) == false )
-	//if ( manifest->LoadFromFile( g_pFullFileSystem, HUDANIMATION_MANIFEST_FILE, "SKIN" ) == false )
+	KeyValues *manifest = new KeyValues( HUDANIMATION_MANIFEST_FILE ); 
+	if ( manifest->LoadFromFile( g_pFullFileSystem, HUDANIMATION_MANIFEST_FILE, "GAME" ) == false ) // was EX
 	{
 		manifest->deleteThis();
 		return false;

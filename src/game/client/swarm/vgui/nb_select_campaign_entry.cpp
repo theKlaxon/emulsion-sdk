@@ -48,8 +48,6 @@ void CNB_Select_Campaign_Entry::OnThink()
 {
 	BaseClass::OnThink();
 
-#ifdef SWARM_DLL
-
 	IASW_Mission_Chooser_Source *pSource = missionchooser ? missionchooser->LocalMissionSource() : NULL;
 
 	// TODO: If voting, then use:
@@ -126,15 +124,12 @@ void CNB_Select_Campaign_Entry::OnThink()
 		m_pName->SetText( "" );
 		m_pImage->SetImage( CBitmapButton::BUTTON_ENABLED, "vgui/swarm/MissionPics/UnknownMissionPic", white );
 	}
-#endif
 }
 
 void CNB_Select_Campaign_Entry::OnCommand( const char *command )
 {
 	if ( !Q_stricmp( "CampaignClicked", command ) )
 	{
-#ifdef SWARM_DLL
-
 		IASW_Mission_Chooser_Source *pSource = missionchooser ? missionchooser->LocalMissionSource() : NULL;
 		if ( pSource )
 		{
@@ -148,6 +143,5 @@ void CNB_Select_Campaign_Entry::OnCommand( const char *command )
 				}
 			}
 		}
-#endif
 	}
 }

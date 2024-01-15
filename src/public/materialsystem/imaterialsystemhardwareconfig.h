@@ -81,7 +81,7 @@ public:
 	virtual int	 GetFrameBufferColorDepth() const = 0;
 	virtual int  GetSamplerCount() const = 0;
 	virtual bool HasSetDeviceGammaRamp() const = 0;
-	virtual bool SupportsStaticControlFlow() const = 0;
+	virtual bool SupportsStaticControlFlow() const = 0; // p2sdk
 	virtual VertexCompressionType_t SupportsCompressedVertices() const = 0;
 	virtual int  MaximumAnisotropicLevel() const = 0;	// 0 means no anisotropic filtering
 	virtual int  MaxTextureWidth() const = 0;
@@ -121,7 +121,7 @@ public:
 	// Does the card support sRGB reads/writes?
 	DEFCONFIGMETHOD( bool, SupportsSRGB(), true );
 
-	virtual bool FakeSRGBWrite() const = 0;
+	virtual bool FakeWriteSRGB() const = 0;
 	virtual bool CanDoSRGBReadFromRTs() const = 0;
 	virtual bool SupportsGLMixedSizeTargets() const = 0;
 
@@ -176,12 +176,12 @@ public:
 	virtual int	GetMinDXSupportLevel() const = 0;
 	virtual bool IsUnsupported() const = 0;
 
-	virtual float GetLightMapScaleFactor() const = 0; // new
-
 	// Backward compat for stdshaders
 #if defined ( STDSHADER_DBG_DLL_EXPORT ) || defined( STDSHADER_DX9_DLL_EXPORT )
 	inline bool SupportsPixelShaders_2_b() const { return GetDXSupportLevel() >= 92; }
 #endif
+
+	virtual float GetLightmapScaleFactor() const = 0;
 };
 
 #endif // IMATERIALSYSTEMHARDWARECONFIG_H

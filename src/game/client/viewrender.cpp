@@ -106,7 +106,7 @@ ConVar r_drawviewmodel( "r_drawviewmodel","1", FCVAR_CHEAT );
 static ConVar r_drawtranslucentrenderables( "r_drawtranslucentrenderables", "1", FCVAR_CHEAT );
 static ConVar r_drawopaquerenderables( "r_drawopaquerenderables", "1", FCVAR_CHEAT );
 
-static ConVar r_flashlightdepth_drawtranslucents( "r_flashlightdepth_drawtranslucents", "1", FCVAR_NONE );
+static ConVar r_flashlightdepth_drawtranslucents( "r_flashlightdepth_drawtranslucents", "0", FCVAR_NONE );
 
 ConVar r_flashlightvolumetrics( "r_flashlightvolumetrics", "1" );
 
@@ -1376,7 +1376,6 @@ void CViewRender::SetCurrentlyDrawingEntity( C_BaseEntity *pEnt )
 bool CViewRender::UpdateShadowDepthTexture( ITexture *pRenderTarget, ITexture *pDepthTexture, const CViewSetup &shadowViewIn )
 {
 	VPROF_INCREMENT_COUNTER( "shadow depth textures rendered", 1 );
-	//DevMsg("shadow depth textures rendered\n");
 
 	CMatRenderContextPtr pRenderContext( materials );
 
@@ -1474,6 +1473,7 @@ void CViewRender::ViewDrawScene( bool bDrew3dSkybox, SkyboxVisibility_t nSkyboxV
 		g_pClientShadowMgr->DrawVolumetrics( view );
 	}
 
+
 	// Make sure sound doesn't stutter
 	engine->Sound_ExtraUpdate();
 
@@ -1539,20 +1539,9 @@ static void GetFogColorTransition( fogparams_t *pFogParams, float *pColorPrimary
 	{
 		float flPercent = 1.0f - (( pFogParams->lerptime - gpGlobals->curtime ) / pFogParams->duration );
 
-		float flPrimaryColorLerp[3] =
-		{
-			float(pFogParams->colorPrimaryLerpTo.GetR()),
-			float(pFogParams->colorPrimaryLerpTo.GetG()),
-			float(pFogParams->colorPrimaryLerpTo.GetB())
-		};
+		float flPrimaryColorLerp[3] = { pFogParams->colorPrimaryLerpTo.GetR(), pFogParams->colorPrimaryLerpTo.GetG(), pFogParams->colorPrimaryLerpTo.GetB() };
+		float flSecondaryColorLerp[3] = { pFogParams->colorSecondaryLerpTo.GetR(), pFogParams->colorSecondaryLerpTo.GetG(), pFogParams->colorSecondaryLerpTo.GetB() };
 
-		float flSecondaryColorLerp[3] =
-		{
-			float(pFogParams->colorSecondaryLerpTo.GetR()),
-			float(pFogParams->colorSecondaryLerpTo.GetG()),
-			float(pFogParams->colorSecondaryLerpTo.GetB())
-		};
-		
 		CheckAndTransitionColor( flPercent, pColorPrimary, flPrimaryColorLerp );
 		CheckAndTransitionColor( flPercent, pColorSecondary, flSecondaryColorLerp );
 	}
@@ -1587,20 +1576,9 @@ static void GetFogColor( fogparams_t *pFogParams, float *pColor, bool ignoreOver
 
 	if( (pColor[0] == -1.0f) && (pColor[1] == -1.0f) && (pColor[2] == -1.0f) ) //if not overriding fog, or if we get non-overridden fog color values
 	{
-		float flPrimaryColor[3] =
-		{
-			float(pFogParams->colorPrimary.GetR()),
-			float(pFogParams->colorPrimary.GetG()),
-			float(pFogParams->colorPrimary.GetB())
-		};
+		float flPrimaryColor[3] = { pFogParams->colorPrimary.GetR(), pFogParams->colorPrimary.GetG(), pFogParams->colorPrimary.GetB() };
+		float flSecondaryColor[3] = { pFogParams->colorSecondary.GetR(), pFogParams->colorSecondary.GetG(), pFogParams->colorSecondary.GetB() };
 
-		float flSecondaryColor[3] =
-		{
-			float(pFogParams->colorSecondary.GetR()),
-			float(pFogParams->colorSecondary.GetG()),
-			float(pFogParams->colorSecondary.GetB())
-		};
-		
 		GetFogColorTransition( pFogParams, flPrimaryColor, flSecondaryColor );
 
 		if( pFogParams->blend )
@@ -2135,7 +2113,6 @@ void CViewRender::SetupMain3DView( int nSlot, const CViewSetup &view, const CVie
 	GetLetterBoxRectangles( nSlot, view, letterbox );
 	if ( letterbox.Count() )
 	{
-		
 		CViewSetup letterBoxViewSetup;
 		letterBoxViewSetup.x = 0;
 		letterBoxViewSetup.y = 0;
@@ -2169,8 +2146,6 @@ void CViewRender::SetupMain3DView( int nSlot, const CViewSetup &view, const CVie
 		render->Push3DView( pRenderContext, view, nClearFlags, NULL, GetFrustum() );
 	}
 
-	pRenderContext.SafeRelease();
-
 	// If we didn't clear the depth here, we'll need to clear it later
 	nClearFlags ^= nDepthStencilFlags; // Toggle these bits
 	if ( nClearFlags & VIEW_CLEAR_COLOR )
@@ -2186,9 +2161,9 @@ void CViewRender::CleanupMain3DView( const CViewSetup &view )
 
 	// Make sure we reset from the HDR rendertarget back to the main backbuffer
 	if( g_pMaterialSystemHardwareConfig->GetHDRType() == HDR_TYPE_FLOAT )
-	{	
+	{		
 		pRenderContext->SetIntRenderingParameter( INT_RENDERPARM_BACK_BUFFER_INDEX, BACK_BUFFER_INDEX_DEFAULT );
-		pRenderContext.SafeRelease(); // don't want to hold for long periods in case in a locking active share thread mode
+		//pRenderContext.SafeRelease(); // don't want to hold for long periods in case in a locking active share thread mode
 	}
 
 	render->PopView( pRenderContext, GetFrustum() );
@@ -2308,7 +2283,7 @@ void CViewRender::RenderView( const CViewSetup &view, const CViewSetup &hudViewS
 
 	C_BaseAnimating::AutoAllowBoneAccess boneaccess( true, true );
 	VPROF( "CViewRender::RenderView" );
-	 
+
 	// Don't want Left4Dead running less than DX 9
 	if ( g_pMaterialSystemHardwareConfig->GetDXSupportLevel() < 90 )
 	{
@@ -2366,7 +2341,9 @@ void CViewRender::RenderView( const CViewSetup &view, const CViewSetup &hudViewS
 			DrawMonitors( view );	
 		}
 	#endif
-	
+
+
+
 		g_bRenderingView = true;
 
 		RenderPreScene( view );
@@ -2780,11 +2757,10 @@ void CViewRender::DetermineWaterRenderInfo( const VisibleFogVolumeInfo_t &fogVol
 	info.m_bRefract = false;
 	info.m_bReflect = false;
 	info.m_bReflectEntities = false;
-	info.m_bReflectOnlyMarkedEntities = false;
 	info.m_bDrawWaterSurface = false;
 	info.m_bOpaqueWater = true;
-	info.m_bPseudoTranslucentWater = false;
-	info.m_bReflect2DSkybox = false;
+
+
 
 	IMaterial *pWaterMaterial = fogVolumeInfo.m_pFogVolumeMaterial;
 	if (( fogVolumeInfo.m_nVisibleFogVolume == -1 ) || !pWaterMaterial )
@@ -2806,24 +2782,7 @@ void CViewRender::DetermineWaterRenderInfo( const VisibleFogVolumeInfo_t &fogVol
 #endif
 	bool bForceReflectEntities = r_waterforcereflectentities.GetBool();
 
-#if defined(P2_DLL) && defined(PORTAL)
-	switch (g_pPortalRender->ShouldForceCheaperWaterLevel())
-	{
-	case 0: //force cheap water
-		info.m_bCheapWater = true;
-		bForceCheap = true;
-		return;
 
-	case 1: //downgrade level to "simple reflection"
-		bForceExpensive = false;
-
-	case 2: //downgrade level to "reflect world"
-		bForceReflectEntities = false;
-
-	default:
-		break;
-	};
-#endif
 
 	// Determine if the water surface is opaque or not
 	info.m_bOpaqueWater = !pWaterMaterial->IsTranslucent();
@@ -2919,22 +2878,6 @@ void CViewRender::DetermineWaterRenderInfo( const VisibleFogVolumeInfo_t &fogVol
 		{
 			IMaterialVar *pReflectEntitiesVar = pWaterMaterial->FindVar( "$reflectentities", NULL, false );
 			info.m_bReflectEntities = pReflectEntitiesVar && (pReflectEntitiesVar->GetIntValueFast() != 0);
-
-			if (!info.m_bReflectEntities || IsX360())
-			{
-				bool bFound = false;
-				IMaterialVar* pReflectOnlyMarkedEntitiesVar = pWaterMaterial->FindVar("$reflectonlymarkedentities", &bFound, false);
-				info.m_bReflectOnlyMarkedEntities = IsX360(); // default to using fast reflections on consoles, not on PC
-				if (pReflectOnlyMarkedEntitiesVar && bFound)
-				{
-					info.m_bReflectOnlyMarkedEntities = (pReflectOnlyMarkedEntitiesVar->GetIntValueFast() != 0);
-				}
-
-				if (IsX360() && info.m_bReflectOnlyMarkedEntities)
-				{
-					info.m_bReflectEntities = false;
-				}
-			}
 		}
 	}
 
@@ -2955,14 +2898,8 @@ void CViewRender::DrawWorldAndEntities( bool bDrawSkybox, const CViewSetup &view
 
 	VisibleFogVolumeInfo_t fogVolumeInfo;
 
-#if defined(P2_DLL) && defined(PORTAL) //in portal, we can't use the fog volume for the camera since it's almost never in the same fog volume as what's in front of the portal
-	if (g_pPortalRender->GetViewRecursionLevel() == 0)
-		render->GetVisibleFogVolume(viewIn.origin, NULL, &fogVolumeInfo);
-	else
-		render->GetVisibleFogVolume(g_pPortalRender->GetExitPortalFogOrigin(), &pCustomVisibility->m_VisData, &fogVolumeInfo);
-#else
-	render->GetVisibleFogVolume(viewIn.origin, NULL, &fogVolumeInfo);
-#endif
+	render->GetVisibleFogVolume( viewIn.origin, nullptr, &fogVolumeInfo ); // not using the new visoverridedata yet -Klax
+
 
 	WaterRenderInfo_t info;
 	DetermineWaterRenderInfo( fogVolumeInfo, info );
@@ -3035,6 +2972,8 @@ bool DoesViewPlaneIntersectWater( float waterZ, int leafWaterDataID )
 {
 	if ( leafWaterDataID == -1 )
 		return false;
+
+
 
 	CMatRenderContextPtr pRenderContext( materials );
 	
@@ -3581,7 +3520,7 @@ void CRendering3dView::SetupRenderablesList( int viewID )
 	setupInfo.m_nDetailBuildFrame = m_pMainView->BuildWorldListsNumber();	//
 	setupInfo.m_pRenderList = m_pRenderablesList;
 	setupInfo.m_bDrawDetailObjects = GetClientMode()->ShouldDrawDetailObjects() && r_DrawDetailProps.GetInt();
-	setupInfo.m_bDrawTranslucentObjects = (r_flashlightdepth_drawtranslucents.GetBool() || (viewID != VIEW_SHADOW_DEPTH_TEXTURE));// || m_bRenderFlashlightDepthTranslucents );
+	setupInfo.m_bDrawTranslucentObjects = ( r_flashlightdepth_drawtranslucents.GetBool() || (viewID != VIEW_SHADOW_DEPTH_TEXTURE) /*|| m_bRenderFlashlightDepthTranslucents*/ );
 	setupInfo.m_nViewID = viewID;
 	setupInfo.m_vecRenderOrigin = origin;
 	setupInfo.m_vecRenderForward = CurrentViewForward();
@@ -3733,8 +3672,6 @@ void CRendering3dView::BuildRenderableRenderLists( int viewID )
 //-----------------------------------------------------------------------------
 void CRendering3dView::DrawWorld( IMatRenderContext* pRenderContext, float waterZAdjust )
 {
-	//CMatRenderContextPtr pRenderContext(materials);
-
 	VPROF_INCREMENT_COUNTER( "RenderWorld", 1 );
 	VPROF_BUDGET( "DrawWorld", VPROF_BUDGETGROUP_WORLD_RENDERING );
 	if( !r_drawopaqueworld.GetBool() )
@@ -3743,7 +3680,6 @@ void CRendering3dView::DrawWorld( IMatRenderContext* pRenderContext, float water
 	}
 
 	unsigned long engineFlags = BuildEngineDrawWorldListFlags( m_DrawFlags );
-
 	render->DrawWorldLists( pRenderContext, m_pWorldRenderList, engineFlags, waterZAdjust );
 }
 
@@ -4202,8 +4138,7 @@ static void DrawOpaqueRenderables_Range( int nCount, CClientRenderablesList::CEn
 	}
 }
 
-// FAST PATH SHOULD REMAIN OFF, unless, no hahaha. i mean, maybe but like ha, all the props turn blue :/
-ConVar cl_modelfastpath( "cl_modelfastpath", "0" );
+ConVar cl_modelfastpath( "cl_modelfastpath", "0" ); // TODO: find bug and put back to 1
 ConVar cl_skipslowpath( "cl_skipslowpath", "0", FCVAR_CHEAT, "Set to 1 to skip any models that don't go through the model fast path" );
 extern ConVar r_drawothermodels;
 static void	DrawOpaqueRenderables_ModelRenderables( int nCount, ModelRenderSystemData_t* pModelRenderables, bool bShadowDepth )
@@ -4226,10 +4161,7 @@ void CRendering3dView::DrawOpaqueRenderables( bool bShadowDepth )
 	if( !m_pMainView->ShouldDrawEntities() )
 		return;
 
-	float one[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	render->SetColorModulation(one);
-	render->SetBlend(1.0f);
-	//render->SetBlend( 1 );
+	render->SetBlend( 1 );
 
 	//
 	// Prepare to iterate over all leaves that were visible, and draw opaque things in them.	
@@ -4239,16 +4171,18 @@ void CRendering3dView::DrawOpaqueRenderables( bool bShadowDepth )
 
 	// Categorize models by type
 	int nOpaqueRenderableCount = m_pRenderablesList->m_RenderGroupCounts[RENDER_GROUP_OPAQUE];
+
 	CUtlVector< CClientRenderablesList::CEntry* > brushModels( (CClientRenderablesList::CEntry **)stackalloc( nOpaqueRenderableCount * sizeof( CClientRenderablesList::CEntry* ) ), nOpaqueRenderableCount );
 	CUtlVector< CClientRenderablesList::CEntry* > staticProps( (CClientRenderablesList::CEntry **)stackalloc( nOpaqueRenderableCount * sizeof( CClientRenderablesList::CEntry* ) ), nOpaqueRenderableCount );
 	CUtlVector< CClientRenderablesList::CEntry* > otherRenderables( (CClientRenderablesList::CEntry **)stackalloc( nOpaqueRenderableCount * sizeof( CClientRenderablesList::CEntry* ) ), nOpaqueRenderableCount );
 	CClientRenderablesList::CEntry *pOpaqueList = m_pRenderablesList->m_RenderGroups[RENDER_GROUP_OPAQUE];
+
 	for ( int i = 0; i < nOpaqueRenderableCount; ++i )
 	{
 		switch( pOpaqueList[i].m_nModelType )
 		{
 		case RENDERABLE_MODEL_BRUSH:		brushModels.AddToTail( &pOpaqueList[i] ); break; 
-		case RENDERABLE_MODEL_STATIC_PROP:	staticProps.AddToTail(&pOpaqueList[i]); break;
+		case RENDERABLE_MODEL_STATIC_PROP:	staticProps.AddToTail( &pOpaqueList[i] ); break; 
 		default:							otherRenderables.AddToTail( &pOpaqueList[i] ); break; 
 		}
 	}
@@ -4266,6 +4200,7 @@ void CRendering3dView::DrawOpaqueRenderables( bool bShadowDepth )
 	//
 	int nStaticPropCount = staticProps.Count();
 	int numOpaqueEnts = otherRenderables.Count();
+
 	CUtlVector< CClientRenderablesList::CEntry* > arrRenderEntsNpcsFirst( (CClientRenderablesList::CEntry **)stackalloc( numOpaqueEnts * sizeof( CClientRenderablesList::CEntry ) ), numOpaqueEnts );
 	CUtlVector< ModelRenderSystemData_t > arrModelRenderables( (ModelRenderSystemData_t *)stackalloc( ( numOpaqueEnts + nStaticPropCount ) * sizeof( ModelRenderSystemData_t ) ), numOpaqueEnts + nStaticPropCount );
 
@@ -4279,11 +4214,9 @@ void CRendering3dView::DrawOpaqueRenderables( bool bShadowDepth )
 			if ( !itEntity->m_pRenderable )
 				continue;
 
-			
-
 			IClientUnknown *pUnknown = itEntity->m_pRenderable->GetIClientUnknown();
-			IClientModelRenderable *pModelRenderable = itEntity->m_pRenderable->GetClientModelRenderable();
-			C_BaseEntity *pEntity = pUnknown->GetBaseEntity();
+			IClientModelRenderable* pModelRenderable = itEntity->m_pRenderable->GetClientModelRenderable(); //pUnknown->GetClientModelRenderable();
+			C_BaseEntity* pEntity = pUnknown->GetBaseEntity();
 
 			// FIXME: Strangely, some static props are in the non-static prop bucket
 			// which is what the last case in this if statement is for
@@ -4298,6 +4231,10 @@ void CRendering3dView::DrawOpaqueRenderables( bool bShadowDepth )
 				--i; --numOpaqueEnts;
 				continue;
 			}
+			
+			// moved these down for a small optimisation
+			//IClientUnknown* pUnknown = itEntity->m_pRenderable->GetIClientUnknown();
+			//C_BaseEntity* pEntity = pUnknown->GetBaseEntity();
 
 			if ( !pEntity )
 				continue;
@@ -4311,6 +4248,8 @@ void CRendering3dView::DrawOpaqueRenderables( bool bShadowDepth )
 			}
 		}
 	}
+	
+	CUtlVector< ModelRenderSystemData_t > staticRenderables((ModelRenderSystemData_t*)stackalloc((nStaticPropCount) * sizeof(ModelRenderSystemData_t)), nStaticPropCount);
 
 	// Queue up the static props to be rendered later.
 	for ( int i = 0; i < nStaticPropCount; ++i )
@@ -4320,7 +4259,7 @@ void CRendering3dView::DrawOpaqueRenderables( bool bShadowDepth )
 			continue;
 
 		IClientUnknown *pUnknown = itEntity->m_pRenderable->GetIClientUnknown();
-		IClientModelRenderable* pModelRenderable = itEntity->m_pRenderable->GetClientModelRenderable();
+		IClientModelRenderable* pModelRenderable = itEntity->m_pRenderable->GetClientModelRenderable();//pUnknown->GetClientModelRenderable();
 		if ( !bUseFastPath || !pModelRenderable )
 			continue;
 
@@ -4328,16 +4267,26 @@ void CRendering3dView::DrawOpaqueRenderables( bool bShadowDepth )
 		data.m_pRenderable = itEntity->m_pRenderable;
 		data.m_pModelRenderable = pModelRenderable;
 		data.m_InstanceData = itEntity->m_InstanceData;
+		//staticRenderables.AddToTail( data );
 		arrModelRenderables.AddToTail( data );
 
+		// replacing this with a flush after static and arr render passes
 		staticProps.FastRemove( i );
 		--i; --nStaticPropCount;
 	}
+
+	// attempting to draw static props on their own pass to avoid some bugs. this *may* also improve frame rate a **little** bit -Klax
+	//DrawOpaqueRenderables_ModelRenderables(staticRenderables.Count(), staticRenderables.Base(), bShadowDepth);
 
 	//
 	// Draw model renderables now (ie. models that use the fast path)
 	//					 
 	DrawOpaqueRenderables_ModelRenderables( arrModelRenderables.Count(), arrModelRenderables.Base(), bShadowDepth );
+
+	// this flushed the original static prop array AFTER we've rendered everything to ensure we dont encounter some 
+	// weird memory access / management bug -Klax
+	//
+	// staticProps.Purge();
 
 	// Turn off z pass here. Don't want non-fastpath models with potentially large dynamic VB requirements overwrite
 	// stuff in the dynamic VB ringbuffer. We're calling End360ZPass again in DrawExecute, but that's not a problem.
@@ -4355,12 +4304,11 @@ void CRendering3dView::DrawOpaqueRenderables( bool bShadowDepth )
 	//
 	DrawOpaqueRenderables_NPCs( arrRenderEntsNpcsFirst.Count(), arrRenderEntsNpcsFirst.Base(), bShadowDepth );
 
-	CMatRenderContextPtr pRenderContext(materials);
-
 	//
 	// Ropes and particles
 	//
 	RopeManager()->DrawRenderCache( bShadowDepth );
+	CMatRenderContextPtr pRenderContext(materials);
 	g_pParticleSystemMgr->DrawRenderCache( pRenderContext, bShadowDepth );
 }
 
@@ -4372,8 +4320,6 @@ void CRendering3dView::DrawTranslucentWorldInLeaves( bool bShadowDepth )
 {
 	if ( bShadowDepth )
 		return;
-
-	CMatRenderContextPtr pRenderContext(materials);
 
 	VPROF_BUDGET( "CViewRender::DrawTranslucentWorldInLeaves", VPROF_BUDGETGROUP_WORLD_RENDERING );
 	const ClientWorldListInfo_t& info = *m_pWorldListInfo;
@@ -4389,8 +4335,10 @@ void CRendering3dView::DrawTranslucentWorldInLeaves( bool bShadowDepth )
 	}
 	if ( transSortIndexList.Count() )
 	{
+		CMatRenderContextPtr pRenderContext(materials);
 		// Now draw the surfaces in this leaf
 		render->DrawTranslucentSurfaces( pRenderContext, m_pWorldRenderList, transSortIndexList.Base(), transSortIndexList.Count(), m_DrawFlags );
+		pRenderContext.SafeRelease();
 	}
 }
 
@@ -4602,7 +4550,7 @@ static void UpdateNecessaryRenderTargets( int nRenderFlags )
 //-----------------------------------------------------------------------------
 // Renders all translucent world, entities, and detail objects in a particular set of leaves
 //-----------------------------------------------------------------------------
-ConVar cl_tlucfastpath( "cl_tlucfastpath", "0" );
+ConVar cl_tlucfastpath( "cl_tlucfastpath", "0" ); // TODO: turn back to 1 and find the bug
 extern ConVar cl_colorfastpath;
 
 void CRendering3dView::DrawTranslucentRenderables( bool bInSkybox, bool bShadowDepth )
@@ -4682,7 +4630,7 @@ void CRendering3dView::DrawTranslucentRenderables( bool bInSkybox, bool bShadowD
 				Assert( pEntities[i].m_pRenderable );
 				IClientRenderable *pRenderable = pEntities[i].m_pRenderable;
 				IClientUnknown *pUnknown = pRenderable->GetIClientUnknown();
-				IClientModelRenderable *pModelRenderable = pRenderable->GetClientModelRenderable();
+				IClientModelRenderable* pModelRenderable = pRenderable->GetClientModelRenderable();// pUnknown->GetClientModelRenderable();
 				if ( pModelRenderable )
 				{
 					int j = fastPathData.AddToTail( );
@@ -5065,7 +5013,6 @@ void CSkyboxView::DrawInternal( view_id_t iSkyBoxViewID, bool bInvokePreAndPostR
 
 	// Iterate over all leaves and render objects in those leaves
 	DrawOpaqueRenderables( false );
-	//DrawOpaqueRenderables( true ); // was false
 
 	// Iterate over all leaves and render objects in those leaves
 	DrawTranslucentRenderables( true, false );
@@ -5099,7 +5046,7 @@ void CSkyboxView::DrawInternal( view_id_t iSkyBoxViewID, bool bInvokePreAndPostR
 			int nWidth = 0;
 			int nHeight = 0;
 			int nDummy = 0;
-			CMatRenderContextPtr pRenderContext( materials );
+			//CMatRenderContextPtr pRenderContext( materials );
 			pRenderContext->GetViewport( nDummy, nDummy, nWidth, nHeight );
 
 			pRenderContext->DrawScreenSpaceRectangle(
@@ -5111,6 +5058,7 @@ void CSkyboxView::DrawInternal( view_id_t iSkyBoxViewID, bool bInvokePreAndPostR
 	}
 
 	render->PopView( pRenderContext, GetFrustum() );
+	pRenderContext.SafeRelease();
 
 #if defined( _X360 )
 	pRenderContext.GetFrom( materials );
@@ -5203,7 +5151,8 @@ void CShadowDepthView::Draw()
 	pRenderContext->PushVertexShaderGPRAllocation( 112 ); //almost all work is done in vertex shaders for depth rendering, max out their threads
 #endif
 
-
+	//pRenderContext.SafeRelease();
+	//pRenderContext.GetFrom(materials);
 
 	if( IsPC() )
 	{
@@ -5214,14 +5163,6 @@ void CShadowDepthView::Draw()
 		//for the 360, the dummy render target has a separate depth buffer which we Resolve() from afterward
 		render->Push3DView( pRenderContext, (*this), VIEW_CLEAR_DEPTH, m_pRenderTarget, GetFrustum() );
 	}
-
-	// depth text upgrades
-	int depthW = m_pDepthTexture->GetMappingWidth();
-
-	pRenderContext.GetFrom(materials);
-	pRenderContext->PushRenderTargetAndViewport(m_pRenderTarget, m_pDepthTexture, 0, 0, m_pDepthTexture->GetMappingWidth(), m_pDepthTexture->GetMappingWidth());
-
-	//pRenderContext.SafeRelease();
 
 	SetupCurrentView( origin, angles, VIEW_SHADOW_DEPTH_TEXTURE );
 
@@ -5255,7 +5196,7 @@ void CShadowDepthView::Draw()
 		DrawOpaqueRenderables( true );
 	}
 
-	if (/* m_bRenderFlashlightDepthTranslucents ||*/ r_flashlightdepth_drawtranslucents.GetBool() )
+	if ( /*m_bRenderFlashlightDepthTranslucents ||*/ r_flashlightdepth_drawtranslucents.GetBool() )
 	{
 		VPROF_BUDGET( "DrawTranslucentRenderables", VPROF_BUDGETGROUP_SHADOW_DEPTH_TEXTURING );
 		DrawTranslucentRenderables( false, true );
@@ -5265,16 +5206,14 @@ void CShadowDepthView::Draw()
 
 	m_DrawFlags = 0;
 
-	pRenderContext.GetFrom( materials );
+	//pRenderContext.SafeRelease();
+	//pRenderContext.GetFrom( materials );
 
 	if( IsX360() )
 	{
 		//Resolve() the depth texture here. Before the pop so the copy will recognize that the resolutions are the same
 		pRenderContext->CopyRenderTargetToTextureEx( m_pDepthTexture, -1, NULL, NULL );
 	}
-
-	// dpeth tex upgrades
-	pRenderContext->PopRenderTargetAndViewport();
 
 	render->PopView( pRenderContext, GetFrustum() );
 
@@ -5507,12 +5446,11 @@ void CBaseWorldView::PopView()
 //-----------------------------------------------------------------------------
 void CBaseWorldView::DrawSetup( float waterHeight, int nSetupFlags, float waterZAdjust, int iForceViewLeaf )
 {
-	CMatRenderContextPtr pRenderContext(materials);
 	int savedViewID = g_CurrentViewID;
 	g_CurrentViewID = VIEW_ILLEGAL;
 
-	bool bViewChanged = AdjustView( waterHeight );
-
+	CMatRenderContextPtr pRenderContext(materials);
+	bool bViewChanged = AdjustView(waterHeight);
 	if ( bViewChanged )
 	{
 		render->Push3DView( pRenderContext, *this, 0, NULL, GetFrustum() );
@@ -5545,8 +5483,7 @@ void CBaseWorldView::DrawSetup( float waterHeight, int nSetupFlags, float waterZ
 void CBaseWorldView::DrawExecute( float waterHeight, view_id_t viewID, float waterZAdjust )
 {
 	// @MULTICORE (toml 8/16/2006): rethink how, where, and when this is done...
-	if(!(m_DrawFlags & (DF_DRAW_SIMPLE_WORLD_MODEL | DF_DRAW_SIMPLE_WORLD_MODEL_WATER)))
-		g_pClientShadowMgr->ComputeShadowTextures( *this, m_pWorldListInfo->m_LeafCount, m_pWorldListInfo->m_pLeafDataList );
+	g_pClientShadowMgr->ComputeShadowTextures( *this, m_pWorldListInfo->m_LeafCount, m_pWorldListInfo->m_pLeafDataList );
 
 	// Make sure sound doesn't stutter
 	engine->Sound_ExtraUpdate();
@@ -5569,33 +5506,25 @@ void CBaseWorldView::DrawExecute( float waterHeight, view_id_t viewID, float wat
 	ITexture *pSaveFrameBufferCopyTexture = pRenderContext->GetFrameBufferCopyTexture( 0 );
 	pRenderContext->SetFrameBufferCopyTexture( GetPowerOfTwoFrameBufferTexture() );
 	//pRenderContext.SafeRelease();
+	//pRenderContext.GetFrom(materials);
 
 	Begin360ZPass();
 	m_DrawFlags |= DF_SKIP_WORLD_DECALS_AND_OVERLAYS;
 	DrawWorld( pRenderContext, waterZAdjust );
-
 	m_DrawFlags &= ~DF_SKIP_WORLD_DECALS_AND_OVERLAYS;
 	if ( m_DrawFlags & DF_DRAW_ENTITITES )
 	{
 		DrawOpaqueRenderables( false );
-		//DrawOpaqueRenderables( true );
 	}
 	End360ZPass();		// DrawOpaqueRenderables currently already calls End360ZPass. No harm in calling it again to make sure we're always ending it
 
 	// Only draw decals on opaque surfaces after now. Benefit is two-fold: Early Z benefits on PC, and
 	// we're pulling out stuff that uses the dynamic VB from the 360 Z pass
 	// (which can lead to rendering corruption if we overflow the dyn. VB ring buffer).
-	//m_DrawFlags |= DF_SKIP_WORLD;
-	//DrawWorld( pRenderContext, waterZAdjust );
-	//m_DrawFlags &= ~DF_SKIP_WORLD;
-	
 	m_DrawFlags |= DF_SKIP_WORLD;
-	if (!(m_DrawFlags & (DF_DRAW_SIMPLE_WORLD_MODEL | DF_DRAW_SIMPLE_WORLD_MODEL_WATER)))
-	{
-		DrawWorld(pRenderContext, waterZAdjust);
-	}
+	DrawWorld( pRenderContext, waterZAdjust );
 	m_DrawFlags &= ~DF_SKIP_WORLD;
-
+		
 	if ( !m_bDrawWorldNormal )
 	{
 		if ( m_DrawFlags & DF_DRAW_ENTITITES )
@@ -5708,17 +5637,14 @@ void CSimpleWorldView::Draw()
 		unsigned char ucFogColor[3];
 		pRenderContext->GetFogColor( ucFogColor );
 		pRenderContext->ClearColor4ub( ucFogColor[0], ucFogColor[1], ucFogColor[2], 255 );
-		pRenderContext.SafeRelease();
 	}
 
-	
+	pRenderContext.SafeRelease();
 
 	DrawExecute( 0, CurrentViewID(), 0 );
 
 	pRenderContext.GetFrom( materials );
 	pRenderContext->ClearColor4ub( 0, 0, 0, 255 );
-
-	//pRenderContext.SafeRelease();
 
 #if defined( _X360 )
 	pRenderContext->PopVertexShaderGPRAllocation();
@@ -6208,7 +6134,7 @@ void CReflectiveGlassView::PushView( float waterHeight )
 	Vector4D plane;
 	VectorCopy( m_ReflectionPlane.normal, plane.AsVector3D() );
 	plane.w = m_ReflectionPlane.dist + 0.1f;
-
+	
 	pRenderContext->PushCustomClipPlane( plane.Base() );
 }
 
@@ -6275,7 +6201,7 @@ void CRefractiveGlassView::PushView( float waterHeight )
 	Vector4D plane;
 	VectorMultiply( m_ReflectionPlane.normal, -1, plane.AsVector3D() );
 	plane.w = -m_ReflectionPlane.dist + 0.1f;
-
+	
 	pRenderContext->PushCustomClipPlane( plane.Base() );
 }
 

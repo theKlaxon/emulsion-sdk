@@ -1,6 +1,0 @@
-Shadow
-{
-$basetexture "Decals/simpleshadow"
-$decal 1
-$no_fullbright 1
-}

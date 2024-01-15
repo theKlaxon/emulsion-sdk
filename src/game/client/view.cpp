@@ -46,7 +46,7 @@
 #endif
 #ifdef GAMEUI_EMBEDDED
 
-#if defined( P2_DLL )
+#if defined( SWARM_DLL ) || defined(EMULSION_DLL)
 #include "swarm/gameui/swarm/basemodpanel.h"
 #else
 #error "GAMEUI_EMBEDDED"
@@ -924,7 +924,7 @@ void CViewRender::Render( vrect_t *rect )
 
 		float engineAspectRatio = engine->GetScreenAspectRatio( view.width, view.height );
 
-		Assert(s_DbgSetupOrigin[hh] == view.origin);
+		Assert( s_DbgSetupOrigin[ hh ] == view.origin );
 		Assert( s_DbgSetupAngles[ hh ] == view.angles );
 
 		// Using this API gives us a chance to "inset" the 3d views as needed for splitscreen
@@ -984,7 +984,6 @@ void CViewRender::Render( vrect_t *rect )
 			drawViewModel = false;
 		}
 
-		// TODO: THIS IS THE MF TICKET TO A STICK PAINT CAMERA >:)
 		render->SetMainView( view.origin, view.angles );
 
 		int flags = (pPlayer == NULL) ? 0 : RENDERVIEW_DRAWHUD;
@@ -1036,9 +1035,14 @@ void CViewRender::Render( vrect_t *rect )
 	// Draw all of the UI stuff "fullscreen"
 	if ( true ) // For PIXEVENT
 	{
-		CMatRenderContextPtr pRenderContext(materials);
-		PIXEVENT(pRenderContext, "VGui UI");
+		#if PIX_ENABLE
+		{
+			CMatRenderContextPtr pRenderContext( materials );
+			PIXEVENT( pRenderContext, "VGui UI" );
+		}
+		#endif
 
+		CMatRenderContextPtr pRenderContext(materials);
 		CViewSetup view2d;
 		view2d.x				= rect->x;
 		view2d.y				= rect->y;
@@ -1049,10 +1053,8 @@ void CViewRender::Render( vrect_t *rect )
 		{
 			// The engine here is trying to access CurrentView() etc. which is bogus
 			ACTIVE_SPLITSCREEN_PLAYER_GUARD( 0 );
-			render->PopView(pRenderContext, GetFrustum() );
+			render->PopView( pRenderContext, GetFrustum() );
 		}
-		pRenderContext->Flush();
-		pRenderContext.SafeRelease();
 	}
 
 	m_bAllowViewAccess = false;

@@ -216,7 +216,7 @@ public:
 protected:
 
 	// Fog setup
-	virtual void	EnableWorldFog( void );
+	virtual void			EnableWorldFog( void );
 	void			SetFogVolumeState( const VisibleFogVolumeInfo_t &fogInfo, bool bUseHeightFog );
 
 	// Draw setup

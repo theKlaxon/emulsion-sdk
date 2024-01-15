@@ -90,8 +90,7 @@ CTextWindow::CTextWindow(IViewPort *pViewPort) : BaseClass(NULL, PANEL_INFO	)
 
 	m_pTextMessage = new TextEntry(this, "TextMessage");
 #if defined( ENABLE_HTMLWINDOW )
-	// TODO: fix me!
-	//m_pHTMLMessage = new HTML(this,"HTMLMessage");;
+	m_pHTMLMessage = new HTML(this,"HTMLMessage");;
 #endif
 	m_pTitleLabel  = new Label( this, "MessageTitle", "Message Title" );
 	m_pOK		   = new Button(this, "ok", "#PropertyDialog_OK");

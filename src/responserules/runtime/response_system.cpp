@@ -9,7 +9,7 @@
 #include "vstdlib/random.h"
 #include "utlbuffer.h"
 #include "tier2/interval.h"
-//#include "fmtstr.h"
+#include "fmtstr.h"
 #include "generichash.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -724,10 +724,9 @@ void CResponseSystem::DebugPrint( int depth, const char *fmt, ... )
 	va_list argptr;
 	char szText[1024];
 
-	// TODO: fix this va_start bullshit
-	/*va_start (argptr, fmt);
+	va_start (argptr, fmt);
 	Q_vsnprintf (szText, sizeof( szText ), fmt, argptr);
-	va_end (argptr);*/
+	va_end (argptr);
 
 	DevMsg( "%s%s", indent, szText );
 }
@@ -1982,9 +1981,8 @@ void CResponseSystem::ParseRule_ApplyContext( Rule &newRule )
 			}
 			else
 			{
-				// TODO: something idek anymore, shits kinda fuckeroo'd
-				//CFmtStrN<1024> newContext( "%s,%s", newRule.GetContext(), token );
-				//newRule.SetContext( newContext );
+				CFmtStrN<1024> newContext( "%s,%s", newRule.GetContext(), token );
+				newRule.SetContext( newContext );
 			}
 		}
 
@@ -2123,7 +2121,7 @@ int	CResponseSystem::GetCurrentToken() const
 	if ( m_ScriptStack.Count() <= 0 )
 		return -1;
 
-	return m_ScriptStack[ 0 ].tokencount;	
+	return m_ScriptStack[ 0 ].tokencount;
 }
 
 
@@ -2132,10 +2130,9 @@ void CResponseSystem::ResponseWarning( const char *fmt, ... )
 	va_list		argptr;
 	char		string[1024];
 
-	// TODO:
-	//va_start (argptr, fmt);
-	//Q_vsnprintf(string, sizeof(string), fmt,argptr);
-	//va_end (argptr);
+	va_start (argptr, fmt);
+	Q_vsnprintf(string, sizeof(string), fmt,argptr);
+	va_end (argptr);
 
 	char cur[ 256 ];
 	GetCurrentScript( cur, sizeof( cur ) );

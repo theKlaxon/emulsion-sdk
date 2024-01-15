@@ -243,25 +243,6 @@ ITexture *GetTeenyTexture( int which )
 	return s_TeenyTextures[which];
 }
 
-//=============================================================================
-// Depth Doubler Render Texture - 
-// ok so idk how portal 2 did this for sure, but the depth doubler rt appears to be created 
-// in a similar manner to _rt_FullFrameFB. i peeked at csgo and they also have an additonal rt for 
-// the custom weapon skins, which makes me think that p2 prolly created a rt for the tiles in a 
-// very similar manner. thats what i've attempted to replicate here. -Klax
-//=============================================================================
-ITexture* GetDepthDoubler(void)
-{
-	if (!s_pDepthDoubler)
-	{
-		s_pDepthDoubler.Init(materials->FindTexture("_rt_DepthDoubler", TEXTURE_GROUP_RENDER_TARGET));
-		Assert(!IsErrorTexture(s_pDepthDoubler));
-		AddReleaseFunc();
-	}
-
-	return s_pDepthDoubler;
-}
-
 void ReleaseRenderTargets( int nChangeFlags )
 {
 	if ( nChangeFlags & MATERIAL_RESTORE_VERTEX_FORMAT_CHANGED )
@@ -274,7 +255,6 @@ void ReleaseRenderTargets( int nChangeFlags )
 	s_pQuarterSizedFB0.Shutdown();
 	s_pQuarterSizedFB1.Shutdown();
 	s_pFullFrameDepthTexture.Shutdown();
-	s_pDepthDoubler.Shutdown();
 
 	for (int i=0; i<MAX_FB_TEXTURES; ++i)
 	{

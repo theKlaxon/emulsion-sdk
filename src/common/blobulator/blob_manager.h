@@ -31,8 +31,11 @@ public:
 #else
 	void SetBlobPhysicsFunc(IParentedFuncPtr* ptr);
 	void PreClientUpdate();
-#endif
 
+	// blob manufacturing!
+	void CreateBlob(Vector origin, float radius, int batch);
+#endif
+	
 protected:
 	friend class COpPtr_DoRender;
 	friend class COpPtr_DoPhysics;

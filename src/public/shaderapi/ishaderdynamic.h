@@ -283,11 +283,6 @@ public:
 	virtual void EnablePredication( bool bZPass, bool bRenderPass ) = 0;
 	virtual void DisablePredication() = 0;
 #endif // _X360
-
-	// TODO:
-	virtual bool IsRenderingPaint() const = 0;
-	virtual bool IsStereoActiveThisFrame() const = 0;
-
 };
 
 // end class IShaderDynamicAPI

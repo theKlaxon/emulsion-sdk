@@ -93,7 +93,7 @@ public:
 	}
 	void AddEntity( CBaseEntity *pEntity )
 	{
-		if ( pEntity->IsMarkedForDeletion())
+		if ( pEntity->IsMarkedForDeletion() )
 			return;
 		m_targetList.AddToTail( pEntity );
 	}
@@ -1637,7 +1637,6 @@ public:
 	{
 		if ( pEntity->IsMarkedForDeletion() )
 			return;
-
 		m_updateList.AddToTail( pEntity );
 	}
 

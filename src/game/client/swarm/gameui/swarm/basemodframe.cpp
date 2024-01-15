@@ -4,7 +4,6 @@
 //
 //=====================================================================================//
 
-#include "cbase.h"
 #include <ctype.h>
 #include "basemodframe.h"
 #include "basemodpanel.h"
@@ -137,7 +136,7 @@ void CBaseModFrame::LoadLayout()
 
 	SetTitleBarVisible(true);
 	SetMoveable(false);
-	SetCloseButtonVisible(true);
+	SetCloseButtonVisible(false);
 	SetMinimizeButtonVisible(false);
 	SetMaximizeButtonVisible(false);
 	SetMenuButtonVisible(false);
@@ -599,19 +598,18 @@ void CBaseModFrame::LoadControlSettings( const char *dialogResourceName, const c
 		bool bSuccess = false;
 		if ( !IsX360() && !pathID )
 		{
-			bSuccess = rDat->LoadFromFileEX( g_pFullFileSystem, dialogResourceName, "SKIN" );
+			bSuccess = rDat->LoadFromFile( g_pFullFileSystem, dialogResourceName, "SKIN" );
 		}
 		if ( !bSuccess )
 		{
-			//bSuccess = rDat->LoadFromFile( g_pFullFileSystem, dialogResourceName, pathID );
-			bSuccess = rDat->LoadFromFileEX( g_pFullFileSystem, dialogResourceName, pathID );
+			bSuccess = rDat->LoadFromFile( g_pFullFileSystem, dialogResourceName, pathID );
 		}
 		if ( bSuccess )
 		{
-			//if ( IsX360() )
-			//{
-			//	rDat->ProcessResolutionKeys( surface()->GetResolutionKey() );
-			//}
+			if ( IsX360() )
+			{
+				rDat->ProcessResolutionKeys( surface()->GetResolutionKey() );
+			}
 			if ( pConditions && pConditions->GetFirstSubKey() )
 			{
 				GetBuildGroup()->ProcessConditionalKeys( rDat, pConditions );
@@ -872,44 +870,39 @@ CBaseModFrame* CBaseModFrame::SetNavBack( CBaseModFrame* navBack )
 void CBaseModFrame::DrawGenericBackground()
 {
 	int wide, tall;
-	GetSize(wide, tall);
-	DrawHollowBox(0, 0, wide, tall, Color(150, 150, 150, 255), 1.0f);
-	DrawBox(2, 2, wide - 4, tall - 4, Color(48, 48, 48, 255), 1.0f);
+	GetSize( wide, tall );
+	int iHalfWide = wide * 0.5f;
+	//DrawHollowBox( 0, 0, wide, tall, Color( 150, 150, 150, 255 ), 1.0f );
+	//DrawBox( 2, 2, wide-4, tall-4, Color( 48, 48, 48, 255 ), 1.0f );
 
-	//int wide, tall;
-	//GetSize( wide, tall );
-	//int iHalfWide = wide * 0.5f;
-	////DrawHollowBox( 0, 0, wide, tall, Color( 150, 150, 150, 255 ), 1.0f );
-	////DrawBox( 2, 2, wide-4, tall-4, Color( 48, 48, 48, 255 ), 1.0f );
+	float flAlpha = 200.0f / 255.0f;
 
-	//float flAlpha = 200.0f / 255.0f;
+	// fill background
+	vgui::surface()->DrawSetColor( Color( 0, 0, 0, 255 * flAlpha ) );
+	vgui::surface()->DrawFilledRect( 0, 0, GetWide(), GetTall() );
 
-	//// fill background
-	//vgui::surface()->DrawSetColor( Color( 0, 0, 0, 255 * flAlpha ) );
-	//vgui::surface()->DrawFilledRect( 0, 0, GetWide(), GetTall() );
+	vgui::surface()->DrawSetColor( Color( 53, 86, 117, 255 * flAlpha ) );
+	//vgui::surface()->DrawFilledRect( 0, YRES( 4 ), wide, tall - YRES( 4 ) );
 
-	//vgui::surface()->DrawSetColor( Color( 53, 86, 117, 255 * flAlpha ) );
-	////vgui::surface()->DrawFilledRect( 0, YRES( 4 ), wide, tall - YRES( 4 ) );
+	int nBarPosY = YRES( 4 );
+	int nBarHeight = tall - nBarPosY * 2;
+	vgui::surface()->DrawFilledRectFade( iHalfWide, nBarPosY, wide, nBarPosY + nBarHeight, 255, 0, true );
+	vgui::surface()->DrawFilledRectFade( 0, nBarPosY, iHalfWide, nBarPosY + nBarHeight, 0, 255, true );
 
-	//int nBarPosY = YRES( 4 );
-	//int nBarHeight = tall - nBarPosY * 2;
-	//vgui::surface()->DrawFilledRectFade( iHalfWide, nBarPosY, wide, nBarPosY + nBarHeight, 255, 0, true );
-	//vgui::surface()->DrawFilledRectFade( 0, nBarPosY, iHalfWide, nBarPosY + nBarHeight, 0, 255, true );
+	nBarPosY = tall - YRES( 2 );
+	vgui::surface()->DrawFilledRectFade( iHalfWide, nBarPosY, wide, nBarPosY + nBarHeight, 255, 0, true );
+	vgui::surface()->DrawFilledRectFade( 0, nBarPosY, iHalfWide, nBarPosY + nBarHeight, 0, 255, true );
 
-	//nBarPosY = tall - YRES( 2 );
-	//vgui::surface()->DrawFilledRectFade( iHalfWide, nBarPosY, wide, nBarPosY + nBarHeight, 255, 0, true );
-	//vgui::surface()->DrawFilledRectFade( 0, nBarPosY, iHalfWide, nBarPosY + nBarHeight, 0, 255, true );
+	// draw highlights
+	nBarHeight = YRES( 2 );
+	nBarPosY = 0;
+	vgui::surface()->DrawSetColor( Color( 97, 210, 255, 255 * flAlpha ) );
+	vgui::surface()->DrawFilledRectFade( iHalfWide, nBarPosY, wide, nBarPosY + nBarHeight, 255, 0, true );
+	vgui::surface()->DrawFilledRectFade( 0, nBarPosY, iHalfWide, nBarPosY + nBarHeight, 0, 255, true );
 
-	//// draw highlights
-	//nBarHeight = YRES( 2 );
-	//nBarPosY = 0;
-	//vgui::surface()->DrawSetColor( Color( 97, 210, 255, 255 * flAlpha ) );
-	//vgui::surface()->DrawFilledRectFade( iHalfWide, nBarPosY, wide, nBarPosY + nBarHeight, 255, 0, true );
-	//vgui::surface()->DrawFilledRectFade( 0, nBarPosY, iHalfWide, nBarPosY + nBarHeight, 0, 255, true );
-
-	//nBarPosY = tall - YRES( 2 );
-	//vgui::surface()->DrawFilledRectFade( iHalfWide, nBarPosY, wide, nBarPosY + nBarHeight, 255, 0, true );
-	//vgui::surface()->DrawFilledRectFade( 0, nBarPosY, iHalfWide, nBarPosY + nBarHeight, 0, 255, true );
+	nBarPosY = tall - YRES( 2 );
+	vgui::surface()->DrawFilledRectFade( iHalfWide, nBarPosY, wide, nBarPosY + nBarHeight, 255, 0, true );
+	vgui::surface()->DrawFilledRectFade( 0, nBarPosY, iHalfWide, nBarPosY + nBarHeight, 0, 255, true );
 }
 
 #define VERTICAL_GAP			10

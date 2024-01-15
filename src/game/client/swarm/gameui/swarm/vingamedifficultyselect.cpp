@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VInGameDifficultySelect.h"
 #include "VFooterPanel.h"
 #include "EngineInterface.h"

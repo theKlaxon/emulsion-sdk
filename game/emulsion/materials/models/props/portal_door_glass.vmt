@@ -1,6 +1,0 @@
-VertexlitGeneric
-{
-$basetexture "models\props\portal_door_glass"
-$surfaceprop glass
-$translucent 1
-}

@@ -1,6 +1,0 @@
-UnlitGeneric
-{
-$basetexture "vgui\icon_lobby"
-$translucent 1
-$ignorez 1
-}

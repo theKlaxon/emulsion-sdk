@@ -546,7 +546,7 @@ public:
 			char const *actorModel = STRING( ent->GetModelName() );
 			gender = soundemitterbase->GetActorGender( actorModel );
 		}
-		
+
 		if ( !soundemitterbase->GetParametersForSoundEx( ep.m_pSoundName, handle, params, gender, true ) )
 		{
 			return;
@@ -644,7 +644,6 @@ public:
 			st,
 			ep.m_nSpeakerEntity);
 
-
 		if ( ep.m_pflSoundDuration )
 		{
 #ifdef GAME_DLL
@@ -674,10 +673,8 @@ public:
 #endif
 		}
 
-		if (this != nullptr) {
-			TraceEmitSound(entindex, "EmitSound:  '%s' emitted as '%s' (ent %i)\n",
-				ep.m_pSoundName, params.soundname, entindex);
-		}
+		TraceEmitSound( entindex, "EmitSound:  '%s' emitted as '%s' (ent %i)\n",
+			ep.m_pSoundName, params.soundname, entindex );
 
 
 		// Don't caption modulations to the sound
@@ -725,6 +722,22 @@ public:
 				Msg( "Sound %s was not precached\n", ep.m_pSoundName );
 			}
 #endif
+			//enginesound->EmitSound( 
+			//	filter, 
+			//	entindex, 
+			//	ep.m_nChannel, 
+			//	ep.m_pSoundName, 
+			//	ep.m_flVolume, 
+			//	ep.m_SoundLevel, 
+			//	ep.m_nFlags, 
+			//	ep.m_nPitch, 
+			//	ep.m_pOrigin,
+			//	NULL, 
+			//	&ep.m_UtlVecSoundOrigin,
+			//	true, 
+			//	ep.m_flSoundTime,
+			//	ep.m_nSpeakerEntity );
+
 			CRecipientFilter filterCopy;
 			filterCopy.CopyFrom((CRecipientFilter&)filter);
 
@@ -746,7 +759,6 @@ public:
 				true,
 				ep.m_flSoundTime,
 				ep.m_nSpeakerEntity);
-
 			if ( ep.m_pflSoundDuration )
 			{
 				// TERROR:
@@ -1561,7 +1573,6 @@ void CBaseEntity::EmitSound( const char *soundname, float soundtime /*= 0.0f*/, 
 	ABS_QUERY_GUARD( true );
 	CPASAttenuationFilter filter( this, soundname );
 	EmitSound_t params;
-	params.m_pOrigin = new Vector(m_vecOrigin);
 	params.m_pSoundName = soundname;
 	params.m_flSoundTime = soundtime;
 	params.m_pflSoundDuration = duration;

@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VCustomCampaigns.h"
 #include "VGenericPanelList.h"
 #include "KeyValues.h"
@@ -224,8 +224,6 @@ void CustomCampaigns::Activate()
 	m_GplCustomCampaigns->RemoveAllPanelItems();
 
 	// Build a list of campaigns
-#ifdef SWARM_DLL
-
 	KeyValues *pAllMissions = g_pMatchExtSwarm->GetAllMissions();
 	if ( !pAllMissions )
 		return;
@@ -254,7 +252,6 @@ void CustomCampaigns::Activate()
 		panelItem->SetCustomCampaignName( pMission->GetString( "displaytitle" ) );
 		panelItem->SetCampaignContext( pMission->GetString( "name" ) );
 	}
-#endif
 }
 
 //=============================================================================
@@ -343,8 +340,6 @@ void CustomCampaigns::PaintBackground()
 //=============================================================================
 void CustomCampaigns::Select()
 {
-#ifdef SWARM_DLL
-
 	CustomCampaignListItem *pSelectedItem = static_cast< CustomCampaignListItem * >( m_GplCustomCampaigns->GetSelectedPanelItem() );
 	if ( !pSelectedItem )
 		return;
@@ -367,7 +362,6 @@ void CustomCampaigns::Select()
 	pEvent->SetString( "campaign", pSelectedItem->GetCampaignContext() );
 	pEvent->SetInt( "chapter", 0 );
 	PostMessage( pFrame, pEvent );
-#endif
 }
 
 //=============================================================================
@@ -394,8 +388,6 @@ void CustomCampaigns::OnCommand(const char *command)
 //=============================================================================
 void CustomCampaigns::OnItemSelected( const char* panelName )
 {
-#ifdef SWARM_DLL
-
 	CustomCampaignListItem *pSelectedItem = static_cast< CustomCampaignListItem * >( m_GplCustomCampaigns->GetSelectedPanelItem() );
 	if ( !pSelectedItem )
 		return;
@@ -482,6 +474,5 @@ void CustomCampaigns::OnItemSelected( const char* panelName )
 			m_imgLevelImage->SetImage( "swarm/MissionPics/addonMissionPic" );
 		}
 	}
-#endif
 }
 

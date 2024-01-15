@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$baseTexture "models/props_motel/painting_large_main"
-$surfaceprop metal
-}

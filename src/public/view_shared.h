@@ -29,6 +29,7 @@ enum ClearFlags_t
 	VIEW_CLEAR_STENCIL = 0x20,
 };
 
+
 enum MotionBlurMode_t
 {
 	MOTION_BLUR_DISABLE = 1,
@@ -39,6 +40,136 @@ enum MotionBlurMode_t
 //-----------------------------------------------------------------------------
 // Purpose: Renderer setup data.  
 //-----------------------------------------------------------------------------
+class CViewSetup
+{
+public:
+	CViewSetup()
+	{
+		m_nUnscaledX = x;
+		m_nUnscaledY = y;
+		m_nUnscaledWidth = width;
+		m_nUnscaledHeight = height;
+
+		m_flAspectRatio = 0.0f;
+
+		// These match mat_dof convars
+		m_flNearBlurDepth = 20.0;
+		m_flNearFocusDepth = 100.0;
+		m_flFarFocusDepth = 250.0;
+		m_flFarBlurDepth = 1000.0;
+		m_flNearBlurRadius = 10.0;
+		m_flFarBlurRadius = 5.0;
+		m_nDoFQuality = 0;
+
+		m_bRenderToSubrectOfLargerScreen = false;
+		m_bDoBloomAndToneMapping = true;
+		m_nMotionBlurMode = MOTION_BLUR_GAME;
+		m_bDoDepthOfField = false;
+		m_bHDRTarget = false;
+		m_bOffCenter = false;
+		m_bCacheFullSceneState = false;
+		m_bDrawWorldNormal = false;
+		m_bCullFrontFaces = false;
+		m_bCustomViewMatrix = false;
+		//m_bUseExplicitViewVector = false;
+		//m_bRenderFlashlightDepthTranslucents = false;
+	}
+
+	float ComputeViewMatrices(VMatrix* p1, VMatrix* p2, VMatrix* p3) {}
+
+	// left side of view window
+	int			x;
+	int			m_nUnscaledX;
+	// top side of view window
+	int			y;
+	int			m_nUnscaledY;
+	// width of view window
+	int			width;	
+	int			m_nUnscaledWidth;
+	// height of view window
+	int			height;
+	int			m_nUnscaledHeight;
+
+// the rest are only used by 3D views
+
+	// Orthographic projection?
+	bool		m_bOrtho;
+	// View-space rectangle for ortho projection.
+	float		m_OrthoLeft;
+	float		m_OrthoTop;
+	float		m_OrthoRight;
+	float		m_OrthoBottom;
+
+	bool		m_bCustomViewMatrix;
+	matrix3x4_t	m_matCustomViewMatrix;
+
+	// horizontal FOV in degrees
+	float		fov;
+	// horizontal FOV in degrees for in-view model
+	float		fovViewmodel;
+
+	// 3D origin of camera
+	Vector		origin;			
+
+	// heading of camera (pitch, yaw, roll)
+	QAngle		angles;			
+	// local Z coordinate of near plane of camera
+	float		zNear;
+		// local Z coordinate of far plane of camera
+	float		zFar;	
+
+	// local Z coordinate of near plane of camera ( when rendering view model )
+	float		zNearViewmodel;
+	// local Z coordinate of far plane of camera ( when rendering view model )
+	float		zFarViewmodel;	
+
+	// The aspect ratio to use for computing the perspective projection matrix
+	// (0.0f means use the viewport)
+	float		m_flAspectRatio;
+
+	// Camera settings to control depth of field
+	float		m_flNearBlurDepth;
+	float		m_flNearFocusDepth;
+	float		m_flFarFocusDepth;
+	float		m_flFarBlurDepth;
+	float		m_flNearBlurRadius;
+	float		m_flFarBlurRadius;
+	int			m_nDoFQuality;
+
+	// Camera settings to control motion blur
+	MotionBlurMode_t	m_nMotionBlurMode;
+	float	m_flShutterTime;				// In seconds
+	Vector	m_vShutterOpenPosition;			// Start of frame or "shutter open"
+	QAngle	m_shutterOpenAngles;			//
+	Vector	m_vShutterClosePosition;		// End of frame or "shutter close"
+	QAngle	m_shutterCloseAngles;			// 
+
+	// Controls for off-center projection (needed for poster rendering)
+	float		m_flOffCenterTop;
+	float		m_flOffCenterBottom;
+	float		m_flOffCenterLeft;
+	float		m_flOffCenterRight;
+	bool		m_bOffCenter:1;
+
+	// set to true if this is to draw into a subrect of the larger screen
+	// this really is a hack, but no more than the rest of the way this class is used
+	bool		m_bRenderToSubrectOfLargerScreen:1;
+
+	// Controls that the SFM needs to tell the engine when to do certain post-processing steps
+	bool		m_bDoBloomAndToneMapping:1;
+	bool		m_bDoDepthOfField:1;
+	bool		m_bHDRTarget:1;
+	bool		m_bDrawWorldNormal:1;
+	bool		m_bCullFrontFaces:1;
+
+	// Cached mode for certain full-scene per-frame varying state such as sun entity coverage
+	bool		m_bCacheFullSceneState:1;
+
+	//bool		m_bRenderFlashlightDepthTranslucents:1;
+};
+
+// Alien Swarm CViewSetup
+/*
 class CViewSetup
 {
 public:
@@ -66,159 +197,98 @@ public:
 		m_bCullFrontFaces = false;
 		m_bCustomViewMatrix = false;
 //		m_bUseExplicitViewVector = false;
-		//m_bRenderFlashlightDepthTranslucents = false;
+		m_bRenderFlashlightDepthTranslucents = false;
 	}
 
-	float ComputeViewMatrices(VMatrix* p1, VMatrix* p2, VMatrix* p3) {}
+// shared by 2D & 3D views
 
-	// from SourceAutoRecord
-	int x;
-	int m_nUnscaledX;
-	int y;
-	int m_nUnscaledY;
-	int width;
-	int m_nUnscaledWidth;
-	int height;
-	int m_nUnscaledHeight;
+	// left side of view window
+	int			x;
+	// top side of view window
+	int			y;
+	// width of view window
+	int			width;
+	// height of view window
+	int			height;
 
-	bool m_bOrtho;
-	float m_OrthoLeft;
-	float m_OrthoTop;
-	float m_OrthoRight;
-	float m_OrthoBottom;
+// the rest are only used by 3D views
 
-	bool m_bCustomViewMatrix;
+	// Orthographic projection?
+	bool		m_bOrtho;
+	// View-space rectangle for ortho projection.
+	float		m_OrthoLeft;
+	float		m_OrthoTop;
+	float		m_OrthoRight;
+	float		m_OrthoBottom;
+
+	bool		m_bCustomViewMatrix;
 	matrix3x4_t	m_matCustomViewMatrix;
 
-	float fov;
-	float fovViewmodel;
-	Vector origin;
-	QAngle angles;
+	// horizontal FOV in degrees
+	float		fov;
+	// horizontal FOV in degrees for in-view model
+	float		fovViewmodel;
 
-	float zNear;
-	float zFar;
-	float zNearViewmodel;
-	float zFarViewmodel;
+	// 3D origin of camera
+	Vector		origin;
 
-	float m_flAspectRatio;
-	float m_flNearBlurDepth;
-	float m_flNearFocusDepth;
-	float m_flFarFocusDepth;
-	float m_flFarBlurDepth;
-	float m_flNearBlurRadius;
-	float m_flFarBlurRadius;
+	// heading of camera (pitch, yaw, roll)
+	QAngle		angles;
+	// local Z coordinate of near plane of camera
+	float		zNear;
+		// local Z coordinate of far plane of camera
+	float		zFar;
 
-	int m_nDoFQuality;
-	MotionBlurMode_t m_nMotionBlurMode;
+	// local Z coordinate of near plane of camera ( when rendering view model )
+	float		zNearViewmodel;
+	// local Z coordinate of far plane of camera ( when rendering view model )
+	float		zFarViewmodel;
 
-	float m_flShutterTime;
-	Vector m_vShutterOpenPosition;
-	QAngle m_shutterOpenAngles;
-	Vector m_vShutterClosePosition;
-	QAngle m_shutterCloseAngles;
-	float m_flOffCenterTop;
-	float m_flOffCenterBottom;
-	float m_flOffCenterLeft;
-	float m_flOffCenterRight;
-	bool m_bOffCenter : 1;
-	bool m_bRenderToSubrectOfLargerScreen : 1;
-	bool m_bDoBloomAndToneMapping : 1;
-	bool m_bDoDepthOfField : 1;
-	bool m_bHDRTarget : 1;
-	bool m_bDrawWorldNormal : 1;
-	bool m_bCullFrontFaces : 1;
-	bool m_bCacheFullSceneState : 1;
+	// The aspect ratio to use for computing the perspective projection matrix
+	// (0.0f means use the viewport)
+	float		m_flAspectRatio;
 
-//
-//// shared by 2D & 3D views
-//
-//	// left side of view window
-//	int			x;					
-//	// top side of view window
-//	int			y;					
-//	// width of view window
-//	int			width;				
-//	// height of view window
-//	int			height;				
-//
-//// the rest are only used by 3D views
-//
-//	// Orthographic projection?
-//	bool		m_bOrtho;			
-//	// View-space rectangle for ortho projection.
-//	float		m_OrthoLeft;		
-//	float		m_OrthoTop;
-//	float		m_OrthoRight;
-//	float		m_OrthoBottom;
-//
-//	bool		m_bCustomViewMatrix;
-//	matrix3x4_t	m_matCustomViewMatrix;
-//
-//	// horizontal FOV in degrees
-//	float		fov;				
-//	// horizontal FOV in degrees for in-view model
-//	float		fovViewmodel;		
-//
-//	// 3D origin of camera
-//	Vector		origin;					
-//
-//	// heading of camera (pitch, yaw, roll)
-//	QAngle		angles;				
-//	// local Z coordinate of near plane of camera
-//	float		zNear;			
-//		// local Z coordinate of far plane of camera
-//	float		zFar;			
-//
-//	// local Z coordinate of near plane of camera ( when rendering view model )
-//	float		zNearViewmodel;		
-//	// local Z coordinate of far plane of camera ( when rendering view model )
-//	float		zFarViewmodel;		
-//
-//	// The aspect ratio to use for computing the perspective projection matrix
-//	// (0.0f means use the viewport)
-//	float		m_flAspectRatio;
-//
-//	// Camera settings to control depth of field
-//	float		m_flNearBlurDepth;
-//	float		m_flNearFocusDepth;
-//	float		m_flFarFocusDepth;
-//	float		m_flFarBlurDepth;
-//	float		m_flNearBlurRadius;
-//	float		m_flFarBlurRadius;
-//	int			m_nDoFQuality;
-//
-//	// Camera settings to control motion blur
-//	MotionBlurMode_t	m_nMotionBlurMode;
-//	float	m_flShutterTime;				// In seconds
-//	Vector	m_vShutterOpenPosition;			// Start of frame or "shutter open"
-//	QAngle	m_shutterOpenAngles;			//
-//	Vector	m_vShutterClosePosition;		// End of frame or "shutter close"
-//	QAngle	m_shutterCloseAngles;			// 
-//
-//	// Controls for off-center projection (needed for poster rendering)
-//	float		m_flOffCenterTop;
-//	float		m_flOffCenterBottom;
-//	float		m_flOffCenterLeft;
-//	float		m_flOffCenterRight;
-//	bool		m_bOffCenter:1;
-//
-//	// set to true if this is to draw into a subrect of the larger screen
-//	// this really is a hack, but no more than the rest of the way this class is used
-//	bool		m_bRenderToSubrectOfLargerScreen:1;
-//
-//	// Controls that the SFM needs to tell the engine when to do certain post-processing steps
-//	bool		m_bDoBloomAndToneMapping:1;
-//	bool		m_bDoDepthOfField:1;
-//	bool		m_bHDRTarget:1;
-//	bool		m_bDrawWorldNormal:1;
-//	bool		m_bCullFrontFaces:1;
-//
-//	// Cached mode for certain full-scene per-frame varying state such as sun entity coverage
-//	bool		m_bCacheFullSceneState:1;
-//
-	//bool		m_bRenderFlashlightDepthTranslucents:1;
+	// Camera settings to control depth of field
+	float		m_flNearBlurDepth;
+	float		m_flNearFocusDepth;
+	float		m_flFarFocusDepth;
+	float		m_flFarBlurDepth;
+	float		m_flNearBlurRadius;
+	float		m_flFarBlurRadius;
+	int			m_nDoFQuality;
+
+	// Camera settings to control motion blur
+	MotionBlurMode_t	m_nMotionBlurMode;
+	float	m_flShutterTime;				// In seconds
+	Vector	m_vShutterOpenPosition;			// Start of frame or "shutter open"
+	QAngle	m_shutterOpenAngles;			//
+	Vector	m_vShutterClosePosition;		// End of frame or "shutter close"
+	QAngle	m_shutterCloseAngles;			//
+
+	// Controls for off-center projection (needed for poster rendering)
+	float		m_flOffCenterTop;
+	float		m_flOffCenterBottom;
+	float		m_flOffCenterLeft;
+	float		m_flOffCenterRight;
+	bool		m_bOffCenter:1;
+
+	// set to true if this is to draw into a subrect of the larger screen
+	// this really is a hack, but no more than the rest of the way this class is used
+	bool		m_bRenderToSubrectOfLargerScreen:1;
+
+	// Controls that the SFM needs to tell the engine when to do certain post-processing steps
+	bool		m_bDoBloomAndToneMapping:1;
+	bool		m_bDoDepthOfField:1;
+	bool		m_bHDRTarget:1;
+	bool		m_bDrawWorldNormal:1;
+	bool		m_bCullFrontFaces:1;
+
+	// Cached mode for certain full-scene per-frame varying state such as sun entity coverage
+	bool		m_bCacheFullSceneState:1;
+
+	bool		m_bRenderFlashlightDepthTranslucents:1;
 };
-
+*/
 
 
 #endif // VIEW_SHARED_H

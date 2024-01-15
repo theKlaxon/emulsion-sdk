@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "vleaderboard.h"
 #include "VGenericPanelList.h"
 #include "EngineInterface.h"
@@ -671,7 +671,6 @@ void Leaderboard::Activate()
 
 	m_Mode = LEADERBOARD_FRIENDS;
 
-#ifdef SWARM_DLL
 	KeyValues *pInfoMission = NULL;
 	KeyValues *pInfoMap = g_pMatchExtSwarm->GetMapInfo( m_pDataSettings, &pInfoMission );
 	
@@ -720,8 +719,6 @@ void Leaderboard::Activate()
 	{
 		SetControlEnabled( "BtnFindServer", false );
 	}
-
-#endif
 }
 
 //=============================================================================
@@ -738,7 +735,6 @@ void Leaderboard::ApplySchemeSettings( IScheme *pScheme )
 //=============================================================================
 int Leaderboard::GetCurrentChapterContext( void )
 {
-#ifdef SWARM_DLL
 	KeyValues *pMissionInfo = NULL;
 	if ( KeyValues *pMapInfo = g_pMatchExtSwarm->GetMapInfo( m_pDataSettings, &pMissionInfo ) )
 	{
@@ -754,7 +750,6 @@ int Leaderboard::GetCurrentChapterContext( void )
 			return CRC32_ProcessSingleBuffer( szStringVal, strlen( szStringVal ) );
 		}
 	}
-#endif
 	return 0;
 }
 
@@ -809,8 +804,6 @@ void Leaderboard::OnMissionChapterChanged()
 #endif
 
 	InitializeDropDownControls();
-
-#ifdef SWARM_DLL
 
 	KeyValues *pInfoMission = NULL;
 	KeyValues *pInfoMap = g_pMatchExtSwarm->GetMapInfo( m_pDataSettings, &pInfoMission );
@@ -872,8 +865,6 @@ void Leaderboard::OnMissionChapterChanged()
 	StartSearching( false );
 
 	s_bNoReentry = false;
-
-#endif
 }
 
 void Leaderboard::InitializeDropDownControls()
@@ -1613,8 +1604,6 @@ void Leaderboard::GetLeaderboardName( int iMapContext, char *pszBuf, int iBufLen
 {
 	// name = "<mapname>_<gamemode>"
 
-#ifdef SWARM_DLL
-
 	KeyValues *pInfoMission = NULL;
 	KeyValues *pInfoMap = g_pMatchExtSwarm->GetMapInfo( m_pDataSettings, &pInfoMission );
 
@@ -1626,7 +1615,6 @@ void Leaderboard::GetLeaderboardName( int iMapContext, char *pszBuf, int iBufLen
 	{
 		pszBuf[0] = '\0';
 	}
-#endif
 }
 
 //=============================================================================
@@ -2517,7 +2505,6 @@ void Leaderboard::CmdJumpToMe()
 //=============================================================================
 void Leaderboard::CmdLeaderboardHelper( int nOffset )
 {
-#ifdef SWARM_DLL
 	KeyValues *pMissionInfo = NULL;
 	KeyValues *pMapInfo = g_pMatchExtSwarm->GetMapInfo( m_pDataSettings, &pMissionInfo );
 	if ( !pMapInfo )
@@ -2566,8 +2553,6 @@ void Leaderboard::CmdLeaderboardHelper( int nOffset )
 
 	// Prepare UI
 	OnMissionChapterChanged();
-
-#endif
 }
 
 //=============================================================================

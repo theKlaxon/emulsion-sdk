@@ -1,5 +1,0 @@
-vertexlitgeneric
-{
-$baseTexture "models\props/light_rail_endcap_glass"
-$additive 1
-}

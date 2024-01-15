@@ -1,8 +1,0 @@
-VertexlitGeneric
-{
-$basetexture "anim_wp\framework\backpanels"
-"%keywords" "portal2 bts destruction"
-$surfaceprop metal
-"%noportal" 1
-$reflectivity "[ .3 .3 .3 ]" 
-}

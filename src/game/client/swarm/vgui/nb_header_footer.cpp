@@ -4,7 +4,9 @@
 #include "vgui_controls/ImagePanel.h"
 #include <vgui/ISurface.h>
 #include "vgui_hudvideo.h"
+#include "asw_video.h"
 #include "VGUIMatSurface/IMatSystemSurface.h"
+#include "asw_gamerules.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -124,15 +126,62 @@ int CASW_Background_Movie::SetTextureMaterial()
 
 void CASW_Background_Movie::Update()
 {
-	int nGameState = 0;
-	if ( nGameState != m_nLastGameState )
+	if ( engine->IsConnected() && ASWGameRules() )
 	{
+		int nGameState = ASWGameRules()->GetGameState();
+		if ( nGameState >= ASW_GS_DEBRIEF && ASWGameRules()->GetMissionSuccess() )
+		{
+			nGameState += 10;
+		}
+		if ( nGameState != m_nLastGameState && !( nGameState == ASW_GS_LAUNCHING || nGameState == ASW_GS_INGAME ) )
+		{
+			const char *pFilename = NULL;
 #ifdef ASW_BINK_MOVIES
-		SetCurrentMovie( "media/menu_act01.bik" );
+			if ( ASWGameRules()->GetGameState() >= ASW_GS_DEBRIEF )
+			{
+				if ( ASWGameRules()->GetMissionSuccess() )
+				{
+					pFilename = "media/SpaceFX.bik";
+				}
+				else
+				{
+					pFilename = "media/BG_Fail.bik";
+				}
+			}
+			else
+			{
+				int nChosenMovie = RandomInt( 0, 3 );
+				switch( nChosenMovie )
+				{
+					case 0: pFilename = "media/BGFX_01.bik"; break;
+					case 1: pFilename = "media/BGFX_02.bik"; break;
+					default:
+					case 2: pFilename = "media/BGFX_03.bik"; break;
+					case 3: pFilename = "media/BG_04_FX.bik"; break;
+				}
+			}
 #else
-		SetCurrentMovie( "media/test.avi" );
+			pFilename = "media/test.avi";
 #endif
+			if ( pFilename )
+			{
+				SetCurrentMovie( pFilename );
+			}
+		}
 		m_nLastGameState = nGameState;
+	}
+	else
+	{
+		int nGameState = 0;
+		if ( nGameState != m_nLastGameState )
+		{
+#ifdef ASW_BINK_MOVIES
+			SetCurrentMovie( "media/BG_02.bik" );
+#else
+			SetCurrentMovie( "media/test.avi" );
+#endif
+			m_nLastGameState = nGameState;
+		}
 	}
 
 #ifdef ASW_BINK_MOVIES

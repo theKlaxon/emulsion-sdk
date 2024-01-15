@@ -119,7 +119,7 @@ public:
 	{
 		int ret=Read( pOutput, size );
 		if (ret != size )
-			Error((tchar*)"failed to read %d bytes\n", size );
+			Error("failed to read %d bytes\n", size );
 	}
 	
 	int Write( void const* pInput, int size)
@@ -274,7 +274,7 @@ public:
 		CBaseFile::Open( pFname, "r" );
 		if ( ! IsOk() )
 		{
-			Error((tchar*)"error opening required file %s\n", pFname );
+			Error("error opening required file %s\n", pFname );
 		}
 	}
 
@@ -295,7 +295,7 @@ public:
 		CBaseFile::Open( pFname, "rb" );
 		if ( ! IsOk() )
 		{
-			Error((tchar*)"error opening required file %s\n", pFname );
+			Error("error opening required file %s\n", pFname );
 		}
 	}
 

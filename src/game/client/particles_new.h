@@ -14,7 +14,7 @@
 
 #include "particlemgr.h"
 #include "particles/particles.h"
-#include "particlesphererenderer.h"
+#include "ParticleSphereRenderer.h"
 #include "smartptr.h"
 #include "particles_simple.h"
 #include "tier1/utlobjectreference.h"
@@ -67,7 +67,7 @@ public:
 	bool ShouldPerformCullCheck() const;
 	void MarkShouldPerformCullCheck( bool bEnable );
 	CBaseEntity *GetOwner( void ) { return m_hOwner; }
-	void SetOwner(CBaseEntity* pOwner) { m_hOwner = pOwner; }
+	void SetOwner( CBaseEntity *pOwner ) { m_hOwner = pOwner; }
 	CNewParticleEffect* ReplaceWith( const char *pParticleSystemName );
 
 	static CNewParticleEffect *Create( CBaseEntity *pOwner, const char *pParticleSystemName,
@@ -230,7 +230,7 @@ inline const Vector &CNewParticleEffect::GetSortOrigin( void )
 
 inline bool CNewParticleEffect::ShouldDraw( void )
 {
-	return true;
+	return m_bDrawn;
 }
 
 inline const QAngle& CNewParticleEffect::GetRenderAngles( void )

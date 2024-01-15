@@ -37,10 +37,6 @@ public:
 	virtual void OnDataChanged( DataUpdateType_t type );
 	virtual bool OnInternalDrawModel( ClientModelRenderInfo_t *pInfo );
 
-#ifdef P2_DLL
-	virtual bool ShouldMakeFancyShadows() const { return true; }
-#endif
-
 protected:
 	// Networked vars.
 	bool m_bAwake;

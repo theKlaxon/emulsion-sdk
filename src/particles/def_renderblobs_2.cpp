@@ -15,6 +15,7 @@
 #include "particles_internal.h"
 #include "tier0/vprof.h"
 
+#include "..\common\blobulator\implicit\ImpDefines.h"
 #include "..\common\blobulator\implicit\ImpRenderer.h"
 #include "..\common\blobulator\implicit\ImpTiler.h"
 #include "..\common\blobulator\implicit\UserFunctions.h"

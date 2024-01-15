@@ -96,8 +96,7 @@ void CPrecacheHandler::CacheResourceFile( const char *pFilename, bool bPrecache,
 
 	KeyValues *pValues = new KeyValues( "ResourceFile" );
 
-	if ( !pValues->LoadFromFileEX( g_pFullFileSystem, pFilename, "GAME" ) )
-	//if ( !pValues->LoadFromFile( g_pFullFileSystem, pFilename, "SKIN" ) )
+	if ( !pValues->LoadFromFile( g_pFullFileSystem, pFilename, "GAME" ) ) // was EX
 	{
 		Warning( "Can't open %s for client precache info.", pFilename );
 		pValues->deleteThis();

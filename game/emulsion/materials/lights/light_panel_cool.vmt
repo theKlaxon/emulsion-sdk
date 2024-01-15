@@ -1,6 +1,0 @@
-UnlitGeneric
-{
-$basetexture "Lights/White004"
-$surfaceprop glass
-$nodecal 1
-}

@@ -186,7 +186,7 @@ void CDecalEmitterSystem::LoadDecalsFromScript( char const *filename )
 	{
 		KeyValues *translation = NULL;
 #ifndef _XBOX
-		if ( kv->LoadFromFileEX( filesystem, filename, "GAME"))
+		if ( kv->LoadFromFile( filesystem, filename ) ) // was EX
 #else
 		if ( kv->LoadFromFile( filesystem, filename, "GAME" ) )
 #endif

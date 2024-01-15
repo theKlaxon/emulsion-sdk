@@ -1,7 +1,0 @@
-UnlitGeneric
-{
-$basetexture "signage/coop_periodic_table"
-$surfaceprop default
-
-"%keywords" portal2
-}

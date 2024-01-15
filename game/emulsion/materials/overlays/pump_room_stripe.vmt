@@ -1,7 +1,0 @@
-LightMappedGeneric
-{
-$basetexture "overlays/pump_room_stripe"
-$surfaceprop default
-$translucent 1
-$decal 1
-}

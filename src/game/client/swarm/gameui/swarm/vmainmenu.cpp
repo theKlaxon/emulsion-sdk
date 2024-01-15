@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VMainMenu.h"
 #include "EngineInterface.h"
 #include "VFooterPanel.h"
@@ -249,30 +249,28 @@ void MainMenu::OnCommand( const char *command )
 	{
 		if ( !asw_show_all_singleplayer_maps.GetBool() )
 		{
-			engine->ClientCmd("map default");
+			KeyValues *pSettings = KeyValues::FromString(
+			"settings",
+			" system { "
+			" network offline "
+			" } "
+			" game { "
+			" mode single_mission "
+			" campaign jacob "
+			" mission asi-jac1-landingbay_pract "
+			" } "
+			);
+			KeyValues::AutoDelete autodelete( pSettings );
 
-			//KeyValues *pSettings = KeyValues::FromString(
-			//"settings",
-			//" system { "
-			//" network offline "
-			//" } "
-			//" game { "
-			//" mode single_mission "
-			//" campaign jacob "
-			//" mission asi-jac1-landingbay_pract "
-			//" } "
-			//);
-			//KeyValues::AutoDelete autodelete( pSettings );
+			pSettings->SetString( "Game/difficulty", GameModeGetDefaultDifficulty( pSettings->GetString( "Game/mode" ) ) );
 
-			//pSettings->SetString( "Game/difficulty", GameModeGetDefaultDifficulty( pSettings->GetString( "Game/mode" ) ) );
+			g_pMatchFramework->CreateSession( pSettings );
 
-			//g_pMatchFramework->CreateSession( pSettings );
-
-			//// Automatically start the credits session, no configuration required
-			//if ( IMatchSession *pMatchSession = g_pMatchFramework->GetMatchSession() )
-			//{
-			//	pMatchSession->Command( KeyValues::AutoDeleteInline( new KeyValues( "Start" ) ) );
-			//}
+			// Automatically start the credits session, no configuration required
+			if ( IMatchSession *pMatchSession = g_pMatchFramework->GetMatchSession() )
+			{
+				pMatchSession->Command( KeyValues::AutoDeleteInline( new KeyValues( "Start" ) ) );
+			}
 		}
 		else
 		{
@@ -1044,16 +1042,14 @@ void MainMenu::ApplySchemeSettings( IScheme *pScheme )
 
 	LoadControlSettings( pSettings );
 
-//	//BaseModHybridButton *button = dynamic_cast< BaseModHybridButton* >( FindChildByName( "BtnPlaySolo" ) );
-//	BaseModHybridButton *button = dynamic_cast< BaseModHybridButton* >( FindChildByName( "BtnSingleplayer" ) );
-//	if ( button )
-//	{
-//
-//#ifdef _X360
-//		button->SetText( ( XBX_GetNumGameUsers() > 1 ) ? ( "#L4D360UI_MainMenu_PlaySplitscreen" ) : ( "#L4D360UI_MainMenu_PlaySolo" ) );
-//		button->SetHelpText( ( XBX_GetNumGameUsers() > 1 ) ? ( "#L4D360UI_MainMenu_OfflineCoOp_Tip" ) : ( "#L4D360UI_MainMenu_PlaySolo_Tip" ) );
-//#endif
-//	}
+	BaseModHybridButton *button = dynamic_cast< BaseModHybridButton* >( FindChildByName( "BtnPlaySolo" ) );
+	if ( button )
+	{
+#ifdef _X360
+		button->SetText( ( XBX_GetNumGameUsers() > 1 ) ? ( "#L4D360UI_MainMenu_PlaySplitscreen" ) : ( "#L4D360UI_MainMenu_PlaySolo" ) );
+		button->SetHelpText( ( XBX_GetNumGameUsers() > 1 ) ? ( "#L4D360UI_MainMenu_OfflineCoOp_Tip" ) : ( "#L4D360UI_MainMenu_PlaySolo_Tip" ) );
+#endif
+	}
 
 #ifdef _X360
 	if ( !XBX_GetPrimaryUserIsGuest() )
@@ -1130,8 +1126,7 @@ void MainMenu::ApplySchemeSettings( IScheme *pScheme )
 			AssertMsg( false, "This branch run on a PC build without IS_WINDOWS_PC defined." );
 #endif
 
-			//int32 availableBytes, totalBytes = 0;
-			uint64 availableBytes, totalBytes = 0;
+			int32 availableBytes, totalBytes = 0;
 			if ( pRemoteStorage && pRemoteStorage->GetQuota( &totalBytes, &availableBytes ) )
 			{
 				if ( totalBytes > 0 )
@@ -1158,27 +1153,24 @@ void MainMenu::ApplySchemeSettings( IScheme *pScheme )
 			}
 			else
 			{
-				pGameModes->SetActive( "BtnSingleplayer", true );
+				pGameModes->SetActive( "BtnPlaySolo", true );
 			}
 			m_ActiveControl = pGameModes;
 		}
 	}
 
-	//if ( IsPC() )
-	//{
-	//	vgui::Panel *firstPanel = FindChildByName( "BtnSingleplayer" );
-	//	if ( firstPanel )
-	//	{
-	//		if ( m_ActiveControl )
-	//		{
-	//			m_ActiveControl->NavigateFrom( );
-	//		}
-	//		firstPanel->NavigateTo();
-	//	}
-	//}
-
-	SetControlEnabled("BtnSingleplayer", true);
-	SetControlVisible("BtnSingleplayer", true);
+	if ( IsPC() )
+	{
+		vgui::Panel *firstPanel = FindChildByName( "BtnCoOp" );
+		if ( firstPanel )
+		{
+			if ( m_ActiveControl )
+			{
+				m_ActiveControl->NavigateFrom( );
+			}
+			firstPanel->NavigateTo();
+		}
+	}
 
 #if defined( _X360 ) && defined( _DEMO )
 	SetControlVisible( "BtnExtras", !engine->IsDemoHostedFromShell() );
@@ -1253,13 +1245,10 @@ void MainMenu::AcceptSplitscreenDisableCallback()
 
 void MainMenu::AcceptQuitGameCallback()
 {
-	//engine->ClientCmd_Unrestricted("quit");
-	engine->ClientCmd_Unrestricted("crash"); // leave it, it works
-
-	//if ( MainMenu *pMainMenu = static_cast< MainMenu* >( CBaseModPanel::GetSingleton().GetWindow( WT_MAINMENU ) ) )
-	//{
-	//	pMainMenu->OnCommand( "QuitGame_NoConfirm" );
-	//}
+	if ( MainMenu *pMainMenu = static_cast< MainMenu* >( CBaseModPanel::GetSingleton().GetWindow( WT_MAINMENU ) ) )
+	{
+		pMainMenu->OnCommand( "QuitGame_NoConfirm" );
+	}
 }
 
 void MainMenu::AcceptVersusSoftLockCallback()

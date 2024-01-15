@@ -45,14 +45,6 @@ enum ESystemNotify
 	SYSTEMNOTIFY_PROFILE_UNAVAILABLE,			// Profile failed to read or write
 };
 
-// these are used to show the modal message box on different slots
-enum ECommandMsgBoxSlot
-{
-	CMB_SLOT_FULL_SCREEN = -1,
-	CMB_SLOT_PLAYER_0,
-	CMB_SLOT_PLAYER_1,
-};
-
 //-----------------------------------------------------------------------------
 // Purpose: contains all the functions that the GameUI dll exports
 //-----------------------------------------------------------------------------
@@ -81,33 +73,14 @@ public:
 	virtual void OnLevelLoadingStarted( const char *levelName, bool bShowProgressDialog ) = 0;
 	virtual void OnLevelLoadingFinished(bool bError, const char *failureReason, const char *extendedReason) = 0;
 
-	// stuff
-	//virtual void StartLoadingScreenForCommand(const char* command) = 0;
-	//virtual void StartLoadingScreenForKeyValues(KeyValues* keyValues) = 0;
-
-	// end
-
 	// level loading progress, returns true if the screen needs updating
 	virtual bool UpdateProgressBar(float progress, const char *statusText) = 0;
 	// Shows progress desc, returns previous setting... (used with custom progress bars )
 	virtual bool SetShowProgressText( bool show ) = 0;
 
-	// TODO: csgo
-	//virtual bool UpdateSecondaryProgressBar(float progress, const wchar_t* desc) = 0;
-
 	// !!!!!!!!!members added after "GameUI011" initial release!!!!!!!!!!!!!!!!!!!
 	// Allows the level loading progress to show map-specific info
 	virtual void SetProgressLevelName( const char *levelName ) = 0;
-
-	// stuff
-		// Xbox 360
-	//virtual void ShowMessageDialog(const uint nType, vgui::Panel* pOwner) = 0;
-	//virtual void ShowMessageDialog(const char* messageID, const char* titleID) = 0;
-
-	//virtual void CreateCommandMsgBox(const char* pszTitle, const char* pszMessage, bool showOk = true, bool showCancel = false, const char* okCommand = NULL, const char* cancelCommand = NULL, const char* closedCommand = NULL, const char* pszLegend = NULL) = 0;
-	//virtual void CreateCommandMsgBoxInSlot(ECommandMsgBoxSlot slot, const char* pszTitle, const char* pszMessage, bool showOk = true, bool showCancel = false, const char* okCommand = NULL, const char* cancelCommand = NULL, const char* closedCommand = NULL, const char* pszLegend = NULL) = 0;
-
-	// end
 
 	// inserts specified panel as background for level load dialog
 	virtual void SetLoadingBackgroundDialog( vgui::VPANEL panel ) = 0;
@@ -133,7 +106,6 @@ public:
 	virtual bool IsInLevel() = 0;
 
 	virtual void RestoreTopLevelMenu() = 0;
-
 };
 
 #define GAMEUI_INTERFACE_VERSION "GameUI011"

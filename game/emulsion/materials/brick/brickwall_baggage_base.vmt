@@ -1,6 +1,0 @@
-lightmappedGeneric
-{
-$baseTexture "brick/brickwall_baggage_base"
-$surfaceprop brick
-"%keywords" cstrike
-}

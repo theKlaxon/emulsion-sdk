@@ -1,6 +1,0 @@
-UnlitGeneric
-{
-$basetexture "VGUI\medals\medal_02_bronze"
-$translucent 1
-$alpha 1
-}

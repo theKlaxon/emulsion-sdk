@@ -266,7 +266,6 @@ CCurTimeScopeGuard::~CCurTimeScopeGuard()
 // HACK HACK:  3/28/02 ywb Had to proxy around this or interpolation is borked in multiplayer, not sure what
 //  the issue is, just a global optimizer bug I presume
 #pragma optimize( "g", off )
-
 //-----------------------------------------------------------------------------
 // Purpose: Decodes animtime and notes when it changes
 // Input  : *pStruct - ( C_BaseEntity * ) used to flag animtime is changine
@@ -677,8 +676,8 @@ BEGIN_PREDICTION_DATA_NO_BASE( C_BaseEntity )
 	// DEFINE_FIELD( m_bReadyToDraw, FIELD_BOOLEAN ),
 	// DEFINE_FIELD( anim, CLatchedAnim ),
 	// DEFINE_FIELD( mouth, CMouthInfo ),
-	//DEFINE_FIELD( GetAbsOrigin(), FIELD_VECTOR ),
-	//DEFINE_FIELD( GetAbsAngles(), FIELD_VECTOR ),
+	// DEFINE_FIELD( GetAbsOrigin(), FIELD_VECTOR ),
+	// DEFINE_FIELD( GetAbsAngles(), FIELD_VECTOR ),
 	// DEFINE_FIELD( m_nNumAttachments, FIELD_SHORT ),
 	// DEFINE_FIELD( m_pAttachmentAngles, FIELD_VECTOR ),
 	// DEFINE_FIELD( m_pAttachmentOrigin, FIELD_VECTOR ),
@@ -1191,6 +1190,14 @@ void C_BaseEntity::Clear( void )
 	UpdateVisibility();
 }
 
+//-----------------------------------------------------------------------------
+// IClientUnknown 
+//-----------------------------------------------------------------------------
+IClientAlphaProperty* C_BaseEntity::GetClientAlphaProperty()
+{
+	return m_pClientAlphaProperty;
+}
+
 IClientModelRenderable* C_BaseEntity::GetClientModelRenderable()
 {
 	if (!m_bReadyToDraw)
@@ -1216,15 +1223,6 @@ bool C_BaseEntity::GetRenderData(void* pData, ModelDataCategory_t nCategory)
 		return false;
 	}
 }
-
-//-----------------------------------------------------------------------------
-// IClientUnknown 
-//-----------------------------------------------------------------------------
-IClientAlphaProperty* C_BaseEntity::GetClientAlphaProperty()
-{
-	return m_pClientAlphaProperty;
-}
-
 
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -1786,8 +1784,7 @@ ShadowType_t C_BaseEntity::ShadowCastType()
 		return SHADOWS_NONE;
 
 	int modelType = modelinfo->GetModelType( model );
-	ShadowType_t type = (modelType == mod_studio) ? SHADOWS_RENDER_TO_TEXTURE : SHADOWS_NONE;
-	return type;//(modelType == mod_studio) ? SHADOWS_RENDER_TO_TEXTURE : SHADOWS_NONE; // added type var for debugging shadow issues
+	return (modelType == mod_studio) ? SHADOWS_RENDER_TO_TEXTURE : SHADOWS_NONE;
 }
 
 
@@ -2218,7 +2215,6 @@ bool C_BaseEntity::GetSoundSpatialization( SpatializationInfo_t& info )
 	if ( info.pOrigin )
 	{
 		*info.pOrigin = GetAbsOrigin();
-		//info.info.vOrigin = GetAbsOrigin();
 
 		// move origin to middle of brush
 		if ( modelinfo->GetModelType( pModel ) == mod_brush )

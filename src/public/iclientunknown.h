@@ -24,19 +24,7 @@ class IClientThinkable;
 class IClientModelRenderable;
 class IClientAlphaProperty;
 
-// This version sorta works
-//abstract_class IClientUnknown : public IHandleEntity
-//{
-//public:
-//	virtual ICollideable * GetCollideable() = 0;
-//	virtual IClientNetworkable* GetClientNetworkable() = 0;
-//	virtual IClientRenderable* GetClientRenderable() = 0;
-//	virtual IClientEntity* GetIClientEntity() = 0;
-//	virtual C_BaseEntity* GetBaseEntity() = 0;
-//	virtual IClientThinkable* GetClientThinkable() = 0;
-//	/*virtual */IClientModelRenderable* GetClientModelRenderable();/* = 0;*/
-//	virtual IClientAlphaProperty* GetClientAlphaProperty() = 0;
-//};
+
 
 // This is the client's version of IUnknown. We may want to use a QueryInterface-like
 // mechanism if this gets big.
@@ -49,7 +37,9 @@ public:
 	virtual IClientEntity*		GetIClientEntity() = 0;
 	virtual C_BaseEntity*		GetBaseEntity() = 0;
 	virtual IClientThinkable*	GetClientThinkable() = 0;
-	virtual IClientAlphaProperty* GetClientAlphaProperty() = 0;
+	//virtual IClientModelRenderable*	GetClientModelRenderable() = 0;
+	virtual IClientAlphaProperty*	GetClientAlphaProperty() = 0;
 };
+
 
 #endif // ICLIENTUNKNOWN_H

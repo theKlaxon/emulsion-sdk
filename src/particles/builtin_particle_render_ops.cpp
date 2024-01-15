@@ -21,11 +21,13 @@
 #include "particles_internal.h"
 #include "tier0/vprof.h"
 
-//#include "..\common\blobulator\implicit\ImpDefines.h"
-//#include "..\common\blobulator\implicit\ImpRenderer.h"
-//#include "..\common\blobulator\implicit\SweepRenderer.h"
-//#include "..\common\blobulator\implicit\ImpTiler.h"
-//#include "..\common\blobulator\implicit\UserFunctions.h"
+#ifdef USE_BLOBULATOR
+#include "..\common\blobulator\implicit\ImpDefines.h"
+#include "..\common\blobulator\implicit\ImpRenderer.h"
+#include "..\common\blobulator\implicit\SweepRenderer.h"
+#include "..\common\blobulator\implicit\ImpTiler.h"
+#include "..\common\blobulator\implicit\UserFunctions.h"
+#endif
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -3100,7 +3102,7 @@ void C_OP_RenderRope::RenderUnsorted( CParticleCollection *pParticles, void *pCo
 	beamSegment.End();
 }
 
-/*#ifdef USE_BLOBULATOR										// Enable blobulator for EP3
+#ifdef USE_BLOBULATOR										// Enable blobulator for EP3
 
 //-----------------------------------------------------------------------------
 // Installs renderers
@@ -3254,7 +3256,9 @@ void C_OP_RenderBlobs::Render(IMatRenderContext* pRenderContext, CParticleCollec
 	//tiler->drawTile(imp_particles_sa[0].center[0], imp_particles_sa[0].center[1], imp_particles_sa[0].center[2]);
 	//tiler->drawTile(tiler->getTile(0));
 	tiler->endFrame();
-}*/
+}
+
+#endif
 
 //-----------------------------------------------------------------------------
 // Installs renderers
@@ -3740,7 +3744,7 @@ void AddBuiltInParticleRenderers( void )
 	REGISTER_PARTICLE_OPERATOR( FUNCTION_RENDERER, C_OP_RenderScreenVelocityRotate );
 	REGISTER_PARTICLE_OPERATOR( FUNCTION_RENDERER, C_OP_RenderModels );
 #if defined(USE_BLOBULATOR) || defined(USE_BLOBULATOR_ASW)
-	//REGISTER_PARTICLE_OPERATOR( FUNCTION_RENDERER, C_OP_RenderBlobs );
+	REGISTER_PARTICLE_OPERATOR( FUNCTION_RENDERER, C_OP_RenderBlobs );
 #endif // blobs
 	REGISTER_PARTICLE_OPERATOR( FUNCTION_RENDERER, C_OP_RenderProjected );
 }

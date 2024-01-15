@@ -167,7 +167,7 @@ void PrecacheFileWeaponInfoDatabase( IFileSystem *filesystem, const unsigned cha
 
 	KeyValues *manifest = new KeyValues( "weaponscripts" );
 	manifest->UsesEscapeSequences( true );
-	if ( manifest->LoadFromFileEX( filesystem, "scripts/weapon_manifest.txt", "GAME" ) )
+	if ( manifest->LoadFromFile( filesystem, "scripts/weapon_manifest.txt", "GAME" ) ) // was EX
 	{
 		for ( KeyValues *sub = manifest->GetFirstSubKey(); sub != NULL ; sub = sub->GetNextKey() )
 		{
@@ -207,7 +207,7 @@ KeyValues* ReadEncryptedKVFile( IFileSystem *filesystem, const char *szFilenameW
 
 	Q_snprintf(szFullName,sizeof(szFullName), "%s.txt", szFilenameWithoutExtension);
 
-	if ( !pKV->LoadFromFileEX( filesystem, szFullName, pSearchPath ) ) // try to load the normal .txt file first
+	if ( !pKV->LoadFromFile( filesystem, szFullName, pSearchPath ) ) // try to load the normal .txt file first // was EX
 	{
 #ifndef _XBOX
 		if ( pICEKey )

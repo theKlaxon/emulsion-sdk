@@ -1,5 +1,0 @@
-unlitGeneric
-{
-$baseTexture "vgui/store/store_bracket_bottom"
-$translucent 1
-}

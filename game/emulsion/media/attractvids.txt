@@ -1,2 +1,0 @@
-media/attract01.bik
-media/attract02.bik

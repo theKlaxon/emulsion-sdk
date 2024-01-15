@@ -216,7 +216,7 @@ void CPropData::LevelShutdownPostEntity( void )
 void CPropData::ParsePropDataFile( void )
 {
 	m_pKVPropData = new KeyValues( "PropDatafile" );
-	if ( !m_pKVPropData->LoadFromFileEX( filesystem, "scripts/propdata.txt"))
+	if ( !m_pKVPropData->LoadFromFile( filesystem, "scripts/propdata.txt" ) ) // was EX
 	{
 		m_pKVPropData->deleteThis();
 		m_pKVPropData = NULL;

@@ -1,6 +1,0 @@
-UnlitGeneric
-{
-$basetexture "vgui\store\store_backpack_bg_highlight"
-$translucent 1
-$ignorez 1
-}

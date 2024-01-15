@@ -793,9 +793,9 @@ Panel::~Panel()
 //-----------------------------------------------------------------------------
 void Panel::MakeReadyForUse()
 {
-//	PerformApplySchemeSettings();
+	// PerformApplySchemeSettings();
 	UpdateSiblingPin();
-	surface()->SolveTraverse( GetVPanel(), true );
+	surface()->SolveTraverse( this->GetVPanel(), true );
 }
 
 	
@@ -1082,7 +1082,7 @@ void Panel::PaintTraverse( bool repaint, bool allowForce )
 	float oldAlphaMultiplier = surface()->DrawGetAlphaMultiplier();
 	float newAlphaMultiplier = oldAlphaMultiplier * m_flAlpha * 1.0f/255.0f;
 
-	if ( IsX360() && !newAlphaMultiplier )
+	if ( IsXbox() && !newAlphaMultiplier )
 	{
 		// xbox optimization not suitable for pc
 		// xbox panels are compliant and can early out and not traverse their children

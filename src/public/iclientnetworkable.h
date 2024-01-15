@@ -80,7 +80,8 @@ public:
 	// Only low-level entities should need to know about these.
 	virtual void			PreDataUpdate( DataUpdateType_t updateType ) = 0;
 	virtual void			PostDataUpdate( DataUpdateType_t updateType ) = 0;
-	virtual void			OnDataUnchangedInPVS() = 0;
+
+	virtual void 			OnDataUnchangedInPVS() = 0; // p2sdk
 
 	// Objects become dormant on the client if they leave the PVS on the server.
 	virtual bool			IsDormant( void ) = 0;

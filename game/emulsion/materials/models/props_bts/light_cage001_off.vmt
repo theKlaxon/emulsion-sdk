@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/props_bts/light_cage001_off"
-$surfaceprop default
-}

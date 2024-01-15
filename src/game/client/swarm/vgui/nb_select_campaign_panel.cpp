@@ -49,8 +49,6 @@ void CNB_Select_Campaign_Panel::OnThink()
 {
 	BaseClass::OnThink();
 
-#ifdef SWARM_DLL
-
 	IASW_Mission_Chooser_Source *pSource = missionchooser ? missionchooser->LocalMissionSource() : NULL;
 
 	// TODO: If voting, then use:
@@ -88,7 +86,6 @@ void CNB_Select_Campaign_Panel::OnThink()
 			pEntry->m_nCampaignIndex = -1;
 		}
 	}
-#endif
 }
 
 

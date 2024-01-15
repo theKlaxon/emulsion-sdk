@@ -86,15 +86,11 @@ void CEmulsionPlayer::Spawn() {
 	// TODO: remove after player move fixed
 	playerEdict = edict();
 	enableNoclipToggle = true;
-
-	engine->ClientCommand(edict(), "bind l create_flashlight");
+	//
 	engine->ClientCommand(edict(), "bind n tog_noclip");
-	//engine->ClientCommand(edict(), "give weapon_paintgun");
-	engine->ClientCommand(edict(), "bind 0 exit2");
-	engine->ClientCommand(edict(), "bind 8 disconnect");
+	engine->ClientCommand(edict(), "give weapon_paintgun");
 	engine->ClientCommand(edict(), "bind mwheeldown paintgun_next");
 	engine->ClientCommand(edict(), "bind mwheelup paintgun_prev");
-	engine->ClientCommand(edict(), "bind b create_blob");
 
 	m_hStickParent = NULL;
 	m_angInitialAngles = GetAbsAngles();

@@ -16,7 +16,6 @@
 #include "texture_group_names.h"
 #include "tier0/icommandline.h"
 
-#define MAX_FARZ 2000
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -53,7 +52,7 @@ C_EnvProjectedTexture *C_EnvProjectedTexture::Create( )
 
 	pEnt->m_flNearZ = 4.0f;
 	pEnt->m_flFarZ = 2000.0f;
-	strcpy( pEnt->m_SpotlightTextureName, "particle/rj" );
+//	strcpy( pEnt->m_SpotlightTextureName, "particle/rj" );
 	pEnt->m_bLightWorld = true;
 	pEnt->m_bLightOnlyTarget = false;
 	pEnt->m_bSimpleProjection = false;
@@ -63,7 +62,7 @@ C_EnvProjectedTexture *C_EnvProjectedTexture::Create( )
 	pEnt->m_LightColor.g = 255;
 	pEnt->m_LightColor.b = 255;
 	pEnt->m_LightColor.a = 255;
-	pEnt->m_bEnableShadows = true;
+	pEnt->m_bEnableShadows = false;
 	pEnt->m_flColorTransitionTime = 1.0f;
 	pEnt->m_bCameraSpace = false;
 	pEnt->SetAbsAngles( QAngle( 90, 0, 0 ) );
@@ -80,7 +79,6 @@ C_EnvProjectedTexture::C_EnvProjectedTexture( void )
 	m_LightHandle = CLIENTSHADOW_INVALID_HANDLE;
 	m_bForceUpdate = true;
 	m_pMaterial = NULL;
-	m_flFarZ = MAX_FARZ;
 	AddToEntityList( ENTITY_LIST_SIMULATE );
 }
 
@@ -109,12 +107,7 @@ void C_EnvProjectedTexture::ShutDownLightHandle( void )
 
 void C_EnvProjectedTexture::SetMaterial( IMaterial *pMaterial )
 {
-	//m_pMaterial = pMaterial;
-	if (m_pProjectedMaterial != pMaterial)
-	{
-		m_pProjectedMaterial.Init(pMaterial);
-		pMaterial->AddRef();
-	}
+	m_pMaterial = pMaterial;
 }
 
 
@@ -138,7 +131,7 @@ void C_EnvProjectedTexture::SetRotation( float flRotation )
 	if ( m_flRotation != flRotation )
 	{
 		m_flRotation = flRotation;
-		m_bForceUpdate = true;
+//		m_bForceUpdate = true;
 	}
 }
 
@@ -151,7 +144,6 @@ void C_EnvProjectedTexture::OnDataChanged( DataUpdateType_t updateType )
 	if ( updateType == DATA_UPDATE_CREATED )
 	{
 		m_SpotlightTexture.Init( m_SpotlightTextureName, TEXTURE_GROUP_OTHER, true );
-		m_pProjectedMaterial.Init(m_SpotlightTextureName, TEXTURE_GROUP_OTHER);
 	}
 
 	m_bForceUpdate = true;
@@ -172,9 +164,6 @@ void C_EnvProjectedTexture::UpdateLight( void )
 	{
 		m_bForceUpdate = true;
 	}
-
-	// todo: if(m_bForceMaxFarZ)
-	m_flFarZ = MAX_FARZ;
 
 	if ( m_CurrentLinearFloatLightColor != vLinearFloatLightColor || m_flCurrentLinearFloatLightAlpha != flLinearFloatLightAlpha )
 	{
@@ -348,45 +337,29 @@ void C_EnvProjectedTexture::UpdateLight( void )
 
 		float flAlpha = m_flCurrentLinearFloatLightAlpha * ( 1.0f / 255.0f );
 
-		state.m_flShadowFilterSize = 0.2f;
-
-		state.m_fQuadraticAtten = 0.0f;
-		state.m_fLinearAtten = 200;// 360; // 200 good-ish 
-		state.m_fConstantAtten = 0.0f;// 0.25f;
+		state.m_fQuadraticAtten = 0.0;
+		state.m_fLinearAtten = 100;
+		state.m_fConstantAtten = 0.0f;
 		state.m_FarZAtten = m_flFarZ;
 		state.m_fBrightnessScale = m_flBrightnessScale;
 		state.m_Color[0] = m_CurrentLinearFloatLightColor.x * ( 1.0f / 255.0f ) * flAlpha;
 		state.m_Color[1] = m_CurrentLinearFloatLightColor.y * ( 1.0f / 255.0f ) * flAlpha;
 		state.m_Color[2] = m_CurrentLinearFloatLightColor.z * ( 1.0f / 255.0f ) * flAlpha;
-		state.m_Color[3] = 0.0f;// _flAmbient; // fixme: need to make ambient work m_flAmbient;
+		state.m_Color[3] = 0.0f; // fixme: need to make ambient work m_flAmbient;
 		state.m_flShadowSlopeScaleDepthBias = g_pMaterialSystemHardwareConfig->GetShadowSlopeScaleDepthBias();
 		state.m_flShadowDepthBias = g_pMaterialSystemHardwareConfig->GetShadowDepthBias();
 		state.m_bEnableShadows = m_bEnableShadows;
-		//state.m_bUberlight = true;
-
-		extern ConVar r_flashlightdepthres;
-		state.m_flShadowMapResolution = r_flashlightdepthres.GetFloat();
-
-		if (m_bSimpleProjection)
-		{
-			state.m_pSpotlightTexture = NULL;
-			state.m_pProjectedMaterial = m_pProjectedMaterial;
-		}
-		else
-		{
-			state.m_pSpotlightTexture = m_SpotlightTexture;
-			state.m_pProjectedMaterial = NULL;
-		}
-
+		state.m_pSpotlightTexture = m_SpotlightTexture;
+		state.m_pProjectedMaterial = NULL; // only complain if we're using material projection
 		state.m_nSpotlightTextureFrame = m_nSpotlightTextureFrame;
 		state.m_flProjectionSize = m_flProjectionSize;
 		state.m_flProjectionRotation = m_flRotation;
-		state.m_nShadowQuality = m_nShadowQuality;
-		state.m_bGlobalLight = true;
+
+		state.m_nShadowQuality = m_nShadowQuality; // Allow entity to affect shadow quality
 
 		if ( m_bSimpleProjection == true )
 		{
-			//state.m_bSimpleProjection = true;
+			/*state.m_bSimpleProjection = true;*/
 			state.m_bOrtho = true;
 			state.m_fOrthoLeft = -m_flProjectionSize;
 			state.m_fOrthoTop = -m_flProjectionSize;

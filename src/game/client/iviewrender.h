@@ -15,13 +15,9 @@
 
 #include "ivrenderview.h"
 
-#ifdef P2_DLL
-#define MAX_DEPTH_TEXTURE_SHADOWS 4
-#define MAX_DEPTH_TEXTURE_HIGHRES_SHADOWS 4
-#else
+
 #define MAX_DEPTH_TEXTURE_SHADOWS 1
 #define MAX_DEPTH_TEXTURE_HIGHRES_SHADOWS 0
-#endif
 
 #define MAX_DEPTH_TEXTURE_SHADOWS_TOOLS 8
 #define MAX_DEPTH_TEXTURE_HIGHRES_SHADOWS_TOOLS 0
@@ -41,7 +37,7 @@ enum DrawFlags_t
 	DF_RENDER_ABOVEWATER	= 0x20,
 	DF_RENDER_WATER			= 0x40,
 
-	DF_UNUSED1				= 0x100,
+	DF_RENDER_PSEUDO_TRANSLUCENT_WATER = 0x100, // p2sdk
 	DF_WATERHEIGHT			= 0x200,
 	DF_UNUSED2				= 0x400,
 	DF_DRAWSKYBOX			= 0x800,
@@ -57,12 +53,11 @@ enum DrawFlags_t
 	DF_SAVEGAMESCREENSHOT	= 0x20000,
 	DF_CLIP_SKYBOX			= 0x40000,
 
-	DF_DRAW_SIMPLE_WORLD_MODEL = 0x80000,	// Draw a singe studio model for the world to save CPU.
+	DF_DRAW_SIMPLE_WORLD_MODEL = 0x80000,
 
 	DF_SHADOW_DEPTH_MAP		= 0x100000,	// Currently rendering a shadow depth map
-
-	DF_FAST_ENTITY_RENDERING = 0x200000, // Used with DF_DRAW_ENTITIES to only render marked entities into the water reflection buffer for "fast reflections"
-	DF_DRAW_SIMPLE_WORLD_MODEL_WATER = 0x400000,	// Draw a singe studio model for the world to save CPU.
+	DF_FAST_ENTITY_RENDERING = 0x200000, // p2sdk
+	DF_DRAW_SIMPLE_WORLD_MODEL_WATER = 0x400000
 };
 
 

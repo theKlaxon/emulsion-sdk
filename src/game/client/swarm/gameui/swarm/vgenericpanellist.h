@@ -67,9 +67,6 @@ public:
 	enum SEARCH_DIRECTION { SD_UP, SD_DOWN };
 	virtual bool SelectPanelItem(unsigned short index, SEARCH_DIRECTION direction = SD_DOWN, bool scrollToItem = true, bool bAllowStealFocus = true);
 	virtual bool SelectPanelItemByPanel( Panel *pPanelItem );
-
-	virtual void ClearPanelSelection() {}
-
 	virtual void ScrollToPanelItem(unsigned short index);
 
 	virtual void NavigateTo();

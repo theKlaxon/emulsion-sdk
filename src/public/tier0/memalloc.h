@@ -52,23 +52,6 @@ struct _CrtMemState;
 
 typedef size_t (*MemAllocFailHandler_t)( size_t );
 
-class IVirtualMemorySection {
-public:
-
-	virtual void*			GetBaseAddress() = 0;
-	virtual unsigned int	GetPageSize() = 0;
-	virtual unsigned int	GetTotalSize() = 0;
-
-	virtual bool CommitPages(void* par1, unsigned int par2) = 0;
-	virtual void DecommitPages(void* par1, unsigned int par2) = 0;
-	virtual void Release() = 0;
-};
-
-struct GenericMemoryStat_t {
-	char*	name;
-	int		value;
-};
-
 //-----------------------------------------------------------------------------
 // NOTE! This should never be called directly from leaf code
 // Just use new,delete,malloc,free etc. They will call into this eventually
@@ -140,9 +123,9 @@ public:
 
 	virtual void DumpBlockStats( void * ) = 0;
 
-#if defined( _MEMTEST )
+//#if defined( _MEMTEST )
 	virtual void SetStatsExtraInfo( const char *pMapName, const char *pComment ) = 0;
-#endif
+//#endif
 
 	// Returns 0 if no failure, otherwise the size_t of the last requested chunk
 	virtual size_t MemoryAllocFailed() = 0;
@@ -157,14 +140,6 @@ public:
 
 	// Replacement for ::GlobalMemoryStatus which accounts for unused memory in our system
 	virtual void GlobalMemoryStatus( size_t *pUsedMemory, size_t *pFreeMemory ) = 0;
-
-	// Obtain virtual memory manager interface
-	virtual IVirtualMemorySection* AllocateVirtualMemorySection(size_t numMaxBytes) = 0;
-
-	// Request 'generic' memory stats (returns a list of N named values; caller should assume this list will change over time)
-	virtual int GetGenericMemoryStats(GenericMemoryStat_t** ppMemoryStats) = 0;
-
-	virtual ~IMemAlloc() { };
 };
 
 //-----------------------------------------------------------------------------

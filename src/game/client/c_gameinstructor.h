@@ -73,10 +73,6 @@ public:
 	void EvaluateLessonsForGameRules( void );
 	void SetLessonGroupEnabled( const char *pszGroup, bool bEnabled );
 
-	// found in ghidra, wtf it for it not used here......
-	// TODO: double check param, make sure it not a '&' instead
-	void KeyValueBuilder(KeyValues* pKeyValues);
-
 private:
 	void FindErrors( void );
 

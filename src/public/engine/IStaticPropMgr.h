@@ -63,7 +63,7 @@ abstract_class IStaticPropMgrClient : public IStaticPropMgr
 public:
 	// Adds decals to static props, returns point of decal in trace_t
 	virtual void	AddDecalToStaticProp( const Vector& rayStart, const Vector& rayEnd,
-		int staticPropIndex, int decalIndex, bool doTrace, trace_t& tr, void* pvProxyUserData = NULL, const Vector* saxis = NULL, int nAdditionalDecalFlags = 0) = 0;
+		int staticPropIndex, int decalIndex, bool doTrace, trace_t& tr, void* pvProxyUserData = NULL, const Vector* saxis = NULL, int nAdditionalDecalFlags = 0 ) = 0;
 
 	// Adds/removes shadows from static props
 	virtual void	AddShadowToStaticProp( unsigned short shadowHandle, IClientRenderable* pRenderable ) = 0;
@@ -89,6 +89,7 @@ public:
 class IStaticPropMgrServer : public IStaticPropMgr
 {
 public:
+
 
 	//Changes made specifically to support the Portal mod (smack Dave Kircher if something breaks) (Added separately to both client and server to not mess with versioning)
 	//===================================================================

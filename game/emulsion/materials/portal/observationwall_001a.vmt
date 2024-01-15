@@ -1,6 +1,0 @@
-"LightmappedGeneric"
-{
-	"$basetexture" "portal/observationwall_001a"
-	"$bumpmap" "portal/observationwall_001a_normal"
-	"$surfaceprop" "concrete"
-}

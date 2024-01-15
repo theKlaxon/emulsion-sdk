@@ -15,12 +15,8 @@
 #include "tier1/utlstring.h"
 #include "tier1/utllinkedlist.h"
 #include "filesystem.h"
+#include "assetpickerdefs.h"
 
-struct AssetUsageInfo_t
-{
-	CUtlString member1;
-	int member2;
-};
 
 //-----------------------------------------------------------------------------
 // Forward declarations
@@ -29,7 +25,7 @@ class CAssetTreeView;
 namespace vgui
 {
 	class Panel;
-};
+}
 FORWARD_DECLARE_HANDLE( AssetList_t );
 
 typedef unsigned short DirHandle_t;

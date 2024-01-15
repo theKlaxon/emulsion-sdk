@@ -193,7 +193,6 @@ private:
 abstract_class IMaterialSystemInternal : public IMaterialSystem
 {
 public:
-	// vtable part starts at 0x0001a430 in materialsystem.dylib, depot 620 623
 	// Returns the current material
 	virtual IMaterial* GetCurrentMaterial() = 0;
 
@@ -216,13 +215,13 @@ public:
 	virtual bool InFlashlightMode() const = 0;
 
 	// Can we use editor materials?
-	virtual bool CanUseEditorMaterials() const = 0; // TODO: remove?
-	virtual int GetConfigurationFlags( void ) const = 0; // TODO: remove?
+	virtual bool CanUseEditorMaterials() const = 0;
+	virtual int GetConfigurationFlags( void ) const = 0;
 	virtual const char *GetForcedTextureLoadPathID() = 0;
 
-	virtual CMatCallQueue *GetRenderCallQueue() = 0; // TODO: remove?
+	virtual CMatCallQueue *GetRenderCallQueue() = 0;
 
-	virtual void UnbindMaterial( IMaterial *pMaterial ) = 0; // TODO: remove?
+	virtual void UnbindMaterial( IMaterial *pMaterial ) = 0;
 	virtual uint GetRenderThreadId() const = 0 ;
 };
 

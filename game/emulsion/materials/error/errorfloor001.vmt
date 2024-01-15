@@ -1,7 +1,0 @@
-LightmappedGeneric
-{
-$baseTexture "error/errorfloor001"
-$bumpmap "error/ifssbumps_haderrorstheywouldlooklikethis"
-$ssbump 1
-$surfaceprop dirt
-}

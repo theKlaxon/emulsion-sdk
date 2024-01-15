@@ -465,7 +465,6 @@ public:
 	virtual const char *	GetName() const = 0;
 	virtual const char *	GetTextureGroupName() const = 0;
 
-	// TODO: move GetPreviewImageProp && GetPreviewImage maybe?
 	// Get the preferred size/bitDepth of a preview image of a material.
 	// This is the sort of image that you would use for a thumbnail view
 	// of a material, or in WorldCraft until it uses materials to render.
@@ -515,7 +514,7 @@ public:
 	// This computes the state snapshots for this material
 	virtual void			RecomputeStateSnapshots() = 0;
 
-	// Are we translucent? // 0x00008060
+	// Are we translucent?
 	virtual bool			IsTranslucent() = 0;
 
 	// Are we alphatested?
@@ -536,11 +535,11 @@ public:
 
 	virtual bool			NeedsPowerOfTwoFrameBufferTexture( bool bCheckSpecificToThisFrame = true ) = 0;
 	virtual bool			NeedsFullFrameBufferTexture( bool bCheckSpecificToThisFrame = true ) = 0;
-
+	
 	// returns true if the shader doesn't do skinning itself and requires
 	// the data that is sent to it to be preskinned.
 	virtual bool			NeedsSoftwareSkinning( void ) = 0;
-
+	
 	// Apply constant color or alpha modulation
 	virtual void			AlphaModulate( float alpha ) = 0;
 	virtual void			ColorModulate( float r, float g, float b ) = 0;
@@ -572,12 +571,12 @@ public:
 	virtual void			Refresh() = 0;
 
 	// GR - returns true is material uses lightmap alpha for blending
-	virtual bool			NeedsLightmapBlendAlpha(void) = 0;
+	virtual bool			NeedsLightmapBlendAlpha( void ) = 0;
 
 	// returns true if the shader doesn't do lighting itself and requires
 	// the data that is sent to it to be prelighted
-	virtual bool			NeedsSoftwareLighting(void) = 0;
-	
+	virtual bool			NeedsSoftwareLighting( void ) = 0;
+
 	// Gets at the shader parameters
 	virtual int				ShaderParamCount() const = 0;
 	virtual IMaterialVar	**GetShaderParams( void ) = 0;
@@ -586,8 +585,7 @@ public:
 	// the material can't be found.
 	virtual bool			IsErrorMaterial() const = 0;
 
-	// TODO: maybe sub this with a blank thingy to shift the vtable? "Unused" takes it's place in vtable
-	//virtual void SetUseFixedFunctionBakedLighting(bool bEnable) = 0;
+	//virtual void			SetUseFixedFunctionBakedLighting( bool bEnable ) = 0;
 	virtual void			Unused() {}
 
 	// Gets the current alpha modulation
@@ -608,19 +606,13 @@ public:
 
 	virtual bool			IsSpriteCard() = 0;
 
-	virtual void			CallBindProxy( void *proxyData, ICallQueue* par2 ) = 0;
+	virtual void			CallBindProxy( void *proxyData, ICallQueue* p2 ) = 0; // param 2 for p2sdk
 
 	virtual void			RefreshPreservingMaterialVars() = 0;
 
 	virtual bool			WasReloadedFromWhitelist() = 0;
-	
-	// not in p2 vtable
-	virtual bool			SetTempExcluded(bool bSet, int nExcludedDimensionLimit = 0) = 0;// {}
 
-	// 0x00007270
-	virtual int				GetReferenceCount() const = 0;
-
-	virtual void			SetEnumerationID(int id) = 0;
+	virtual int				GetReferenceCount() const = 0; //p2sdk
 };
 
 

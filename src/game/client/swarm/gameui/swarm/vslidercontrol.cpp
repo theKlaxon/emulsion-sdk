@@ -1,4 +1,3 @@
-#include "cbase.h"
 #include "VSliderControl.h"
 #include "VHybridButton.h"
 #include "vgui/ISurface.h"

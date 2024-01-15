@@ -183,8 +183,6 @@ public:
 
 	virtual void DrawFlashlightDepthTexture( ) = 0;
 
-	//virtual void AddFlashlightRenderable(ShadowHandle_t p1, IClientRenderable* p2) {} // ShadowHandle_t is a guess for p1 being an unsigned short
-
 	virtual ShadowHandle_t CreateShadowEx( IMaterial* pMaterial, IMaterial* pModelMaterial, void* pBindProxy, int creationFlags, int nEntIndex ) = 0;
 
 	virtual void SetFlashlightDepthTexture( ShadowHandle_t shadowHandle, ITexture *pFlashlightDepthTexture, unsigned char ucShadowStencilBit ) = 0;
@@ -209,7 +207,7 @@ public:
 	virtual void PopSinglePassFlashlightStateEnabled( void ) = 0;
 
 	virtual bool SinglePassFlashlightModeEnabled( void ) = 0;
-	
+
 	// Determine a unique list of flashlights which hit at least one of the specified models
 	// Accepts an instance count and an array of ModelInstanceHandle_ts.
 	// Returns the number of FlashlightInstance_ts it's found that affect the models.
@@ -225,6 +223,7 @@ public:
 
 	virtual void SkipShadowForEntity( int nEntIndex ) = 0;
 
+	// p2sdk
 	virtual void PushFlashlightScissorBounds() = 0;
 	virtual void PopFlashlightScissorBounds() = 0;
 	virtual void DisableDropShadows() = 0;

@@ -186,10 +186,6 @@ void SendProxy_FloatToFloat( const SendProp *pProp, const void *pStruct, const v
 {
 	pOut->m_Float = *((float*)pData);
 	Assert( IsFinite( pOut->m_Float ) );
-
-	if (!IsFinite(pOut->m_Float)) {
-		Msg("float %s is -nan", pProp->m_pVarName);
-	}
 }
 
 void SendProxy_QAngles( const SendProp *pProp, const void *pStruct, const void *pData, DVariant *pOut, int iElement, int objectID )

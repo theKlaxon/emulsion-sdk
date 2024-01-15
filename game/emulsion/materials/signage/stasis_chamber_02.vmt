@@ -1,7 +1,0 @@
-UnlitGeneric
-{
-$basetexture "signage/stasis_chamber_02"
-$translucent 1
-$surfaceprop glass
-"%keywords" portal
-}

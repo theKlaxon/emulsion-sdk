@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/props_underground/tube_paint_interior_cap"
-$surfaceprop metal
-}

@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VKeyboardMouse.h"
 #include "VFooterPanel.h"
 #include "VDropDownMenu.h"
@@ -484,7 +484,7 @@ void KeyboardMouse::OnFlyoutMenuCancelled()
 //=============================================================================
 Panel* KeyboardMouse::NavigateBack()
 {
-	engine->ClientCmd_Unrestricted( VarArgs( "host_writeconfig_ss %d", XBX_GetActiveUserId() ) );
+	engine->ClientCmd_Unrestricted( VarArgs( "host_writeconfig_ss %d", XBX_GetPrimaryUserId() ) );
 
 	return BaseClass::NavigateBack();
 }

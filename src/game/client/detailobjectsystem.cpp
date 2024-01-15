@@ -198,9 +198,7 @@ public:
 	virtual int					LookupAttachment( const char *pAttachmentName ) { return -1; }
 	virtual bool				GetAttachment( int number, matrix3x4_t &matrix );
 	virtual	bool				GetAttachment( int number, Vector &origin, QAngle &angles );
-
 	virtual bool				ComputeLightingOrigin(int nAttachmentIndex, Vector modelLightingCenter, const matrix3x4_t& matrix, Vector& transformedLightingCenter);
-
 	virtual float *				GetRenderClipPlane() { return NULL; }
 	virtual int					GetSkin() { return 0; }
 	virtual void				RecordToolMessage() {}

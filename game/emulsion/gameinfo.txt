@@ -16,6 +16,10 @@
 		SearchPaths
 		{
 			Game				|gameinfo_path|.
+			Game				portal2
+			Game				update
+			//Game				"D:\SteamLibrary\steamapps\common\Portal 2\portal2"
+			//Game				"D:\SteamLibrary\steamapps\common\Portal 2\update"
 		}
 	}
 }

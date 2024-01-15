@@ -35,6 +35,7 @@ namespace OptimizedModel
 	struct FileHeader_t;
 }
 
+
 //-----------------------------------------------------------------------------
 // Reference to a loaded studiomdl 
 //-----------------------------------------------------------------------------
@@ -50,13 +51,12 @@ enum
 	MDLHANDLE_INVALID = (MDLHandle_t)~0 
 };
 
+
 //-----------------------------------------------------------------------------
 // Cache data types
 //-----------------------------------------------------------------------------
-enum MDLCacheDataType_t // TODO: find a func using this type as a param or return
+enum MDLCacheDataType_t
 {
-	MDLCACHE_NONE = -1,
-
 	// Callbacks to get called when data is loaded or unloaded for these:
 	MDLCACHE_STUDIOHDR = 0,
 	MDLCACHE_STUDIOHWDATA,
@@ -72,7 +72,7 @@ enum MDLCacheDataType_t // TODO: find a func using this type as a param or retur
 abstract_class IMDLCacheNotify
 {
 public:
-	virtual ~IMDLCacheNotify() { };
+	//virtual ~IMDLCacheNotify() { }; // possibly remove if this fucks with memory
 
 	// Called right after the data is loaded
 	virtual void OnDataLoaded( MDLCacheDataType_t type, MDLHandle_t handle ) = 0;
@@ -125,8 +125,8 @@ public:
 	virtual studiohdr_t *GetStudioHdr( MDLHandle_t handle ) = 0;
 	virtual studiohwdata_t *GetHardwareData( MDLHandle_t handle ) = 0;
 	virtual vcollide_t *GetVCollide( MDLHandle_t handle ) = 0;
-	virtual unsigned char *GetAnimBlock( MDLHandle_t handle, int nBlock, bool b ) = 0;
-	virtual bool HasAnimBlockBeenPreloaded(MDLHandle_t handle, int i) = 0;
+	virtual unsigned char *GetAnimBlock( MDLHandle_t handle, int nBlock ) = 0;
+	virtual bool HasAnimBlockBeenPreloaded(MDLHandle_t handle, int i) = 0; // p2sdk
 	virtual virtualmodel_t *GetVirtualModel( MDLHandle_t handle ) = 0;
 	virtual int GetAutoplayList( MDLHandle_t handle, unsigned short **pOut ) = 0;
 	virtual vertexFileHeader_t *GetVertexData( MDLHandle_t handle ) = 0;
@@ -137,7 +137,7 @@ public:
 	// Gets/sets user data associated with the MDL
 	virtual void SetUserData( MDLHandle_t handle, void* pData ) = 0;
 	virtual void *GetUserData( MDLHandle_t handle ) = 0;
-	
+
 	// Is this MDL using the error model?
 	virtual bool IsErrorModel( MDLHandle_t handle ) = 0;
 
@@ -149,7 +149,8 @@ public:
 
 	// Returns the name of the model (its relative path)
 	virtual const char *GetModelName( MDLHandle_t handle ) = 0;
-	
+
+	// p2sdk
 	virtual void* GetCacheSection(MDLCacheDataType_t type) = 0;
 
 	// faster access when you already have the studiohdr

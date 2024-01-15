@@ -4,7 +4,7 @@
 //
 //=====================================================================================//
 #undef fopen
-#include "cbase.h"
+
 #include <tier0/platform.h>
 #ifdef IS_WINDOWS_PC
 #include "windows.h"
@@ -665,9 +665,8 @@ Addons::ConversionErrorType Addons::SConvertJPEGToTGA(const char *jpegpath, cons
 	int image_height;
 	int image_width;
 
-	// TODO: use the actual file system to acomplish this ( maybe )
-	// open the jpeg image file. 
-	FILE* infile = NULL;// = fopen(jpegpath, "rb");// dispicable. it was specifically requested that we not use fopen, as per the COMPILER ERROR >:(
+	// open the jpeg image file.
+	FILE *infile = fopen(jpegpath, "rb");
 	if (infile == NULL)
 	{
 		return CE_CANT_OPEN_SOURCE_FILE;
@@ -809,8 +808,7 @@ static void ReadTGAHeader(FILE *infile, TGAHeader &header)
 // convert TGA file at the given location to a VTF file of the same root name at the same location.
 Addons::ConversionErrorType Addons::ConvertTGAToVTF(const char *tgaPath)
 {
-	// TODO: find actual way to do this
-	FILE* infile = NULL;// fopen(tgaPath, "rb");
+	FILE *infile = fopen(tgaPath, "rb");
 	if (infile == NULL)
 	{
 		return CE_CANT_OPEN_SOURCE_FILE;
@@ -913,9 +911,8 @@ Addons::ConversionErrorType Addons::WriteVMT( const char *vtfPath, const char *p
 	}
 	filename[i] = 0;
 
-	// TODO: u know the drill :(
 	// create the vmt file.
-	FILE* vmtFile = NULL;// fopen(vmtPath, "w");
+	FILE *vmtFile = fopen(vmtPath, "w");
 	if (vmtFile == NULL)
 	{
 		return CE_ERROR_WRITING_OUTPUT_FILE;

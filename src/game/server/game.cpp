@@ -57,7 +57,7 @@ ConVar suitvolume( "suitvolume", "0.25", FCVAR_ARCHIVE );
 class CGameDLL_ConVarAccessor : public IConCommandBaseAccessor
 {
 public:
-	virtual bool RegisterConCommandBase( ConCommandBase *pCommand )
+	virtual bool	RegisterConCommandBase( ConCommandBase *pCommand )
 	{
 		// Remember "unlinked" default value for replicated cvars
 		bool replicated = pCommand->IsFlagSet( FCVAR_REPLICATED );
@@ -107,6 +107,6 @@ void InitializeCvars( void )
 	// Register cvars here:
 	ConVar_Register( FCVAR_GAMEDLL, &g_ConVarAccessor ); 
 
-	g_pDeveloper = cvar->FindVar( "developer" );
+	g_pDeveloper	= cvar->FindVar( "developer" );
 }
 

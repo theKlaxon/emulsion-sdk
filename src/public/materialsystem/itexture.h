@@ -15,7 +15,6 @@
 
 #include "tier0/platform.h"
 #include "bitmap/imageformat.h" // ImageFormat defn.
-#include "imaterialsystem.h"
 
 class IVTFTexture;
 class ITexture;
@@ -51,7 +50,7 @@ public:
 	// which will happen when the texture is destroyed
 	virtual void Release() = 0;
 
-	// new
+	// p2sdk ---
 	virtual bool HasPreallocatedScratchTexture() const { return false; }
 	virtual IVTFTexture* GetPreallocatedScratchTexture() { return NULL; }
 };
@@ -93,7 +92,7 @@ public:
 
 	// If rect is not specified, reconstruct all bits, otherwise just
 	// reconstruct a subrect.
-	virtual void Download( Rect_t *pRect = nullptr, int flags = 0 ) = 0;
+	virtual void Download( Rect_t *pRect = 0, int flags = 0 ) = 0;
 
 	// Uses for stats. . .get the approximate size of the texture in it's current format.
 	virtual int GetApproximateVidMemBytes( void ) const = 0;
@@ -115,10 +114,7 @@ public:
 	virtual bool IsCubeMap() const = 0;
 	virtual bool IsNormalMap() const = 0;
 	virtual bool IsProcedural() const = 0;
-
-	// new
-	virtual bool IsDefaultPool() const = 0;
-	// end new
+	virtual bool IsDefaultPool() const = 0; // p2sdk
 
 	virtual void DeleteIfUnreferenced() = 0;
 
@@ -139,20 +135,9 @@ public:
 	// Force exclude override (automatically downloads the texture)
 	virtual void ForceExcludeOverride( int iExcludeOverride ) = 0;
 
-	//swap out the active texture surface, only valid for MultiRenderTarget textures
-	virtual void AddDownsizedSubTarget(const char* szName, int iDownsizePow2, MaterialRenderTargetDepth_t depth) = 0;
-	virtual void SetActiveSubTarget(const char* szName) = 0; //NULL to return to base target
-
-	//virtual void Bind(Sampler_t, TextureBindFlags_t) = 0;
-	//virtual void Bind(Sampler_t, TextureBindFlags_t, int, Sampler_t) = 0;
-
-	//virtual int GetReferenceCount() = 0;
-	//virtual void GetReflectivity(Vector& ref) = 0;
-	//virtual bool SetRenderTarget(int p1) = 0;
-	//virtual void Release() = 0;
-	//virtual void OnRestore() = 0;
-	//virtual void SetFilteringAndClampingMode() = 0;
-	//virtual void Precache() = 0;
+	// p2sdk
+	virtual void AddDownsizedSubTarget(const char* szName, int par2, MaterialRenderTargetDepth_t par3) = 0;
+	virtual void SetActiveSubTarget(const char* szName) = 0;
 };
 
 

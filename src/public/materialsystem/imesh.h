@@ -166,11 +166,6 @@ struct IndexDesc_t
 };
 
 
-struct MeshBuffersAllocationSettings_t
-{
-	uint32 m_uiIbUsageFlags;
-};
-
 //-----------------------------------------------------------------------------
 // The Mesh memory descriptor
 //-----------------------------------------------------------------------------
@@ -284,13 +279,11 @@ inline CPrimList::CPrimList( int nFirstIndex, int nIndexCount )
 	m_NumIndices = nIndexCount;
 }
 
-//-----------------------------------------------------------------------------
 abstract_class ICachedPerFrameMeshData
 {
 public:
 	virtual void Free() = 0;
 };
-
 
 abstract_class IVertexBuffer
 {
@@ -359,6 +352,10 @@ public:
 	virtual IMesh* GetMesh() = 0;
 };
 
+struct MeshBuffersAllocationSettings_t
+{
+	uint32 m_uiIbUsageFlags;
+};
 
 //-----------------------------------------------------------------------------
 // Interface to the mesh - needs to contain an IVertexBuffer and an IIndexBuffer to emulate old mesh behavior
@@ -514,7 +511,7 @@ public:
 	void AdvanceVertex( void );
 	template<int nFlags, int nNumTexCoords> void AdvanceVertexF( void );
 	void AdvanceVertices( int nVerts );
-	
+
 	int GetCurrentVertex() const;
 	int GetFirstVertex() const;
 
@@ -853,7 +850,7 @@ inline void CVertexBuilder::ValidateCompressionType()
 		Assert( m_CompressionType == vbCompressionType );
 		if ( m_CompressionType != vbCompressionType )
 		{
-			Warning( (tchar*)"ERROR: CVertexBuilder::SetCompressionType() must be called to specify the same vertex compression type (%s) as the vertex buffer being modified."
+			Warning( "ERROR: CVertexBuilder::SetCompressionType() must be called to specify the same vertex compression type (%s) as the vertex buffer being modified."
 					 "Junk vertices will be rendered, or there will be a crash in CVertexBuilder!\n",
 					  vbCompressionType == VERTEX_COMPRESSION_ON ? "VERTEX_COMPRESSION_ON" : "VERTEX_COMPRESSION_NONE" );
 		}
@@ -2848,6 +2845,15 @@ inline void CIndexBuilder::FastPolygonList( int startVert, int *pVertexCount, in
 	AdvanceIndices(indexOut);
 }
 
+FORCEINLINE unsigned int TwoIndices(unsigned int nIndex1, unsigned int nIndex2)
+{
+#ifdef PLAT_LITTLE_ENDIAN
+	return ((unsigned int)nIndex1) | (((unsigned int)nIndex2) << 16);
+#else
+	return ((unsigned int)nIndex2) | (((unsigned int)nIndex1) << 16);
+#endif
+}
+
 inline void CIndexBuilder::FastIndexList( const unsigned short *pIndexList, int startVert, int indexCount )
 {
 	unsigned short *pIndexOut = &m_pIndices[m_nCurrentIndex];
@@ -2866,14 +2872,6 @@ inline void CIndexBuilder::FastIndexList( const unsigned short *pIndexList, int 
 	AdvanceIndices(indexCount);
 }
 
-FORCEINLINE unsigned int TwoIndices(unsigned int nIndex1, unsigned int nIndex2)
-{
-#ifdef PLAT_LITTLE_ENDIAN
-	return ((unsigned int)nIndex1) | (((unsigned int)nIndex2) << 16);
-#else
-	return ((unsigned int)nIndex2) | (((unsigned int)nIndex1) << 16);
-#endif
-}
 
 //-----------------------------------------------------------------------------
 // NOTE: This version is the one you really want to achieve write-combining;
@@ -2958,38 +2956,38 @@ public:
 	CMeshBuilder();
 	~CMeshBuilder() { Assert(!m_pMesh); }		// if this fires you did a Begin() without an End()
 
-	operator CIndexBuilder&() { return m_IndexBuilder; }
+	operator CIndexBuilder& () { return m_IndexBuilder; }
 
 	// This must be called before Begin, if a vertex buffer with a compressed format is to be used
-	void SetCompressionType( VertexCompressionType_t compressionType );
+	void SetCompressionType(VertexCompressionType_t compressionType);
 
 	// Locks the vertex buffer
 	// (*cannot* use the Index() call below)
-	void Begin( IMesh *pMesh, MaterialPrimitiveType_t type, int numPrimitives );
+	void Begin(IMesh* pMesh, MaterialPrimitiveType_t type, int numPrimitives);
 
 	// Locks the vertex buffer, can specify arbitrary index lists
 	// (must use the Index() call below)
-	void Begin( IMesh *pMesh, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount, int *nFirstVertex );
-	void Begin( IMesh *pMesh, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount );
+	void Begin(IMesh* pMesh, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount, int* nFirstVertex);
+	void Begin(IMesh* pMesh, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount);
 
 	// forward compat
-	void Begin( IVertexBuffer *pVertexBuffer, MaterialPrimitiveType_t type, int numPrimitives );
-	void Begin( IVertexBuffer *pVertexBuffer, IIndexBuffer *pIndexBuffer, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount, int *nFirstVertex );
-	void Begin( IVertexBuffer *pVertexBuffer, IIndexBuffer *pIndexBuffer, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount );
+	void Begin(IVertexBuffer* pVertexBuffer, MaterialPrimitiveType_t type, int numPrimitives);
+	void Begin(IVertexBuffer* pVertexBuffer, IIndexBuffer* pIndexBuffer, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount, int* nFirstVertex);
+	void Begin(IVertexBuffer* pVertexBuffer, IIndexBuffer* pIndexBuffer, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount);
 
 	// Use this when you're done writing
 	// Set bDraw to true to call m_pMesh->Draw automatically.
-	void End( bool bSpewData = false, bool bDraw = false );
+	void End(bool bSpewData = false, bool bDraw = false);
 
 	// Locks the vertex buffer to modify existing data
 	// Passing nVertexCount == -1 says to lock all the vertices for modification.
 	// Pass 0 for nIndexCount to not lock the index buffer.
-	void BeginModify( IMesh *pMesh, int nFirstVertex = 0, int nVertexCount = -1, int nFirstIndex = 0, int nIndexCount = 0 );
-	void EndModify( bool bSpewData = false );
+	void BeginModify(IMesh* pMesh, int nFirstVertex = 0, int nVertexCount = -1, int nFirstIndex = 0, int nIndexCount = 0);
+	void EndModify(bool bSpewData = false);
 
 	// A helper method since this seems to be done a whole bunch.
-	void DrawQuad( IMesh* pMesh, const float *v1, const float *v2, 
-		const float *v3, const float *v4, unsigned char const *pColor, bool wireframe = false );
+	void DrawQuad(IMesh* pMesh, const float* v1, const float* v2,
+		const float* v3, const float* v4, unsigned char const* pColor, bool wireframe = false);
 
 	// returns the number of indices and vertices
 	int VertexCount() const;
@@ -3002,7 +3000,7 @@ public:
 	int VertexSize() { return m_ActualVertexSize; }
 
 	// returns the data size of a given texture coordinate
-	int TextureCoordinateSize( int nTexCoordNumber ) { return m_VertexSize_TexCoord[ nTexCoordNumber ]; }
+	int TextureCoordinateSize(int nTexCoordNumber) { return m_VertexSize_TexCoord[nTexCoordNumber]; }
 
 	// Returns the base vertex memory pointer
 	void* BaseVertexData();
@@ -3011,158 +3009,158 @@ public:
 	unsigned short* BaseIndexData();
 
 	// Selects the nth Vertex and Index 
-	void SelectVertex( int idx );
-	void SelectIndex( int idx );
+	void SelectVertex(int idx);
+	void SelectIndex(int idx);
 
 	// Given an index, point to the associated vertex
-	void SelectVertexFromIndex( int idx );
+	void SelectVertexFromIndex(int idx);
 
 	// Advances the current vertex and index by one
 	void AdvanceVertex();
 	template<int nFlags, int nNumTexCoords> void AdvanceVertexF();
-	void AdvanceVertices( int nVerts );
+	void AdvanceVertices(int nVerts);
 	void AdvanceIndex();
-	void AdvanceIndices( int nIndices );
+	void AdvanceIndices(int nIndices);
 
 	int GetCurrentVertex();
 	int GetCurrentIndex();
 	int GetIndexOffset() const;
 
 	// Data retrieval...
-	const float *Position() const;
+	const float* Position() const;
 
-	const float *Normal() const;
+	const float* Normal() const;
 
 	unsigned int Color() const;
 
-	unsigned char *Specular() const;
+	unsigned char* Specular() const;
 
-	const float *TexCoord( int stage ) const;
+	const float* TexCoord(int stage) const;
 
-	const float *TangentS() const;
-	const float *TangentT() const;
+	const float* TangentS() const;
+	const float* TangentT() const;
 
-	const float *BoneWeight() const;
+	const float* BoneWeight() const;
 	float Wrinkle() const;
 
 	int NumBoneWeights() const;
 #ifndef NEW_SKINNING
-	unsigned char *BoneMatrix() const;
+	unsigned char* BoneMatrix() const;
 #else
-	float *BoneMatrix() const;
+	float* BoneMatrix() const;
 #endif
-	unsigned short const *Index() const; 
+	unsigned short const* Index() const;
 
 	// position setting
-	void Position3f( float x, float y, float z );
-	void Position3fv( const float *v );
+	void Position3f(float x, float y, float z);
+	void Position3fv(const float* v);
 
 	// normal setting
-	void Normal3f( float nx, float ny, float nz );
-	void Normal3fv( const float *n );
-	void NormalDelta3fv( const float *n );
-	void NormalDelta3f( float nx, float ny, float nz );
+	void Normal3f(float nx, float ny, float nz);
+	void Normal3fv(const float* n);
+	void NormalDelta3fv(const float* n);
+	void NormalDelta3f(float nx, float ny, float nz);
 
 	// normal setting (templatized for code which needs to support compressed vertices)
-	template <VertexCompressionType_t T> void CompressedNormal3f( float nx, float ny, float nz );
-	template <VertexCompressionType_t T> void CompressedNormal3fv( const float *n );
+	template <VertexCompressionType_t T> void CompressedNormal3f(float nx, float ny, float nz);
+	template <VertexCompressionType_t T> void CompressedNormal3fv(const float* n);
 
 	// color setting
-	void Color3f( float r, float g, float b );
-	void Color3fv( const float *rgb );
-	void Color4f( float r, float g, float b, float a );
-	void Color4fv( const float *rgba );
+	void Color3f(float r, float g, float b);
+	void Color3fv(const float* rgb);
+	void Color4f(float r, float g, float b, float a);
+	void Color4fv(const float* rgba);
 
 	// Faster versions of color
-	void Color3ub( unsigned char r, unsigned char g, unsigned char b );
-	void Color3ubv( unsigned char const* rgb );
-	void Color4ub( unsigned char r, unsigned char g, unsigned char b, unsigned char a );
-	void Color4ubv( unsigned char const* rgba );
-	void Color4Packed( int packedColor );
-	int PackColor4( unsigned char r, unsigned char g, unsigned char b, unsigned char a );
+	void Color3ub(unsigned char r, unsigned char g, unsigned char b);
+	void Color3ubv(unsigned char const* rgb);
+	void Color4ub(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+	void Color4ubv(unsigned char const* rgba);
+	void Color4Packed(int packedColor);
+	int PackColor4(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 
 	// specular color setting
-	void Specular3f( float r, float g, float b );
-	void Specular3fv( const float *rgb );
-	void Specular4f( float r, float g, float b, float a );
-	void Specular4fv( const float *rgba );
+	void Specular3f(float r, float g, float b);
+	void Specular3fv(const float* rgb);
+	void Specular4f(float r, float g, float b, float a);
+	void Specular4fv(const float* rgba);
 
 	// Faster version of specular
-	void Specular3ub( unsigned char r, unsigned char g, unsigned char b );
-	void Specular3ubv( unsigned char const *c );
-	void Specular4ub( unsigned char r, unsigned char g, unsigned char b, unsigned char a );
-	void Specular4ubv( unsigned char const *c );
+	void Specular3ub(unsigned char r, unsigned char g, unsigned char b);
+	void Specular3ubv(unsigned char const* c);
+	void Specular4ub(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+	void Specular4ubv(unsigned char const* c);
 
 	// texture coordinate setting
-	void TexCoord1f( int stage, float s );
-	void TexCoord2f( int stage, float s, float t );
-	void TexCoord2fv( int stage, const float *st );
-	void TexCoord3f( int stage, float s, float t, float u );
-	void TexCoord3fv( int stage, const float *stu );
-	void TexCoord4f( int stage, float s, float t, float u, float w );
-	void TexCoord4fv( int stage, const float *stuv );
+	void TexCoord1f(int stage, float s);
+	void TexCoord2f(int stage, float s, float t);
+	void TexCoord2fv(int stage, const float* st);
+	void TexCoord3f(int stage, float s, float t, float u);
+	void TexCoord3fv(int stage, const float* stu);
+	void TexCoord4f(int stage, float s, float t, float u, float w);
+	void TexCoord4fv(int stage, const float* stuv);
 
-	void TexCoordSubRect2f( int stage, float s, float t, float offsetS, float offsetT, float scaleS, float scaleT );
-	void TexCoordSubRect2fv( int stage, const float *st, const float *offset, const float *scale );
+	void TexCoordSubRect2f(int stage, float s, float t, float offsetS, float offsetT, float scaleS, float scaleT);
+	void TexCoordSubRect2fv(int stage, const float* st, const float* offset, const float* scale);
 
 	// tangent space 
-	void TangentS3f( float sx, float sy, float sz );
-	void TangentS3fv( const float *s );
+	void TangentS3f(float sx, float sy, float sz);
+	void TangentS3fv(const float* s);
 
-	void TangentT3f( float tx, float ty, float tz );
-	void TangentT3fv( const float *t );
+	void TangentT3f(float tx, float ty, float tz);
+	void TangentT3fv(const float* t);
 
 	// Wrinkle
-	void Wrinkle1f( float flWrinkle );
+	void Wrinkle1f(float flWrinkle);
 
 	// bone weights
-	void BoneWeight( int idx, float weight );
-	void BoneWeights2( float weight1, float weight2 );
+	void BoneWeight(int idx, float weight);
+	void BoneWeights2(float weight1, float weight2);
 
 	// bone weights (templatized for code which needs to support compressed vertices)
-	template <VertexCompressionType_t T> void CompressedBoneWeight3fv( const float * pWeights );
+	template <VertexCompressionType_t T> void CompressedBoneWeight3fv(const float* pWeights);
 
 	// bone matrix index
-	void BoneMatrix( int idx, int matrixIndex );
-	void BoneMatrices4( int matrixIdx0, int matrixIdx1, int matrixIdx2, int matrixIdx3 );
+	void BoneMatrix(int idx, int matrixIndex);
+	void BoneMatrices4(int matrixIdx0, int matrixIdx1, int matrixIdx2, int matrixIdx3);
 
 	// Generic per-vertex data
-	void UserData( const float *pData );
+	void UserData(const float* pData);
 	// Generic per-vertex data (templatized for code which needs to support compressed vertices)
-	template <VertexCompressionType_t T> void CompressedUserData( const float* pData );
+	template <VertexCompressionType_t T> void CompressedUserData(const float* pData);
 
 	// Used to define the indices (only used if you aren't using primitives)
-	void Index( unsigned short index );
+	void Index(unsigned short index);
 
 	// NOTE: Use this one to get write combining! Much faster than the other version of FastIndex
 	// Fast Index! No need to call advance index, and no random access allowed
-	void FastIndex2( unsigned short nIndex1, unsigned short nIndex2 );
+	void FastIndex2(unsigned short nIndex1, unsigned short nIndex2);
 
 	// Fast Index! No need to call advance index, and no random access allowed
-	void FastIndex( unsigned short index );
-	void FastQuad( int index );
+	void FastIndex(unsigned short index);
+	void FastQuad(int index);
 
 	// Fast Vertex! No need to call advance vertex, and no random access allowed. 
 	// WARNING - these are low level functions that are intended only for use
 	// in the software vertex skinner.
-	void FastVertex( const ModelVertexDX8_t &vertex );
-	void FastVertexSSE( const ModelVertexDX8_t &vertex );
-	void FastQuadVertexSSE( const QuadTessVertex_t &vertex );
+	void FastVertex(const ModelVertexDX8_t& vertex);
+	void FastVertexSSE(const ModelVertexDX8_t& vertex);
+	void FastQuadVertexSSE(const QuadTessVertex_t& vertex);
 
 	// Add number of verts and current vert since FastVertexxx routines do not update.
-	void FastAdvanceNVertices(int n);	
+	void FastAdvanceNVertices(int n);
 
 #if defined( _X360 )
-	void VertexDX8ToX360( const ModelVertexDX8_t &vertex );
+	void VertexDX8ToX360(const ModelVertexDX8_t& vertex);
 #endif
 
 	// this low level function gets you a pointer to the vertex output data. It is dangerous - any
 	// caller using it must understand the vertex layout that it is building. It is for optimized
 	// meshbuilding loops like particle drawing that use special shaders. After writing to the output
 	// data, you shuodl call FastAdvanceNVertices
-	FORCEINLINE void *GetVertexDataPtr( int nWhatSizeIThinkItIs )
+	FORCEINLINE void* GetVertexDataPtr(int nWhatSizeIThinkItIs)
 	{
-		if ( m_VertexBuilder.m_VertexSize_Position != nWhatSizeIThinkItIs )
+		if (m_VertexBuilder.m_VertexSize_Position != nWhatSizeIThinkItIs)
 			return NULL;
 		return m_VertexBuilder.m_pCurrPosition;
 	}
@@ -3170,12 +3168,12 @@ public:
 
 private:
 	// Computes number of verts and indices 
-	void ComputeNumVertsAndIndices( int *pMaxVertices, int *pMaxIndices, 
-		MaterialPrimitiveType_t type, int nPrimitiveCount );
-	int IndicesFromVertices( MaterialPrimitiveType_t type, int nVertexCount ); 
+	void ComputeNumVertsAndIndices(int* pMaxVertices, int* pMaxIndices,
+		MaterialPrimitiveType_t type, int nPrimitiveCount);
+	int IndicesFromVertices(MaterialPrimitiveType_t type, int nVertexCount);
 
 	// The mesh we're modifying
-	IMesh *m_pMesh;
+	IMesh* m_pMesh;
 
 	MaterialPrimitiveType_t m_Type;
 
@@ -3190,21 +3188,21 @@ private:
 //-----------------------------------------------------------------------------
 // Forward compat
 //-----------------------------------------------------------------------------
-inline void CMeshBuilder::Begin( IVertexBuffer* pVertexBuffer, MaterialPrimitiveType_t type, int numPrimitives )
+inline void CMeshBuilder::Begin(IVertexBuffer* pVertexBuffer, MaterialPrimitiveType_t type, int numPrimitives)
 {
-	Assert( 0 );
+	Assert(0);
 	//	Begin( pVertexBuffer->GetMesh(), type, numPrimitives );
 }
 
-inline void CMeshBuilder::Begin( IVertexBuffer* pVertexBuffer, IIndexBuffer *pIndexBuffer, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount, int *nFirstVertex )
+inline void CMeshBuilder::Begin(IVertexBuffer* pVertexBuffer, IIndexBuffer* pIndexBuffer, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount, int* nFirstVertex)
 {
-	Assert( 0 );
+	Assert(0);
 	//	Begin( pVertexBuffer->GetMesh(), type, nVertexCount, nIndexCount, nFirstVertex );
 }
 
-inline void CMeshBuilder::Begin( IVertexBuffer* pVertexBuffer, IIndexBuffer *pIndexBuffer, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount )
+inline void CMeshBuilder::Begin(IVertexBuffer* pVertexBuffer, IIndexBuffer* pIndexBuffer, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount)
 {
-	Assert( 0 );
+	Assert(0);
 	//	Begin( pVertexBuffer->GetMesh(), type, nVertexCount, nIndexCount );
 }
 
@@ -3212,7 +3210,7 @@ inline void CMeshBuilder::Begin( IVertexBuffer* pVertexBuffer, IIndexBuffer *pIn
 //-----------------------------------------------------------------------------
 // Constructor
 //-----------------------------------------------------------------------------
-inline CMeshBuilder::CMeshBuilder()	: m_pMesh(0), m_bGenerateIndices(false)
+inline CMeshBuilder::CMeshBuilder() : m_pMesh(0), m_bGenerateIndices(false)
 {
 }
 
@@ -3220,10 +3218,10 @@ inline CMeshBuilder::CMeshBuilder()	: m_pMesh(0), m_bGenerateIndices(false)
 //-----------------------------------------------------------------------------
 // Computes the number of verts and indices based on primitive type and count
 //-----------------------------------------------------------------------------
-inline void CMeshBuilder::ComputeNumVertsAndIndices( int *pMaxVertices, int *pMaxIndices, 
-													MaterialPrimitiveType_t type, int nPrimitiveCount )
+inline void CMeshBuilder::ComputeNumVertsAndIndices(int* pMaxVertices, int* pMaxIndices,
+	MaterialPrimitiveType_t type, int nPrimitiveCount)
 {
-	switch(type)
+	switch (type)
 	{
 	case MATERIAL_POINTS:
 		*pMaxVertices = *pMaxIndices = nPrimitiveCount;
@@ -3271,17 +3269,17 @@ inline void CMeshBuilder::ComputeNumVertsAndIndices( int *pMaxVertices, int *pMa
 	}
 
 	// FIXME: need to get this from meshdx8.cpp, or move it to somewhere common
-	Assert( *pMaxVertices <= 32768 );
-	Assert( *pMaxIndices <= 32768 );
+	Assert(*pMaxVertices <= 32768);
+	Assert(*pMaxIndices <= 32768);
 }
 
 
-inline int CMeshBuilder::IndicesFromVertices( MaterialPrimitiveType_t type, int nVertexCount )
+inline int CMeshBuilder::IndicesFromVertices(MaterialPrimitiveType_t type, int nVertexCount)
 {
-	switch( type )
+	switch (type)
 	{
 	case MATERIAL_QUADS:
-		Assert( (nVertexCount & 0x3) == 0 );
+		Assert((nVertexCount & 0x3) == 0);
 		return (nVertexCount * 6) / 4;
 
 	case MATERIAL_INSTANCED_QUADS:
@@ -3289,15 +3287,15 @@ inline int CMeshBuilder::IndicesFromVertices( MaterialPrimitiveType_t type, int 
 		return 0;
 
 	case MATERIAL_POLYGON:
-		Assert( nVertexCount >= 3 );
+		Assert(nVertexCount >= 3);
 		return (nVertexCount - 2) * 3;
 
 	case MATERIAL_LINE_STRIP:
-		Assert( nVertexCount >= 2 );
+		Assert(nVertexCount >= 2);
 		return (nVertexCount - 1) * 2;
 
 	case MATERIAL_LINE_LOOP:
-		Assert( nVertexCount >= 3 );
+		Assert(nVertexCount >= 3);
 		return nVertexCount * 2;
 
 	default:
@@ -3308,89 +3306,89 @@ inline int CMeshBuilder::IndicesFromVertices( MaterialPrimitiveType_t type, int 
 //-----------------------------------------------------------------------------
 // Specify the type of vertex compression that this CMeshBuilder will perform
 //-----------------------------------------------------------------------------
-inline void CMeshBuilder::SetCompressionType( VertexCompressionType_t vertexCompressionType )
+inline void CMeshBuilder::SetCompressionType(VertexCompressionType_t vertexCompressionType)
 {
 	m_CompressionType = vertexCompressionType;
-	m_VertexBuilder.SetCompressionType( vertexCompressionType );
+	m_VertexBuilder.SetCompressionType(vertexCompressionType);
 }
 
 //-----------------------------------------------------------------------------
 // Begins modifying the mesh
 //-----------------------------------------------------------------------------
-inline void CMeshBuilder::Begin( IMesh *pMesh, MaterialPrimitiveType_t type, int numPrimitives )
+inline void CMeshBuilder::Begin(IMesh* pMesh, MaterialPrimitiveType_t type, int numPrimitives)
 {
-	Assert( pMesh && (!m_pMesh) );
-	Assert( type != MATERIAL_HETEROGENOUS );
+	Assert(pMesh && (!m_pMesh));
+	Assert(type != MATERIAL_HETEROGENOUS);
 
 	m_pMesh = pMesh;
 	m_bGenerateIndices = true;
 	m_Type = type;
 
 	int nMaxVertexCount, nMaxIndexCount;
-	ComputeNumVertsAndIndices( &nMaxVertexCount, &nMaxIndexCount, type, numPrimitives );
+	ComputeNumVertsAndIndices(&nMaxVertexCount, &nMaxIndexCount, type, numPrimitives);
 
-	switch( type )
+	switch (type)
 	{
 	case MATERIAL_INSTANCED_QUADS:
-		m_pMesh->SetPrimitiveType( MATERIAL_INSTANCED_QUADS );
+		m_pMesh->SetPrimitiveType(MATERIAL_INSTANCED_QUADS);
 		break;
 
 	case MATERIAL_QUADS:
 	case MATERIAL_POLYGON:
-		m_pMesh->SetPrimitiveType( MATERIAL_TRIANGLES );
+		m_pMesh->SetPrimitiveType(MATERIAL_TRIANGLES);
 		break;
 
 	case MATERIAL_LINE_STRIP:
 	case MATERIAL_LINE_LOOP:
-		m_pMesh->SetPrimitiveType( MATERIAL_LINES );
+		m_pMesh->SetPrimitiveType(MATERIAL_LINES);
 		break;
 
 	default:
-		m_pMesh->SetPrimitiveType( type );
+		m_pMesh->SetPrimitiveType(type);
 	}
 
 	// Lock the mesh
-	m_pMesh->LockMesh( nMaxVertexCount, nMaxIndexCount, *this );
+	m_pMesh->LockMesh(nMaxVertexCount, nMaxIndexCount, *this);
 
-	m_IndexBuilder.AttachBegin( pMesh, nMaxIndexCount, *this );
-	m_VertexBuilder.AttachBegin( pMesh, nMaxVertexCount, *this );
+	m_IndexBuilder.AttachBegin(pMesh, nMaxIndexCount, *this);
+	m_VertexBuilder.AttachBegin(pMesh, nMaxVertexCount, *this);
 
 	// Point to the start of the index and vertex buffers
 	Reset();
 }
 
-inline void CMeshBuilder::Begin( IMesh *pMesh, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount, int *nFirstVertex )
+inline void CMeshBuilder::Begin(IMesh* pMesh, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount, int* nFirstVertex)
 {
-	Begin( pMesh, type, nVertexCount, nIndexCount );
+	Begin(pMesh, type, nVertexCount, nIndexCount);
 
 	*nFirstVertex = m_VertexBuilder.m_nFirstVertex * m_VertexBuilder.VertexSize();
 }
 
-inline void CMeshBuilder::Begin( IMesh* pMesh, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount )
+inline void CMeshBuilder::Begin(IMesh* pMesh, MaterialPrimitiveType_t type, int nVertexCount, int nIndexCount)
 {
-	Assert( pMesh && (!m_pMesh) );
+	Assert(pMesh && (!m_pMesh));
 
 	// NOTE: We can't specify the indices when we use quads, polygons, or
 	// linestrips; they aren't actually directly supported by 
 	// the material system
-	Assert( (type != MATERIAL_QUADS) && (type != MATERIAL_INSTANCED_QUADS) && (type != MATERIAL_POLYGON) &&
+	Assert((type != MATERIAL_QUADS) && (type != MATERIAL_INSTANCED_QUADS) && (type != MATERIAL_POLYGON) &&
 		(type != MATERIAL_LINE_STRIP) && (type != MATERIAL_LINE_LOOP));
 
 	// Dx8 doesn't support indexed points...
-	Assert( type != MATERIAL_POINTS );
+	Assert(type != MATERIAL_POINTS);
 
 	m_pMesh = pMesh;
 	m_bGenerateIndices = false;
 	m_Type = type;
 
 	// Set the primitive type
-	m_pMesh->SetPrimitiveType( type );
+	m_pMesh->SetPrimitiveType(type);
 
 	// Lock the vertex and index buffer
-	m_pMesh->LockMesh( nVertexCount, nIndexCount, *this );
+	m_pMesh->LockMesh(nVertexCount, nIndexCount, *this);
 
-	m_IndexBuilder.AttachBegin( pMesh, nIndexCount, *this );
-	m_VertexBuilder.AttachBegin( pMesh, nVertexCount, *this );
+	m_IndexBuilder.AttachBegin(pMesh, nIndexCount, *this);
+	m_VertexBuilder.AttachBegin(pMesh, nVertexCount, *this);
 
 	// Point to the start of the buffers..
 	Reset();
@@ -3400,30 +3398,30 @@ inline void CMeshBuilder::Begin( IMesh* pMesh, MaterialPrimitiveType_t type, int
 //-----------------------------------------------------------------------------
 // Use this when you're done modifying the mesh
 //-----------------------------------------------------------------------------
-inline void CMeshBuilder::End( bool bSpewData, bool bDraw )
+inline void CMeshBuilder::End(bool bSpewData, bool bDraw)
 {
-	if ( m_bGenerateIndices )
+	if (m_bGenerateIndices)
 	{
-		int nIndexCount = IndicesFromVertices( m_Type, m_VertexBuilder.VertexCount() );
-		m_IndexBuilder.GenerateIndices( m_Type, nIndexCount );
+		int nIndexCount = IndicesFromVertices(m_Type, m_VertexBuilder.VertexCount());
+		m_IndexBuilder.GenerateIndices(m_Type, nIndexCount);
 	}
 
-	if ( bSpewData )
+	if (bSpewData)
 	{
-		m_pMesh->Spew( m_VertexBuilder.VertexCount(), m_IndexBuilder.IndexCount(), *this );
+		m_pMesh->Spew(m_VertexBuilder.VertexCount(), m_IndexBuilder.IndexCount(), *this);
 	}
 
 #ifdef _DEBUG
-	m_pMesh->ValidateData( m_VertexBuilder.VertexCount(), m_IndexBuilder.IndexCount(), *this );
+	m_pMesh->ValidateData(m_VertexBuilder.VertexCount(), m_IndexBuilder.IndexCount(), *this);
 #endif
 
 	// Unlock our buffers
-	m_pMesh->UnlockMesh( m_VertexBuilder.VertexCount(), m_IndexBuilder.IndexCount(), *this );
+	m_pMesh->UnlockMesh(m_VertexBuilder.VertexCount(), m_IndexBuilder.IndexCount(), *this);
 
 	m_IndexBuilder.AttachEnd();
 	m_VertexBuilder.AttachEnd();
 
-	if ( bDraw )
+	if (bDraw)
 	{
 		m_pMesh->Draw();
 	}
@@ -3431,7 +3429,7 @@ inline void CMeshBuilder::End( bool bSpewData, bool bDraw )
 	m_pMesh = 0;
 
 #ifdef _DEBUG
-	memset( (MeshDesc_t*)this, 0, sizeof(MeshDesc_t) );
+	memset((MeshDesc_t*)this, 0, sizeof(MeshDesc_t));
 #endif
 }
 
@@ -3439,9 +3437,9 @@ inline void CMeshBuilder::End( bool bSpewData, bool bDraw )
 //-----------------------------------------------------------------------------
 // Locks the vertex buffer to modify existing data
 //-----------------------------------------------------------------------------
-inline void CMeshBuilder::BeginModify( IMesh* pMesh, int nFirstVertex, int nVertexCount, int nFirstIndex, int nIndexCount )
+inline void CMeshBuilder::BeginModify(IMesh* pMesh, int nFirstVertex, int nVertexCount, int nFirstIndex, int nIndexCount)
 {
-	Assert( pMesh && (!m_pMesh) );
+	Assert(pMesh && (!m_pMesh));
 
 	if (nVertexCount < 0)
 	{
@@ -3452,29 +3450,29 @@ inline void CMeshBuilder::BeginModify( IMesh* pMesh, int nFirstVertex, int nVert
 	m_bGenerateIndices = false;
 
 	// Locks mesh for modifying
-	pMesh->ModifyBeginEx( false, nFirstVertex, nVertexCount, nFirstIndex, nIndexCount, *this );
+	pMesh->ModifyBeginEx(false, nFirstVertex, nVertexCount, nFirstIndex, nIndexCount, *this);
 
-	m_IndexBuilder.AttachBeginModify( pMesh, nFirstIndex, nIndexCount, *this );
-	m_VertexBuilder.AttachBeginModify( pMesh, nFirstVertex, nVertexCount, *this );
+	m_IndexBuilder.AttachBeginModify(pMesh, nFirstIndex, nIndexCount, *this);
+	m_VertexBuilder.AttachBeginModify(pMesh, nFirstVertex, nVertexCount, *this);
 
 	// Point to the start of the buffers..
 	Reset();
 }
 
-inline void CMeshBuilder::EndModify( bool bSpewData )
+inline void CMeshBuilder::EndModify(bool bSpewData)
 {
-	Assert( m_pMesh );
+	Assert(m_pMesh);
 
 	if (bSpewData)
 	{
-		m_pMesh->Spew( m_VertexBuilder.VertexCount(), m_IndexBuilder.IndexCount(), *this );
+		m_pMesh->Spew(m_VertexBuilder.VertexCount(), m_IndexBuilder.IndexCount(), *this);
 	}
 #ifdef _DEBUG
-	m_pMesh->ValidateData( m_VertexBuilder.VertexCount(), m_IndexBuilder.IndexCount(), *this );
+	m_pMesh->ValidateData(m_VertexBuilder.VertexCount(), m_IndexBuilder.IndexCount(), *this);
 #endif
 
 	// Unlocks mesh
-	m_pMesh->ModifyEnd( *this );
+	m_pMesh->ModifyEnd(*this);
 	m_pMesh = 0;
 
 	m_IndexBuilder.AttachEndModify();
@@ -3482,7 +3480,7 @@ inline void CMeshBuilder::EndModify( bool bSpewData )
 
 #ifdef _DEBUG
 	// Null out our pointers...
-	memset( (MeshDesc_t*)this, 0, sizeof(MeshDesc_t) );
+	memset((MeshDesc_t*)this, 0, sizeof(MeshDesc_t));
 #endif
 }
 
@@ -3500,21 +3498,21 @@ inline void CMeshBuilder::Reset()
 //-----------------------------------------------------------------------------
 // Selects the current Vertex and Index 
 //-----------------------------------------------------------------------------
-FORCEINLINE void CMeshBuilder::SelectVertex( int nIndex )
+FORCEINLINE void CMeshBuilder::SelectVertex(int nIndex)
 {
-	m_VertexBuilder.SelectVertex( nIndex );
+	m_VertexBuilder.SelectVertex(nIndex);
 }
 
-inline void CMeshBuilder::SelectVertexFromIndex( int idx )
+inline void CMeshBuilder::SelectVertexFromIndex(int idx)
 {
 	// NOTE: This index is expected to be relative 
 	int vertIdx = idx - m_nFirstVertex;
-	SelectVertex( vertIdx );
+	SelectVertex(vertIdx);
 }
 
-FORCEINLINE void CMeshBuilder::SelectIndex( int idx )
+FORCEINLINE void CMeshBuilder::SelectIndex(int idx)
 {
-	m_IndexBuilder.SelectIndex( idx );
+	m_IndexBuilder.SelectIndex(idx);
 }
 
 
@@ -3530,9 +3528,9 @@ FORCEINLINE void CMeshBuilder::AdvanceVertex()
 	m_VertexBuilder.AdvanceVertex();
 }
 
-FORCEINLINE void CMeshBuilder::AdvanceVertices( int nVertexCount )
+FORCEINLINE void CMeshBuilder::AdvanceVertices(int nVertexCount)
 {
-	m_VertexBuilder.AdvanceVertices( nVertexCount );
+	m_VertexBuilder.AdvanceVertices(nVertexCount);
 }
 
 FORCEINLINE void CMeshBuilder::AdvanceIndex()
@@ -3540,9 +3538,9 @@ FORCEINLINE void CMeshBuilder::AdvanceIndex()
 	m_IndexBuilder.AdvanceIndex();
 }
 
-FORCEINLINE void CMeshBuilder::AdvanceIndices( int nIndices )
+FORCEINLINE void CMeshBuilder::AdvanceIndices(int nIndices)
 {
-	m_IndexBuilder.AdvanceIndices( nIndices );
+	m_IndexBuilder.AdvanceIndices(nIndices);
 }
 
 FORCEINLINE int CMeshBuilder::GetCurrentVertex()
@@ -3563,46 +3561,46 @@ FORCEINLINE int CMeshBuilder::GetIndexOffset() const
 //-----------------------------------------------------------------------------
 // A helper method since this seems to be done a whole bunch.
 //-----------------------------------------------------------------------------
-inline void CMeshBuilder::DrawQuad( IMesh* pMesh, const float* v1, const float* v2, 
-								   const float* v3, const float* v4, unsigned char const* pColor, bool wireframe )
+inline void CMeshBuilder::DrawQuad(IMesh* pMesh, const float* v1, const float* v2,
+	const float* v3, const float* v4, unsigned char const* pColor, bool wireframe)
 {
 	if (!wireframe)
 	{
-		Begin( pMesh, MATERIAL_TRIANGLE_STRIP, 2 );
+		Begin(pMesh, MATERIAL_TRIANGLE_STRIP, 2);
 
-		Position3fv (v1);
-		Color4ubv( pColor );
+		Position3fv(v1);
+		Color4ubv(pColor);
 		AdvanceVertexF<VTX_HAVEPOS | VTX_HAVECOLOR, 0>();
 
-		Position3fv (v2);
-		Color4ubv( pColor );
+		Position3fv(v2);
+		Color4ubv(pColor);
 		AdvanceVertexF<VTX_HAVEPOS | VTX_HAVECOLOR, 0>();
 
-		Position3fv (v4);
-		Color4ubv( pColor );
+		Position3fv(v4);
+		Color4ubv(pColor);
 		AdvanceVertexF<VTX_HAVEPOS | VTX_HAVECOLOR, 0>();
 
-		Position3fv (v3);
-		Color4ubv( pColor );
+		Position3fv(v3);
+		Color4ubv(pColor);
 		AdvanceVertexF<VTX_HAVEPOS | VTX_HAVECOLOR, 0>();
 	}
 	else
 	{
-		Begin( pMesh, MATERIAL_LINE_LOOP, 4 );
-		Position3fv (v1);
-		Color4ubv( pColor );
+		Begin(pMesh, MATERIAL_LINE_LOOP, 4);
+		Position3fv(v1);
+		Color4ubv(pColor);
 		AdvanceVertexF<VTX_HAVEPOS | VTX_HAVECOLOR, 0>();
 
-		Position3fv (v2);
-		Color4ubv( pColor );
+		Position3fv(v2);
+		Color4ubv(pColor);
 		AdvanceVertexF<VTX_HAVEPOS | VTX_HAVECOLOR, 0>();
 
-		Position3fv (v3);
-		Color4ubv( pColor );
+		Position3fv(v3);
+		Color4ubv(pColor);
 		AdvanceVertexF<VTX_HAVEPOS | VTX_HAVECOLOR, 0>();
 
-		Position3fv (v4);
-		Color4ubv( pColor );
+		Position3fv(v4);
+		Color4ubv(pColor);
 		AdvanceVertexF<VTX_HAVEPOS | VTX_HAVECOLOR, 0>();
 	}
 
@@ -3658,14 +3656,14 @@ FORCEINLINE unsigned int CMeshBuilder::Color() const
 	return m_VertexBuilder.Color();
 }
 
-FORCEINLINE unsigned char *CMeshBuilder::Specular() const
+FORCEINLINE unsigned char* CMeshBuilder::Specular() const
 {
 	return m_VertexBuilder.Specular();
 }
 
-FORCEINLINE const float* CMeshBuilder::TexCoord( int nStage ) const
+FORCEINLINE const float* CMeshBuilder::TexCoord(int nStage) const
 {
-	return m_VertexBuilder.TexCoord( nStage );
+	return m_VertexBuilder.TexCoord(nStage);
 }
 
 FORCEINLINE const float* CMeshBuilder::TangentS() const
@@ -3702,57 +3700,57 @@ FORCEINLINE unsigned short const* CMeshBuilder::Index() const
 //-----------------------------------------------------------------------------
 // Index
 //-----------------------------------------------------------------------------
-FORCEINLINE void CMeshBuilder::Index( unsigned short idx )
+FORCEINLINE void CMeshBuilder::Index(unsigned short idx)
 {
-	m_IndexBuilder.Index( idx );
+	m_IndexBuilder.Index(idx);
 }
 
 
 //-----------------------------------------------------------------------------
 // Fast Index! No need to call advance index
 //-----------------------------------------------------------------------------
-FORCEINLINE void CMeshBuilder::FastIndex( unsigned short idx )
+FORCEINLINE void CMeshBuilder::FastIndex(unsigned short idx)
 {
-	m_IndexBuilder.FastIndex( idx );
+	m_IndexBuilder.FastIndex(idx);
 }
 
 // NOTE: Use this one to get write combining! Much faster than the other version of FastIndex
 // Fast Index! No need to call advance index, and no random access allowed
-FORCEINLINE void CMeshBuilder::FastIndex2( unsigned short nIndex1, unsigned short nIndex2 )
+FORCEINLINE void CMeshBuilder::FastIndex2(unsigned short nIndex1, unsigned short nIndex2)
 {
-	m_IndexBuilder.FastIndex2( nIndex1, nIndex2 );
+	m_IndexBuilder.FastIndex2(nIndex1, nIndex2);
 }
 
-FORCEINLINE void CMeshBuilder::FastQuad( int nIndex )
+FORCEINLINE void CMeshBuilder::FastQuad(int nIndex)
 {
-	m_IndexBuilder.FastQuad( nIndex );
+	m_IndexBuilder.FastQuad(nIndex);
 }
 
 //-----------------------------------------------------------------------------
 // For use with the FastVertex methods, advances the current vertex by N
 //-----------------------------------------------------------------------------
-FORCEINLINE void CMeshBuilder::FastAdvanceNVertices( int nVertexCount )
+FORCEINLINE void CMeshBuilder::FastAdvanceNVertices(int nVertexCount)
 {
-	m_VertexBuilder.FastAdvanceNVertices( nVertexCount );
+	m_VertexBuilder.FastAdvanceNVertices(nVertexCount);
 }
 
 
 //-----------------------------------------------------------------------------
 // Fast Vertex! No need to call advance vertex, and no random access allowed
 //-----------------------------------------------------------------------------
-FORCEINLINE void CMeshBuilder::FastVertex( const ModelVertexDX8_t &vertex )
+FORCEINLINE void CMeshBuilder::FastVertex(const ModelVertexDX8_t& vertex)
 {
-	m_VertexBuilder.FastVertex( vertex );
+	m_VertexBuilder.FastVertex(vertex);
 }
 
-FORCEINLINE void CMeshBuilder::FastVertexSSE( const ModelVertexDX8_t &vertex )
+FORCEINLINE void CMeshBuilder::FastVertexSSE(const ModelVertexDX8_t& vertex)
 {
-	m_VertexBuilder.FastVertexSSE( vertex );
+	m_VertexBuilder.FastVertexSSE(vertex);
 }
 
-FORCEINLINE void CMeshBuilder::FastQuadVertexSSE( const QuadTessVertex_t &vertex )
+FORCEINLINE void CMeshBuilder::FastQuadVertexSSE(const QuadTessVertex_t& vertex)
 {
-	m_VertexBuilder.FastQuadVertexSSE( vertex );
+	m_VertexBuilder.FastQuadVertexSSE(vertex);
 }
 
 
@@ -3760,252 +3758,251 @@ FORCEINLINE void CMeshBuilder::FastQuadVertexSSE( const QuadTessVertex_t &vertex
 // Copies a vertex into the x360 format
 //-----------------------------------------------------------------------------
 #if defined( _X360 )
-inline void CMeshBuilder::VertexDX8ToX360( const ModelVertexDX8_t &vertex )
+inline void CMeshBuilder::VertexDX8ToX360(const ModelVertexDX8_t& vertex)
 {
-	m_VertexBuilder.VertexDX8ToX360( vertex );
+	m_VertexBuilder.VertexDX8ToX360(vertex);
 }
 #endif
 
 //-----------------------------------------------------------------------------
 // Vertex field setting methods
 //-----------------------------------------------------------------------------
-FORCEINLINE void CMeshBuilder::Position3f( float x, float y, float z )
+FORCEINLINE void CMeshBuilder::Position3f(float x, float y, float z)
 {
-	m_VertexBuilder.Position3f( x, y, z );
+	m_VertexBuilder.Position3f(x, y, z);
 }
 
-FORCEINLINE void CMeshBuilder::Position3fv( const float *v )
+FORCEINLINE void CMeshBuilder::Position3fv(const float* v)
 {
-	m_VertexBuilder.Position3fv( v );
+	m_VertexBuilder.Position3fv(v);
 }
 
-FORCEINLINE void CMeshBuilder::Normal3f( float nx, float ny, float nz )
+FORCEINLINE void CMeshBuilder::Normal3f(float nx, float ny, float nz)
 {
-	m_VertexBuilder.Normal3f( nx, ny, nz );
+	m_VertexBuilder.Normal3f(nx, ny, nz);
 }
 
-FORCEINLINE void CMeshBuilder::Normal3fv( const float *n )
+FORCEINLINE void CMeshBuilder::Normal3fv(const float* n)
 {
-	m_VertexBuilder.Normal3fv( n );
+	m_VertexBuilder.Normal3fv(n);
 }
 
-FORCEINLINE void CMeshBuilder::NormalDelta3f( float nx, float ny, float nz )
+FORCEINLINE void CMeshBuilder::NormalDelta3f(float nx, float ny, float nz)
 {
-	m_VertexBuilder.NormalDelta3f( nx, ny, nz );
+	m_VertexBuilder.NormalDelta3f(nx, ny, nz);
 }
 
-FORCEINLINE void CMeshBuilder::NormalDelta3fv( const float *n )
+FORCEINLINE void CMeshBuilder::NormalDelta3fv(const float* n)
 {
-	m_VertexBuilder.NormalDelta3fv( n );
+	m_VertexBuilder.NormalDelta3fv(n);
 }
 
-FORCEINLINE void CMeshBuilder::Color3f( float r, float g, float b )
+FORCEINLINE void CMeshBuilder::Color3f(float r, float g, float b)
 {
-	m_VertexBuilder.Color3f( r, g, b );
+	m_VertexBuilder.Color3f(r, g, b);
 }
 
-FORCEINLINE void CMeshBuilder::Color3fv( const float *rgb )
+FORCEINLINE void CMeshBuilder::Color3fv(const float* rgb)
 {
-	m_VertexBuilder.Color3fv( rgb );
+	m_VertexBuilder.Color3fv(rgb);
 }
 
-FORCEINLINE void CMeshBuilder::Color4f( float r, float g, float b, float a )
+FORCEINLINE void CMeshBuilder::Color4f(float r, float g, float b, float a)
 {
-	m_VertexBuilder.Color4f( r, g ,b, a );
+	m_VertexBuilder.Color4f(r, g, b, a);
 }
 
-FORCEINLINE void CMeshBuilder::Color4fv( const float *rgba )
+FORCEINLINE void CMeshBuilder::Color4fv(const float* rgba)
 {
-	m_VertexBuilder.Color4fv( rgba );
+	m_VertexBuilder.Color4fv(rgba);
 }
 
-FORCEINLINE void CMeshBuilder::Color3ub( unsigned char r, unsigned char g, unsigned char b )
+FORCEINLINE void CMeshBuilder::Color3ub(unsigned char r, unsigned char g, unsigned char b)
 {
-	m_VertexBuilder.Color3ub( r, g, b );
+	m_VertexBuilder.Color3ub(r, g, b);
 }
 
-FORCEINLINE void CMeshBuilder::Color3ubv( unsigned char const* rgb )
+FORCEINLINE void CMeshBuilder::Color3ubv(unsigned char const* rgb)
 {
-	m_VertexBuilder.Color3ubv( rgb );
+	m_VertexBuilder.Color3ubv(rgb);
 }
 
-FORCEINLINE void CMeshBuilder::Color4ub( unsigned char r, unsigned char g, unsigned char b, unsigned char a )
+FORCEINLINE void CMeshBuilder::Color4ub(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
-	m_VertexBuilder.Color4ub( r, g, b, a );
+	m_VertexBuilder.Color4ub(r, g, b, a);
 }
 
-FORCEINLINE void CMeshBuilder::Color4ubv( unsigned char const* rgba )
+FORCEINLINE void CMeshBuilder::Color4ubv(unsigned char const* rgba)
 {
-	m_VertexBuilder.Color4ubv( rgba );
+	m_VertexBuilder.Color4ubv(rgba);
 }
 
-FORCEINLINE void CMeshBuilder::Color4Packed( int packedColor )
+FORCEINLINE void CMeshBuilder::Color4Packed(int packedColor)
 {
 	m_VertexBuilder.Color4Packed(packedColor);
 }
 
-FORCEINLINE int CMeshBuilder::PackColor4( unsigned char r, unsigned char g, unsigned char b, unsigned char a )
+FORCEINLINE int CMeshBuilder::PackColor4(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
-	return m_VertexBuilder.PackColor4(r,g,b,a);
+	return m_VertexBuilder.PackColor4(r, g, b, a);
 }
 
-FORCEINLINE void CMeshBuilder::Specular3f( float r, float g, float b )
+FORCEINLINE void CMeshBuilder::Specular3f(float r, float g, float b)
 {
-	m_VertexBuilder.Specular3f( r, g, b );
+	m_VertexBuilder.Specular3f(r, g, b);
 }
 
-FORCEINLINE void CMeshBuilder::Specular3fv( const float *rgb )
+FORCEINLINE void CMeshBuilder::Specular3fv(const float* rgb)
 {
-	m_VertexBuilder.Specular3fv( rgb );
+	m_VertexBuilder.Specular3fv(rgb);
 }
 
-FORCEINLINE void CMeshBuilder::Specular4f( float r, float g, float b, float a )
+FORCEINLINE void CMeshBuilder::Specular4f(float r, float g, float b, float a)
 {
-	m_VertexBuilder.Specular4f( r, g, b, a );
+	m_VertexBuilder.Specular4f(r, g, b, a);
 }
 
-FORCEINLINE void CMeshBuilder::Specular4fv( const float *rgba )
+FORCEINLINE void CMeshBuilder::Specular4fv(const float* rgba)
 {
-	m_VertexBuilder.Specular4fv( rgba );
+	m_VertexBuilder.Specular4fv(rgba);
 }
 
-FORCEINLINE void CMeshBuilder::Specular3ub( unsigned char r, unsigned char g, unsigned char b )
+FORCEINLINE void CMeshBuilder::Specular3ub(unsigned char r, unsigned char g, unsigned char b)
 {
-	m_VertexBuilder.Specular3ub( r, g, b );
+	m_VertexBuilder.Specular3ub(r, g, b);
 }
 
-FORCEINLINE void CMeshBuilder::Specular3ubv( unsigned char const *c )
+FORCEINLINE void CMeshBuilder::Specular3ubv(unsigned char const* c)
 {
-	m_VertexBuilder.Specular3ubv( c );
+	m_VertexBuilder.Specular3ubv(c);
 }
 
-FORCEINLINE void CMeshBuilder::Specular4ub( unsigned char r, unsigned char g, unsigned char b, unsigned char a )
+FORCEINLINE void CMeshBuilder::Specular4ub(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
-	m_VertexBuilder.Specular4ub( r, g, b, a );
+	m_VertexBuilder.Specular4ub(r, g, b, a);
 }
 
-FORCEINLINE void CMeshBuilder::Specular4ubv( unsigned char const *c )
+FORCEINLINE void CMeshBuilder::Specular4ubv(unsigned char const* c)
 {
-	m_VertexBuilder.Specular4ubv( c );
+	m_VertexBuilder.Specular4ubv(c);
 }
 
-FORCEINLINE void CMeshBuilder::TexCoord1f( int nStage, float s )
+FORCEINLINE void CMeshBuilder::TexCoord1f(int nStage, float s)
 {
-	m_VertexBuilder.TexCoord1f( nStage, s );
+	m_VertexBuilder.TexCoord1f(nStage, s);
 }
 
-FORCEINLINE void CMeshBuilder::TexCoord2f( int nStage, float s, float t )
+FORCEINLINE void CMeshBuilder::TexCoord2f(int nStage, float s, float t)
 {
-	m_VertexBuilder.TexCoord2f( nStage, s, t );
+	m_VertexBuilder.TexCoord2f(nStage, s, t);
 }
 
-FORCEINLINE void CMeshBuilder::TexCoord2fv( int nStage, const float *st )
+FORCEINLINE void CMeshBuilder::TexCoord2fv(int nStage, const float* st)
 {
-	m_VertexBuilder.TexCoord2fv( nStage, st );
+	m_VertexBuilder.TexCoord2fv(nStage, st);
 }
 
-FORCEINLINE void CMeshBuilder::TexCoord3f( int nStage, float s, float t, float u )
+FORCEINLINE void CMeshBuilder::TexCoord3f(int nStage, float s, float t, float u)
 {
-	m_VertexBuilder.TexCoord3f( nStage, s, t, u );
+	m_VertexBuilder.TexCoord3f(nStage, s, t, u);
 }
 
-FORCEINLINE void CMeshBuilder::TexCoord3fv( int nStage, const float *stu )
+FORCEINLINE void CMeshBuilder::TexCoord3fv(int nStage, const float* stu)
 {
-	m_VertexBuilder.TexCoord3fv( nStage, stu );
+	m_VertexBuilder.TexCoord3fv(nStage, stu);
 }
 
-FORCEINLINE void CMeshBuilder::TexCoord4f( int nStage, float s, float t, float u, float v )
+FORCEINLINE void CMeshBuilder::TexCoord4f(int nStage, float s, float t, float u, float v)
 {
-	m_VertexBuilder.TexCoord4f( nStage, s, t, u, v );
+	m_VertexBuilder.TexCoord4f(nStage, s, t, u, v);
 }
 
-FORCEINLINE void CMeshBuilder::TexCoord4fv( int nStage, const float *stuv )
+FORCEINLINE void CMeshBuilder::TexCoord4fv(int nStage, const float* stuv)
 {
-	m_VertexBuilder.TexCoord4fv( nStage, stuv );
+	m_VertexBuilder.TexCoord4fv(nStage, stuv);
 }
 
-FORCEINLINE void CMeshBuilder::TexCoordSubRect2f( int nStage, float s, float t, float offsetS, float offsetT, float scaleS, float scaleT )
+FORCEINLINE void CMeshBuilder::TexCoordSubRect2f(int nStage, float s, float t, float offsetS, float offsetT, float scaleS, float scaleT)
 {
-	m_VertexBuilder.TexCoordSubRect2f( nStage, s, t, offsetS, offsetT, scaleS, scaleT );
+	m_VertexBuilder.TexCoordSubRect2f(nStage, s, t, offsetS, offsetT, scaleS, scaleT);
 }
 
-FORCEINLINE void CMeshBuilder::TexCoordSubRect2fv( int nStage, const float *st, const float *offset, const float *scale )
+FORCEINLINE void CMeshBuilder::TexCoordSubRect2fv(int nStage, const float* st, const float* offset, const float* scale)
 {
-	m_VertexBuilder.TexCoordSubRect2fv( nStage, st, offset, scale );
+	m_VertexBuilder.TexCoordSubRect2fv(nStage, st, offset, scale);
 }
 
-FORCEINLINE void CMeshBuilder::TangentS3f( float sx, float sy, float sz )
+FORCEINLINE void CMeshBuilder::TangentS3f(float sx, float sy, float sz)
 {
-	m_VertexBuilder.TangentS3f( sx, sy, sz );
+	m_VertexBuilder.TangentS3f(sx, sy, sz);
 }
 
-FORCEINLINE void CMeshBuilder::TangentS3fv( const float* s )
+FORCEINLINE void CMeshBuilder::TangentS3fv(const float* s)
 {
-	m_VertexBuilder.TangentS3fv( s );
+	m_VertexBuilder.TangentS3fv(s);
 }
 
-FORCEINLINE void CMeshBuilder::TangentT3f( float tx, float ty, float tz )
+FORCEINLINE void CMeshBuilder::TangentT3f(float tx, float ty, float tz)
 {
-	m_VertexBuilder.TangentT3f( tx, ty, tz );
+	m_VertexBuilder.TangentT3f(tx, ty, tz);
 }
 
-FORCEINLINE void CMeshBuilder::TangentT3fv( const float* t )
+FORCEINLINE void CMeshBuilder::TangentT3fv(const float* t)
 {
-	m_VertexBuilder.TangentT3fv( t );
+	m_VertexBuilder.TangentT3fv(t);
 }
 
-FORCEINLINE void CMeshBuilder::Wrinkle1f( float flWrinkle )
+FORCEINLINE void CMeshBuilder::Wrinkle1f(float flWrinkle)
 {
-	m_VertexBuilder.Wrinkle1f( flWrinkle );
+	m_VertexBuilder.Wrinkle1f(flWrinkle);
 }
 
-FORCEINLINE void CMeshBuilder::BoneWeight( int nIndex, float flWeight )
+FORCEINLINE void CMeshBuilder::BoneWeight(int nIndex, float flWeight)
 {
-	m_VertexBuilder.BoneWeight( nIndex, flWeight );
+	m_VertexBuilder.BoneWeight(nIndex, flWeight);
 }
 
-FORCEINLINE void CMeshBuilder::BoneWeights2( float weight1, float weight2 )
+FORCEINLINE void CMeshBuilder::BoneWeights2(float weight1, float weight2)
 {
-	m_VertexBuilder.BoneWeights2( weight1, weight2 );
+	m_VertexBuilder.BoneWeights2(weight1, weight2);
 }
 
-template <VertexCompressionType_t T> FORCEINLINE void CMeshBuilder::CompressedBoneWeight3fv( const float * pWeights )
+template <VertexCompressionType_t T> FORCEINLINE void CMeshBuilder::CompressedBoneWeight3fv(const float* pWeights)
 {
-	m_VertexBuilder.CompressedBoneWeight3fv<T>( pWeights );
+	m_VertexBuilder.CompressedBoneWeight3fv<T>(pWeights);
 }
 
-FORCEINLINE void CMeshBuilder::BoneMatrix( int nIndex, int nMatrixIdx )
+FORCEINLINE void CMeshBuilder::BoneMatrix(int nIndex, int nMatrixIdx)
 {
-	m_VertexBuilder.BoneMatrix( nIndex, nMatrixIdx );
+	m_VertexBuilder.BoneMatrix(nIndex, nMatrixIdx);
 }
 
-FORCEINLINE void CMeshBuilder::BoneMatrices4( int matrixIdx0, int matrixIdx1, int matrixIdx2, int matrixIdx3 )
+FORCEINLINE void CMeshBuilder::BoneMatrices4(int matrixIdx0, int matrixIdx1, int matrixIdx2, int matrixIdx3)
 {
-	m_VertexBuilder.BoneMatrices4( matrixIdx0, matrixIdx1, matrixIdx2, matrixIdx3 );
+	m_VertexBuilder.BoneMatrices4(matrixIdx0, matrixIdx1, matrixIdx2, matrixIdx3);
 }
 
-FORCEINLINE void CMeshBuilder::UserData( const float* pData )
+FORCEINLINE void CMeshBuilder::UserData(const float* pData)
 {
-	m_VertexBuilder.UserData( pData );
+	m_VertexBuilder.UserData(pData);
 }
 
-template <VertexCompressionType_t T> FORCEINLINE void CMeshBuilder::CompressedUserData( const float* pData )
+template <VertexCompressionType_t T> FORCEINLINE void CMeshBuilder::CompressedUserData(const float* pData)
 {
-	m_VertexBuilder.CompressedUserData<T>( pData );
+	m_VertexBuilder.CompressedUserData<T>(pData);
 }
 
 //-----------------------------------------------------------------------------
 // Templatized vertex field setting methods which support compression
 //-----------------------------------------------------------------------------
 
-template <VertexCompressionType_t T> FORCEINLINE void CMeshBuilder::CompressedNormal3f( float nx, float ny, float nz )
+template <VertexCompressionType_t T> FORCEINLINE void CMeshBuilder::CompressedNormal3f(float nx, float ny, float nz)
 {
-	m_VertexBuilder.CompressedNormal3f<T>( nx, ny, nz );
+	m_VertexBuilder.CompressedNormal3f<T>(nx, ny, nz);
 }
 
-template <VertexCompressionType_t T> FORCEINLINE void CMeshBuilder::CompressedNormal3fv( const float *n )
+template <VertexCompressionType_t T> FORCEINLINE void CMeshBuilder::CompressedNormal3fv(const float* n)
 {
-	m_VertexBuilder.CompressedNormal3fv<T>( n );
+	m_VertexBuilder.CompressedNormal3fv<T>(n);
 }
-
 #endif // IMESH_H

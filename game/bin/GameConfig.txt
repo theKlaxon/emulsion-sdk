@@ -11,7 +11,7 @@
 				"TextureFormat"		"5"
 				"MapFormat"		"4"
 				"DefaultTextureScale"		"0.250000"
-				"DefaultLightmapScale"		"8"
+				"DefaultLightmapScale"		"16"
 				"GameExe"		"D:\SteamLibrary\steamapps\common\Portal 2\portal2.exe"
 				"DefaultSolidEntity"		"func_detail"
 				"DefaultPointEntity"		"info_player_start"

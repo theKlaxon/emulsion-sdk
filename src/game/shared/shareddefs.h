@@ -732,7 +732,7 @@ struct EmitSound_t
 		m_bWarnOnDirectWaveReference( false ),
 		m_nSpeakerEntity( -1 ),
 		m_UtlVecSoundOrigin(),
-		m_hSoundScriptHandle( (unsigned int)(-1) )
+		m_hSoundScriptHandle( -1 )
 	{
 	}
 
@@ -835,13 +835,10 @@ enum
 bool IsHeadTrackingEnabled();
 
 // If this is defined, all of the scopeguard objects are NULL'd out to reduce overhead
-// #define SPLIT_SCREEN_STUBS
+#define SPLIT_SCREEN_STUBS
 
-#ifdef P2_DLL
+
 	#define MAX_SPLITSCREEN_PLAYERS 2
-#else
-	#define MAX_SPLITSCREEN_PLAYERS 1
-#endif
 
 
 inline bool IsSplitScreenSupported()

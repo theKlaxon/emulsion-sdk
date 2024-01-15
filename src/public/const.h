@@ -154,10 +154,11 @@ enum MoveType_t
 	MOVETYPE_NOCLIP,			// No gravity, no collisions, still do velocity/avelocity
 	MOVETYPE_LADDER,			// Used by players only when going onto a ladder
 	MOVETYPE_OBSERVER,			// Observer movement, depends on player's observer mode
-#if defined(P2_DLL) || defined(PORTAL2)
+	MOVETYPE_CUSTOM,			// Allows the entity to describe its own physics
+
+#ifdef EMULSION_DLL
 	MOVETYPE_STICK,
 #endif
-	MOVETYPE_CUSTOM,			// Allows the entity to describe its own physics
 
 	// should always be defined as the last item in the list
 	MOVETYPE_LAST		= MOVETYPE_CUSTOM,
@@ -376,12 +377,12 @@ enum Collision_Group_t
 	COLLISION_GROUP_NPC_SCRIPTED,	// USed for NPCs in scripts that should not collide with each other
 	COLLISION_GROUP_PZ_CLIP,
 
-#ifdef P2_DLL
+#ifdef EMULSION_DLL
 	COLLISION_GROUP_CAMERA_SOLID,		// Solid only to the camera's test trace
 	COLLISION_GROUP_PLACEMENT_SOLID,	// Solid only to the placement tool's test trace
 	COLLISION_GROUP_PLAYER_HELD,		// Held objects that shouldn't collide with players
 	COLLISION_GROUP_WEIGHTED_CUBE,		// Cubes need a collision group that acts roughly like COLLISION_GROUP_NONE but doesn't collide with debris or interactive
-#endif // P2_DLL
+#endif // EMULSION_DLL
 
 	COLLISION_GROUP_DEBRIS_BLOCK_PROJECTILE, // Only collides with bullets
 

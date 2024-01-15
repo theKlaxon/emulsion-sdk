@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VQuickJoinGroups.h"
 
 // memdbgon must be the last include file in a .cpp file!!!

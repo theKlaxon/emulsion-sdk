@@ -271,7 +271,6 @@ namespace ResponseRules
 
 		static CUtlSymbolTable sm_CriteriaSymbols;
 	    typedef CUtlRBTree< CritEntry_t, short > Dict_t;
-
 	    Dict_t m_Lookup;
 	    int m_nNumPrefixedContexts; // number of contexts prefixed with kAPPLYTOWORLDPREFIX
 		bool m_bOverrideOnAppend;

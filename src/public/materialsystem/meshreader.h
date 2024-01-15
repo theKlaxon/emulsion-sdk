@@ -127,7 +127,7 @@ inline void CBaseMeshReader::BeginRead(
 	Assert( compressionType == VERTEX_COMPRESSION_NONE );
 	if ( compressionType != VERTEX_COMPRESSION_NONE )
 	{
-		Warning( (tchar*)"Cannot use CBaseMeshReader with compressed vertices! Will get junk data or a crash.\n" );
+		Warning( "Cannot use CBaseMeshReader with compressed vertices! Will get junk data or a crash.\n" );
 	}
 
 	// Locks mesh for modifying
@@ -155,7 +155,7 @@ inline void CBaseMeshReader::BeginRead_Direct( const MeshDesc_t &desc, int nVert
 	Assert( desc.m_CompressionType == VERTEX_COMPRESSION_NONE );
 	if ( desc.m_CompressionType != VERTEX_COMPRESSION_NONE )
 	{
-		Warning( (tchar*)"Cannot use CBaseMeshReader with compressed vertices!\n" );
+		Warning( "Cannot use CBaseMeshReader with compressed vertices!\n" );
 	}
 }
 

@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$baseTexture "models/props_motel/aircon_main"
-$surfaceprop metal
-}

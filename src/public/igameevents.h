@@ -110,7 +110,7 @@ public:
 	virtual int LoadEventsFromFile( const char *filename ) = 0;
 
 	// removes all and anything
-	virtual void  Reset() = 0;
+	virtual void  Reset() = 0;	
 
 	// adds a listener for a particular event
 	virtual bool AddListener( IGameEventListener2 *listener, const char *name, bool bServerSide ) = 0;
@@ -120,7 +120,7 @@ public:
 
 	// removes a listener 
 	virtual void RemoveListener( IGameEventListener2 *listener) = 0;
-	
+
 	// create an event by name, but doesn't fire it. returns NULL is event is not
 	// known or no listener is registered for it. bForce forces the creation even if no listener is active
 	virtual IGameEvent *CreateEvent( const char *name, bool bForce = false, int *pCookie = NULL ) = 0;

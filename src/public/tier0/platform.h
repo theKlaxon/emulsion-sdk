@@ -166,7 +166,6 @@ typedef void * HINSTANCE;
 #define IsPosix()	IsPlatformPosix()
 #define IsX360()	IsPlatformX360()
 #define IsPS3()		IsPlatformPS3()
-#define IsGameConsole() false
 
 // Setup platform defines.
 #ifdef COMPILER_MSVC
@@ -1214,8 +1213,6 @@ inline const char *GetPlatformExt( void )
 {
 	return IsPlatformX360() ? ".360" : "";
 }
-
-#define PLATFORM_EXT ""
 
 // flat view, 6 hw threads
 #define XBOX_PROCESSOR_0			( 1<<0 )

@@ -80,7 +80,6 @@ public:
 
 	virtual ITexture		*GetTextureValue( void ) = 0;
 
-	// TODO: 0x0000
 	virtual bool			IsTextureValueInternalEnvCubemap() const = 0;
 
 	virtual char const *	GetName( void ) const = 0;

@@ -14,17 +14,6 @@
 // Debug history should be disabled in release builds
 //#define DISABLE_DEBUG_HISTORY	
 
-// TODO: remove after p2 ui test
-#ifdef CLIENT_DLL
-	// CEG interface functions:
-#define ALLOW_TEXTCHAT_FLAG			0xAD1A
-DWORD InitHudAllowTextChatFlag(void);
-
-#define ALLOW_PROPER_TINT_FLAG		0x8E3C
-DWORD InitUiAllowProperTintFlag(void);
-
-#endif
-
 #ifdef CLIENT_DLL
 
 	#include "c_baseentity.h"
@@ -174,7 +163,6 @@ public:
 
 	// Get the view vectors for this mod.
 	virtual const CViewVectors* GetViewVectors() const;
-	virtual CViewVectors* GetViewVectorsForModify();
 
 // Damage rules for ammo types
 	virtual float GetAmmoDamage( CBaseEntity *pAttacker, CBaseEntity *pVictim, int nAmmoType );
@@ -274,6 +262,7 @@ public:
 	virtual bool  FlPlayerFallDeathDoesScreenFade( CBasePlayer *pl ) { return TRUE; }
 
 	virtual bool AllowDamage( CBaseEntity *pVictim, const CTakeDamageInfo &info ) = 0;
+
 
 // Client spawn/respawn control
 	virtual void PlayerSpawn( CBasePlayer *pPlayer ) = 0;// called by CBasePlayer::Spawn just before releasing player into the game

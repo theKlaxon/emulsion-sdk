@@ -396,13 +396,13 @@ public:
 abstract_class IBaseFileSystem
 {
 public:
-	// TODO: moved
 	virtual int				Read( void* pOutput, int size, FileHandle_t file ) = 0;
 	virtual int				Write( void const* pInput, int size, FileHandle_t file ) = 0;
 
 	// if pathID is NULL, all paths will be searched for the file
 	virtual FileHandle_t	Open( const char *pFileName, const char *pOptions, const char *pathID = 0 ) = 0;
 	virtual void			Close( FileHandle_t file ) = 0;
+
 
 	virtual void			Seek( FileHandle_t file, int pos, FileSystemSeek_t seekType ) = 0;
 	virtual unsigned int	Tell( FileHandle_t file ) = 0;
@@ -692,11 +692,10 @@ public:
 	//--------------------------------------------------------
 	// Optimal IO operations
 	//--------------------------------------------------------
-	virtual bool		GetOptimalIOConstraints(FileHandle_t hFile, unsigned* pOffsetAlign, unsigned* pSizeAlign, unsigned* pBufferAlign) = 0;	// these 2 were switched in the interface in p2.
-	inline unsigned		GetOptimalReadSize( FileHandle_t hFile, unsigned nLogicalSize );														// fuck you, whoever did that
+	virtual bool		GetOptimalIOConstraints( FileHandle_t hFile, unsigned *pOffsetAlign, unsigned *pSizeAlign, unsigned *pBufferAlign ) = 0;
+	inline unsigned		GetOptimalReadSize( FileHandle_t hFile, unsigned nLogicalSize );
 	virtual void		*AllocOptimalReadBuffer( FileHandle_t hFile, unsigned nSize = 0, unsigned nOffset = 0 ) = 0;
 	virtual void		FreeOptimalReadBuffer( void * ) = 0;
-
 
 	//--------------------------------------------------------
 	//
@@ -777,9 +776,9 @@ public:
 	
 	virtual FSDirtyDiskReportFunc_t		GetDirtyDiskReportFunc() = 0;
 
-	virtual void AddVPKFile( char const *pszName, SearchPathAdd_t addType = PATH_ADD_TO_TAIL ) = 0;
-	virtual void RemoveVPKFile( char const *pszName ) = 0;
-	virtual void GetVPKFileNames( CUtlVector<CUtlString> &destVector ) = 0;
+	virtual void			AddVPKFile( char const *pszName, SearchPathAdd_t addType = PATH_ADD_TO_TAIL ) = 0;
+	virtual void			RemoveVPKFile( char const *pszName ) = 0;
+	virtual void			GetVPKFileNames( CUtlVector<CUtlString> &destVector ) = 0;
 	virtual void			RemoveAllMapSearchPaths() = 0;
 	virtual void			SyncDvdDevCache() = 0;
 
@@ -798,16 +797,8 @@ public:
 	// 0.0 will turn off the functionality.
 	virtual void            SetIODelayAlarm( float flThreshhold ) = 0;
 
-	// TODO: maybe?
 	virtual bool			AddXLSPUpdateSearchPath(const void* pData, int nSize) = 0;
-
-	// TODO: return type is IIoStats, make / find it
-	virtual void* GetIoStats() = 0;
-
-	//virtual void			CacheAllVPKFileHashes(bool bCacheAllVPKHashes, bool bRecalculateAndCheckHashes) = 0;
-	//virtual bool			CheckVPKFileHash(int PackFileID, int nPackFileNumber, int nFileFraction, MD5Value_t& md5Value) = 0;
-
-	//virtual void			GetVPKFileStatisticsKV(KeyValues* pKV) = 0;
+	virtual void*			GetIoStats() = 0;
 
 };
 

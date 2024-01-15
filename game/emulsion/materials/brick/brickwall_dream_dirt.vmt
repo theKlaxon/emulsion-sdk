@@ -1,6 +1,0 @@
-lightmappedGeneric
-{
-$baseTexture "brick/brickwall_dream_dirt"
-$surfaceprop brick
-"%keywords" cstrike
-}

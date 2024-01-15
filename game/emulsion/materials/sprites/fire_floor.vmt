@@ -1,6 +1,0 @@
-Sprite
-{
-$basetexture "sprites/fire_floor"
-$spriteorientation vp_parallel
-$spriteorigin "[ 0.50 0.50 ]"
-}

@@ -1,6 +1,0 @@
-Downsample
-{
-$BASETEXTURE _rt_FullFrameFB
-$ignorez 1
-"%noToolTexture" 1
-}

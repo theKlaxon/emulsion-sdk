@@ -15,8 +15,6 @@
 #include "gameui.h"
 #endif
 
-#include "rendertexture.h"
-
 // NOTE: This has to be the last file included!
 #include "tier0/memdbgon.h"
 
@@ -59,16 +57,6 @@ ITexture* CBaseClientRenderTargets::CreateCameraTexture( IMaterialSystem* pMater
 		CREATERENDERTARGETFLAGS_HDR );
 }
 
-ITexture* CBaseClientRenderTargets::CreateDepthDoublerTexture(IMaterialSystem* pMaterialSystem, int iSize ) {
-	iSize = CommandLine()->ParmValue("-reflectionTextureSize", iSize);
-	return pMaterialSystem->CreateNamedRenderTargetTextureEx2(
-		"_rt_DepthDoubler",
-		iSize, iSize, RT_SIZE_DEFAULT,
-		pMaterialSystem->GetBackBufferFormat(),
-		MATERIAL_RT_DEPTH_SHARED,
-		TEXTUREFLAGS_DEPTHRENDERTARGET,
-		CREATERENDERTARGETFLAGS_HDR);
-}
 
 //-----------------------------------------------------------------------------
 // Purpose: Called by the engine in material system init and shutdown.
@@ -93,8 +81,6 @@ void CBaseClientRenderTargets::SetupClientRenderTargets( IMaterialSystem* pMater
 		m_WaterReflectionTexture.Init( CreateWaterReflectionTexture( pMaterialSystem, iWaterTextureSize ) );
 		m_WaterRefractionTexture.Init( CreateWaterRefractionTexture( pMaterialSystem, iWaterTextureSize ) );
 	}
-
-	s_pDepthDoubler.Init(CreateDepthDoublerTexture(pMaterialSystem));
 
 	// Monitors
 	if ( iCameraTextureSize )

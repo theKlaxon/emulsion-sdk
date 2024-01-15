@@ -899,7 +899,7 @@ bool CDefaultResponseSystem::Init()
 	*/
 	const char *basescript = GetScriptFile();
 
-	LoadRuleSet( basescript );
+	//LoadRuleSet( basescript );
 
 	return true;
 }

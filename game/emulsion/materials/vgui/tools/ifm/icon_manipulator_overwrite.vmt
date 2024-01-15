@@ -1,7 +1,0 @@
-UnlitGeneric
-{
-$basetexture "vgui\tools\ifm\icon_manipulator_overwrite"
-$translucent 1
-$ignorez 1
-$vertexcolor 1
-}

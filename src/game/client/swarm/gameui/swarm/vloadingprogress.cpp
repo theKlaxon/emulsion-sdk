@@ -83,7 +83,7 @@ LoadingProgress::LoadingProgress(Panel *parent, const char *panelName, LoadingWi
 
 	MEM_ALLOC_CREDIT();
 	m_pDefaultPosterDataKV = new KeyValues( "DefaultPosterData" );
-	if ( !m_pDefaultPosterDataKV->LoadFromFileEX( g_pFullFileSystem, "resource/UI/BaseModUI/LoadingPosterDefault.res", "MOD" ) )
+	if ( !m_pDefaultPosterDataKV->LoadFromFile( g_pFullFileSystem, "resource/UI/BaseModUI/LoadingPosterDefault.res", "MOD" ) )
 	{
 		DevWarning( "Failed to load default poster information!\n" );
 		m_pDefaultPosterDataKV->deleteThis();
@@ -123,7 +123,6 @@ void LoadingProgress::ApplySchemeSettings( IScheme *pScheme )
 	BaseClass::ApplySchemeSettings( pScheme );
 
 	SetPaintBackgroundEnabled( true );
-	SetCloseButtonVisible(false);
 	
 	// now have controls, can now do further initing
 	m_bValid = true;
@@ -204,11 +203,8 @@ void LoadingProgress::UpdateWorkingAnim()
 		float time = Plat_FloatTime();
 		if ( ( m_flLastEngineTime + 0.1f ) < time )
 		{
-
 			m_flLastEngineTime = time;
-//#ifdef SWARM_DLL // TODO: find a fix here
-			//m_pWorkingAnim->SetFrame( m_pWorkingAnim->GetFrame() + 1 );
-//#endif
+			m_pWorkingAnim->SetFrame( m_pWorkingAnim->GetFrame() + 1 );
 		}
 	}
 }
@@ -307,9 +303,7 @@ void LoadingProgress::PaintBackground()
 		x = scheme()->GetProportionalScaledValue( 45 ) - wide/2;
 		y = screenTall - scheme()->GetProportionalScaledValue( 32 ) - tall/2;
 
-//#ifdef SWARM_DLL // TODO: find a fix here
 		m_pWorkingAnim->GetImage()->SetFrame( m_pWorkingAnim->GetFrame() );
-//#endif
 
 		surface()->DrawSetColor( Color( 255, 255, 255, 255 ) );
 		surface()->DrawSetTexture( m_pWorkingAnim->GetImage()->GetID() );

@@ -56,7 +56,6 @@ protected:
 	ITexture* CreateWaterReflectionTexture( IMaterialSystem* pMaterialSystem, int iSize = 1024 );
 	ITexture* CreateWaterRefractionTexture( IMaterialSystem* pMaterialSystem, int iSize = 1024 );
 	ITexture* CreateCameraTexture( IMaterialSystem* pMaterialSystem, int iSize = 256 );
-	ITexture* CreateDepthDoublerTexture(IMaterialSystem* pMaterialSystem, int iSize = 1024);
 
 };
 

@@ -307,7 +307,11 @@ public:
 	virtual void			*VCollideAllocUserData( vcollide_t *pVCollide, size_t userDataSize ) = 0;
 	virtual void			VCollideFreeUserData( vcollide_t *pVCollide ) = 0;
 	virtual void			VCollideCheck( vcollide_t *pVCollide, const char *pName ) = 0;
-};
+
+	// portal 2 (newer portal 2 build has csgo vphysics????)
+	virtual bool			TraceBoxAA( const Ray_t &ray, const CPhysCollide *pCollide, trace_t *ptr ) = 0;
+	virtual void			DuplicateAndScale(vcollide_t* pOut, const vcollide_t* pIn, float flScale) = 0;
+}; 
 
 // this can be used to post-process a collision model
 abstract_class ICollisionQuery
@@ -709,6 +713,8 @@ enum collisionhints
 	COLLISION_HINT_STATICSOLID	= 0x0002,
 };
 
+class IPredictedPhysicsObject;
+
 abstract_class IPhysicsObject
 {
 public:
@@ -761,11 +767,7 @@ public:
 	virtual void			RecheckCollisionFilter() = 0;
 	// NOTE: Contact points aren't updated when collision rules change, call this to force an update
 	// UNDONE: Force this in RecheckCollisionFilter() ?
-#if defined(P2_DLL) || defined(GAME_PORTAL2)
-	virtual void			RecheckContactPoints(bool bSearchForNewContacts) = 0;
-#else
-	virtual void			RecheckContactPoints() = 0;
-#endif
+	virtual void			RecheckContactPoints(bool bSearchForNewContacts = false) = 0;
 
 	// mass accessors
 	virtual void			SetMass( float mass ) = 0;
@@ -900,8 +902,21 @@ public:
 	virtual void			SetUseAlternateGravity( bool bSet ) = 0;
 	virtual void			SetCollisionHints( uint32 collisionHints ) = 0;
 	virtual uint32			GetCollisionHints() const = 0;
+
+	virtual IPredictedPhysicsObject* GetPredictedInterface() const = 0;
+	virtual void			SyncWith(IPhysicsObject* pOther) = 0;
+
+	inline bool IsPredicted() const { return GetPredictedInterface() != NULL; } //true if class has an IPredictedPhysicsObject interface
 };
 
+abstract_class IPredictedPhysicsObject : public IPhysicsObject
+{
+public:
+	virtual ~IPredictedPhysicsObject(void) {}
+
+	virtual void SetErrorDelta_Position(const Vector & vPosition) = 0;
+	virtual void SetErrorDelta_Velocity(const Vector& vVelocity) = 0;
+};
 
 abstract_class IPhysicsSpring
 {
@@ -994,6 +1009,7 @@ struct surfacegameprops_t
 	float			maxSpeedFactor;			// Modulates player max speed when walking on this surface
 	float			jumpFactor;				// Indicates how much higher the player should jump when on the surface
 // Game-specific data
+	//float adhesion; // a test, remove if no worky
 	unsigned short	material;
 	// Indicates whether or not the player is on a ladder.
 	unsigned char	climbable;
@@ -1012,6 +1028,10 @@ struct surfacedata_t
 
 	surfacesoundhandles_t		soundhandles;
 };
+
+// TODO: decomp these, figure them out
+#define IVP_Material void* 
+#define CPhysicsSurfaceProps void*
 
 #define VPHYSICS_SURFACEPROPS_INTERFACE_VERSION	"VPhysicsSurfaceProps001"
 abstract_class IPhysicsSurfaceProps
@@ -1041,6 +1061,13 @@ public:
 	virtual void	GetPhysicsParameters( int surfaceDataIndex, surfacephysicsparams_t *pParamsOut ) const = 0;
 
 	virtual ISaveRestoreOps* GetMaterialIndexDataOps() const = 0;
+
+	virtual int GetIVPMaterial(int index) = 0;
+	virtual int GetIVPMaterialIndex(IVP_Material* pMaterial) const = 0;
+	virtual CPhysicsSurfaceProps GetIVPManager() = 0;
+
+	virtual int RemapIVPMaterialIndex(int index) const = 0;
+	virtual const char* GetReservedMaterialName(int index) const = 0;
 };
 
 abstract_class IPhysicsFluidController
@@ -1129,6 +1156,12 @@ struct convertconvexparams_t
 	bool		buildDragAxisAreas;
 	bool		buildOptimizedTraceTables;
 	bool		checkOptimalTracing;
+	
+	// portal2 / csgo
+	bool		bUseFastApproximateInertiaTensor;
+	bool		bBuildAABBTree;
+	// ====
+	
 	float		dragAreaEpsilon;
 	CPhysConvex *pForcedOuterHull;
 
@@ -1140,6 +1173,10 @@ struct convertconvexparams_t
 		buildOptimizedTraceTables = false;
 		checkOptimalTracing = false;
 		pForcedOuterHull = NULL;
+		
+		// portal2 / csgo
+		bUseFastApproximateInertiaTensor = false;
+		bBuildAABBTree = false;
 	}
 };
 
@@ -1194,7 +1231,7 @@ DEFINE_PIID( IPhysicsObject, 			PIID_IPHYSICSOBJECT );
 DEFINE_PIID( IPhysicsFluidController, 	PIID_IPHYSICSFLUIDCONTROLLER );
 DEFINE_PIID( IPhysicsSpring, 			PIID_IPHYSICSSPRING );
 DEFINE_PIID( IPhysicsConstraintGroup, 	PIID_IPHYSICSCONSTRAINTGROUP );
-DEFINE_PIID( IPhysicsConstraint, 		PIID_IPHYSICSCONSTRAINT );
+DEFINE_PIID( IPhysicsConstraint, 		PIID_IPHYSICSCONSTRAINT );  
 DEFINE_PIID( IPhysicsShadowController, 	PIID_IPHYSICSSHADOWCONTROLLER );
 DEFINE_PIID( IPhysicsPlayerController,	PIID_IPHYSICSPLAYERCONTROLLER );
 DEFINE_PIID( IPhysicsMotionController,	PIID_IPHYSICSMOTIONCONTROLLER );

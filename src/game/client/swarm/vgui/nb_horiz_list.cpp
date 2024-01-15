@@ -4,7 +4,7 @@
 #include "vgui_controls/ScrollBar.h"
 #include "vgui_bitmapbutton.h"
 #include "nb_select_weapon_entry.h"
-#include "input.h"
+#include "asw_input.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -179,11 +179,7 @@ void CNB_Horiz_List::OnThink()
 	else
 	{
 		int nMouseX, nMouseY;
-#ifdef SWARM_DLL
 		ASWInput()->GetFullscreenMousePos( &nMouseX, &nMouseY );
-#else
-		input->GetFullscreenMousePos(&nMouseX, &nMouseY);
-#endif
 		ScreenToLocal( nMouseX, nMouseY );
 
 		float fVelocityMax = 1200.0f;
@@ -367,11 +363,7 @@ bool CNB_Horiz_List::ChangeScrollValue( int nChange )
 bool CNB_Horiz_List::MouseOverScrollbar( void ) const
 {
 	int nMouseX, nMouseY;
-#ifdef SWARM_DLL
 	ASWInput()->GetFullscreenMousePos( &nMouseX, &nMouseY );
-#else
-	input->GetFullscreenMousePos(&nMouseX, &nMouseY);
-#endif
 	m_pHorizScrollBar->ScreenToLocal( nMouseX, nMouseY );
 
 	return ( nMouseX > 0 && nMouseX < m_pHorizScrollBar->GetWide() && nMouseY > 0 && nMouseY < m_pHorizScrollBar->GetTall() );

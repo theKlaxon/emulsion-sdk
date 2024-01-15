@@ -1,6 +1,0 @@
-LightmappedGeneric
-{
-$basetexture "dev/dev_pipes"
-$bumpmap "dev/dev_pipesbump"
-$surfaceprop concrete
-}

@@ -1,7 +1,0 @@
-LightMappedGeneric
-{
-$basetexture "signage/underground_70s_accidents"
-$surfaceprop default
-$translucent 1
-$decal 1
-}

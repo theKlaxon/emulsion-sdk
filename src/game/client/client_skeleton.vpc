@@ -1,0 +1,117 @@
+//-----------------------------------------------------------------------------
+//	CLIENT_TEMPLATE.VPC
+//
+//	Project Script
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR		"..\.."
+$Macro GAMENAME 	"skeleton"
+
+$Include "$SRCDIR\game\client\client_base.vpc"
+
+$Configuration
+{
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"$BASE;.\swarm;.\hl2;.\skeleton;.\swarm\vgui;$SRCDIR\game\shared\swarm;$SRCDIR\game\shared\skeleton;.\gameui;$SRCDIR\game\client\swarm\gameui;..\statemachine;"
+		$PreprocessorDefinitions		"$BASE;EMULSION_DLL;SWARM_DLL;GAMEUI_EMBEDDED;GAMEUI_EXPORTS;SPLITSCREEN_STUBS"
+	}
+}
+
+$Project "Client (Skeleton)"
+{
+	$Folder	"Link Libraries"
+	{
+		$Lib	"$LIBPUBLIC\discord-rpc"
+	}
+
+	$Folder "Source Files"
+	{
+		$Folder "Blobulator"
+		{
+			$Folder "Headers"
+			{
+				$Folder "implicit"
+				{
+					$File "$SRCDIR\common\blobulator\implicit\imp_particle.h"
+					$File "$SRCDIR\common\blobulator\implicit\imp_renderer.h"
+					$File "$SRCDIR\common\blobulator\implicit\imp_tiler.h"
+					$File "$SRCDIR\common\blobulator\implicit\sweep_renderer.h"
+				}
+
+				$Folder "physics"
+				{
+					$File "$SRCDIR\common\blobulator\physics\phys_particle.h"
+					$File "$SRCDIR\common\blobulator\physics\phys_particle_cache.h"
+					$File "$SRCDIR\common\blobulator\physics\phys_tiler.h"
+				}
+
+				$File "$SRCDIR\common\blobulator\blob_batch.h"
+				$File "$SRCDIR\common\blobulator\blob_networked_batch.h"
+				$File "$SRCDIR\common\blobulator\blob_manager.h"
+				$File "$SRCDIR\common\blobulator\blob_render.h"
+				$File "$SRCDIR\common\blobulator\index_tri_vertex_buffer.h"
+				$File "$SRCDIR\common\blobulator\parented_func.h"
+				$File "$SRCDIR\common\blobulator\point_3D.h"
+				$File "$SRCDIR\common\blobulator\smartarray.h"
+			}
+			
+			$File "$SRCDIR\common\blobulator\blob_batch.cpp"
+			$File "$SRCDIR\common\blobulator\blob_networked_batch.cpp"
+			$File "$SRCDIR\common\blobulator\blob_manager.cpp"
+			$File "$SRCDIR\common\blobulator\blob_render.cpp"
+		}
+
+		$Folder	"Skeleton"
+		{		
+			$Folder "GameUI"
+			{
+				$File "skeleton\gameui\basemodpanel.cpp"
+				$File "skeleton\gameui\uigamedata.cpp"
+			}
+			
+			$Folder "Shared"
+			{
+				$File	"$SRCDIR\game\shared\skeleton\skeleton_gamemovement.cpp"
+				$File	"$SRCDIR\game\shared\skeleton\skeleton_gamerules.cpp"
+				$File	"$SRCDIR\game\shared\skeleton\skeleton_usermessages.cpp"
+				$File	"$SRCDIR\game\shared\skeleton\skeleton_parsers.cpp"
+				$File 	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
+			}
+
+			$Folder "Multiplayer"
+			{
+				$Folder "Shared" 
+				{
+					$File	"$SRCDIR\game\shared\skeleton\multiplayer\basenetworkedplayer_gamemove.cpp"	
+					$File	"$SRCDIR\game\shared\skeleton\multiplayer\basenetworkedplayer_gamemove.h"	
+					$File	"$SRCDIR\game\shared\skeleton\multiplayer\basenetworkedplayer_shared.cpp"	
+					$File	"$SRCDIR\game\shared\skeleton\multiplayer\basenetworkedplayer_shared.h"	
+					$File	"$SRCDIR\game\shared\skeleton\multiplayer\multiplayer_animstate.cpp"	
+					$File	"$SRCDIR\game\shared\skeleton\multiplayer\multiplayer_animstate.h"	
+				}
+
+				$File "skeleton\multiplayer\basenetworkedplayer_cl.cpp"
+				$File "skeleton\multiplayer\basenetworkedplayer_cl.h"
+				$File "skeleton\multiplayer\basenetworkedragdoll_cl.cpp"
+				$File "skeleton\multiplayer\basenetworkedragdoll_cl.h"
+			}
+
+			$File	"skeleton\c_skeleton_player.h"
+			$File	"skeleton\c_skeleton_player.cpp"
+			$File	"skeleton\c_skeleton_lesson.cpp"
+			
+			$File	"skeleton\clientmode_skeleton.h"
+			$File	"skeleton\clientmode_skeleton.cpp"
+			$File	"skeleton\skeleton_fx.cpp"
+			$File	"skeleton\skeleton_in_main.cpp"
+			$File	"skeleton\skeleton_prediction.cpp"
+			$File	"skeleton\vgui_rootpanel_skeleton.cpp"
+		}
+	}
+
+	$Folder	"Link Libraries"
+	{
+		$Lib "$LIBPUBLIC\vpklib"
+	}
+}

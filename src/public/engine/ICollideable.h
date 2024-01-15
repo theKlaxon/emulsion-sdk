@@ -23,6 +23,7 @@ typedef CGameTrace trace_t;
 class IClientUnknown;
 class IPhysicsObject;
 
+
 abstract_class ICollideable
 {
 public:
@@ -74,8 +75,9 @@ public:
 
 	virtual unsigned GetRequiredTriggerFlags() const = 0;
 
-	// not in p2
-	bool			ShouldTouchTrigger(int triggerSolidFlags) const { return false; }
+	/*virtual */bool			ShouldTouchTrigger(int triggerSolidFlags) const {
+		return true;
+	}// = 0;
 
 	// returns NULL unless this collideable has specified FSOLID_ROOT_PARENT_ALIGNED
 	virtual const matrix3x4_t	*GetRootParentToWorldTransform() const = 0;

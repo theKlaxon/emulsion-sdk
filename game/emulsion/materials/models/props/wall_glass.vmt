@@ -1,8 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/props/wall_glass"
-$surfaceprop default
-$translucent 1
-$additive 1
-$model 1
-}

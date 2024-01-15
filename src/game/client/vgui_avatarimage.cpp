@@ -59,9 +59,8 @@ bool CAvatarImage::SetAvatarSteamID( CSteamID steamIDUser )
 	{
 		m_SteamID = steamIDUser;
 
-		// steam api updates
 		//int iAvatar = steamapicontext->SteamFriends()->GetFriendAvatar( steamIDUser, m_SourceArtSize );
-		int iAvatar = steamapicontext->SteamFriends()->GetMediumFriendAvatar( steamIDUser );
+		int iAvatar = steamapicontext->SteamFriends()->GetMediumFriendAvatar(steamIDUser);
 
 		/*
 		// See if it's in our list already
@@ -204,15 +203,15 @@ void CAvatarImagePanel::SetAvatarBySteamID( CSteamID *friendsID )
 
 	// Indent the image. These are deliberately non-resolution-scaling.
 	int iIndent = 2;
-	GetImage()->SetPos( iIndent, iIndent );
-	int wide = GetWide() - (iIndent*2);
+	GetImage()->SetPos(iIndent, iIndent);
+	int wide = GetWide() - (iIndent * 2);
 
 	// updates for new steam api
 	//((CAvatarImage*)GetImage())->SetAvatarSize( ( wide > 32 ) ? k_EAvatarSize64x64 : k_EAvatarSize32x32 );
 	int w = 32, h = 32;
 	g_CAvatarImagePanelLinkerHack->GetSize(w, h);
 	((CAvatarImage*)GetImage())->SetAvatarSize(w, h); // hack just use width idfc
-	((CAvatarImage*)GetImage())->SetAvatarSteamID( *friendsID );
+	((CAvatarImage*)GetImage())->SetAvatarSteamID(*friendsID);
 
-	GetImage()->SetSize( wide, GetTall()-(iIndent*2) );
+	GetImage()->SetSize(wide, GetTall() - (iIndent * 2));
 }

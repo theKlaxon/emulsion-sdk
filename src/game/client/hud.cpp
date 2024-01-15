@@ -364,8 +364,7 @@ void CHud::Init( void )
 	KeyValues *kv = new KeyValues( "layout" );
 	if ( kv )
 	{
-		if ( kv->LoadFromFileEX( filesystem, "scripts/HudLayout.res" ) )
-		//if ( kv->LoadFromFile( filesystem, "scripts/HudLayout.res", "SKIN"))
+		if ( kv->LoadFromFile( filesystem, "scripts/HudLayout.res" ) ) // was EX
 		{
 			int numelements = GetHudList().Count();
 

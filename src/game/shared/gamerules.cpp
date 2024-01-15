@@ -633,15 +633,21 @@ void CGameRules::MarkAchievement( IRecipientFilter& filter, char const *pchAchie
 {
 	gamestats->Event_IncrementCountedStatistic( vec3_origin, pchAchievementName, 1.0f );
 
-	//IAchievementMgr *pAchievementMgr = engine->GetAchievementMgr(); // TODO: replace this
-	//if ( !pAchievementMgr )
-	//	return;
+#ifdef EMULSION_DLL
+	return;
+#else
+
+	IAchievementMgr* pAchievementMgr = engine->GetAchievementMgr();
+	if (!pAchievementMgr)
+		return;
 
 #ifdef GAME_DLL
-	//pAchievementMgr->OnMapEvent( pchAchievementName, SINGLE_PLAYER_SLOT );
+	pAchievementMgr->OnMapEvent( pchAchievementName, SINGLE_PLAYER_SLOT );
 #else
 	pAchievementMgr->OnMapEvent( pchAchievementName, GET_ACTIVE_SPLITSCREEN_SLOT() );
 #endif
+
+#endif // EMULSION_DLL
 }
 
 //-----------------------------------------------------------------------------
@@ -804,14 +810,12 @@ const CViewVectors* CGameRules::GetViewVectors() const
 	return &g_DefaultViewVectors;
 }
 
-CViewVectors* CGameRules::GetViewVectorsForModify() {
-	return &g_DefaultViewVectors;
-}
-
+#ifdef EMULSION_DLL
 CViewVectors* GetViewVectors()
 {
 	return &g_DefaultViewVectors;
 }
+#endif
 
 //-----------------------------------------------------------------------------
 // Purpose: Returns how much damage the given ammo type should do to the victim

@@ -73,8 +73,6 @@
 #include "util_shared.h"
 #include "player_voice_listener.h"
 
-#include "steam/steam_api_common.h"
-
 #ifdef _WIN32
 #include "ienginevgui.h"
 #include "vgui_gamedll_int.h"
@@ -114,7 +112,9 @@
 #include "asw_gamerules.h"
 #endif
 
-
+#ifdef EMULSION_DLL
+#include "blob_manager.h"
+#endif
 
 
 
@@ -559,8 +559,6 @@ void DrawAllDebugOverlays( void )
 // enable threading of init functions on x360
 static ConVar sv_threaded_init("sv_threaded_init", IsX360() ? "1" : "0");
 
-#undef SERVER_USES_VGUI
-
 static bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 {
 	// The string system must init first + shutdown last
@@ -598,9 +596,15 @@ static bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 	}
 #endif // SERVER_USES_VGUI
 
+#if defined(EMULSION_DLL)
+	IGameSystem::Add(BlobulatorSystem());
+#endif
+
 	// load Mod specific game events ( MUST be before InitAllSystems() so it can pickup the mod specific events)
 	gameeventmanager->LoadEventsFromFile("resource/ModEvents.res");
-	
+
+
+
 	if ( !IGameSystem::InitAllSystems() )
 		return false;
 
@@ -611,7 +615,7 @@ static bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 	}
 
 	// Parse the particle manifest file & register the effects within it
-	ParseParticleEffects( false );
+//	ParseParticleEffects( false );
 
 	InvalidateQueryCache();
 
@@ -767,22 +771,12 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory,
 	InitializeCvars();
 	
 	COM_TimestampedLog( "g_pParticleSystemMgr->Init" );
-
 	// Initialize the particle system
-#ifndef P2_DLL
 	bool bPrecacheParticles = IsPC() && !engine->IsCreatingXboxReslist();
-#else
-	bool bPrecacheParticles = IsPC();
-#endif
-
-	// TODO: fix the particle manager
 	if ( !g_pParticleSystemMgr->Init( g_pParticleSystemQuery, bPrecacheParticles ) )
 	{
 		return false;
-	} // CHECK ON SCENEFILECACHE
-
-	extern void PrecacheGameSoundsFile(const char* pSoundFile);
-	PrecacheGameSoundsFile("game_sounds_manifest.txt");
+	}
 
 	sv_cheats = g_pCVar->FindVar( "sv_cheats" );
 	if ( !sv_cheats )
@@ -804,7 +798,9 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory,
 	g_pGameSaveRestoreBlockSet->AddBlockHandler( GetEventQueueSaveRestoreBlockHandler() );
 	g_pGameSaveRestoreBlockSet->AddBlockHandler( GetAchievementSaveRestoreBlockHandler() );
 	g_pGameSaveRestoreBlockSet->AddBlockHandler( GetVScriptSaveRestoreBlockHandler() );
-	
+
+
+
 	bool bInitSuccess = false;
 	if ( sv_threaded_init.GetBool() )
 	{
@@ -833,7 +829,7 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory,
 	else
 	{
 		COM_TimestampedLog( "ParseParticleEffects" );
-		ParseParticleEffects( true ); // TODO: fix particle fx parse ( maybe key values n shit? ) // was using false for bLoadSheets
+		ParseParticleEffects( false );
 		COM_TimestampedLog( "InitGameSystems - Start" );
 		bInitSuccess = InitGameSystems( appSystemFactory );
 		COM_TimestampedLog( "InitGameSystems - Finish" );
@@ -1133,7 +1129,6 @@ bool CServerGameDLL::LevelInit( const char *pMapName, char const *pMapEntities, 
 		CMapLoadEntityFilter filter;
 		MapEntity_ParseAllEntities( pMapEntities, &filter );
 
-		// TODO: fixme
 		g_pServerBenchmark->StartBenchmark();
 
 		// Now call the mod specific parse
@@ -1311,6 +1306,7 @@ void CServerGameDLL::GameFrame( bool simulating )
 		VPROF( "UpdateQueryCache" );
 		UpdateQueryCache();
 	}
+	
 	{
 		VPROF( "g_pServerBenchmark->UpdateBenchmark" );
 		g_pServerBenchmark->UpdateBenchmark();
@@ -1370,12 +1366,14 @@ void CServerGameDLL::PreClientUpdate( bool simulating )
 	if ( !simulating )
 		return;
 
-	
-	//if (game_speeds.GetInt())
-	//{
-	//	DrawMeasuredSections();
-	//}
-	
+	COM_TimestampedLog("CServerGameDLL::PreClientUpdate");
+
+	/*
+	if (game_speeds.GetInt())
+	{
+		DrawMeasuredSections();
+	}
+	*/
 
 //#ifdef _DEBUG  - allow this in release for now
 	DrawAllDebugOverlays();
@@ -1435,7 +1433,6 @@ void CServerGameDLL::Think( bool finalTick )
 		m_fAutoSaveDangerousTime = 0.0f;
 		m_fAutoSaveDangerousMinHealthToCommit = 0.0f;
 	}
-	
 }
 
 void CServerGameDLL::OnQueryCvarValueFinished( QueryCvarCookie_t iCookie, edict_t *pPlayerEntity, EQueryCvarValueStatus eStatus, const char *pCvarName, const char *pCvarValue )
@@ -2275,7 +2272,7 @@ void PrecacheParticleFileAndSystems( const char *pParticleSystemFile )
 
 void PrecacheGameSoundsFile( const char *pSoundFile )
 {
-	soundemitterbase->AddSoundsFromFile( pSoundFile, true, true, true );
+	soundemitterbase->AddSoundsFromFile( pSoundFile, true );
 	SoundSystemPreloadSounds();
 }
 
@@ -3064,6 +3061,7 @@ float CServerGameClients::ProcessUsercmds( edict_t *player, bf_read *buf, int nu
 void CServerGameClients::PostClientMessagesSent( void )
 {
 	VPROF("CServerGameClients::PostClient");
+	COM_TimestampedLog("CServerGameClients::PostClientMessagesSent");
 	gEntList.PostClientMessagesSent();
 }
 

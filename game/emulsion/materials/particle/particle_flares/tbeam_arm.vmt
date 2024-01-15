@@ -1,8 +1,0 @@
-spritecard
-{
-$basetexture "particle\particle_flares\aircraft_white_mask"
-
-$additive 1
-$ignorez 0
-$orientation 3
-}

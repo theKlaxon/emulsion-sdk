@@ -39,9 +39,7 @@
 #include "tier0/memalloc.h"
 
 // Uncomment this to add extra Asserts to check for NANs, uninitialized vecs, etc.
-#ifdef VEC_PARA
-#define VECTOR_PARANOIA	1
-#endif // VEC_PARA
+//#define VECTOR_PARANOIA	1
 
 // Uncomment this to make sure we don't do anything slow with our vectors
 //#define VECTOR_NO_SLOW_OPERATIONS 1

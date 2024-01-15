@@ -1,6 +1,0 @@
-VertexLitGeneric
-{
-$baseTexture "models\props\metal_box_skin003"
-$selfillum 1
-$nodecal 1
-}

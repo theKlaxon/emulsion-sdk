@@ -5,7 +5,8 @@
 // $Workfile:     $
 // $NoKeywords: $
 //===========================================================================//
-#include "cbase.h" // TODO: find way to only include in the client / dll that doesn't use ifdef
+
+#include "cbase.h"
 #include "materialsystem/MaterialSystemUtil.h"
 #include "materialsystem/imaterial.h"
 #include "materialsystem/itexture.h"
@@ -70,7 +71,7 @@ void CMaterialReference::Init( IMaterial* pMaterial )
 {
 	if ( m_pMaterial != pMaterial )
 	{
-		//Shutdown();
+		Shutdown();
 		m_pMaterial = pMaterial;
 		if ( m_pMaterial )
 		{

@@ -1,9 +1,0 @@
-"WorldVertexTransition"
-{
-	"$basetexture2" "carpet/office_carpet001a"
-	"$basetexture" "error/errorfloor001"
-	"$blendmodulatetexture" "error/floorblend"
-	"$surfaceprop" "carpet"
-	"$bumpmap" "error/ifssbumps_haderrorstheywouldlooklikethis"
-	"%keywords" "tsp"
-}

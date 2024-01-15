@@ -1,7 +1,0 @@
-UnlitGeneric
-{
-$basetexture "Tools/toolsblack"
-"%compileNoLight" 1
-"%noportal" 1
-"%keywords" "c17downtown,c17industrial,c17sewers,c17trainstation,combine,wasteland"
-}

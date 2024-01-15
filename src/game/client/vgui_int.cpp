@@ -209,7 +209,7 @@ void CSplitScreenLetterBox::Init()
 
 	m_bValid = true;
 	KeyValues *kv = new KeyValues( "splitscreen" );
-	if ( kv->LoadFromFile( g_pFullFileSystem, pchConfigFile, "MOD" ) )
+ 	if ( kv->LoadFromFile( g_pFullFileSystem, pchConfigFile, "MOD" ) ) // was EX
 	{
 		for ( int i = 0; i < NUM_SPLITSCREEN_TYPES && m_bValid; ++i )
 		{
@@ -377,9 +377,7 @@ static void VGui_OneTimeInit()
 
 	vgui::Panel::AddPropertyConverter( "CHudTextureHandle", &textureHandleConverter );
 
-#ifndef P2_DLL
 	g_LetterBox.Init();
-#endif
 }
 
 bool VGui_Startup( CreateInterfaceFn appSystemFactory )
@@ -387,10 +385,8 @@ bool VGui_Startup( CreateInterfaceFn appSystemFactory )
 	if ( !vgui::VGui_InitInterfacesList( "CLIENT", &appSystemFactory, 1 ) )
 		return false;
 
-#ifndef P2_DLL
 	if ( !vgui::VGui_InitMatSysInterfacesList( "CLIENT", &appSystemFactory, 1 ) )
 		return false;
-#endif
 
 	g_InputInternal = (IInputInternal *)appSystemFactory( VGUI_INPUTINTERNAL_INTERFACE_VERSION,  NULL );
 	if ( !g_InputInternal )
@@ -417,13 +413,13 @@ bool VGui_Startup( CreateInterfaceFn appSystemFactory )
 	CUtlVector< Panel * > list;
 	VGui_GetPanelList( list );
 
-	// TODO: fix / replace this in vgui_controls
+	// this whole thing was a TODO in the old p2sdk,
+	// doubt it needs to be fixed though -Klax
 	//for ( int i = 0; i < list.Count(); ++i )
 	//{
 	//	list[ i ]->SetMessageContextId_R( (uint32)i );
 	//}
 
-	// TODO: fix / replace this in vgui_controls
 	//VGui_GetFullscreenRootPanel()->SetMessageContextId_R( (uint32)0 );
 
 	VGui_OnSplitScreenStateChanged();

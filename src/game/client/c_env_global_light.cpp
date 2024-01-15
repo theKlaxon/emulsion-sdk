@@ -184,7 +184,7 @@ void C_GlobalLight::ClientThink()
 		state.m_NearZ = 4.0f;
 		state.m_FarZ = m_flSunDistance * 2.0f;
 		state.m_fBrightnessScale = 2.0f;
-		//state.m_bGlobalLight = true;
+		state.m_bGlobalLight = true;
 
 		float flOrthoSize = 1000.0f;
 

@@ -104,7 +104,6 @@ bool BaseModUI::FoundGameListItem::Info::IsDownloadable() const
 	if ( IsX360() )
 		return false;
 
-#ifdef SWARM_DLL
 	if ( mbInGame && mpGameDetails )
 	{
 		IASW_Mission_Chooser_Source *pSource = missionchooser ? missionchooser->LocalMissionSource() : NULL;
@@ -119,7 +118,6 @@ bool BaseModUI::FoundGameListItem::Info::IsDownloadable() const
 				return true;
 		}
 	}
-#endif
 
 	return false;
 }
@@ -2022,7 +2020,6 @@ void FoundGames::OnItemSelected( const char* panelName )
 			if ( lblGameStatus )
 				lblGameStatus->SetText( "" );
 		}
-#ifdef SWARM_DLL
 		else if( fi.mbInGame )
 		{
 			chapterName = "";
@@ -2169,7 +2166,6 @@ void FoundGames::OnItemSelected( const char* panelName )
 				lblGameStatus->SetText( chStatusTextBuffer );
 			}
 		}
-#endif
 		
 		if ( !fi.mbInGame || ( eDetails == DETAILS_PRESENCE ) )
 		{

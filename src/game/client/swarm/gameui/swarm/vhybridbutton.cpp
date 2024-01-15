@@ -3,7 +3,7 @@
 // Purpose: 
 //
 //=====================================================================================//
-#include "cbase.h"
+
 #include "VHybridButton.h"
 #include "basemodpanel.h"
 #include "VFooterPanel.h"
@@ -196,12 +196,10 @@ void BaseModHybridButton::SetOpen()
 	if ( m_isOpen )
 		return;
 	m_isOpen = true;
-#ifdef SWARM_DLL
 	if ( IsPC() )
 	{
 		PostMessageToAllSiblingsOfType< BaseModHybridButton >( new KeyValues( "OnSiblingHybridButtonOpened" ) );
 	}
-#endif
 }
 
 void BaseModHybridButton::SetClosed()
@@ -948,7 +946,7 @@ void BaseModHybridButton::OnKeyCodePressed( vgui::KeyCode code )
 	BaseModUI::CBaseModPanel::GetSingleton().SetLastActiveUserId( iJoystick );
 
 	int iController = XBX_GetUserId( iJoystick );
-	bool bIsPrimaryUser = ( iController >= 0 && XBX_GetActiveUserId() == DWORD( iController ) );
+	bool bIsPrimaryUser = ( iController >= 0 && XBX_GetPrimaryUserId() == DWORD( iController ) );
 
 	KeyCode localCode = GetBaseButtonCode( code );
 
@@ -1092,12 +1090,10 @@ void BaseModHybridButton::FireActionSignal( void )
 {
 	BaseClass::FireActionSignal();
 
-#ifdef SWARM_DLL
 	if ( IsPC() )
 	{
 		PostMessageToAllSiblingsOfType< BaseModHybridButton >( new KeyValues( "OnSiblingHybridButtonOpened" ) );
 	}
-#endif
 }
 
 

@@ -4,7 +4,6 @@
 //
 //=====================================================================================//
 
-#include "cbase.h"
 #include "VFooterPanel.h"
 #include "vgui/IPanel.h"
 #include "vgui_controls/ImagePanel.h"
@@ -101,7 +100,6 @@ void CBaseModFooterPanel::ApplySchemeSettings( vgui::IScheme *pScheme )
 	BaseClass::ApplySchemeSettings( pScheme );
 
 	SetPaintBackgroundEnabled( true );
-	SetCloseButtonVisible(false);
 	SetBgColor( Color ( 0, 0, 0, 200 ) );
 
 	m_hHelpTextFont = pScheme->GetFont( "DefaultMedium", true );	

@@ -1,6 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/props_backstage/vacum_scanner_tv_hover01"
-$surfaceprop metal
-$selfillum 1
-}

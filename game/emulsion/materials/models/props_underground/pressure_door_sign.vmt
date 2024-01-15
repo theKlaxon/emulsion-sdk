@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/props_underground/pressure_door_sign"
-$surfaceprop default
-}

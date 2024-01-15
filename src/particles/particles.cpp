@@ -4843,7 +4843,7 @@ void GetParticleManifest( CUtlVector<CUtlString>& list, const char *pFile )
 {
 	// Open the manifest file, and read the particles specified inside it
 	KeyValues *manifest = new KeyValues( pFile );
-	if ( manifest->LoadFromFileEX( g_pFullFileSystem, pFile, "GAME" ) )
+	if ( manifest->LoadFromFile( g_pFullFileSystem, pFile, "GAME" ) ) // was EX
 	{
 		for ( KeyValues *sub = manifest->GetFirstSubKey(); sub != NULL; sub = sub->GetNextKey() )
 		{

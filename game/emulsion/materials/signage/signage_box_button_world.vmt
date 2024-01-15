@@ -1,7 +1,0 @@
-LightMappedGeneric
-{
-$basetexture "signage/signage_box_button"
-$surfaceprop glass
-$selfillum 1
-"%keywords" portal
-}

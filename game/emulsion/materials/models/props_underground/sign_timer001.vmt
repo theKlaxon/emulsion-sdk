@@ -1,5 +1,0 @@
-VertexLitGeneric
-{
-$basetexture "models/props_underground/sign_timer001"
-$surfaceprop default
-}
