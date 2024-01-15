@@ -30,10 +30,12 @@ $Project "client"
 {
 	"game\client\client_emulsion.vpc" [$EMULSION]
 	"game\client\client_skeleton.vpc" [$SKELETON]
+	"game\client\client_p2asw.vpc" [$P2ASW]
 }
 
 $Project "server"
 {
 	"game\server\server_emulsion.vpc" [$EMULSION]
 	"game\server\server_skeleton.vpc" [$SKELETON]
+	"game\server\server_p2asw.vpc" [$P2ASW]
 }

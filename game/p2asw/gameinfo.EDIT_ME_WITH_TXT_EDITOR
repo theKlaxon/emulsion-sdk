@@ -1,0 +1,29 @@
+"GameInfo"
+{
+	game 		"Portal 2 - ASW"
+	title 		"Portal 2 - ASW"
+	GameData	"portal2.fgd"
+	gamelogo 	1
+	
+	gamelogo 		1
+	SupportsDX8     0
+
+	FileSystem
+	{
+		SteamAppId				620		// This will mount all the GCFs we need (240=CS:S, 220=HL2).
+		ToolsAppId				211		// Tools will load this (ie: source SDK caches) to get things like materials\debug, materials\editor, etc.
+		
+		SearchPaths
+		{
+			Game				|gameinfo_path|.
+			Game				emulsion 														// this is needed for some base game files n stuff
+			Game				" FULL PATH TO Portal 2/portal2 IN STEAM LIBRARY GOES HERE " 	// ex. "D:\SteamLibrary\steamapps\common\Portal 2\portal2"
+			Game				" FULL PATH TO Portal 2/update IN STEAM LIBRARY GOES HERE " 	// ex. "D:\SteamLibrary\steamapps\common\Portal 2\update"
+		}
+	}
+}
+
+// LOOK HERE: when u finish adding the paths, save this file as gameinfo.txt. it's necessary for the game to run. 
+// this file is listed in the gitignore, so it will not interfere with other people's gameinfos.
+// I'm aware this is sorta jank, but since volt is needed at the momenet, we need to run standalone and |all_source_engine_paths|
+// is broken or smth. -Klaxon
