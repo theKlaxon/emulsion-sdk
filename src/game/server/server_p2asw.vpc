@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 
 $Macro SRCDIR		"..\.."
-$Macro GAMENAME 	"p2asw"
+$Macro GAMENAME 	"portal2asw"
 
 $Include "$SRCDIR\game\server\server_base.vpc"
 
@@ -18,7 +18,7 @@ $Configuration
 	}
 }
 
-$Project "Server (P2ASW)"
+$Project "Server (Portal2 ASW)"
 {
 	$Folder	"Source Files"
 	{

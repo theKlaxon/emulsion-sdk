@@ -59,13 +59,12 @@ config.cfg
 *.sentinel
 *.db
 src/.vs/Game_Emulsion-2010/
-src/.vs/Game_Emulsion-2010/
-
 src/.vs/Game_Skeleton-2010/
-src/.vs/Game_Skeleton-2010/
+src/.vs/Game_Portal2-ASW-2010/
 
 game/emulsion/gameinfo.txt
 game/skeleton/gameinfo.txt
+game/p2asw/gameinfo.txt
 
 src/game/client/Debug_swarm/
 src/game/server/Debug_swarm/
@@ -81,5 +80,11 @@ src/game/client/Debug_skeleton/
 src/game/server/Debug_skeleton/
 src/game/client/Release_skeleton/
 src/game/server/Release_skeleton/
+
+src/game/client/Debug_p2asw/
+src/game/server/Debug_p2asw/
+src/game/client/Release_p2asw/
+src/game/server/Release_p2asw/
+
 *.opendb
 *.db-shm

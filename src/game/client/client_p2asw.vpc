@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 
 $Macro SRCDIR		"..\.."
-$Macro GAMENAME 	"p2asw"
+$Macro GAMENAME 	"portal2asw"
 
 $Include "$SRCDIR\game\client\client_base.vpc"
 
@@ -18,7 +18,7 @@ $Configuration
 	}
 }
 
-$Project "Client (P2ASW)"
+$Project "Client (Portal2 ASW)"
 {
 	$Folder	"Link Libraries"
 	{
