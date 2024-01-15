@@ -58,11 +58,11 @@ config.cfg
 *.pdb
 *.sentinel
 *.db
-src/.vs/Game_Emulsion-2010/v17/fileList.bin
-src/.vs/Game_Emulsion-2010/v17/HierarchyCache.v1.txt
+src/.vs/Game_Emulsion-2010/
+src/.vs/Game_Emulsion-2010/
 
-src/.vs/Game_Skeleton-2010/v17/fileList.bin
-src/.vs/Game_Skeleton-2010/v17/HierarchyCache.v1.txt
+src/.vs/Game_Skeleton-2010/
+src/.vs/Game_Skeleton-2010/
 
 game/emulsion/gameinfo.txt
 game/skeleton/gameinfo.txt
