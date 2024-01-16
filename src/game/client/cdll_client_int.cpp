@@ -1003,10 +1003,6 @@ bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 	IGameSystem::Add( GetPredictionCopyTester() );
 #endif
 
-#if defined(EMULSION_DLL)
-	IGameSystem::Add(BlobulatorSystem());
-#endif
-
 	ActivityList_Init();
 	ActivityList_RegisterSharedActivities();
 	EventList_Init();

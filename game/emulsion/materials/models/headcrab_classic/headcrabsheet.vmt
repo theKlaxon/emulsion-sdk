@@ -1,0 +1,19 @@
+"vertexlitgeneric"
+{
+ "$model" "1"
+ "$baseTexture" "Models/headcrab_classic/headcrabsheet"
+ "$bumpmap" "Models/headcrab_classic/headcrabsheet_normal"
+ "$phong"     "1"
+ "$phongexponent"   "35"
+ "$phongboost"   "10"
+ "$phongfresnelranges"   "[.5 .8 1]"
+
+/*
+//disabled for now, sunlight areas wreaking havoc
+
+	//rimlight parameters
+	"$rimlight" "1"
+	"$rimlightexponent" "8"
+	"$rimlightboost" "2"
+*/
+}
