@@ -88,3 +88,17 @@ src/game/server/Release_p2asw/
 
 *.opendb
 *.db-shm
+game/emulsion/bin/client.pdb
+game/emulsion/bin/client.dll
+game/emulsion/bin/server.dll
+game/emulsion/bin/server.pdb
+
+game/skeleton/bin/client.pdb
+game/skeleton/bin/client.dll
+game/skeleton/bin/server.dll
+game/skeleton/bin/server.pdb
+
+game/p2asw/bin/client.pdb
+game/p2asw/bin/client.dll
+game/p2asw/bin/server.dll
+game/p2asw/bin/server.pdb

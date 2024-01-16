@@ -952,15 +952,35 @@ void CEmulsionGameMovement::CheckFalling()
 		float fvol = 0.5;
 
 #ifdef GAME_DLL
-		m_tCurPaintInfo = CheckPaintedSurface();
-		switch (m_tCurPaintInfo.type) {
+		//if(m_tCurPaintInfo.type != PORTAL_POWER)
+		PaintInfo_t m_tTempPaintInfo = CheckPaintedSurface();
+		
+		switch (m_tTempPaintInfo.type) {
 		case BOUNCE_POWER:
 			if (player->m_nButtons & IN_DUCK)
 				break;
 
-			if(player->m_Local.m_flFallVelocity != 0.0f)
-				BouncePlayer(m_tCurPaintInfo.plane);
+			if (player->m_Local.m_flFallVelocity != 0.0f) {
+				m_tCurPaintInfo = m_tTempPaintInfo;
+				BouncePlayer(m_tTempPaintInfo.plane);
+				
+			}
+			
+			if (player->GetGroundEntity() != NULL)
+				player->m_Local.m_flFallVelocity = 0;
+
 			return;
+			
+		default:
+			break;
+		}
+#endif
+
+		if (!(player->m_Local.m_flFallVelocity >= pl_fallpunchthreshold.GetFloat()))
+			return;
+
+#ifdef GAME_DLL
+		switch (m_tCurPaintInfo.type) {
 		case SPEED_POWER:
 			PlayPaintEntrySound(SPEED_POWER, true); // force the entry sound here
 			break;
@@ -971,9 +991,6 @@ void CEmulsionGameMovement::CheckFalling()
 			break;
 		}
 #endif
-
-		if (!(player->m_Local.m_flFallVelocity >= pl_fallpunchthreshold.GetFloat()))
-			return;
 
 		if (player->GetWaterLevel() > 0)
 		{
