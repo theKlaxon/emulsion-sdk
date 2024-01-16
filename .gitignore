@@ -55,7 +55,7 @@ config.cfg
 *.tmp
 *.vpc_crc
 *.filters
-*.pdb
+# *.pdb
 *.sentinel
 *.db
 src/.vs/Game_Emulsion-2010/

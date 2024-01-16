@@ -66,8 +66,16 @@ $Project "Client (Emulsion)"
 		{		
 			$Folder "GameUI"
 			{
-				$File "emulsion\gameui\basemodpanel.cpp"
-				$File "emulsion\gameui\uigamedata.cpp"
+				$File	"emulsion\gameui\basemodpanel.cpp" \
+						"emulsion\gameui\uigamedata.cpp" 
+						//"emulsion\gameui\vgenericconfirmation.cpp" \
+						//"emulsion\gameui\vgenericconfirmation.h" \
+						//"emulsion\gameui\vgenericwaitscreen.cpp" \
+						//"emulsion\gameui\vgenericwaitscreen.h" \
+						//"emulsion\gameui\vhybridbutton.cpp" \
+						//"emulsion\gameui\vhybridbutton.h" \
+						//"emulsion\gameui\vmainmenu.cpp" \
+						//"emulsion\gameui\vmainmenu.h"
 			}
 			
 			$Folder "Shared"

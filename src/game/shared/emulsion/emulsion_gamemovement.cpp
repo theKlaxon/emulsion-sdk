@@ -42,7 +42,7 @@ extern ConVar sv_rollspeed;
 extern ConVar sv_bounce;
 
 // replacing the surfaeprop thingy for a more uniform movement
-ConVar sv_jumpFactor("sv_jumpfactor", "1.1f", FCVAR_REPLICATED | FCVAR_CHEAT);
+ConVar sv_jumpFactor("sv_jumpfactor", "1.0f", FCVAR_REPLICATED | FCVAR_CHEAT);
 ConVar pl_fallpunchthreshold("pl_fallpunchthreshold", "150", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
 
 // paint
@@ -1239,12 +1239,16 @@ bool CEmulsionGameMovement::CheckJumpButton() {
 
 	float flGroundFactor = sv_jumpFactor.GetFloat();
 	float flMul;
+	if (player->m_pSurfaceData)
+	{
+		flGroundFactor = player->m_pSurfaceData->game.jumpFactor;
+	}
 
 	if (m_tCurPaintInfo.type == BOUNCE_POWER) {
 		//flMul = sqrt(2 * sv_gravity.GetFloat() * pl_bouncePaintFactor.GetFloat());
 		PlaySoundInternal("Player.JumpPowerUse");
 		BouncePlayer(m_tCurPaintInfo.plane);
-		goto J;
+		goto J; // it works, stay mad. -Klaxon
 	}
 	else {
 		if (g_bMovementOptimizations)

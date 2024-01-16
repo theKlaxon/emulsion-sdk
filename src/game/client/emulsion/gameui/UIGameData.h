@@ -1,3 +1,4 @@
+#pragma once
 #include "matchmaking/imatchframework.h"
 #include "matchmaking/imatchsystem.h"
 #include "matchmaking/iplayer.h"
