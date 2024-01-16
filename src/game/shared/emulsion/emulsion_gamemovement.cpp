@@ -48,8 +48,10 @@ ConVar pl_fallpunchthreshold("pl_fallpunchthreshold", "150", FCVAR_REPLICATED | 
 // paint
 ConVar pl_normspeed("pl_normspeed", "175.0f", FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_CHEAT);
 ConVar pl_paintTraceRadius("pl_paintTraceRadius", "26.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY); // 26.0f worked good for a while // 20.0f while making stick
-ConVar pl_bouncePaintFactor("pl_bouncePaintFactor", "30.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
-ConVar pl_bouncePaintWallFactor("pl_bouncePaintFactor", "150.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
+
+ConVar pl_bouncePaintFactor("pl_bouncePaintFactor", "300.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
+ConVar pl_bouncePaintWallFactor("pl_bouncePaintWallFactor", "150.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
+
 ConVar pl_speedPaintMoveSpeed("pl_speedPaintMoveSpeed", "600", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
 ConVar pl_speedPaintAcceleration("pl_speedPaintAccelerate", "5", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
 ConVar pl_speedPaintFrictionDivisor("pl_speedPaintFrictionDivisor", "0.85f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY); // should be denominator
@@ -623,37 +625,13 @@ void CEmulsionGameMovement::WalkMove()
 	}
 
 	// Zero out z components of movement vectors // TODO: adapt for stick paint
-	//if (g_bMovementOptimizations)
-	//{
-	//	if (forward[2] != 0)
-	//	{
-	//		forward[2] = 0;
-	//		VectorNormalize(forward);
-	//	}
-
-	//	if (right[2] != 0)
-	//	{
-	//		right[2] = 0;
-	//		VectorNormalize(right);
-	//	}
-	//}
-	//else
 	{
-		// TODO: adapt for stick paint
-//		forward[2] = 0;
-//		right[2] = 0;
 		forward *= vecInvGravity;
 		right *= vecInvGravity;
 
 		VectorNormalize(forward);  // Normalize remainder of vectors.
 		VectorNormalize(right);    // 
 	}
-
-	//for (i = 0; i < 2; i++)       // Determine x and y parts of velocity
-	//	wishvel[i] = forward[i] * fmove + right[i] * smove;
-
-	//for (i = 0; i < 3; i++)       // Determine x and y parts of velocity
-	//	wishvel[i] = forward[i] * fmove + right[i] * smove;
 
 	wishvel = (forward * fmove) + (right * smove);
 
@@ -672,12 +650,7 @@ void CEmulsionGameMovement::WalkMove()
 		wishspeed = maxSpeed;
 	}
 
-	// Set pmove velocity // TODO: adapt for stick paint
-	//mv->m_vecVelocity[2] = 0;
-	//mv->m_vecVelocity *= vecInvGravity;
 	Accelerate(wishdir, wishspeed, accel);
-	//mv->m_vecVelocity[2] = 0; // TODO: adapt for stick paint
-	//mv->m_vecVelocity *= vecInvGravity;
 
 	// Add in any base velocity to the current velocity.
 	VectorAdd(mv->m_vecVelocity, player->GetBaseVelocity(), mv->m_vecVelocity);
@@ -693,10 +666,6 @@ void CEmulsionGameMovement::WalkMove()
 	}
 
 	// first try just moving to the destination	
-	//dest[0] = mv->GetAbsOrigin()[0] + mv->m_vecVelocity[0] * gpGlobals->frametime;
-	//dest[1] = mv->GetAbsOrigin()[1] + mv->m_vecVelocity[1] * gpGlobals->frametime;
-	//dest[2] = mv->GetAbsOrigin()[2];
-
 	dest = mv->GetAbsOrigin() + ((vecInvGravity * mv->m_vecVelocity) * gpGlobals->frametime);
 
 	// first try moving directly to the next spot
@@ -761,9 +730,7 @@ void CEmulsionGameMovement::AirMove()
 	fmove = mv->m_flForwardMove;
 	smove = mv->m_flSideMove;
 
-	// Zero out z components of movement vectors
-	//forward[2] = 0;
-	//right[2] = 0;
+	// Zero out gravity axis components of movement vectors
 	forward *= nAxis;
 	right *= nAxis;
 
@@ -831,7 +798,7 @@ void CEmulsionGameMovement::Friction()
 	else if (player->GetGroundEntity() != NULL)  // On an entity that is the ground
 	{
 		if (m_tCurPaintInfo.type == SPEED_POWER)
-			friction = (sv_friction.GetFloat() * (player->m_surfaceFriction * pl_speedPaintFrictionDivisor.GetFloat()));/* / pl_speedPaintFrictionDivisor.GetFloat();*/
+			friction = (sv_friction.GetFloat() * (player->m_surfaceFriction * pl_speedPaintFrictionDivisor.GetFloat()));
 		else
 			friction = sv_friction.GetFloat() * player->m_surfaceFriction;
 
@@ -979,21 +946,20 @@ void CEmulsionGameMovement::CheckParameters()
 
 void CEmulsionGameMovement::CheckFalling()
 {
-	if (player->GetGroundEntity() != NULL &&
-		!IsDead() &&
-		player->m_Local.m_flFallVelocity >= pl_fallpunchthreshold.GetFloat())
+	if (player->GetGroundEntity() != NULL && !IsDead())
 	{
 		bool bAlive = true;
 		float fvol = 0.5;
 
 #ifdef GAME_DLL
+		m_tCurPaintInfo = CheckPaintedSurface();
 		switch (m_tCurPaintInfo.type) {
 		case BOUNCE_POWER:
 			if (player->m_nButtons & IN_DUCK)
 				break;
 
-			// todo: play bounce sound
-			BouncePlayer(m_tCurPaintInfo.plane);
+			if(player->m_Local.m_flFallVelocity != 0.0f)
+				BouncePlayer(m_tCurPaintInfo.plane);
 			return;
 		case SPEED_POWER:
 			PlayPaintEntrySound(SPEED_POWER, true); // force the entry sound here
@@ -1006,6 +972,9 @@ void CEmulsionGameMovement::CheckFalling()
 		}
 #endif
 
+		if (!(player->m_Local.m_flFallVelocity >= pl_fallpunchthreshold.GetFloat()))
+			return;
+
 		if (player->GetWaterLevel() > 0)
 		{
 			// They landed in water.
@@ -1014,9 +983,7 @@ void CEmulsionGameMovement::CheckFalling()
 		{
 			// Scale it down if we landed on something that's floating...
 			if (player->GetGroundEntity()->IsFloating())
-			{
 				player->m_Local.m_flFallVelocity -= PLAYER_LAND_ON_FLOATING_OBJECT;
-			}
 
 			//
 			// They hit the ground.
@@ -1029,28 +996,19 @@ void CEmulsionGameMovement::CheckFalling()
 				player->m_Local.m_flFallVelocity += player->GetGroundEntity()->GetAbsVelocity().z;
 				player->m_Local.m_flFallVelocity = MAX(0.1f, player->m_Local.m_flFallVelocity);
 			}
-
-			//if ((player->GetGroundEntity()->GetAbsVelocity() * GetGravityDir()).Length() < 0.0f) {
-			//	player->m_Local.m_flFallVelocity += player->GetGroundEntity()->GetAbsVelocity().z;
-			//	player->m_Local.m_flFallVelocity = MAX(0.1f, player->m_Local.m_flFallVelocity);
-			//}
 		}
 
 		PlayerRoughLandingEffects(fvol);
 
 		if (bAlive)
-		{
 			MoveHelper()->PlayerSetAnimation(PLAYER_WALK);
-		}
 	}
-
+	
 	//
 	// Clear the fall velocity so the impact doesn't happen again.
 	//
 	if (player->GetGroundEntity() != NULL)
-	{
 		player->m_Local.m_flFallVelocity = 0;
-	}
 }
 
 void CEmulsionGameMovement::StayOnGround()
@@ -1303,6 +1261,8 @@ J:
 	return true;
 }
 
+short wallBounce = 0;
+
 int CEmulsionGameMovement::TryPlayerMove(Vector* pFirstDest, trace_t* pFirstTrace)
 {
 	int			bumpcount, numbumps;
@@ -1420,6 +1380,9 @@ int CEmulsionGameMovement::TryPlayerMove(Vector* pFirstDest, trace_t* pFirstTrac
 		if (pm.plane.normal[2] > 0.7)
 		{
 			blocked |= 1;		// floor
+
+			if (m_tCurPaintInfo.type == BOUNCE_POWER)
+				doBounce = 1;
 		}
 		// If the plane has a zero z component in the normal, then it's a 
 		//  step or wall
@@ -1427,9 +1390,10 @@ int CEmulsionGameMovement::TryPlayerMove(Vector* pFirstDest, trace_t* pFirstTrac
 		{
 			// i put this here to avoid running extra checks for non grounded paint bounces.
 			// saving perf :/
-			if (m_tCurPaintInfo.type == BOUNCE_POWER && player->GetGroundEntity() == NULL)
-				doBounce = 1;
-
+			if (m_tCurPaintInfo.type == BOUNCE_POWER && player->GetGroundEntity() == NULL) {
+				doBounce = 1, wallBounce = 1;
+			}
+			
 			blocked |= 2;		// step / wall
 		}
 
@@ -1535,8 +1499,8 @@ int CEmulsionGameMovement::TryPlayerMove(Vector* pFirstDest, trace_t* pFirstTrac
 	else if (fLateralStoppingAmount > PLAYER_MAX_SAFE_FALL_SPEED)
 		fSlamVol = 0.85f;
 
-	if (fSlamVol > 0.0f)
-		PlayerRoughLandingEffects(fSlamVol);
+	//if (fSlamVol > 0.0f)
+	//	PlayerRoughLandingEffects(fSlamVol);
 
 	if (doBounce)
 		BouncePlayer(m_tCurPaintInfo.plane);
@@ -1592,15 +1556,30 @@ void CEmulsionGameMovement::ProcessPowerUpdate() {
 #endif
 }
 
+// POWERS:
+
 void CEmulsionGameMovement::BouncePlayer(cplane_t plane) {
 
-	Vector modVel = (mv->m_vecVelocity.Normalized() * (-1 * GetGravityDir())) * (pl_bouncePaintWallFactor.GetFloat());
-	modVel = (modVel.x + modVel.y + modVel.z) < 0 ? modVel * -1 : modVel;
+	float flMul = sqrt(2 * sv_gravity.GetFloat() * pl_bouncePaintFactor.GetFloat());
 
-	Vector result = (plane.normal * (pl_bouncePaintFactor.GetFloat() * sqrt(mv->m_vecVelocity.Length()))) + modVel;
+	Vector curForwardVel;
+	Vector curNegVel;
+	Vector result;
+
+	curNegVel = mv->m_vecVelocity * player->Forward();
+	if (curNegVel.LargestComponent() < 0) 
+		curNegVel *= -1;
+	
+	curForwardVel = player->Forward() * curNegVel;
+	result = curForwardVel.Normalized() * (flMul / 12);
+	result += (plane.normal) * flMul;
+
+	if (wallBounce)
+		result += (-1 * m_vecGravity) * (flMul / 2);
 
 	mv->m_vecVelocity += result;
 
+	wallBounce = 0;
 	m_bCancelNextExitSound = true;
 	PlaySoundInternal("Player.JumpPowerUse");
 
