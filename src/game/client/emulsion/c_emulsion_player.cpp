@@ -7,7 +7,7 @@
 #include "emulsion_gamemovement.h"
 #include "igamemovement.h"
 
-static ConVar pl_stickcameralerpspeed("pl_stickcameralerpspeed", "1.85f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
+static ConVar pl_stickcameralerpspeed("pl_stickcameralerpspeed", "3.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
 static ConVar pl_stickcamerauselerp("pl_stickcamerauselerp", "1", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
 
 extern CPrediction* prediction;
@@ -68,8 +68,7 @@ void C_EmulsionPlayer::CalcPlayerView(Vector& eyeOrigin, QAngle& eyeAngles, floa
 	}
 
 	CEmulsionGameMovement* pMove = (CEmulsionGameMovement*)g_pGameMovement;
-	{//if (m_nPaintPower == PORTAL_POWER) {
-
+	{
 		Vector initial = Vector(0, 0, 1);
 		Vector axOf = pl_stickcamerauselerp.GetBool() ? m_vecCurLerpUp : -1 * m_vecGravity;
 

@@ -31,7 +31,7 @@ class PhysTiler {
 public:
 
 	PhysTiler(PhysParticleCache* pCache);
-	PhysTiler(float p1, float p2);
+	PhysTiler(float p1, float p2 = 0);
 	~PhysTiler();
 
 	void beginFrame(Point3D& pPos);
@@ -47,6 +47,10 @@ public:
 
 	void insertParticle(PhysParticle* pParticle);
 	void setCacheParams(float p1, float p2);
+
+	void processTiles();
+
+	//PhysParticleCache* getParticleCache();
 
 private:
 

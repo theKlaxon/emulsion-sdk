@@ -6,4 +6,7 @@ void COpPtr_DoPhysics::Do(void* pData) {
 	//pTiler->beginFrame(Point3D(0.0f, 0.0f, 0.0f));
 	//pTiler->endFrame();
 	//PhysTilerFactory::factory->returnTiler(pTiler);
+
+	//PhysParticle* ptest = new PhysParticle();
+	
 }

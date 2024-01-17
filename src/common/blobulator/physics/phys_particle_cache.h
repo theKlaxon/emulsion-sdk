@@ -23,6 +23,8 @@ public:
 	Point3D getOuterDimensions();
 	float	getMarginWidth();
 
+	//PhysParticleAndDist* get(PhysParticle* p1);
+
 private:
 
 	void generateCheckList(float p1, float p2);
