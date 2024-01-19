@@ -185,7 +185,7 @@ public:
 	CNetworkVar( float, m_flRadius );
 
 public:
-	virtual void Simulate(IPhysicsMotionController* pController, IPhysicsObject* pObject, float deltaTime, Vector& linear, AngularImpulse& angular) { int k = 0; };
+	virtual void Simulate(IPhysicsMotionController* pController, IPhysicsObject* pObject, float deltaTime, Vector& linear, AngularImpulse& angular) { };
 
 	virtual Vector		EyePosition( void );
 	virtual const QAngle &EyeAngles( void );

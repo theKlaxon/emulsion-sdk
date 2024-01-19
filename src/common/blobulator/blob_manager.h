@@ -1,9 +1,15 @@
 #pragma once
 #include "igamesystem.h"
 #include "parented_func.h"
-#include "blob_batch.h"
+//#include "blob_batch.h"
 #ifdef CLIENT_DLL
 #include "blob_render.h"
+#include "ipaintstream.h"
+#else
+#include "paint_stream.h"
+extern CPaintBlobStream* g_pBouncePaintStream;
+extern CPaintBlobStream* g_pSpeedPaintStream;
+extern CPaintBlobStream* g_pStickPaintStream;
 #endif
 
 #define BLOB_BATCH_COUNT 2
@@ -24,16 +30,18 @@ public:
 #ifdef CLIENT_DLL
 	void PreRender();
 	void Update(float frametime);
+	void Render();
 	void PostRender();
 
-	void SetBlobRenderFunc(IParentedFuncPtr* ptr);
+	void AddRenderableStream(IPaintStream* pStream) {
+		m_pPaintStreams.AddToTail(pStream);
+	}
 	
 #else
-	void SetBlobPhysicsFunc(IParentedFuncPtr* ptr);
 	void PreClientUpdate();
 
 	// blob manufacturing!
-	void CreateBlob(Vector origin, float radius, int batch);
+	void CreateBlob(Vector origin, Vector velocity, int batch);
 #endif
 	
 protected:
@@ -49,10 +57,18 @@ protected:
 private:
 #ifdef CLIENT_DLL
 	IParentedFuncPtr* pRenderFunc;
-	CUtlVector<IBlobBatch*> m_Batches;
+
+	CUtlVector<IPaintStream*> m_pPaintStreams;
+
 #else
 	IParentedFuncPtr* pPhysicsFunc;
 #endif
 };
 
 extern IGameSystem* BlobulatorSystem();
+
+namespace Paint {
+
+	void CreateBlob(Vector center, Vector velocity);
+
+}

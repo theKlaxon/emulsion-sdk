@@ -8,12 +8,6 @@ public:
 	
 	C_EmulsionPlayer();
 
-	void Spawn() {
-
-		int k = 0;
-		k++;
-	}
-
 	void CalcPlayerView(Vector& eyeOrigin, QAngle& eyeAngles, float& fov);
 	virtual bool ShouldRegenerateOriginFromCellBits() const
 	{

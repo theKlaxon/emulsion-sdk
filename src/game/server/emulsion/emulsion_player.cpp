@@ -6,6 +6,7 @@
 #include "ai_basenpc.h"
 #include "shareddefs.h"
 #include "globalstate.h"
+#include "blob_manager.h"
 #include "..\server\ilagcompensationmanager.h"
 #include "..\game\shared\portal2\paint_enum.h"
 
@@ -103,6 +104,9 @@ void CEmulsionPlayer::Spawn() {
 
 void CEmulsionPlayer::Activate() {
 	BaseClass::Activate();
+
+	g_pBouncePaintStream->SetParent(this);
+
 }
 
 void CEmulsionPlayer::CreateViewModel(int index) {

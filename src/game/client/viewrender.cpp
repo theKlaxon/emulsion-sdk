@@ -52,8 +52,9 @@
 
 #define PARTICLE_USAGE_DEMO									// uncomment to get particle bar thing
 
-
-
+#ifdef ENABLE_BLOBULATOR
+#include "blobulator/blob_manager.h"
+#endif
 
 #if defined( HL2_CLIENT_DLL ) || defined( INFESTED_DLL )
 #define USE_MONITORS
@@ -4303,6 +4304,13 @@ void CRendering3dView::DrawOpaqueRenderables( bool bShadowDepth )
 	// Draw NPCs now
 	//
 	DrawOpaqueRenderables_NPCs( arrRenderEntsNpcsFirst.Count(), arrRenderEntsNpcsFirst.Base(), bShadowDepth );
+
+#ifdef ENABLE_BLOBULATOR
+	//
+	// Draw Blobs now
+	// 
+	((CBlobManager*)BlobulatorSystem())->Render();
+#endif
 
 	//
 	// Ropes and particles

@@ -5,6 +5,7 @@
 #include "weapon_paintgun.h"
 #include "emulsion_player.h"
 #include "..\public\game\shared\portal2\paint_enum.h"
+#include "blobulator/blob_manager.h"
 
 // -- paint colours 
 //ConVar bounce_paint_color("bounce_paint_color", "15 252 11 255", FCVAR_REPLICATED); // i like greemn - Klax
@@ -29,7 +30,7 @@ ConCommand paintgun_prev("paintgun_prev", Paintgun_PrevPower);
 
 ConVar paintgun_rad("paintgun_rad", "35", FCVAR_REPLICATED);
 ConVar paintgun_strength("paintgun_strength", "5", FCVAR_REPLICATED);
-ConVar paintgun_timing("paintgun_timing", "0.045f", FCVAR_REPLICATED);
+ConVar paintgun_timing("paintgun_timing", "0.001f", FCVAR_REPLICATED);
 
 void SetPaintDisplayColour(PaintPowerType power) {
 	if (g_playerPaintgun == nullptr)
@@ -63,12 +64,33 @@ CWeaponPaintgun::CWeaponPaintgun() {
 	g_playerPaintgun = this;
 }
 
+int GetStreamIndex(PaintPowerType power) {
+
+	int ret = 0;
+
+	switch (power) {
+	case BOUNCE_POWER:
+		ret = 0;
+		break;
+	//case REFLECT_POWER:
+	//	break;
+	case SPEED_POWER:
+		ret = 1;
+		break;
+	case PORTAL_POWER:
+		ret = 2;
+		break;
+	}
+
+	return ret;
+}
+
 void CWeaponPaintgun::FirePaint(bool erase) {
 
 	if (gpGlobals->curtime < m_flCurPaintDelay)
 		return;
 
-	CEmulsionPlayer* pPlayer = ToEmulsionPlayer(UTIL_GetLocalPlayer());
+	CEmulsionPlayer* pPlayer = ToEmulsionPlayer(UTIL_PlayerByIndex(1));
 	Vector halfHeightOrigin = pPlayer->GetHalfHeight_Stick();// player->GetAbsOrigin() + Vector(0, 0, player->BoundingRadius() / 2);
 
 	trace_t tr;
@@ -77,8 +99,11 @@ void CWeaponPaintgun::FirePaint(bool erase) {
 	if (tr.DidHit()) {
 
 		if (tr.DidHitWorld())
-			if (!erase)
-				engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, g_CurPaintgunPower, paintgun_rad.GetInt(), paintgun_strength.GetInt());
+			if (!erase) {
+				//engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, g_CurPaintgunPower, paintgun_rad.GetInt(), paintgun_strength.GetInt());
+				//Paint::CreateBlob(tr.startpos, pPlayer->GetForward_Stick() * 50.0f);
+				((CBlobManager*)BlobulatorSystem())->CreateBlob(tr.startpos + (pPlayer->Forward() * 72.0f), pPlayer->GetForward_Stick().Normalized() * 500.0f, GetStreamIndex(g_CurPaintgunPower));
+			}
 			else
 				engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, NO_POWER, paintgun_rad.GetInt(), paintgun_strength.GetInt()); // erase 
 

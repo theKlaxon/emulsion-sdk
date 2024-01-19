@@ -150,6 +150,8 @@ void CNPC_Surface::Spawn()
 
 	AddSolidFlags( FSOLID_CUSTOMRAYTEST | FSOLID_CUSTOMBOXTEST );
 
+	m_CollisionGroup = COLLISION_GROUP_PUSHAWAY;
+
 	AddEFlags( EFL_NO_DISSOLVE );
 	SetBloodColor( BLOOD_COLOR_YELLOW );
 	ClearEffects();

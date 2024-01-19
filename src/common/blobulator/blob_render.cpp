@@ -36,14 +36,14 @@ void COpPtr_DoRender::Do(void* pData) {
 	
 	modelrender->SetupLighting(Vector(0.0f, 0.0f, 0.0f));
 
-	IBlobBatch* pBatch = (IBlobBatch*)pData;
-	IMaterial* pMat = pBatch->GetMaterial();
+	//IBlobBatch* pBatch = (IBlobBatch*)pData;
+	IMaterial* pMat;// = pBatch->GetMaterial();
 	pRenderContext->Bind(pMat);
 
 	Point3D _offset = Point3D(0.0f, 0.0f, 0.0f);
 	pTiler->beginFrame(_offset, (void*)&pRenderContext, true);
 
-	pBatch->InsertParticles(pTiler);
+	//pBatch->InsertParticles(pTiler);
 
 	pTiler->drawSurface();
 	pTiler->endFrame();
