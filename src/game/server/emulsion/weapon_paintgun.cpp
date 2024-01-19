@@ -102,7 +102,7 @@ void CWeaponPaintgun::FirePaint(bool erase) {
 			if (!erase) {
 				//engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, g_CurPaintgunPower, paintgun_rad.GetInt(), paintgun_strength.GetInt());
 				//Paint::CreateBlob(tr.startpos, pPlayer->GetForward_Stick() * 50.0f);
-				((CBlobManager*)BlobulatorSystem())->CreateBlob(tr.startpos + (pPlayer->Forward() * 72.0f), pPlayer->GetForward_Stick().Normalized() * 500.0f, GetStreamIndex(g_CurPaintgunPower));
+				((CBlobManager*)BlobulatorSystem())->CreateBlob(tr.startpos + (pPlayer->Forward() * 72.0f), pPlayer->GetForward_Stick().Normalized() * 800.0f, GetStreamIndex(g_CurPaintgunPower));
 			}
 			else
 				engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, NO_POWER, paintgun_rad.GetInt(), paintgun_strength.GetInt()); // erase 

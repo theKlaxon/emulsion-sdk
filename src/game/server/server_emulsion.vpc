@@ -41,20 +41,16 @@ $Project "Server (Emulsion)"
 					$File "$SRCDIR\common\blobulator\physics\phys_tiler.h"
 				}
 
-				$File "$SRCDIR\common\blobulator\blob_batch.h"
-				$File "$SRCDIR\common\blobulator\blob_networked_batch.h"
 				$File "$SRCDIR\common\blobulator\blob_manager.h"
-				$File "$SRCDIR\common\blobulator\blob_physics.h"
 				$File "$SRCDIR\common\blobulator\index_tri_vertex_buffer.h"
 				$File "$SRCDIR\common\blobulator\parented_func.h"
 				$File "$SRCDIR\common\blobulator\point_3D.h"
 				$File "$SRCDIR\common\blobulator\smartarray.h"
 			}
 			
-			$File "$SRCDIR\common\blobulator\blob_batch.cpp"
-			$File "$SRCDIR\common\blobulator\blob_networked_batch.cpp"
 			$File "$SRCDIR\common\blobulator\blob_manager.cpp"
-			$File "$SRCDIR\common\blobulator\blob_physics.cpp"
+			$File "$SRCDIR\common\blobulator\paint_stream.h"
+			$File "$SRCDIR\common\blobulator\paint_stream.cpp"
 		}
 
 		$Folder "Emulsion"
@@ -85,6 +81,8 @@ $Project "Server (Emulsion)"
 			$File	"emulsion\prop_button.cpp"
 			$File	"emulsion\prop_button.h"
 			$File 	"emulsion\prop_devcube.cpp"
+			$File	"emulsion\npc_surface.h"
+			$File	"emulsion\npc_surface.cpp"
 		}
 	}
 }

@@ -35,26 +35,6 @@ namespace Paint {
 
 	void CreateBlob(Vector center, Vector velocity) {
 
-		objectparams_t params = g_PhysDefaultObjectParams;
-		params.pGameData = static_cast<void*>(nullptr);
-
-		int surfaceIndex = physprops->GetSurfaceIndex("water");
-		IPhysicsObject* pObject = physenv->CreateSphereObject(8.0f, surfaceIndex, center, QAngle(0, 0, 0), &params, false);
-
-		pObject->SetVelocity(&velocity, NULL);
-		PhysSetGameFlags(pObject, FVPHYSICS_NO_SELF_COLLISIONS | FVPHYSICS_MULTIOBJECT_ENTITY); // call collisionruleschanged if this changes dynamically
-		//pObject->SetGameIndex(i);
-
-		pObject->Sleep(); // sleep it until we are parented correctly
-		pObject->SetMass(10.0f);
-		pObject->EnableGravity(true);
-		pObject->EnableDrag(true);
-
-		float flDamping = 0.5f;
-		float flAngDamping = 0.5f;
-		pObject->SetDamping(&flDamping, &flAngDamping);
-
-		g_pBouncePaintStream->AddParticle(pObject, velocity);
 	}
 
 }

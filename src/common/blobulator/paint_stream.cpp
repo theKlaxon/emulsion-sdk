@@ -82,18 +82,28 @@ void CPaintBlobStream::Spawn() {
 
 	SetAbsAngles(QAngle(0, 0, 0));
 
+	m_vecParticles.EnsureCount(paintblob_stream_max_blobs.GetInt());
+	m_vecSurfacePositions.EnsureCount(paintblob_stream_max_blobs.GetInt());
+
 	m_vecSurfaceVs.EnsureCount(paintblob_stream_max_blobs.GetInt());
 	m_vecSurfaceRs.EnsureCount(paintblob_stream_max_blobs.GetInt());
+	m_vecRadii.EnsureCount(paintblob_stream_max_blobs.GetInt());
 	
+	m_vecSurfacePositions[0] = GetAbsOrigin();
 	m_vecSurfaceVs[0] = 0.0;
 	m_vecSurfaceRs[0] = 1.0;
+	m_vecRadii[0] = 1.0;
 	
 	for (int i = 1; i < paintblob_stream_max_blobs.GetInt(); i++)
 	{
+		m_vecSurfacePositions[i] = m_vecSurfacePositions[i - 1];
 		m_vecSurfaceVs[i] = m_vecSurfaceVs[i - 1];
 		m_vecSurfaceRs[i] = m_vecSurfaceRs[i - 1];
+		m_vecRadii[i] = m_vecRadii[i - 1];
 	}
 	
+	m_nActiveParticlesInternal = 0;
+
 	NPCInit();
 }
 
@@ -128,8 +138,7 @@ bool CPaintBlobStream::CreateVPhysics() {
 
 	int surfaceIndex = physprops->GetSurfaceIndex("water");
 
-	for (int i = 0; i < m_nActiveParticles; i++) {
-		m_vecParticles.AddToTail();
+	for (int i = 0; i < m_nActiveParticlesInternal; i++) {
 		m_vecParticles[i] = physenv->CreateSphereObject(paintblob_stream_radius.GetFloat(), surfaceIndex, m_vecSurfacePositions[i], GetAbsAngles(), &params, false);
 		
 		if (m_vecParticles[i]) {
@@ -154,7 +163,7 @@ bool CPaintBlobStream::CreateVPhysics() {
 int CPaintBlobStream::VPhysicsGetObjectList(IPhysicsObject** pList, int listMax) {
 
 	int count = 0;
-	for (int i = 0; i < listMax && i < m_vecParticles.Count(); i++)
+	for (int i = 0; i < listMax && i < m_nActiveParticlesInternal; i++)
 	{
 		if (m_vecSurfaceRs[i] > 0.0f)
 		{
@@ -169,14 +178,14 @@ void CPaintBlobStream::Think() {
 	// TODO: send particle positions??? this is bad code /: slow code D^=
 	SetAbsOrigin(UTIL_PlayerByIndex(1)->GetAbsOrigin());
 
-	for (int i = 0; i < m_vecParticles.Count(); i++) {
+	for (int i = 0; i < m_nActiveParticlesInternal; i++) {
 
 		QAngle ang;
 		m_vecParticles[i]->GetPosition(&m_vecSurfacePositions[i], &ang); // TODO: try nullptr > ang?
 		int k = 0;
 	}
 
-	m_nActiveParticles = m_vecParticles.Count();
+	m_nActiveParticles = m_nActiveParticlesInternal;
 
 	// without this, LATCH_SIMULATION_VAR will never be triggered
 	SetSimulationTime(gpGlobals->curtime);
@@ -191,22 +200,17 @@ void CPaintBlobStream::PhysicsSimulate() {
 
 void CPaintBlobStream::AddParticle(Vector center, Vector velocity) {
 
-	if (m_vecParticles.Count() >= paintblob_stream_max_blobs.GetInt())
+	if (m_nActiveParticlesInternal >= paintblob_stream_max_blobs.GetInt())
 		return;
 	
 	objectparams_t params = g_PhysDefaultObjectParams;
 	params.pGameData = static_cast<void*>(this);
 
 	int surfaceIndex = physprops->GetSurfaceIndex("water");
-	int i = m_vecParticles.Count();
+	int i = m_nActiveParticlesInternal;
 	
-	m_vecSurfacePositions.AddToTail();
 	m_vecSurfacePositions[i] = center;
-
-	m_vecRadii.AddToTail();
 	m_vecRadii[i] = RandomFloat(0.4f, 1.3f);
-
-	m_vecParticles.AddToTail();
 	m_vecParticles[i] = physenv->CreateSphereObject(paintblob_stream_radius.GetFloat(), surfaceIndex, m_vecSurfacePositions[i], GetAbsAngles(), &params, false);
 
 	if (m_vecParticles[i]) {
@@ -214,13 +218,14 @@ void CPaintBlobStream::AddParticle(Vector center, Vector velocity) {
 		PhysSetGameFlags(m_vecParticles[i], FVPHYSICS_NO_SELF_COLLISIONS | FVPHYSICS_MULTIOBJECT_ENTITY); // call collisionruleschanged if this changes dynamically
 		m_vecParticles[i]->SetGameIndex(i);
 
-		m_vecParticles[i]->SetMass(2.5f); // 10.0f
+		m_vecParticles[i]->SetMass(10.0f); // 10.0f
 		m_vecParticles[i]->EnableGravity(true);
 		m_vecParticles[i]->EnableDrag(false);
 		
 		float flDamping = 0.5f;
 		float flAngDamping = 0.5f;
 		m_vecParticles[i]->SetDamping(&flDamping, &flAngDamping);
+		m_nActiveParticlesInternal++;
 	}
 }
 
@@ -232,7 +237,7 @@ bool CPaintBlobStream::TestCollision(const Ray_t& ray, unsigned int fContentsMas
 	{
 		float d1, d2;
 
-		for (int i = 0; i < m_vecParticles.Count(); i++)
+		for (int i = 0; i < m_nActiveParticlesInternal; i++)
 		{
 			if (m_vecSurfaceRs[i] > 0.0f && IntersectRayWithSphere(ray.m_Start, ray.m_Delta, m_vecSurfacePositions[i], m_vecRadii[i], &d1, &d2))
 			{
@@ -270,7 +275,7 @@ bool CPaintBlobStream::TestCollision(const Ray_t& ray, unsigned int fContentsMas
 
 		tr.fraction = 1.0;
 
-		for (int i = 0; i < m_nActiveParticles; i++)
+		for (int i = 0; i < m_nActiveParticlesInternal; i++)
 		{
 			if (m_vecSurfaceRs[i] > 0.0f && IntersectRayWithBox(m_vecSurfacePositions[i] - ray.m_Start, -ray.m_Delta, vecMin, vecMax, 0.0, &boxtrace))
 			{
