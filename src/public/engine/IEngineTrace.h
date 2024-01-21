@@ -135,6 +135,42 @@ struct BrushSideInfo_t
 	unsigned short thin;	// Thin?
 };
 
+class CBrushQuery {
+public:
+
+	CBrushQuery() {
+		m_iCount = 0;
+		m_iMaxBrushSides = 0;
+
+		m_pBrushes = nullptr;
+		m_pReleaseFunc = nullptr;
+		m_pData = nullptr;
+	}
+
+	~CBrushQuery() {
+
+		if (m_pReleaseFunc)
+			m_pReleaseFunc(this);
+
+		m_iCount = 0;
+		m_iMaxBrushSides = 0;
+	
+		m_pBrushes = nullptr;
+		m_pReleaseFunc = nullptr;
+		m_pData = nullptr;
+	}
+
+private:
+
+	int m_iCount;
+	unsigned int* m_pBrushes;
+	int m_iMaxBrushSides;
+
+	void (*m_pReleaseFunc)(CBrushQuery*);
+	void* m_pData;
+
+};
+
 //-----------------------------------------------------------------------------
 // Interface the engine exposes to the game DLL
 //-----------------------------------------------------------------------------
@@ -191,7 +227,8 @@ public:
 
 
 	//finds brushes in an AABB, prone to some false positives
-	virtual void GetBrushesInAABB( const Vector &vMins, const Vector &vMaxs, CUtlVector<int> *pOutput, int iContentsMask = 0xFFFFFFFF ) = 0;
+	//virtual void GetBrushesInAABB( const Vector &vMins, const Vector &vMaxs, CUtlVector<int> *pOutput, int iContentsMask = 0xFFFFFFFF, int par5 = 0 ) = 0; // was incorrect
+	virtual void GetBrushesInAABB( const Vector &vMins, const Vector &vMaxs, CBrushQuery &pQuery, int iContentsMask = 0xFFFFFFFF, int par5 = 0 ) = 0;
 
 	//Creates a CPhysCollide out of all displacements wholly or partially contained in the specified AABB
 	virtual CPhysCollide* GetCollidableFromDisplacementsInAABB( const Vector& vMins, const Vector& vMaxs ) = 0;
@@ -203,7 +240,8 @@ public:
 	virtual void GetDisplacementMesh( int nIndex, virtualmeshlist_t *pMeshTriList ) = 0;
 	
 	//retrieve brush planes and contents, returns true if data is being returned in the output pointers, false if the brush doesn't exist
-	virtual bool GetBrushInfo( int iBrush, CUtlVector<BrushSideInfo_t> *pBrushSideInfoOut, int *pContentsOut ) = 0;
+	//virtual bool GetBrushInfo( int iBrush, CUtlVector<BrushSideInfo_t> *pBrushSideInfoOut, int *pContentsOut ) = 0;
+	virtual int GetBrushInfo(int iBrush, int& pContentsOut, BrushSideInfo_t* pBrushSideInfoOut, int par4) = 0;
 
 	virtual bool PointOutsideWorld( const Vector &ptTest ) = 0; //Tests a point to see if it's outside any playable area
 
@@ -215,6 +253,19 @@ public:
 
 	/// Used only in debugging: get/set/clear/increment the trace debug counter. See comment below for details.
 	virtual int GetSetDebugTraceCounter( int value, DebugTraceCounterBehavior_t behavior ) = 0;
+
+	virtual int GetMeshesFromDisplacementsInAABB(const Vector& par1, const Vector& par2, virtualmeshlist_t* par3, int par4) = 0;
+	virtual void GetBrushesInCollideable(ICollideable* pCollidable, CBrushQuery& par2) = 0;
+
+	// new p2 ffunccs
+	virtual void			HandleEntityToCollideable(IHandleEntity* pHandle) = 0;
+	virtual ICollideable*	GetWorldCollideable() = 0;
+	virtual const char*		GetDebugName(IHandleEntity* pHandle) = 0;
+	virtual void			SetTraceEntity(ICollideable* pCollide, CGameTrace* pTrace) = 0;
+
+	// TODO: these return types need checking...
+	virtual SpatialPartitionListMask_t SpatialPartitionMask() = 0;
+	virtual SpatialPartitionListMask_t SpatialPartitionTriggerMask() = 0;
 };
 
 /// IEngineTrace::GetSetDebugTraceCounter

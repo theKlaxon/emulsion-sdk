@@ -7,6 +7,7 @@ class CTriggerFloorButton;
 
 class CPropFloorButton : public CDynamicProp {
 	DECLARE_CLASS(CPropFloorButton, CDynamicProp)
+	DECLARE_DATADESC()
 
 	friend class CTriggerFloorButton;
 
@@ -17,8 +18,8 @@ public:
 	void Think();
 
 	// button specifics
-	void ButtonActivate();
-	void ButtonDeactivate();
+	void ButtonActivate(inputdata_t& inputdata);
+	void ButtonDeactivate(inputdata_t& inputdata);
 
 	bool IsActivated() { return m_bActive; }
 
@@ -32,6 +33,11 @@ protected:
 	int touching;
 
 private:
+
+	COutputEvent m_outButtonPressed;
+	COutputEvent m_outButtonUnPressed;
+
+	COutputEvent m_outUnused;
 
 	bool m_bActive;
 	int m_seqUp, m_seqDown;

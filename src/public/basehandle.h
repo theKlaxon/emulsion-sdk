@@ -17,6 +17,10 @@
 
 class IHandleEntity;
 
+enum INVALID_EHANDLE_tag
+{
+	INVALID_EHANDLE
+};
 
 // -------------------------------------------------------------------------------------------------- //
 // CBaseHandle.

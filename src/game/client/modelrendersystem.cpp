@@ -987,6 +987,8 @@ int CModelRenderSystem::SetupStaticPropLighting( LightingList_t &lightingList, D
 	ITexture **ppEnvCubemap = (ITexture**)stackalloc( nTotalModels * sizeof(ITexture*) );
 
 	CMatRenderData< MaterialLightingState_t > rdLightingState( m_pRenderContext, 2 * nTotalModels );
+	//Plat_FastMemset(rdLightingState.Base(), 0, sizeof(MaterialLightingState_t) * 2 * nTotalModels);
+
 	MaterialLightingState_t *pLightingState = rdLightingState.Base();
 	MaterialLightingState_t *pDecalLightingState = &rdLightingState[ nTotalModels ];
 	modelrender->ComputeStaticLightingState( nTotalModels, pLightingQuery, pLightingState, pDecalLightingState, ppColorMeshInfo, ppEnvCubemap, pColorMeshHandle );

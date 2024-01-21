@@ -503,7 +503,8 @@ void AddSurfacepropFile( const char *pFileName, IPhysicsSurfaceProps *pProps, IF
 		pFileSystem->ReadEx( buffer, nBufSize, len, file );
 		pFileSystem->Close( file );
 		buffer[len] = 0;
-		pProps->ParseSurfaceData( pFileName, buffer );
+		int psize = pProps->ParseSurfaceData( pFileName, buffer );
+		int k = psize;
 		// buffer is on the stack, no need to free
 	}
 	else
@@ -975,7 +976,7 @@ void PhysFrictionSound( CBaseEntity *pEntity, IPhysicsObject *pObject, float ene
 	float volume = energy * energy;
 		
 	unsigned short soundName = psurf->sounds.scrapeRough;
-	unsigned int *soundHandle = &psurf->soundhandles.scrapeRough;
+	HSOUNDSCRIPTHANDLE *soundHandle = &psurf->soundhandles.scrapeRough;
 
 	if ( psurf->sounds.scrapeSmooth && phit->audio.roughnessFactor < psurf->audio.roughThreshold )
 	{

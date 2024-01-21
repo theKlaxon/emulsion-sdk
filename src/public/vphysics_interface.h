@@ -310,7 +310,7 @@ public:
 
 	// portal 2 (newer portal 2 build has csgo vphysics????)
 	virtual bool			TraceBoxAA( const Ray_t &ray, const CPhysCollide *pCollide, trace_t *ptr ) = 0;
-	virtual void			DuplicateAndScale(vcollide_t* pOut, const vcollide_t* pIn, float flScale) = 0;
+	//virtual void			DuplicateAndScale(vcollide_t* pOut, const vcollide_t* pIn, float flScale) = 0;
 }; 
 
 // this can be used to post-process a collision model
@@ -947,6 +947,10 @@ struct surfacephysicsparams_t
 	float			density;				// physical density (in kg / m^3)
 	float			thickness;				// material thickness if not solid (sheet materials) in inches
 	float			dampening;
+
+	// these should break the game being here, however they dont... see surfacegameprops_t
+	float			penetrationModifier;	// p2
+	float			damageModifier;			// p2
 };
 
 struct surfaceaudioparams_t
@@ -1005,12 +1009,24 @@ struct surfacesoundhandles_t
 
 struct surfacegameprops_t
 {
-// game movement data
+	// game movement data
 	float			maxSpeedFactor;			// Modulates player max speed when walking on this surface
 	float			jumpFactor;				// Indicates how much higher the player should jump when on the surface
-// Game-specific data
-	//float adhesion; // a test, remove if no worky
-	unsigned short	material;
+
+	// this is the stupidest thing i could ever imagine happening in source engine. 
+	// these 2 members are supposed to be in THIS struct according to the decompiler. however, at runtime the game decides that it's 
+	// goig to put these 2 bits of data into the surfacephysicsparams_t struct. instead of here.
+	// so, confused and sorta just tired of shit not working, i decided to see what would happen if i 
+	// put these 2 variables into surfacephysicsparams_t and just left them out of here.
+	// i was amazed and dumbfounded to see that the game, in all of the genius and glory, decided that they now go HERE
+	// in runtime. if you dont believe me, go into game/shared/gamemovement.cpp and put a breakpoint on line 1056,
+	// then look at how the data is populated in player->m_pSurfaceData. you'll see that the game acts as if the data is 
+	// defined IN THIS STRUCT and NOT surfacephysicsparams_t. fucking baffling. gotta <3 Source Engine...
+	//float			penetrationModifier;	// p2
+	//float			damageModifier;			// p2 
+
+	// Game-specific data
+	unsigned short	material; // was short
 	// Indicates whether or not the player is on a ladder.
 	unsigned char	climbable;
 	unsigned char	pad;

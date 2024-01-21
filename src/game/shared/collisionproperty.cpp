@@ -459,6 +459,26 @@ bool CCollisionProperty::ShouldTouchTrigger( int triggerSolidFlags ) const
 	return true;
 }
 
+unsigned int CCollisionProperty::GetRequiredTriggerFlags() const {
+		// debris only touches certain triggers
+	if (GetCollisionGroup() == COLLISION_GROUP_DEBRIS)
+		return FSOLID_TRIGGER_TOUCH_DEBRIS;
+
+	// we dont have that param here, return above and call it good
+	//{
+	//	if ( triggerSolidFlags & FSOLID_TRIGGER_TOUCH_DEBRIS )
+	//		return true;
+
+	//	return false;
+	//}
+
+	// triggers don't touch other triggers (might be solid to other ents as well as trigger)
+	if ( IsSolidFlagSet( FSOLID_TRIGGER ) )
+		return 0;
+
+	return FSOLID_TRIGGER;
+}
+
 const matrix3x4_t *CCollisionProperty::GetRootParentToWorldTransform() const
 {
 	if ( IsSolidFlagSet( FSOLID_ROOT_PARENT_ALIGNED ) )

@@ -16,6 +16,7 @@
 #include "texture_group_names.h"
 #include "tier0/icommandline.h"
 
+ConVar r_env_proj_volumetric("r_env_proj_volumetric", "0", FCVAR_DEVELOPMENTONLY);
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -336,6 +337,9 @@ void C_EnvProjectedTexture::UpdateLight( void )
 		}
 
 		float flAlpha = m_flCurrentLinearFloatLightAlpha * ( 1.0f / 255.0f );
+
+		if(r_env_proj_volumetric.GetBool())
+			state.m_bVolumetric = true; // FOR TESTING ONLY
 
 		state.m_fQuadraticAtten = 0.0;
 		state.m_fLinearAtten = 100;

@@ -39,3 +39,9 @@ $Project "server"
 	"game\server\server_skeleton.vpc" [$SKELETON]
 	"game\server\server_p2asw.vpc" [$P2ASW]
 }
+
+// P2ASW's bonesetup
+$Project "bonesetup"
+{
+	"bonesetup\bonesetup.vpc"
+}

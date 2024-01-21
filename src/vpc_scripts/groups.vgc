@@ -21,3 +21,8 @@ $Group "everything"
 	"particles"
 	"videocfg"
 }
+
+$Group "bones"
+{
+	"bonesetup"
+}

@@ -712,6 +712,8 @@ struct ModelScale
 
 struct CSoundParameters;
 typedef unsigned int HSOUNDSCRIPTHANDLE;
+//typedef int HSOUNDSCRIPTHANDLE;
+//typedef unsigned int HSOUNDSCRIPTHANDLE;
 //-----------------------------------------------------------------------------
 // Purpose: Aggregates and sets default parameters for EmitSound function calls
 //-----------------------------------------------------------------------------

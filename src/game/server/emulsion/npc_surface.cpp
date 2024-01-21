@@ -140,6 +140,7 @@ void CNPC_Surface::Spawn()
 
 	SetHullType(HULL_SMALL_CENTERED);
 	SetHullSizeNormal();
+	SetCollisionGroup(COLLISION_GROUP_NPC_ACTOR);
 
 	// setup model
 	SetSolid( SOLID_BBOX );
@@ -149,8 +150,6 @@ void CNPC_Surface::Spawn()
 	SetMoveType( MOVETYPE_VPHYSICS );
 
 	AddSolidFlags( FSOLID_CUSTOMRAYTEST | FSOLID_CUSTOMBOXTEST );
-
-	m_CollisionGroup = COLLISION_GROUP_PUSHAWAY;
 
 	AddEFlags( EFL_NO_DISSOLVE );
 	SetBloodColor( BLOOD_COLOR_YELLOW );
@@ -465,6 +464,8 @@ int CNPC_Surface::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 
 bool CNPC_Surface::TestCollision( const Ray_t &ray, unsigned int fContentsMask, trace_t& tr )
 {
+	return false;
+
 	int nLastHit = -1;
 
 	if (ray.m_IsRay)

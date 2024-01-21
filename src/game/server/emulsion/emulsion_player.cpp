@@ -105,8 +105,6 @@ void CEmulsionPlayer::Spawn() {
 void CEmulsionPlayer::Activate() {
 	BaseClass::Activate();
 
-	g_pBouncePaintStream->SetParent(this);
-
 }
 
 void CEmulsionPlayer::CreateViewModel(int index) {

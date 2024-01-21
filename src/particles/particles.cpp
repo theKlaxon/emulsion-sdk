@@ -4159,7 +4159,7 @@ bool CParticleSystemMgr::ReadParticleConfigFile( const char *pFileName, bool bPr
 	if ( GetPlatformExt()[0])
 	{
 		char szTargetName[MAX_PATH];
-		CreateX360Filename( pFileName, szTargetName, sizeof( szTargetName ) );
+		AdjustFileExtensionForPlatform( pFileName, szTargetName, sizeof( szTargetName ) );
 
 		CUtlBuffer fileBuffer;
 		bool bHaveParticles = g_pFullFileSystem->ReadFile( szTargetName, "GAME", fileBuffer );

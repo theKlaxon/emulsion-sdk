@@ -10,8 +10,6 @@
 #pragma once
 #endif
 
-#include "steam_api_common.h"
-
 // Feature types for parental settings
 enum EParentalFeature
 {
@@ -28,8 +26,6 @@ enum EParentalFeature
 	k_EFeatureParentalSetup = 10,
 	k_EFeatureLibrary = 11,
 	k_EFeatureTest = 12,
-	k_EFeatureSiteLicense = 13,
-	k_EFeatureKioskMode = 14,
 	k_EFeatureMax
 };
 
@@ -48,9 +44,6 @@ public:
 
 #define STEAMPARENTALSETTINGS_INTERFACE_VERSION "STEAMPARENTALSETTINGS_INTERFACE_VERSION001"
 
-// Global interface accessor
-inline ISteamParentalSettings *SteamParentalSettings();
-STEAM_DEFINE_USER_INTERFACE_ACCESSOR( ISteamParentalSettings *, SteamParentalSettings, STEAMPARENTALSETTINGS_INTERFACE_VERSION );
 
 //-----------------------------------------------------------------------------
 // Purpose: Callback for querying UGC

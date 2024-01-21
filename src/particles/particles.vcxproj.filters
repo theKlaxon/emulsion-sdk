@@ -62,6 +62,9 @@
     <ClCompile Include="builtin_particle_render_ops.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\public\materialsystem\MaterialSystemUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\lib\public\bitmap.lib">

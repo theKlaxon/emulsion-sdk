@@ -191,6 +191,7 @@ if "%valveTmpIsReadOnlyLetter%"=="R" (
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\debug_lib_check.cpp" />
+    <ClCompile Include="..\public\materialsystem\MaterialSystemUtil.cpp" />
     <ClCompile Include="addbuiltin_ops.cpp" />
     <ClCompile Include="builtin_constraints.cpp" />
     <ClCompile Include="builtin_initializers.cpp" />

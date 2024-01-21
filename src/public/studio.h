@@ -1649,6 +1649,14 @@ struct studiohwdata_t
 	studioloddata_t		*m_pLODs;
 	int					m_NumStudioMeshes;
 
+	// p2
+	
+	int m_NumFaccesRenderedThisFrame;
+	int	m_NumTimesRenderedThisFrame;
+	studiohdr_t* m_pStudioHDR;
+
+	// ==
+
 	inline float LODMetric( float unitSphereSize ) const { return ( unitSphereSize != 0.0f ) ? (100.0f / unitSphereSize) : 0.0f; }
 	inline int GetLODForMetric( float lodMetric ) const
 	{

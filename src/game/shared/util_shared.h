@@ -100,6 +100,9 @@ inline CBaseEntity *EntityFromEntityHandle( IHandleEntity *pHandleEntity )
 	return pUnk->GetBaseEntity();
 #else
 #ifndef _X360
+	if (!pHandleEntity)
+		return NULL; // TODO: fix whatever needs to be fixed so that this line can be removed
+
 	if ( staticpropmgr->IsStaticProp( pHandleEntity ) )
 		return NULL;
 #else

@@ -4260,7 +4260,7 @@ void CRendering3dView::DrawOpaqueRenderables( bool bShadowDepth )
 			continue;
 
 		IClientUnknown *pUnknown = itEntity->m_pRenderable->GetIClientUnknown();
-		IClientModelRenderable* pModelRenderable = itEntity->m_pRenderable->GetClientModelRenderable();//pUnknown->GetClientModelRenderable();
+		IClientModelRenderable* pModelRenderable = itEntity->m_pRenderable->GetClientModelRenderable(); //pUnknown->GetClientModelRenderable();
 		if ( !bUseFastPath || !pModelRenderable )
 			continue;
 

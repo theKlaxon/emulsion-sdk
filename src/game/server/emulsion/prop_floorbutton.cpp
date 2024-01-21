@@ -4,6 +4,7 @@
 #include "triggers.h"
 #include "prop_floorbutton.h"
 #include "prop_button.h"
+#include "prop_devcube.h"
 
 #define BUTTON_FLOOR_MDL "models/props/portal_button.mdl"
 #define BUTTON_FLOOR_MINS Vector(-20, -20, 0)
@@ -34,43 +35,69 @@ bool CTriggerFloorButton::PassesTriggerFilters(CBaseEntity* pOther)
 }
 
 void CTriggerFloorButton::StartTouch(CBaseEntity* pOther) {
+	inputdata_t actor;
+	actor.pActivator = pOther;
 	if (PassesTriggerFilters(pOther)) {
 
 		if (m_pOwnerButton->touching < 1)
 			if (m_pOwnerButton)
-				m_pOwnerButton->ButtonActivate();
+				m_pOwnerButton->ButtonActivate(actor);
+
+		if (pOther->ClassMatches("prop_weighted_cube"))
+			((CPropDevCube*)pOther)->CubeActivate();
 
 		m_pOwnerButton->touching++;
 	}
 }
 
 void CTriggerFloorButton::EndTouch(CBaseEntity* pOther) {
+	inputdata_t actor;
+	actor.pActivator = pOther;
 	if (PassesTriggerFilters(pOther)) {
 
 		m_pOwnerButton->touching--;
 
 		if (m_pOwnerButton->touching < 1)
 			if (m_pOwnerButton)
-				m_pOwnerButton->ButtonDeactivate();
+				m_pOwnerButton->ButtonDeactivate(actor);
+
+		if (pOther->ClassMatches("prop_weighted_cube"))
+			((CPropDevCube*)pOther)->CubeDeactivate();
 	}
 }
 
 LINK_ENTITY_TO_CLASS(prop_floor_button, CPropFloorButton)
+
+BEGIN_DATADESC(CPropFloorButton)
+
+DEFINE_INPUTFUNC(FIELD_VOID, "PressIn", ButtonActivate),
+DEFINE_INPUTFUNC(FIELD_VOID, "PressOut", ButtonDeactivate),
+
+DEFINE_OUTPUT(m_outButtonPressed, "OnPressed"),
+DEFINE_OUTPUT(m_outUnused, "OnPressedOrange"),
+DEFINE_OUTPUT(m_outUnused, "OnPressedBlue"),
+DEFINE_OUTPUT(m_outButtonUnPressed, "OnUnPressed"),
+
+END_DATADESC()
 
 void CPropFloorButton::Precache() {
 	PrecacheModel(BUTTON_FLOOR_MDL);
 }
 
 void CPropFloorButton::Spawn() {
-	Precache();
 	BaseClass::Spawn();
+	Precache();
+	
+	AddEffects(EF_NOSHADOW);
 
 	SetModel(BUTTON_FLOOR_MDL);
 	SetSolid(SOLID_VPHYSICS);
+
 	SetThink(&CPropFloorButton::Think);
 
 	m_seqUp = LookupSequence("up");
 	m_seqDown = LookupSequence("down");
+
 	ResetSequence(m_seqUp);
 	m_bActive = false;
 
@@ -100,18 +127,22 @@ void CPropFloorButton::Think() {
 	SetNextThink(gpGlobals->curtime + BUTTON_FRAME_ADV_TIME);
 }
 
-void CPropFloorButton::ButtonActivate() {
+void CPropFloorButton::ButtonActivate(inputdata_t& inputdata) {
 
 	m_nSkin = BUTTON_ACTIVE;
 	SetSequence(m_seqDown);
 	m_bActive = true;
+
+	m_outButtonPressed.FireOutput(inputdata.pActivator, this);
 }
 
-void CPropFloorButton::ButtonDeactivate() {
+void CPropFloorButton::ButtonDeactivate(inputdata_t& inputdata) {
 
 	m_nSkin = BUTTON_DEFAULT;
 	SetSequence(m_seqUp);
 	m_bActive = false;
+
+	m_outButtonUnPressed.FireOutput(inputdata.pActivator, this);
 }
 
 bool CPropFloorButton::PassesTriggerFilters(CBaseEntity* pOther)

@@ -49,7 +49,7 @@ ConVar pl_fallpunchthreshold("pl_fallpunchthreshold", "150", FCVAR_REPLICATED | 
 ConVar pl_normspeed("pl_normspeed", "175.0f", FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_CHEAT);
 ConVar pl_paintTraceRadius("pl_paintTraceRadius", "26.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY); // 26.0f worked good for a while // 20.0f while making stick
 
-ConVar pl_bouncePaintFactor("pl_bouncePaintFactor", "300.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
+ConVar pl_bouncePaintFactor("pl_bouncePaintFactor", "265.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
 ConVar pl_bouncePaintWallFactor("pl_bouncePaintWallFactor", "150.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
 
 ConVar pl_speedPaintMoveSpeed("pl_speedPaintMoveSpeed", "600", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
@@ -169,7 +169,6 @@ void CEmulsionGameMovement::ProcessMovement(CBasePlayer* pPlayer, CMoveData* pMo
 void CEmulsionGameMovement::PlayerMove()
 {
 	VPROF("CGameMovement::PlayerMove");
-
 	CheckParameters();
 
 	// clear output applied velocity
@@ -298,6 +297,7 @@ C:
 
 void CEmulsionGameMovement::CategorizePosition(void)
 {
+
 	Vector point;
 	trace_t pm;
 
@@ -456,6 +456,7 @@ void CEmulsionGameMovement::CategorizePosition(void)
 
 void CEmulsionGameMovement::FullWalkMove()
 {
+
 	if (m_tCurPaintInfo.type == PORTAL_POWER)
 		CalculateStickAngles();
 
@@ -712,8 +713,6 @@ extern float g_flCurStickTransitionTime;
 
 void CEmulsionGameMovement::AirMove()
 {
-	BaseClass::AirMove();
-	return;
 
 	int			i;
 	Vector		wishvel;
@@ -843,6 +842,9 @@ void CEmulsionGameMovement::CheckParameters()
 			(mv->m_flSideMove * mv->m_flSideMove) +
 			(mv->m_flUpMove * mv->m_flUpMove);
 
+		if (spd > 0)
+			int k = 0;
+
 		if (m_tCurPaintInfo.type == SPEED_POWER) {
 			maxspeed = pl_speedPaintMoveSpeed.GetFloat();
 			if (maxspeed != 0.0)
@@ -860,9 +862,16 @@ void CEmulsionGameMovement::CheckParameters()
 
 		// Slow down by the speed factor
 		float flSpeedFactor = 1.0f;
-		if (player->m_pSurfaceData)
+
+		surfacedata_t* pSurfaceData = player->m_pSurfaceData;
+
+
+		if (pSurfaceData)
 		{
-			flSpeedFactor = player->m_pSurfaceData->game.maxSpeedFactor;
+			flSpeedFactor = pSurfaceData->game.maxSpeedFactor;
+
+			if (flSpeedFactor == 0)
+				flSpeedFactor = 1.0f;
 		}
 
 		// If we have a constraint, slow down because of that too.
@@ -1030,6 +1039,9 @@ void CEmulsionGameMovement::CheckFalling()
 
 void CEmulsionGameMovement::StayOnGround()
 {
+	BaseClass::StayOnGround();
+	return;
+
 	trace_t trace;
 	Vector start(mv->GetAbsOrigin());
 	Vector end(mv->GetAbsOrigin());
@@ -1100,6 +1112,9 @@ void CEmulsionGameMovement::FinishGravity() {
 
 void CEmulsionGameMovement::SetGroundEntity(trace_t* pm)
 {
+	//BaseClass::SetGroundEntity(pm);
+	//return; 
+
 	Vector nAxis = GetGravityDir();
 	VecNeg(nAxis);
 
@@ -1206,6 +1221,8 @@ bool CEmulsionGameMovement::CheckJumpButton() {
 		return false;
 
 
+	surfacedata_t* pSurfDat = player->m_pSurfaceData; // here for debugging
+
 	// In the air now.
 	SetGroundEntity(NULL);
 	if (m_tCurPaintInfo.type != BOUNCE_POWER)
@@ -1243,7 +1260,7 @@ bool CEmulsionGameMovement::CheckJumpButton() {
 		// v = g * sqrt(2.0 * 45 / g )
 		// v^2 = g * g * 2.0 * 45 / g
 		// v = sqrt( g * 2.0 * 45 )
-		mv->m_vecVelocity[2] = flGroundFactor * flMul;  // 2 * gravity * height
+		//mv->m_vecVelocity[2] = flGroundFactor * flMul;  // 2 * gravity * height
 		mv->m_vecVelocity += (-1 * m_vecGravity) * flGroundFactor * flMul;  // 2 * gravity * height
 	}
 	else

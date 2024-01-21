@@ -271,6 +271,8 @@ public:
 	saverestorelevelinfo_t levelInfo;
 	Vector		modelSpaceOffset;			// used only for globaly entity brushes modelled in different coordinate systems.
 	
+	int m_nEntityDataSize; // p2
+
 private:
 	int			tableCount;		// Number of elements in the entity table
 	entitytable_t	*pTable;		// Array of entitytable_t elements (1 for each entity)

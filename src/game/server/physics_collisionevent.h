@@ -110,6 +110,7 @@ public:
 	// called when an object goes to sleep (no longer simulating)
 	virtual void ObjectSleep( IPhysicsObject *pObject );
 
+	void RemovePenetrationEvents(CBaseEntity* pEntity); // csgo
 
 	// locals
 	bool GetInflictorVelocity( IPhysicsObject *pInflictor, Vector &velocity, AngularImpulse &angVelocity );

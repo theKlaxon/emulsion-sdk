@@ -127,8 +127,8 @@ public:
 
 	virtual MDLHandle_t				GetCacheHandle( const model_t *model ) const = 0;
 
-	//virtual void* RegisterDynamicModel(const char* par1, bool par2) = 0; // p2sdk
-	//virtual bool IsDynamicModelLoading(int par1) = 0; // p2sdk
+	virtual void*					RegisterDynamicModel(const char* par1, bool par2) = 0; // p2sdk
+	virtual bool					IsDynamicModelLoading(int par1) = 0; // p2sdk
 
 	// Returns planes of non-nodraw brush model surfaces
 	virtual int						GetBrushModelPlaneCount( const model_t *model ) const = 0;

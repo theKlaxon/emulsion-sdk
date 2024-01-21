@@ -61,6 +61,7 @@ void CPaintBlobStream::Spawn() {
 	SetModel("models/props/metal_box.mdl");
 
 	SetThink(&CPaintBlobStream::Think);
+	//SetNextThink(gpGlobals->curtime + 0.0001);
 
 	SetHullType(HULL_SMALL_CENTERED);
 	SetHullSizeNormal();
@@ -81,6 +82,7 @@ void CPaintBlobStream::Spawn() {
 	m_vecStart = GetAbsOrigin();
 
 	SetAbsAngles(QAngle(0, 0, 0));
+	SetCollisionGroup(COLLISION_GROUP_PROJECTILE);
 
 	m_vecParticles.EnsureCount(paintblob_stream_max_blobs.GetInt());
 	m_vecSurfacePositions.EnsureCount(paintblob_stream_max_blobs.GetInt());
@@ -105,6 +107,7 @@ void CPaintBlobStream::Spawn() {
 	m_nActiveParticlesInternal = 0;
 
 	NPCInit();
+	SetNextThink(TICK_INTERVAL);
 }
 
 void CPaintBlobStream::VPhysicsCollision(int index, gamevcollisionevent_t* pEvent) {
@@ -189,7 +192,7 @@ void CPaintBlobStream::Think() {
 
 	// without this, LATCH_SIMULATION_VAR will never be triggered
 	SetSimulationTime(gpGlobals->curtime);
-	SetNextThink(gpGlobals->curtime + 0.0001);
+	SetNextThink(gpGlobals->curtime + 0.001);
 	BaseClass::Think();
 }
 
@@ -231,6 +234,8 @@ void CPaintBlobStream::AddParticle(Vector center, Vector velocity) {
 
 bool CPaintBlobStream::TestCollision(const Ray_t& ray, unsigned int fContentsMask, trace_t& tr)
 {
+	return false;
+
 	int nLastHit = -1;
 
 	if (ray.m_IsRay)

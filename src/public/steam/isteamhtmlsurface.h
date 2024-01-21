@@ -10,7 +10,7 @@
 #pragma once
 #endif
 
-#include "steam_api_common.h"
+#include "isteamclient.h"
 
 typedef uint32 HHTMLBrowser;
 const uint32 INVALID_HTMLBROWSER = 0;
@@ -40,7 +40,7 @@ public:
 	// not implement these callback handlers, the browser may appear to hang instead of
 	// navigating to new pages or triggering javascript popups.
 	//
-	STEAM_CALL_RESULT( HTML_BrowserReady_t )
+	CALL_RESULT( HTML_BrowserReady_t )
 	virtual SteamAPICall_t CreateBrowser( const char *pchUserAgent, const char *pchUserCSS ) = 0;
 
 	// Call this when you are done with a html surface, this lets us free the resources being used by it
@@ -137,9 +137,8 @@ public:
 		k_eHTMLKeyModifier_ShiftDown = 1 << 2,
 	};
 
-	// keyboard interactions, native keycode is the virtual key code value from your OS, system key flags the key to not
-	// be sent as a typed character as well as a key down
-	virtual void KeyDown( HHTMLBrowser unBrowserHandle, uint32 nNativeKeyCode, EHTMLKeyModifiers eHTMLKeyModifiers, bool bIsSystemKey = false ) = 0;
+	// keyboard interactions, native keycode is the virtual key code value from your OS
+	virtual void KeyDown( HHTMLBrowser unBrowserHandle, uint32 nNativeKeyCode, EHTMLKeyModifiers eHTMLKeyModifiers ) = 0;
 	virtual void KeyUp( HHTMLBrowser unBrowserHandle, uint32 nNativeKeyCode, EHTMLKeyModifiers eHTMLKeyModifiers ) = 0;
 	// cUnicodeChar is the unicode character point for this keypress (and potentially multiple chars per press)
 	virtual void KeyChar( HHTMLBrowser unBrowserHandle, uint32 cUnicodeChar, EHTMLKeyModifiers eHTMLKeyModifiers ) = 0;
@@ -182,9 +181,6 @@ public:
 	// Specifies the ratio between physical and logical pixels.
 	virtual void SetDPIScalingFactor( HHTMLBrowser unBrowserHandle, float flDPIScaling ) = 0;
 
-	// Open HTML/JS developer tools
-	virtual void OpenDeveloperTools( HHTMLBrowser unBrowserHandle ) = 0;
-
 	// CALLBACKS
 	//
 	//  These set of functions are used as responses to callback requests
@@ -201,14 +197,11 @@ public:
 	virtual void JSDialogResponse( HHTMLBrowser unBrowserHandle, bool bResult ) = 0;
 
 	// You MUST call this in response to a HTML_FileOpenDialog_t callback
+	IGNOREATTR()
 	virtual void FileLoadDialogResponse( HHTMLBrowser unBrowserHandle, const char **pchSelectedFiles ) = 0;
 };
 
-#define STEAMHTMLSURFACE_INTERFACE_VERSION "STEAMHTMLSURFACE_INTERFACE_VERSION_005"
-
-// Global interface accessor
-inline ISteamHTMLSurface *SteamHTMLSurface();
-STEAM_DEFINE_USER_INTERFACE_ACCESSOR( ISteamHTMLSurface *, SteamHTMLSurface, STEAMHTMLSURFACE_INTERFACE_VERSION );
+#define STEAMHTMLSURFACE_INTERFACE_VERSION "STEAMHTMLSURFACE_INTERFACE_VERSION_004"
 
 // callbacks
 #if defined( VALVE_CALLBACK_PACK_SMALL )
@@ -216,223 +209,70 @@ STEAM_DEFINE_USER_INTERFACE_ACCESSOR( ISteamHTMLSurface *, SteamHTMLSurface, STE
 #elif defined( VALVE_CALLBACK_PACK_LARGE )
 #pragma pack( push, 8 )
 #else
-#error steam_api_common.h should define VALVE_CALLBACK_PACK_xxx
+#error isteamclient.h must be included
 #endif 
 
 
 //-----------------------------------------------------------------------------
 // Purpose: The browser is ready for use
 //-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_BrowserReady_t, k_iSteamHTMLSurfaceCallbacks + 1 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // this browser is now fully created and ready to navigate to pages
-STEAM_CALLBACK_END(1)
+DEFINE_CALLBACK( HTML_BrowserReady_t, k_iSteamHTMLSurfaceCallbacks + 1 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // this browser is now fully created and ready to navigate to pages
+END_DEFINE_CALLBACK_1()
 
 
 //-----------------------------------------------------------------------------
 // Purpose: the browser has a pending paint
 //-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN(HTML_NeedsPaint_t, k_iSteamHTMLSurfaceCallbacks + 2)
-STEAM_CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the browser that needs the paint
-STEAM_CALLBACK_MEMBER(1, const char *, pBGRA ) // a pointer to the B8G8R8A8 data for this surface, valid until SteamAPI_RunCallbacks is next called
-STEAM_CALLBACK_MEMBER(2, uint32, unWide) // the total width of the pBGRA texture
-STEAM_CALLBACK_MEMBER(3, uint32, unTall) // the total height of the pBGRA texture
-STEAM_CALLBACK_MEMBER(4, uint32, unUpdateX) // the offset in X for the damage rect for this update
-STEAM_CALLBACK_MEMBER(5, uint32, unUpdateY) // the offset in Y for the damage rect for this update
-STEAM_CALLBACK_MEMBER(6, uint32, unUpdateWide) // the width of the damage rect for this update
-STEAM_CALLBACK_MEMBER(7, uint32, unUpdateTall) // the height of the damage rect for this update
-STEAM_CALLBACK_MEMBER(8, uint32, unScrollX) // the page scroll the browser was at when this texture was rendered
-STEAM_CALLBACK_MEMBER(9, uint32, unScrollY) // the page scroll the browser was at when this texture was rendered
-STEAM_CALLBACK_MEMBER(10, float, flPageScale) // the page scale factor on this page when rendered
-STEAM_CALLBACK_MEMBER(11, uint32, unPageSerial) // incremented on each new page load, you can use this to reject draws while navigating to new pages
-STEAM_CALLBACK_END(12)
-
-
-//-----------------------------------------------------------------------------
-// Purpose: The browser wanted to navigate to a new page
-//   NOTE - you MUST call AllowStartRequest in response to this callback
-//-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN(HTML_StartRequest_t, k_iSteamHTMLSurfaceCallbacks + 3)
-STEAM_CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface navigating
-STEAM_CALLBACK_MEMBER(1, const char *, pchURL) // the url they wish to navigate to 
-STEAM_CALLBACK_MEMBER(2, const char *, pchTarget) // the html link target type  (i.e _blank, _self, _parent, _top )
-STEAM_CALLBACK_MEMBER(3, const char *, pchPostData ) // any posted data for the request
-STEAM_CALLBACK_MEMBER(4, bool, bIsRedirect) // true if this was a http/html redirect from the last load request
-STEAM_CALLBACK_END(5)
-
-
-//-----------------------------------------------------------------------------
-// Purpose: The browser has been requested to close due to user interaction (usually from a javascript window.close() call)
-//-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN(HTML_CloseBrowser_t, k_iSteamHTMLSurfaceCallbacks + 4)
-STEAM_CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface 
-STEAM_CALLBACK_END(1)
-
-
-//-----------------------------------------------------------------------------
-// Purpose: the browser is navigating to a new url
-//-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_URLChanged_t, k_iSteamHTMLSurfaceCallbacks + 5 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface navigating
-STEAM_CALLBACK_MEMBER( 1, const char *, pchURL ) // the url they wish to navigate to 
-STEAM_CALLBACK_MEMBER( 2, const char *, pchPostData ) // any posted data for the request
-STEAM_CALLBACK_MEMBER( 3, bool, bIsRedirect ) // true if this was a http/html redirect from the last load request
-STEAM_CALLBACK_MEMBER( 4, const char *, pchPageTitle ) // the title of the page
-STEAM_CALLBACK_MEMBER( 5, bool, bNewNavigation ) // true if this was from a fresh tab and not a click on an existing page
-STEAM_CALLBACK_END(6)
-
-
-//-----------------------------------------------------------------------------
-// Purpose: A page is finished loading
-//-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_FinishedRequest_t, k_iSteamHTMLSurfaceCallbacks + 6 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, const char *, pchURL ) // 
-STEAM_CALLBACK_MEMBER( 2, const char *, pchPageTitle ) // 
-STEAM_CALLBACK_END(3)
-
-
-//-----------------------------------------------------------------------------
-// Purpose: a request to load this url in a new tab
-//-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_OpenLinkInNewTab_t, k_iSteamHTMLSurfaceCallbacks + 7 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, const char *, pchURL ) // 
-STEAM_CALLBACK_END(2)
-
-
-//-----------------------------------------------------------------------------
-// Purpose: the page has a new title now
-//-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_ChangedTitle_t, k_iSteamHTMLSurfaceCallbacks + 8 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, const char *, pchTitle ) // 
-STEAM_CALLBACK_END(2)
-
-
-//-----------------------------------------------------------------------------
-// Purpose: results from a search
-//-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_SearchResults_t, k_iSteamHTMLSurfaceCallbacks + 9 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, uint32, unResults ) // 
-STEAM_CALLBACK_MEMBER( 2, uint32, unCurrentMatch ) // 
-STEAM_CALLBACK_END(3)
-
-
-//-----------------------------------------------------------------------------
-// Purpose: page history status changed on the ability to go backwards and forward
-//-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_CanGoBackAndForward_t, k_iSteamHTMLSurfaceCallbacks + 10 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, bool, bCanGoBack ) // 
-STEAM_CALLBACK_MEMBER( 2, bool, bCanGoForward ) // 
-STEAM_CALLBACK_END(3)
-
-
-//-----------------------------------------------------------------------------
-// Purpose: details on the visibility and size of the horizontal scrollbar
-//-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_HorizontalScroll_t, k_iSteamHTMLSurfaceCallbacks + 11 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, uint32, unScrollMax ) // 
-STEAM_CALLBACK_MEMBER( 2, uint32, unScrollCurrent ) // 
-STEAM_CALLBACK_MEMBER( 3, float, flPageScale ) // 
-STEAM_CALLBACK_MEMBER( 4, bool , bVisible ) // 
-STEAM_CALLBACK_MEMBER( 5, uint32, unPageSize ) // 
-STEAM_CALLBACK_END(6)
-
-
-//-----------------------------------------------------------------------------
-// Purpose: details on the visibility and size of the vertical scrollbar
-//-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_VerticalScroll_t, k_iSteamHTMLSurfaceCallbacks + 12 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, uint32, unScrollMax ) // 
-STEAM_CALLBACK_MEMBER( 2, uint32, unScrollCurrent ) // 
-STEAM_CALLBACK_MEMBER( 3, float, flPageScale ) // 
-STEAM_CALLBACK_MEMBER( 4, bool, bVisible ) // 
-STEAM_CALLBACK_MEMBER( 5, uint32, unPageSize ) // 
-STEAM_CALLBACK_END(6)
-
-
-//-----------------------------------------------------------------------------
-// Purpose: response to GetLinkAtPosition call 
-//-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_LinkAtPosition_t, k_iSteamHTMLSurfaceCallbacks + 13 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, uint32, x ) // NOTE - Not currently set
-STEAM_CALLBACK_MEMBER( 2, uint32, y ) // NOTE - Not currently set
-STEAM_CALLBACK_MEMBER( 3, const char *, pchURL ) // 
-STEAM_CALLBACK_MEMBER( 4, bool, bInput ) // 
-STEAM_CALLBACK_MEMBER( 5, bool, bLiveLink ) // 
-STEAM_CALLBACK_END(6)
-
-
-
-//-----------------------------------------------------------------------------
-// Purpose: show a Javascript alert dialog, call JSDialogResponse 
-//   when the user dismisses this dialog (or right away to ignore it)
-//-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_JSAlert_t, k_iSteamHTMLSurfaceCallbacks + 14 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, const char *, pchMessage ) // 
-STEAM_CALLBACK_END(2)
-
-
-//-----------------------------------------------------------------------------
-// Purpose: show a Javascript confirmation dialog, call JSDialogResponse 
-//   when the user dismisses this dialog (or right away to ignore it)
-//-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_JSConfirm_t, k_iSteamHTMLSurfaceCallbacks + 15 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, const char *, pchMessage ) // 
-STEAM_CALLBACK_END(2)
-
-
-//-----------------------------------------------------------------------------
-// Purpose: when received show a file open dialog
-//   then call FileLoadDialogResponse with the file(s) the user selected.
-//-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_FileOpenDialog_t, k_iSteamHTMLSurfaceCallbacks + 16 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, const char *, pchTitle ) // 
-STEAM_CALLBACK_MEMBER( 2, const char *, pchInitialFile ) // 
-STEAM_CALLBACK_END(3)
+DEFINE_CALLBACK(HTML_NeedsPaint_t, k_iSteamHTMLSurfaceCallbacks + 2)
+CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the browser that needs the paint
+CALLBACK_MEMBER(1, const char *, pBGRA ) // a pointer to the B8G8R8A8 data for this surface, valid until SteamAPI_RunCallbacks is next called
+CALLBACK_MEMBER(2, uint32, unWide) // the total width of the pBGRA texture
+CALLBACK_MEMBER(3, uint32, unTall) // the total height of the pBGRA texture
+CALLBACK_MEMBER(4, uint32, unUpdateX) // the offset in X for the damage rect for this update
+CALLBACK_MEMBER(5, uint32, unUpdateY) // the offset in Y for the damage rect for this update
+CALLBACK_MEMBER(6, uint32, unUpdateWide) // the width of the damage rect for this update
+CALLBACK_MEMBER(7, uint32, unUpdateTall) // the height of the damage rect for this update
+CALLBACK_MEMBER(8, uint32, unScrollX) // the page scroll the browser was at when this texture was rendered
+CALLBACK_MEMBER(9, uint32, unScrollY) // the page scroll the browser was at when this texture was rendered
+CALLBACK_MEMBER(10, float, flPageScale) // the page scale factor on this page when rendered
+CALLBACK_MEMBER(11, uint32, unPageSerial) // incremented on each new page load, you can use this to reject draws while navigating to new pages
+END_DEFINE_CALLBACK_12()
 
 //-----------------------------------------------------------------------------
 // Purpose: a popup item (i.e combo box) on the page needs rendering
 //-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN(HTML_ComboNeedsPaint_t, k_iSteamHTMLSurfaceCallbacks + 17)
-STEAM_CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface 
-STEAM_CALLBACK_MEMBER(1, const char*, pBGRA) // a pointer to the B8G8R8A8 data for this surface, valid until SteamAPI_RunCallbacks is next called
-STEAM_CALLBACK_MEMBER(2, uint32, unWide) // the total width of the pBGRA texture
-STEAM_CALLBACK_MEMBER(3, uint32, unTall) // the total height of the pBGRA texture
-STEAM_CALLBACK_END(4)
+DEFINE_CALLBACK(HTML_ComboNeedsPaint_t, k_iSteamHTMLSurfaceCallbacks + 17)
+CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface 
+CALLBACK_MEMBER(1, const char*, pBGRA) // a pointer to the B8G8R8A8 data for this surface, valid until SteamAPI_RunCallbacks is next called
+CALLBACK_MEMBER(2, uint32, unWide) // the total width of the pBGRA texture
+CALLBACK_MEMBER(3, uint32, unTall) // the total height of the pBGRA texture
+END_DEFINE_CALLBACK_4()
 
 //-----------------------------------------------------------------------------
 // Purpose: a popup (i.e combo box) wants to display
 //-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN(HTML_ShowPopup_t, k_iSteamHTMLSurfaceCallbacks + 18)
-STEAM_CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface 
-STEAM_CALLBACK_END(1)
+DEFINE_CALLBACK(HTML_ShowPopup_t, k_iSteamHTMLSurfaceCallbacks + 18)
+CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface 
+END_DEFINE_CALLBACK_1()
 
 //-----------------------------------------------------------------------------
 // Purpose: a popup (i.e combo box) wants to hide
 //-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN(HTML_HidePopup_t, k_iSteamHTMLSurfaceCallbacks + 19)
-STEAM_CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface 
-STEAM_CALLBACK_END(1)
+DEFINE_CALLBACK(HTML_HidePopup_t, k_iSteamHTMLSurfaceCallbacks + 19)
+CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface 
+END_DEFINE_CALLBACK_1()
 
 //-----------------------------------------------------------------------------
 // Purpose: a popup (i.e combo box) wants to hide
 //-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN(HTML_SizePopup_t, k_iSteamHTMLSurfaceCallbacks + 20)
-STEAM_CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface 
-STEAM_CALLBACK_MEMBER(1, uint32, unX) // the x pos into the page to display the popup
-STEAM_CALLBACK_MEMBER(2, uint32, unY) // the y pos into the page to display the popup
-STEAM_CALLBACK_MEMBER(3, uint32, unWide) // the total width of the pBGRA texture
-STEAM_CALLBACK_MEMBER(4, uint32, unTall) // the total height of the pBGRA texture
-STEAM_CALLBACK_END(5)
+DEFINE_CALLBACK(HTML_SizePopup_t, k_iSteamHTMLSurfaceCallbacks + 20)
+CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface 
+CALLBACK_MEMBER(1, uint32, unX) // the x pos into the page to display the popup
+CALLBACK_MEMBER(2, uint32, unY) // the y pos into the page to display the popup
+CALLBACK_MEMBER(3, uint32, unWide) // the total width of the pBGRA texture
+CALLBACK_MEMBER(4, uint32, unTall) // the total height of the pBGRA texture
+END_DEFINE_CALLBACK_5()
 
 //-----------------------------------------------------------------------------
 // Purpose: a new html window is being created.
@@ -443,68 +283,219 @@ STEAM_CALLBACK_END(5)
 // to give your application the opportunity to call CreateBrowser and set up
 // a new browser in response to the attempted popup, if you wish to do so.
 //-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_NewWindow_t, k_iSteamHTMLSurfaceCallbacks + 21 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the current surface 
-STEAM_CALLBACK_MEMBER( 1, const char *, pchURL ) // the page to load
-STEAM_CALLBACK_MEMBER( 2, uint32, unX ) // the x pos into the page to display the popup
-STEAM_CALLBACK_MEMBER( 3, uint32, unY ) // the y pos into the page to display the popup
-STEAM_CALLBACK_MEMBER( 4, uint32, unWide ) // the total width of the pBGRA texture
-STEAM_CALLBACK_MEMBER( 5, uint32, unTall ) // the total height of the pBGRA texture
-STEAM_CALLBACK_MEMBER( 6, HHTMLBrowser, unNewWindow_BrowserHandle_IGNORE )
-STEAM_CALLBACK_END(7)
+DEFINE_CALLBACK(HTML_NewWindow_t, k_iSteamHTMLSurfaceCallbacks + 21)
+CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the current surface 
+CALLBACK_MEMBER(1, const char*, pchURL) // the page to load
+CALLBACK_MEMBER(2, uint32, unX) // the x pos into the page to display the popup
+CALLBACK_MEMBER(3, uint32, unY) // the y pos into the page to display the popup
+CALLBACK_MEMBER(4, uint32, unWide) // the total width of the pBGRA texture
+CALLBACK_MEMBER(5, uint32, unTall) // the total height of the pBGRA texture
+CALLBACK_MEMBER(6, HHTMLBrowser, unNewWindow_BrowserHandle_IGNORE)
+END_DEFINE_CALLBACK_7()
 
+//-----------------------------------------------------------------------------
+// Purpose: The browser wanted to navigate to a new page
+//   NOTE - you MUST call AllowStartRequest in response to this callback
+//-----------------------------------------------------------------------------
+DEFINE_CALLBACK(HTML_StartRequest_t, k_iSteamHTMLSurfaceCallbacks + 3)
+CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface navigating
+CALLBACK_MEMBER(1, const char *, pchURL) // the url they wish to navigate to 
+CALLBACK_MEMBER(2, const char *, pchTarget) // the html link target type  (i.e _blank, _self, _parent, _top )
+CALLBACK_MEMBER(3, const char *, pchPostData ) // any posted data for the request
+CALLBACK_MEMBER(4, bool, bIsRedirect) // true if this was a http/html redirect from the last load request
+END_DEFINE_CALLBACK_5()
+
+
+//-----------------------------------------------------------------------------
+// Purpose: The browser has been requested to close due to user interaction (usually from a javascript window.close() call)
+//-----------------------------------------------------------------------------
+DEFINE_CALLBACK(HTML_CloseBrowser_t, k_iSteamHTMLSurfaceCallbacks + 4)
+CALLBACK_MEMBER(0, HHTMLBrowser, unBrowserHandle) // the handle of the surface 
+END_DEFINE_CALLBACK_1()
+
+
+//-----------------------------------------------------------------------------
+// Purpose: the browser is navigating to a new url
+//-----------------------------------------------------------------------------
+DEFINE_CALLBACK( HTML_URLChanged_t, k_iSteamHTMLSurfaceCallbacks + 5 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface navigating
+CALLBACK_MEMBER( 1, const char *, pchURL ) // the url they wish to navigate to 
+CALLBACK_MEMBER( 2, const char *, pchPostData ) // any posted data for the request
+CALLBACK_MEMBER( 3, bool, bIsRedirect ) // true if this was a http/html redirect from the last load request
+CALLBACK_MEMBER( 4, const char *, pchPageTitle ) // the title of the page
+CALLBACK_MEMBER( 5, bool, bNewNavigation ) // true if this was from a fresh tab and not a click on an existing page
+END_DEFINE_CALLBACK_6()
+
+
+//-----------------------------------------------------------------------------
+// Purpose: A page is finished loading
+//-----------------------------------------------------------------------------
+DEFINE_CALLBACK( HTML_FinishedRequest_t, k_iSteamHTMLSurfaceCallbacks + 6 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, const char *, pchURL ) // 
+CALLBACK_MEMBER( 2, const char *, pchPageTitle ) // 
+END_DEFINE_CALLBACK_3()
+
+
+//-----------------------------------------------------------------------------
+// Purpose: a request to load this url in a new tab
+//-----------------------------------------------------------------------------
+DEFINE_CALLBACK( HTML_OpenLinkInNewTab_t, k_iSteamHTMLSurfaceCallbacks + 7 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, const char *, pchURL ) // 
+END_DEFINE_CALLBACK_2()
+
+
+//-----------------------------------------------------------------------------
+// Purpose: the page has a new title now
+//-----------------------------------------------------------------------------
+DEFINE_CALLBACK( HTML_ChangedTitle_t, k_iSteamHTMLSurfaceCallbacks + 8 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, const char *, pchTitle ) // 
+END_DEFINE_CALLBACK_2()
+
+
+//-----------------------------------------------------------------------------
+// Purpose: results from a search
+//-----------------------------------------------------------------------------
+DEFINE_CALLBACK( HTML_SearchResults_t, k_iSteamHTMLSurfaceCallbacks + 9 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, uint32, unResults ) // 
+CALLBACK_MEMBER( 2, uint32, unCurrentMatch ) // 
+END_DEFINE_CALLBACK_3()
+
+
+//-----------------------------------------------------------------------------
+// Purpose: page history status changed on the ability to go backwards and forward
+//-----------------------------------------------------------------------------
+DEFINE_CALLBACK( HTML_CanGoBackAndForward_t, k_iSteamHTMLSurfaceCallbacks + 10 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, bool, bCanGoBack ) // 
+CALLBACK_MEMBER( 2, bool, bCanGoForward ) // 
+END_DEFINE_CALLBACK_3()
+
+
+//-----------------------------------------------------------------------------
+// Purpose: details on the visibility and size of the horizontal scrollbar
+//-----------------------------------------------------------------------------
+DEFINE_CALLBACK( HTML_HorizontalScroll_t, k_iSteamHTMLSurfaceCallbacks + 11 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, uint32, unScrollMax ) // 
+CALLBACK_MEMBER( 2, uint32, unScrollCurrent ) // 
+CALLBACK_MEMBER( 3, float, flPageScale ) // 
+CALLBACK_MEMBER( 4, bool , bVisible ) // 
+CALLBACK_MEMBER( 5, uint32, unPageSize ) // 
+END_DEFINE_CALLBACK_6()
+
+
+//-----------------------------------------------------------------------------
+// Purpose: details on the visibility and size of the vertical scrollbar
+//-----------------------------------------------------------------------------
+DEFINE_CALLBACK( HTML_VerticalScroll_t, k_iSteamHTMLSurfaceCallbacks + 12 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, uint32, unScrollMax ) // 
+CALLBACK_MEMBER( 2, uint32, unScrollCurrent ) // 
+CALLBACK_MEMBER( 3, float, flPageScale ) // 
+CALLBACK_MEMBER( 4, bool, bVisible ) // 
+CALLBACK_MEMBER( 5, uint32, unPageSize ) // 
+END_DEFINE_CALLBACK_6()
+
+
+//-----------------------------------------------------------------------------
+// Purpose: response to GetLinkAtPosition call 
+//-----------------------------------------------------------------------------
+DEFINE_CALLBACK( HTML_LinkAtPosition_t, k_iSteamHTMLSurfaceCallbacks + 13 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, uint32, x ) // NOTE - Not currently set
+CALLBACK_MEMBER( 2, uint32, y ) // NOTE - Not currently set
+CALLBACK_MEMBER( 3, const char *, pchURL ) // 
+CALLBACK_MEMBER( 4, bool, bInput ) // 
+CALLBACK_MEMBER( 5, bool, bLiveLink ) // 
+END_DEFINE_CALLBACK_6()
+
+
+
+//-----------------------------------------------------------------------------
+// Purpose: show a Javascript alert dialog, call JSDialogResponse 
+//   when the user dismisses this dialog (or right away to ignore it)
+//-----------------------------------------------------------------------------
+DEFINE_CALLBACK( HTML_JSAlert_t, k_iSteamHTMLSurfaceCallbacks + 14 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, const char *, pchMessage ) // 
+END_DEFINE_CALLBACK_2()
+
+
+//-----------------------------------------------------------------------------
+// Purpose: show a Javascript confirmation dialog, call JSDialogResponse 
+//   when the user dismisses this dialog (or right away to ignore it)
+//-----------------------------------------------------------------------------
+DEFINE_CALLBACK( HTML_JSConfirm_t, k_iSteamHTMLSurfaceCallbacks + 15 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, const char *, pchMessage ) // 
+END_DEFINE_CALLBACK_2()
+
+
+//-----------------------------------------------------------------------------
+// Purpose: when received show a file open dialog
+//   then call FileLoadDialogResponse with the file(s) the user selected.
+//-----------------------------------------------------------------------------
+DEFINE_CALLBACK( HTML_FileOpenDialog_t, k_iSteamHTMLSurfaceCallbacks + 16 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, const char *, pchTitle ) // 
+CALLBACK_MEMBER( 2, const char *, pchInitialFile ) // 
+END_DEFINE_CALLBACK_3()
 
 //-----------------------------------------------------------------------------
 // Purpose: change the cursor to display
 //-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_SetCursor_t, k_iSteamHTMLSurfaceCallbacks + 22 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, uint32, eMouseCursor ) // the EMouseCursor to display
-STEAM_CALLBACK_END(2)
+DEFINE_CALLBACK( HTML_SetCursor_t, k_iSteamHTMLSurfaceCallbacks + 22 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, uint32, eMouseCursor ) // the EMouseCursor to display
+END_DEFINE_CALLBACK_2()
 
 
 //-----------------------------------------------------------------------------
 // Purpose: informational message from the browser
 //-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_StatusText_t, k_iSteamHTMLSurfaceCallbacks + 23 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, const char *, pchMsg ) // the EMouseCursor to display
-STEAM_CALLBACK_END(2)
+DEFINE_CALLBACK( HTML_StatusText_t, k_iSteamHTMLSurfaceCallbacks + 23 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, const char *, pchMsg ) // the EMouseCursor to display
+END_DEFINE_CALLBACK_2()
 
 
 //-----------------------------------------------------------------------------
 // Purpose: show a tooltip
 //-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_ShowToolTip_t, k_iSteamHTMLSurfaceCallbacks + 24 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, const char *, pchMsg ) // the EMouseCursor to display
-STEAM_CALLBACK_END(2)
+DEFINE_CALLBACK( HTML_ShowToolTip_t, k_iSteamHTMLSurfaceCallbacks + 24 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, const char *, pchMsg ) // the EMouseCursor to display
+END_DEFINE_CALLBACK_2()
 
 
 //-----------------------------------------------------------------------------
 // Purpose: update the text of an existing tooltip
 //-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_UpdateToolTip_t, k_iSteamHTMLSurfaceCallbacks + 25 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_MEMBER( 1, const char *, pchMsg ) // the EMouseCursor to display
-STEAM_CALLBACK_END(2)
+DEFINE_CALLBACK( HTML_UpdateToolTip_t, k_iSteamHTMLSurfaceCallbacks + 25 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+CALLBACK_MEMBER( 1, const char *, pchMsg ) // the EMouseCursor to display
+END_DEFINE_CALLBACK_2()
 
 
 //-----------------------------------------------------------------------------
 // Purpose: hide the tooltip you are showing
 //-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_HideToolTip_t, k_iSteamHTMLSurfaceCallbacks + 26 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
-STEAM_CALLBACK_END(1)
+DEFINE_CALLBACK( HTML_HideToolTip_t, k_iSteamHTMLSurfaceCallbacks + 26 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // the handle of the surface 
+END_DEFINE_CALLBACK_1()
 
 
 //-----------------------------------------------------------------------------
 // Purpose: The browser has restarted due to an internal failure, use this new handle value
 //-----------------------------------------------------------------------------
-STEAM_CALLBACK_BEGIN( HTML_BrowserRestarted_t, k_iSteamHTMLSurfaceCallbacks + 27 )
-STEAM_CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // this is the new browser handle after the restart
-STEAM_CALLBACK_MEMBER( 1, HHTMLBrowser, unOldBrowserHandle ) // the handle for the browser before the restart, if your handle was this then switch to using unBrowserHandle for API calls
-STEAM_CALLBACK_END(2)
+DEFINE_CALLBACK( HTML_BrowserRestarted_t, k_iSteamHTMLSurfaceCallbacks + 27 )
+CALLBACK_MEMBER( 0, HHTMLBrowser, unBrowserHandle ) // this is the new browser handle after the restart
+CALLBACK_MEMBER( 1, HHTMLBrowser, unOldBrowserHandle ) // the handle for the browser before the restart, if your handle was this then switch to using unBrowserHandle for API calls
+END_DEFINE_CALLBACK_2()
 
 
 #pragma pack( pop )

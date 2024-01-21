@@ -61,8 +61,8 @@ public:
 	Vector			m_vecVelocity;		// edict::velocity		// Current movement direction.
 
 	// off1-2 are p2sdk only
-	Vector			off1;
-	float			off2;
+	//Vector			off1;
+	//float			off2;
 
 	QAngle			m_vecAngles;		// edict::angles
 	QAngle			m_vecOldAngles;

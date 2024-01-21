@@ -71,7 +71,7 @@ C_PaintBlobStream::C_PaintBlobStream() {
 	for (int i = 0; i < MAX_SURFACE_ELEMENTS; i++) {
 		IInterpolatedVar* pWatcher = &m_iv_vecSurfacePositions.Element(i);
 		pWatcher->SetDebugName("m_iv_vecSurfacePositions");
-		AddVar(&m_vecSurfacePositions.Element(i), pWatcher, LATCH_ANIMATION_VAR, true);
+		AddVar(&m_vecSurfacePositions.Element(i), pWatcher, LATCH_ANIMATION_VAR, true); // last working on LATCH_ANIMATION_VAR with the delay code
 
 		pWatcher = &m_iv_vecSurfaceVs.Element(i);
 		pWatcher->SetDebugName("m_iv_vecSurfaceVs");
@@ -102,6 +102,7 @@ void C_PaintBlobStream::ClientThink() {
 	for (int i = m_nActiveParticlesInternal; i < m_nActiveParticles && m_nActiveParticles > 0; i++) {
 		m_iv_vecSurfacePositions[i].RestoreToLastNetworked(); // need this to not show blobs at the stupid origin >: (
 		m_iv_vecSurfacePositions[i].ClearHistory();
+		//m_iv_vecSurfacePositions[i].Reset(gpGlobals->curtime);
 		m_nActiveParticlesInternal++;
 	}
 

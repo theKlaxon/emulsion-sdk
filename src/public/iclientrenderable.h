@@ -152,6 +152,8 @@ public:
 	// Returns the shadow cast type
 	virtual ShadowType_t ShadowCastType() = 0;
 
+	//virtual void Unused2() {}
+
 	// Create/get/destroy model instance
 	virtual void CreateModelInstance() = 0;
 	virtual ModelInstanceHandle_t GetModelInstance() = 0;
