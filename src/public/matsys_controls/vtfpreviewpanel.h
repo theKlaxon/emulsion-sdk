@@ -38,6 +38,9 @@ public:
 	void SetVTF( const char *pFullPath, bool bLoadImmediately = true );
 	const char *GetVTF() const;
 
+	void SetTwoVTFs(const char* pFullPath, const char* pSecondFullPath);
+	const char* GetSecondVTF() const;
+
 	// Paints the texture
 	virtual void Paint( void );
 
@@ -57,7 +60,11 @@ private:
 	void RenderSphere( const Vector &vCenter, float flRadius, int nTheta, int nPhi );
 
 	CUtlString m_VTFName;
+	CUtlString m_SecondVTFName;
+
 	CTextureReference m_PreviewTexture;
+	CTextureReference m_SecondPreviewTexture;
+
 	CMaterialReference m_PreviewMaterial;
 	int m_nTextureID;
 	Vector m_vecCameraDirection;

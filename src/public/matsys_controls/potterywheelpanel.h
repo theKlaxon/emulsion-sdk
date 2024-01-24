@@ -1,4 +1,4 @@
-//====== Copyright ï¿½ 1996-2005, Valve Corporation, All rights reserved. =======
+//====== Copyright © 1996-2005, Valve Corporation, All rights reserved. =======
 //
 // Purpose: 
 //
@@ -79,9 +79,7 @@ public:
 	int	 GetCameraFOV( void );
 	void SetCameraFOV( float flFOV );
 	void SetCameraPositionAndAngles( const Vector &vecPos, const QAngle &angDir );
-	void GetCameraPositionAndAngles( Vector &vecPos, QAngle &angDir );
 	void SetCameraOffset( const Vector &vecOffset );
-	void GetCameraOffset( Vector &vecOffset );
 	void ResetCameraPivot( void );
 	void ComputeCameraTransform( matrix3x4_t *pWorldToCamera );
 	void UpdateCameraTransform();
@@ -127,6 +125,8 @@ protected:
 	ITexture *GetLightProbeCubemap( bool bHDR );
 	void DrawGrid();
 	CMaterialReference	m_Wireframe;
+
+	IMaterial* GetWireframeMaterial(); // p2 doesnt have this, but i want it anyway. 
 
 private:
 	void SetupRenderState( int nDisplayWidth, int nDisplayHeight );
