@@ -1,0 +1,8 @@
+﻿  mdlpanel.cpp
+  mdlpicker.cpp
+  mdlsequencepicker.cpp
+  particlepicker.cpp
+  sequencepicker.cpp
+e:\source\source-sdk-2011-r\src\vgui2\matsys_controls\mdlpanel.cpp(415): warning C4189: 'pStackCopyOfRootMergeHdrModelToWorld' : local variable is initialized but not referenced
+e:\source\source-sdk-2011-r\src\vgui2\matsys_controls\mdlpanel.cpp(657): warning C4189: 'flMdlTime' : local variable is initialized but not referenced
+  matsys_controls.vcxproj -> E:\Source\source-sdk-2011-r\src\vgui2\matsys_controls\..\..\lib\public\.\matsys_controls.lib
