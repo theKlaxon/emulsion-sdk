@@ -77,6 +77,7 @@ struct DragDrop_t;
 class Menu;
 #endif
 
+
 class Panel;
 
 struct SizerAddArgs_t
@@ -117,6 +118,7 @@ struct SizerAddArgs_t
 	int m_nMinY;
 	bool m_bIgnoreMemberMin;
 };
+
 
 enum SizerLayoutDirection_t
 {
@@ -222,7 +224,6 @@ public:
 protected:
 	SizerLayoutDirection_t m_LayoutDirection;
 };
-
 
 //-----------------------------------------------------------------------------
 // Purpose: Macro to handle Colors that can be overridden in .res files
@@ -1112,9 +1113,10 @@ private:
 
 public:
 
-	void GetSizerMinimumSize(int& wide, int& tall);
 	void GetSizerClientArea(int& x, int& y, int& wide, int& tall);
+	void GetSizerMinimumSize(int& wide, int& tall);
 	CSizerBase* GetSizer();
+
 	void SetSizer(CSizerBase* pSizer);
 
 protected:

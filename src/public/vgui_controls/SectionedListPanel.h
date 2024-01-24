@@ -299,9 +299,9 @@ public:
 	SectionedListPanelHeader(SectionedListPanel *parent, const char *name, int sectionID);
 	SectionedListPanelHeader(SectionedListPanel *parent, const wchar_t *name, int sectionID);
 
-	virtual void ApplySchemeSettings(IScheme *pScheme);
-	virtual void Paint();
-	virtual void PerformLayout();
+	virtual void ApplySchemeSettings(IScheme *pScheme) OVERRIDE;
+	virtual void Paint() OVERRIDE;
+	virtual void PerformLayout() OVERRIDE;
 
 	void SetColor(Color col);
 	void SetDividerColor(Color col );
