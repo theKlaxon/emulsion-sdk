@@ -1279,6 +1279,23 @@ void ListPanel::ResetScrollBar()
 	m_vbar->AddActionSignalTarget(this);
 }
 
+void ListPanel::ScrollToItem( int nItemID )
+{
+	int row = GetItemCurrentRow( nItemID );
+	int top = m_vbar->GetValue();
+	int rowsperpage = (int) GetRowsPerPage();
+
+	if ( row < top )
+	{
+		m_vbar->SetValue( row );
+	}
+	else if ( row >= top + rowsperpage )
+	{
+		m_vbar->SetValue( row - rowsperpage + 1 );
+	}
+}
+
+
 //-----------------------------------------------------------------------------
 // Purpose: returns the count of selected rows
 //-----------------------------------------------------------------------------

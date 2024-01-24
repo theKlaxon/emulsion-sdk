@@ -721,6 +721,8 @@ void Panel::Init( int x, int y, int wide, int tall )
 	m_LastNavDirection = ND_NONE;
 	m_bWorldPositionCurrentFrame = false;
 	m_bForceStereoRenderToFrameBuffer = false;
+
+	m_pSizer = NULL;
 }
 
 
@@ -3660,6 +3662,341 @@ int Panel::GetTall()
 void Panel::SetTall(int tall)
 {
 	ipanel()->SetSize(GetVPanel(), GetWide(), tall);
+}
+
+CSizerBase::CSizerBase()
+{
+	m_nMinXSize = -1;
+	m_nMinYSize = -1;
+}
+
+CSizerBase::~CSizerBase()
+{
+	for (int i = 0; i < m_Members.Count(); ++i)
+	{
+		CSizerMember& member = m_Members[i];
+		member.DiscardOwnedSizer();
+	}
+}
+
+SizerElementType_t CSizerBase::GetElementType(int i)
+{
+	return m_Members[i].GetElementType();
+}
+
+Panel* CSizerBase::GetPanel(int i)
+{
+	Assert(m_Members[i].GetElementType() == ESET_PANEL);
+	return m_Members[i].GetPanel();
+}
+
+void CSizerBase::InsertPanel(int nIndex, Panel* pPanel, const SizerAddArgs_t& args)
+{
+	CSizerMember sizerMember;
+	sizerMember.m_pPanel = pPanel;
+	sizerMember.m_pSizer = NULL;
+	sizerMember.Fill(args);
+
+	m_Members.InsertBefore(nIndex, sizerMember);
+
+	RecursiveInvalidateCachedSize();
+}
+
+void CSizerBase::InsertSizer(int nIndex, CSizerBase* pSizer, const SizerAddArgs_t& args)
+{
+	CSizerMember sizerMember;
+	sizerMember.m_pPanel = NULL;
+	sizerMember.m_pSizer = pSizer;
+	sizerMember.Fill(args);
+
+	m_Members.InsertBefore(nIndex, sizerMember);
+
+	RecursiveInvalidateCachedSize();
+}
+
+void CSizerBase::InsertSpacer(int nIndex, const SizerAddArgs_t& args)
+{
+	CSizerMember sizerMember;
+	sizerMember.m_pPanel = NULL;
+	sizerMember.m_pSizer = NULL;
+	sizerMember.Fill(args);
+
+	m_Members.InsertBefore(nIndex, sizerMember);
+
+	RecursiveInvalidateCachedSize();
+}
+
+void CSizerBase::RemoveAllMembers(bool bDelete)
+{
+	for (int i = 0; i < m_Members.Count(); ++i)
+	{
+		m_Members[i].RecursiveRemove(bDelete);
+	}
+
+	m_Members.RemoveAll();
+	m_nMinXSize = -1;
+	m_nMinYSize = -1;
+}
+
+void CSizerBase::GetMinSize(int& OutX, int& OutY)
+{
+	if (m_nMinXSize == -1 || m_nMinYSize == -1)
+	{
+		CalculateSize();
+	}
+
+	OutX = m_nMinXSize;
+	OutY = m_nMinYSize;
+}
+
+void CSizerBase::RecursiveInvalidateCachedSize()
+{
+	m_nMinXSize = -1;
+	m_nMinYSize = -1;
+	for (int i = 0; i < m_Members.Count(); ++i)
+	{
+		m_Members[i].RecursiveInvalidateCachedSize();
+	}
+}
+
+SizerElementType_t CSizerBase::CSizerMember::GetElementType() const
+{
+	if (m_pPanel != NULL)
+	{
+		return ESET_PANEL;
+	}
+	else if (m_pSizer != NULL)
+	{
+		return ESET_SIZER;
+	}
+	else
+	{
+		return ESET_SPACER;
+	}
+}
+
+Panel* CSizerBase::CSizerMember::GetPanel() const
+{
+	return m_pPanel;
+}
+
+void CSizerBase::CSizerMember::Fill(const SizerAddArgs_t& args)
+{
+	m_nPadding = args.m_nPadding;
+	m_flExpandFactor = args.m_flExpandFactor;
+	m_bMinorExpand = args.m_bMinorExpand;
+	m_nMinX = args.m_nMinX;
+	m_nMinY = args.m_nMinY;
+	m_bIgnoreMemberMin = args.m_bIgnoreMemberMin;
+}
+
+void CSizerBase::CSizerMember::RecursiveRemove(bool bDelete)
+{
+	if (m_pSizer)
+	{
+		m_pSizer->RemoveAllMembers(bDelete);
+		delete m_pSizer;
+		m_pSizer = NULL;
+	}
+
+	if (m_pPanel)
+	{
+		if (bDelete)
+		{
+			delete m_pPanel;
+		}
+
+		m_pPanel = NULL;
+	}
+}
+
+void CSizerBase::CSizerMember::DiscardOwnedSizer()
+{
+	if (m_pSizer)
+	{
+		// this is a sizer that is owned by the containing sizer, not another panel somewhere
+		delete m_pSizer;
+		m_pSizer = NULL;
+	}
+}
+
+void CSizerBase::CSizerMember::GetMemberMinSize(int& OutX, int& OutY)
+{
+	int x = 0;
+	int y = 0;
+
+	if (m_pSizer)
+	{
+		m_pSizer->GetMinSize(x, y);
+	}
+	else if (m_pPanel)
+	{
+		m_pPanel->GetSizerMinimumSize(x, y);
+	}
+	else
+	{
+		// special case for spacers
+		OutX = MAX(m_nMinX, m_nPadding);
+		OutY = MAX(m_nMinY, m_nPadding);
+		return;
+	}
+
+	if (m_bIgnoreMemberMin)
+	{
+		OutX = (m_nMinX != -1 ? m_nMinX : x) + m_nPadding * 2;
+		OutY = (m_nMinY != -1 ? m_nMinY : y) + m_nPadding * 2;
+	}
+	else
+	{
+		OutX = MAX(m_nMinX, x) + m_nPadding * 2;
+		OutY = MAX(m_nMinY, y) + m_nPadding * 2;
+	}
+}
+
+void CSizerBase::CSizerMember::RecursiveInvalidateCachedSize()
+{
+	if (m_pSizer)
+	{
+		m_pSizer->RecursiveInvalidateCachedSize();
+	}
+	else if (m_pPanel && m_pPanel->GetSizer())
+	{
+		m_pPanel->GetSizer()->RecursiveInvalidateCachedSize();
+	}
+}
+
+void CSizerBase::CSizerMember::Place(int BaseX, int BaseY, int SizeX, int SizeY)
+{
+	if (m_pSizer)
+	{
+		m_pSizer->DoLayout(BaseX + m_nPadding, BaseY + m_nPadding, SizeX - m_nPadding * 2, SizeY - m_nPadding * 2);
+	}
+	else if (m_pPanel)
+	{
+		m_pPanel->SetPos(BaseX + m_nPadding, BaseY + m_nPadding);
+		m_pPanel->SetSize(SizeX - m_nPadding * 2, SizeY - m_nPadding * 2);
+		m_pPanel->InvalidateLayout();
+	}
+	else
+	{
+		// nothing to do for a spacer
+	}
+}
+
+bool CSizerBase::CSizerMember::IsVisible()
+{
+	if (m_pPanel)
+	{
+		return m_pPanel->IsVisible();
+	}
+	else
+	{
+		// sub-sizers and spacers are always visible
+		return true;
+	}
+}
+
+
+CBoxSizer::CBoxSizer(SizerLayoutDirection_t LayoutDirection)
+{
+	m_LayoutDirection = LayoutDirection;
+}
+
+void CBoxSizer::CalculateSize()
+{
+	int sumMajor = 0;
+	int maxMinor = 0;
+
+	for (int i = 0; i < m_Members.Count(); ++i)
+	{
+		CSizerMember& member = m_Members[i];
+
+		if (!member.IsVisible())
+			continue;
+
+		int x = 0;
+		int y = 0;
+		member.GetMemberMinSize(x, y);
+
+		maxMinor = MAX(maxMinor, SizerMinorAxis(m_LayoutDirection, x, y));
+		sumMajor += SizerMajorAxis(m_LayoutDirection, x, y);
+	}
+
+	m_nMinXSize = SizerXAxis(m_LayoutDirection, sumMajor, maxMinor);
+	m_nMinYSize = SizerYAxis(m_LayoutDirection, sumMajor, maxMinor);
+}
+
+
+void CBoxSizer::DoLayout(int BaseX, int BaseY, int SizeX, int SizeY)
+{
+	int nMinX = 0;
+	int nMinY = 0;
+	GetMinSize(nMinX, nMinY);
+
+	int nMajorRemainder = SizerMajorAxis(m_LayoutDirection, SizeX, SizeY) - SizerMajorAxis(m_LayoutDirection, nMinX, nMinY);
+	int nMinorSize = SizerMinorAxis(m_LayoutDirection, SizeX, SizeY);
+
+	float flExpandSum = 0;
+
+	for (int i = 0; i < m_Members.Count(); ++i)
+	{
+		CSizerMember& member = m_Members[i];
+
+		if (!member.IsVisible())
+			continue;
+
+		flExpandSum += member.GetExpandFactor();
+	}
+
+	int nCurrentX = BaseX;
+	int nCurrentY = BaseY;
+
+	for (int i = 0; i < m_Members.Count(); ++i)
+	{
+		CSizerMember& member = m_Members[i];
+
+		if (!member.IsVisible())
+			continue;
+
+		float flMemberExpand = member.GetExpandFactor();
+
+		int nExpansion = 0;
+		if (flMemberExpand > 0.f)
+		{
+			nExpansion = MAX(0, (flMemberExpand / flExpandSum) * nMajorRemainder);
+		}
+
+		int nMemberXSize = 0;
+		int nMemberYSize = 0;
+		member.GetMemberMinSize(nMemberXSize, nMemberYSize);
+		int nMemberMajor = SizerMajorAxis(m_LayoutDirection, nMemberXSize, nMemberYSize);
+		int nMemberMinor = SizerMinorAxis(m_LayoutDirection, nMemberXSize, nMemberYSize);
+
+		nMemberMajor += nExpansion;
+		if (member.GetMinorExpand())
+		{
+			nMemberMinor = nMinorSize;
+		}
+
+		nMemberXSize = SizerXAxis(m_LayoutDirection, nMemberMajor, nMemberMinor);
+		nMemberYSize = SizerYAxis(m_LayoutDirection, nMemberMajor, nMemberMinor);
+
+		member.Place(nCurrentX, nCurrentY, nMemberXSize, nMemberYSize);
+
+		// TODO: Padding
+
+		if (m_LayoutDirection == ESLD_HORIZONTAL)
+		{
+			nCurrentX += nMemberXSize;
+		}
+		else
+		{
+			nCurrentY += nMemberYSize;
+		}
+
+		nMajorRemainder -= nExpansion;
+		flExpandSum -= flMemberExpand;
+	}
 }
 
 void Panel::SetBuildGroup(BuildGroup* buildGroup)
