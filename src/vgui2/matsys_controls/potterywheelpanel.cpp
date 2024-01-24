@@ -27,7 +27,7 @@
 #include "shaderapi/ishaderapi.h"
 #include "view_shared.h"
 #include "ivrenderview.h"
-#include "game/client/irendercaptureconfiguration.h"
+//#include "game/client/irendercaptureconfiguration.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -204,6 +204,10 @@ CPotteryWheelPanel::CPotteryWheelPanel( vgui::Panel *pParent, const char *pName 
 	m_bParentMouseNotify( false )
 {
 	m_bHasLightProbe = false;
+	//m_bSetupRenderStateDelayed = false;
+	//m_bRender3DSupersampled = false;
+	//m_bInRender3dForRenderCapture = false;
+	//m_pvRenderingWithFlashlightConfiguration = NULL;
 
 	SetPaintBackgroundEnabled( false );
 	SetPaintBorderEnabled( false );
@@ -218,10 +222,13 @@ CPotteryWheelPanel::CPotteryWheelPanel( vgui::Panel *pParent, const char *pName 
 
 	m_vecCameraOffset.Init( 100.0f, 0.0f, 0.0f );
 		
+	//m_Camera.Init( Vector( 0, 0, 0 ), QAngle( 0, 0, 0 ), 3.0f, 16384.0f * 1.73205080757f, 30.0f, 1.0f );
+	m_Camera.m_origin = Vector(0, 0, 0);
+	m_Camera.m_angles = QAngle(0, 0, 0);
 	m_Camera.m_flZNear = 3.0f;
 	m_Camera.m_flZFar = 16384.0f * 1.73205080757f;
 	m_Camera.m_flFOVX = 30.0f;
-	
+
 	m_pCameraRotate = new CRotationManipulator( &m_CameraPivot );
 	m_pCameraRotate->SetDefaultValues();
 	m_pCameraTranslate = new CTranslationManipulator( &m_CameraPivot );
@@ -263,6 +270,57 @@ void CPotteryWheelPanel::CreateDefaultLights()
 
 	m_pLightManip = new CPotteryWheelManip( &m_LightToWorld[0] );
 }
+//
+//void CPotteryWheelPanel::UpdateDirectionalLight( int idx, const Color& color, const Vector& direction )
+//{
+//	if ( idx >= 0 && idx < m_LightingState.m_nLocalLightCount )
+//	{
+//		// Update the existing light
+//		SetIdentityMatrix( m_LightToWorld[idx] );
+//		m_LightingState.m_pLocalLightDesc[idx].m_Type = MATERIAL_LIGHT_DIRECTIONAL;
+//		m_LightingState.m_pLocalLightDesc[idx].m_Color.Init( color.r() / 255.0f, color.g() / 255.0f, color.b() / 255.0f );
+//		m_LightingState.m_pLocalLightDesc[idx].m_Direction.Init( direction.x, direction.y, direction.z );
+//		m_LightingState.m_pLocalLightDesc[idx].m_Range=0.0;
+//		m_LightingState.m_pLocalLightDesc[idx].m_Attenuation0 = 1.0;
+//		m_LightingState.m_pLocalLightDesc[idx].m_Attenuation1 = 0;
+//		m_LightingState.m_pLocalLightDesc[idx].m_Attenuation2 = 0;
+//		m_LightingState.m_pLocalLightDesc[idx].RecalculateDerivedValues();
+//	}
+//	else
+//	{
+//		AddDirectionalLight( color, direction );
+//	}
+//}
+//
+//void CPotteryWheelPanel::ClearDirectionalLights()
+//{
+//	m_LightingState.m_nLocalLightCount = 0;
+//}
+//
+//void CPotteryWheelPanel::AddDirectionalLight( const Color& color, const Vector& direction )
+//{
+//	if ( m_LightingState.m_nLocalLightCount < MATERIAL_MAX_LIGHT_COUNT )
+//	{
+//		SetIdentityMatrix( m_LightToWorld[m_LightingState.m_nLocalLightCount] );
+//		m_LightingState.m_pLocalLightDesc[m_LightingState.m_nLocalLightCount].m_Type = MATERIAL_LIGHT_DIRECTIONAL;
+//		m_LightingState.m_pLocalLightDesc[m_LightingState.m_nLocalLightCount].m_Color.Init( color.r() / 255.0f, color.g() / 255.0f, color.b() / 255.0f );
+//		m_LightingState.m_pLocalLightDesc[m_LightingState.m_nLocalLightCount].m_Direction.Init( direction.x, direction.y, direction.z );
+//		m_LightingState.m_pLocalLightDesc[m_LightingState.m_nLocalLightCount].m_Range=0.0;
+//		m_LightingState.m_pLocalLightDesc[m_LightingState.m_nLocalLightCount].m_Attenuation0 = 1.0;
+//		m_LightingState.m_pLocalLightDesc[m_LightingState.m_nLocalLightCount].m_Attenuation1 = 0;
+//		m_LightingState.m_pLocalLightDesc[m_LightingState.m_nLocalLightCount].m_Attenuation2 = 0;
+//		m_LightingState.m_pLocalLightDesc[m_LightingState.m_nLocalLightCount].RecalculateDerivedValues();
+//		m_LightingState.m_nLocalLightCount++;
+//	}
+//}
+//
+//void CPotteryWheelPanel::SetLightAmbient( const Vector& ambient )
+//{
+//	for ( int i = 0; i < 6; ++i )
+//	{
+//		m_LightingState.m_vecAmbientCube[i].Init( ambient.x, ambient.y, ambient.z );
+//	}
+//}
 
 void CPotteryWheelPanel::DestroyLights()
 {
@@ -442,13 +500,13 @@ void CPotteryWheelPanel::SetCameraOffset( const Vector &vecOffset )
 	m_vecCameraOffset = vecOffset;
 }
 
-//-----------------------------------------------------------------------------
-// Purpose:
-//-----------------------------------------------------------------------------
-void CPotteryWheelPanel::GetCameraOffset( Vector &vecOffset )
-{
-	vecOffset = m_vecCameraOffset;
-}
+////-----------------------------------------------------------------------------
+//// Purpose:
+////-----------------------------------------------------------------------------
+//void CPotteryWheelPanel::GetCameraOffset( Vector &vecOffset )
+//{
+//	vecOffset = m_vecCameraOffset;
+//}
 
 //-----------------------------------------------------------------------------
 // Purpose:
@@ -462,10 +520,10 @@ void CPotteryWheelPanel::SetCameraPositionAndAngles( const Vector &vecPos, const
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
-void CPotteryWheelPanel::GetCameraPositionAndAngles( Vector &vecPos, QAngle &angDir )
-{
-	MatrixAngles( m_CameraPivot, angDir, vecPos );
-}
+//void CPotteryWheelPanel::GetCameraPositionAndAngles( Vector &vecPos, QAngle &angDir )
+//{
+//	MatrixAngles( m_CameraPivot, angDir, vecPos );
+//}
 
 //-----------------------------------------------------------------------------
 // Purpose:
@@ -610,6 +668,18 @@ void CPotteryWheelPanel::ComputePanelPosition( const Vector &vecPosition, Vector
 }
 
 
+IMaterial * CPotteryWheelPanel::GetWireframeMaterial()
+{
+	if ( !m_Wireframe.IsValid() )
+	{
+		KeyValues *pMaterialKeys = new KeyValues( "Wireframe", "$model", "1" );
+		pMaterialKeys->SetString( "$vertexcolor", "1" );
+		m_Wireframe.Init( "potterywheelpanelwireframe", pMaterialKeys );
+	}
+	return m_Wireframe;
+}
+
+
 //-----------------------------------------------------------------------------
 // Utility method to draw a grid at the 'ground'
 //-----------------------------------------------------------------------------
@@ -620,7 +690,7 @@ void CPotteryWheelPanel::DrawGrid()
 	pRenderContext->MatrixMode( MATERIAL_MODEL );
 	pRenderContext->LoadIdentity( );
 
-	pRenderContext->Bind( m_Wireframe );
+	pRenderContext->Bind( GetWireframeMaterial() );
 
 	IMesh *pMesh = pRenderContext->GetDynamicMesh();
 
@@ -697,9 +767,14 @@ void CPotteryWheelPanel::Paint()
 		return;
 	}
 
+	//if ( GetRenderingWithFlashlightConfiguration() )
+	//{
+	//	RenderCapture();
+	//}
+
 	int w, h;
 	GetSize( w, h );
-	vgui::MatSystemSurface()->Begin3DPaint( 0, 0, w, h);
+	vgui::MatSystemSurface()->Begin3DPaint( 0, 0, w, h );
 
 	if ( m_pCurrentManip )
 	{
@@ -707,7 +782,10 @@ void CPotteryWheelPanel::Paint()
 	}
 
 	// Set up the render state for the camera + light
-	SetupRenderState( iWidth, iHeight );
+	//m_nRenderWidth = iWidth;
+	//m_nRenderHeight = iHeight;
+	//if ( !m_bSetupRenderStateDelayed )
+		SetupRenderState( iWidth, iHeight );
 
 	CMatRenderContextPtr pRenderContext( vgui::MaterialSystem() );
 	
@@ -741,6 +819,54 @@ void CPotteryWheelPanel::Paint()
 
 	vgui::MatSystemSurface()->End3DPaint( );
 }
+//
+//void CPotteryWheelPanel::EnableRenderingWithFlashlight( void *pvConfiguration )
+//{
+//	m_pvRenderingWithFlashlightConfiguration = pvConfiguration;
+//}
+//
+//void CPotteryWheelPanel::RenderCapture()
+//{
+//	if ( !GetRenderingWithFlashlightConfiguration() )
+//		return;
+//
+//	CRenderCaptureConfigurationState *pCfg = reinterpret_cast< CRenderCaptureConfigurationState * >( GetRenderingWithFlashlightConfiguration() );
+//
+//	m_nRenderWidth = pCfg->m_pFlashlightDepthTexture->GetActualWidth();
+//	m_nRenderHeight = pCfg->m_pFlashlightDepthTexture->GetActualHeight();
+//	if ( !m_bSetupRenderStateDelayed )
+//		SetupRenderState( m_nRenderWidth, m_nRenderHeight );
+//
+//	CMatRenderContextPtr pRenderContext( vgui::MaterialSystem() );
+//	PIXEVENT( pRenderContext, "CPotteryWheelPanel::RenderCapture" );
+//
+//	CViewSetup view2d;
+//	view2d.x				= 0;
+//	view2d.y				= 0;
+//	view2d.width			= m_nRenderWidth;
+//	view2d.height			= m_nRenderHeight;
+//	pCfg->m_pIVRenderView->Push3DView( pRenderContext, view2d, VIEW_CLEAR_COLOR | VIEW_CLEAR_DEPTH, pCfg->m_pDummyColorBufferTexture, NULL, pCfg->m_pFlashlightDepthTexture );
+//
+//	pRenderContext->ClearColor4ub( 0, 0, 0, 0 );
+//	pRenderContext->ClearBuffers( true, true, false );
+//
+//	m_bInRender3dForRenderCapture = true;
+//	pRenderContext->CullMode(MATERIAL_CULLMODE_CW);
+//	g_pStudioRender->ForcedMaterialOverride( NULL, OVERRIDE_DEPTH_WRITE );
+//
+//	// Don't draw the 3D scene w/ stencil
+//	ShaderStencilState_t state;
+//	pRenderContext->SetStencilState( state );
+//
+//	OnPaint3D();
+//
+//	g_pStudioRender->ForcedMaterialOverride( NULL );
+//	pRenderContext->CullMode(MATERIAL_CULLMODE_CCW);
+//	m_bInRender3dForRenderCapture = false;
+//
+//	pCfg->m_pIVRenderView->PopView( pRenderContext, NULL );
+//	pRenderContext->Flush();
+//}
 
 
 //-----------------------------------------------------------------------------

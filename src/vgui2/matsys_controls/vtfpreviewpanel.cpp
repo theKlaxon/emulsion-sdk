@@ -75,12 +75,54 @@ void CVTFPreviewPanel::SetVTF( const char *pFullPath, bool bLoadImmediately )
 	m_flLastRotationTime = Plat_FloatTime();
 }
 
+void CVTFPreviewPanel::SetTwoVTFs( const char *pFullPath, const char *pSecondFullPath )
+{
+	m_PreviewTexture.Init( pFullPath, "editor texture" );
+	m_VTFName = pFullPath;
+	m_SecondPreviewTexture.Init( pSecondFullPath, "editor texture" );
+	m_SecondVTFName = pSecondFullPath;
+
+	KeyValues *pVMTKeyValues = new KeyValues( "UnlitGeneric" );
+	if ( m_PreviewTexture->IsCubeMap() )
+	{
+		pVMTKeyValues->SetString( "$envmap", pFullPath );
+	}
+	else if ( m_PreviewTexture->IsNormalMap() )
+	{
+		pVMTKeyValues->SetString( "$bumpmap", pFullPath );
+	}
+	else
+	{
+		pVMTKeyValues->SetString( "$basetexture", pFullPath );
+	}
+
+	pVMTKeyValues->SetString( "$detail", pSecondFullPath );
+	pVMTKeyValues->SetInt( "$detailscale", 1 );
+	pVMTKeyValues->SetInt( "$detailblendmode", 1 ); // additive
+
+	pVMTKeyValues->SetInt( "$nocull", 1 );
+	pVMTKeyValues->SetInt( "$nodebug", 1 );
+	m_PreviewMaterial.Init( MaterialSystem()->CreateMaterial( pFullPath, pVMTKeyValues ));
+
+	MatSystemSurface()->DrawSetTextureMaterial( m_nTextureID, m_PreviewMaterial );
+
+	// Reset the camera direction
+	m_vecCameraDirection.Init( 1.0f, 0.0f, 0.0f );
+	m_flLastRotationTime = Plat_FloatTime();
+}
+
+
 //-----------------------------------------------------------------------------
 // Gets the current VTF
 //-----------------------------------------------------------------------------
 const char *CVTFPreviewPanel::GetVTF() const
 {
 	return m_VTFName;
+}
+
+const char *CVTFPreviewPanel::GetSecondVTF() const
+{
+	return m_SecondVTFName;
 }
 
 //-----------------------------------------------------------------------------

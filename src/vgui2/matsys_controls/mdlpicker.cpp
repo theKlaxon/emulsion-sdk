@@ -5,12 +5,12 @@
 //=============================================================================
 
 #include "matsys_controls/mdlpicker.h"
-#include "matsys_controls/mdlpanel.h"
 #include "tier1/keyvalues.h"
 #include "tier1/utldict.h"
 #include "filesystem.h"
 #include "studio.h"
 #include "matsys_controls/matsyscontrols.h"
+#include "matsys_controls/mdlpanel.h"
 #include "vgui_controls/Splitter.h"
 #include "vgui_controls/ComboBox.h"
 #include "vgui_controls/Button.h"
@@ -30,7 +30,7 @@
 #include "bitmap/tgawriter.h"
 #include "tier3/tier3.h"
 #include "istudiorender.h"
-#include "../vgui2/src/VPanel.h"
+//#include "../vgui2/src/VPanel.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -421,7 +421,7 @@ void CMDLPicker::SelectMDL( const char *pRelativePath )
 	{
 		m_hSelectedMDL = MDLHANDLE_INVALID;
 	}
-	m_pMDLPreview->SetMDL( m_hSelectedMDL, NULL );
+	m_pMDLPreview->SetMDL( m_hSelectedMDL );
 
 	m_pMDLPreview->LookAtMDL();
 

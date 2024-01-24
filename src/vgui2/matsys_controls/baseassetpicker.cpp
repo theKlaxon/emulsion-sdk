@@ -1149,7 +1149,7 @@ void CBaseAssetPicker::SetSelection( const char *pAssetName, bool bInitialSelect
 		if ( i != -1 )
 		{
 			m_pAssetBrowser->SetSelectedCell( i, 0 );
-			m_pAssetBrowser->ScrollToItem( i );
+			//m_pAssetBrowser->ScrollToItem( i );
 		}
 	}
 }
@@ -1446,10 +1446,10 @@ void CBaseAssetPicker::RescanAssets()
 //-----------------------------------------------------------------------------
 // Returns the mod path to the item index
 //-----------------------------------------------------------------------------
-const char *CBaseAssetPicker::GetModPath( int nModIndex )
-{
-	return s_AssetCache.ModInfo( nModIndex ).m_Path.Get();
-}
+//const char *CBaseAssetPicker::GetModPath( int nModIndex )
+//{
+//	return s_AssetCache.ModInfo( nModIndex ).m_Path.Get();
+//}
 
 
 //-----------------------------------------------------------------------------

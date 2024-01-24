@@ -395,7 +395,7 @@ void CMDLSequencePicker::SelectMDL( const char *pMDLName )
 	{
 		m_hSelectedMDL = MDLHANDLE_INVALID;
 	}
-	m_pMDLPreview->SetMDL( m_hSelectedMDL, NULL );
+	m_pMDLPreview->SetMDL( m_hSelectedMDL );
 	m_pMDLPreview->LookAtMDL();
 	RefreshActivitiesAndSequencesList();
 }

@@ -20,6 +20,7 @@
 #include "bone_setup.h"
 #include "renderparm.h"
 #include "vphysics_interface.h"
+//#include "game/client/irendercaptureconfiguration.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -32,7 +33,7 @@ DECLARE_BUILD_FACTORY( CMDLPanel );
 // Purpose: Keeps a global clock to autoplay sequences to run from
 //			Also deals with speedScale changes
 //-----------------------------------------------------------------------------
-static float GetAutoPlayTime(void)
+static float GetAutoPlayTime( void )
 {
 	static int g_prevTicks;
 	static float g_time;
@@ -45,11 +46,12 @@ static float GetAutoPlayTime(void)
 		g_prevTicks = ticks;
 	}
 
-	g_time += (ticks - g_prevTicks) / 1000.0f;
+	g_time += ( ticks - g_prevTicks ) / 1000.0f;
 	g_prevTicks = ticks;
 
 	return g_time;
 }
+
 
 //-----------------------------------------------------------------------------
 // Constructor, destructor
@@ -61,14 +63,24 @@ CMDLPanel::CMDLPanel( vgui::Panel *pParent, const char *pName ) : BaseClass( pPa
 	// Used to poll input
 	vgui::ivgui()->AddTickSignal( GetVPanel() );
 
-	// Deal with the default cubemap
-	ITexture* pCubemapTexture = vgui::MaterialSystem()->FindTexture("editor/cubemap", NULL, true);
-	m_DefaultEnvCubemap.Init(pCubemapTexture);
-	pCubemapTexture = vgui::MaterialSystem()->FindTexture("editor/cubemap.hdr", NULL, true);
-	m_DefaultHDREnvCubemap.Init(pCubemapTexture);
-
 	SetIdentityMatrix( m_RootMDL.m_MDLToWorld );
-	m_nNumSequenceLayers = 0;
+	m_bDrawCollisionModel = false;
+	m_bWireFrame = false;
+	m_bGroundGrid = false;
+	m_bLockView = false;
+	m_bLookAtCamera = true;
+	m_bAnimationPause = false;
+	
+	m_iCameraAttachment = -1;
+	m_iRenderCaptureCameraAttachment = -1;
+	Q_memset( m_iDirectionalLightAttachments, ~0, sizeof( m_iDirectionalLightAttachments ) );
+
+	m_flAutoPlayTimeBase = GetAutoPlayTime();
+
+	m_bCameraOrientOverrideEnabled = false;
+	m_bCameraPositionOverrideEnabled = false;
+	m_vecCameraOrientOverride.Init();
+	m_vecCameraPositionOverride.Init();
 }
 
 CMDLPanel::~CMDLPanel()
@@ -87,85 +99,6 @@ void CMDLPanel::ApplySchemeSettings( vgui::IScheme *pScheme )
 	SetBorder( pScheme->GetBorder( "MenuBorder") );
 }
 
-//-----------------------------------------------------------------------------
-// Stores the clip
-//-----------------------------------------------------------------------------
-void CMDLPanel::SetMDL(MDLHandle_t handle, void* pProxyData)
-{
-	m_RootMDL.m_MDL.SetMDL(handle);
-	m_RootMDL.m_MDL.m_pProxyData = pProxyData;
-
-	Vector vecMins, vecMaxs;
-	GetMDLBoundingBox(&vecMins, &vecMaxs, handle, m_RootMDL.m_MDL.m_nSequence);
-
-	m_RootMDL.m_MDL.m_bWorldSpaceViewTarget = false;
-	m_RootMDL.m_MDL.m_vecViewTarget.Init(100.0f, 0.0f, vecMaxs.z);
-
-	// Set the pose parameters to the default for the mdl
-	SetPoseParameters(NULL, 0);
-
-	// Clear any sequence layers
-	SetSequenceLayers(NULL, 0);
-}
-
-//-----------------------------------------------------------------------------
-// An MDL was selected
-//-----------------------------------------------------------------------------
-void CMDLPanel::SetMDL(const char* pMDLName, void* pProxyData)
-{
-	MDLHandle_t hMDLFindResult = vgui::MDLCache()->FindMDL(pMDLName);
-	MDLHandle_t hMDL = pMDLName ? hMDLFindResult : MDLHANDLE_INVALID;
-	if (vgui::MDLCache()->IsErrorModel(hMDL))
-	{
-		hMDL = MDLHANDLE_INVALID;
-	}
-
-	SetMDL(hMDL, pProxyData);
-
-	// FindMDL takes a reference and the the CMDL will also hold a reference for as long as it sticks around. Release the FindMDL reference.
-	int nRef = vgui::MDLCache()->Release(hMDLFindResult);
-	(void)nRef; // Avoid unreferenced variable warning
-	AssertMsg(hMDL == MDLHANDLE_INVALID || nRef > 0, "CMDLPanel::SetMDL referenced a model that has a zero ref count.");
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: Returns a model bounding box.
-//-----------------------------------------------------------------------------
-bool CMDLPanel::GetBoundingBox(Vector& vecBoundsMin, Vector& vecBoundsMax)
-{
-	// Check to see if we have a valid model to look at.
-	if (m_RootMDL.m_MDL.GetMDL() == MDLHANDLE_INVALID)
-		return false;
-
-	GetMDLBoundingBox(&vecBoundsMin, &vecBoundsMax, m_RootMDL.m_MDL.GetMDL(), m_RootMDL.m_MDL.m_nSequence);
-
-	return true;
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: Returns a more accurate bounding sphere
-//-----------------------------------------------------------------------------
-bool CMDLPanel::GetBoundingSphere(Vector& vecCenter, float& flRadius)
-{
-	// Check to see if we have a valid model to look at.
-	if (m_RootMDL.m_MDL.GetMDL() == MDLHANDLE_INVALID)
-		return false;
-
-	Vector vecEngineCenter;
-	GetMDLBoundingSphere(&vecEngineCenter, &flRadius, m_RootMDL.m_MDL.GetMDL(), m_RootMDL.m_MDL.m_nSequence);
-	VectorTransform(vecEngineCenter, m_RootMDL.m_MDLToWorld, vecCenter);
-
-	return true;
-}
-
-//-----------------------------------------------------------------------------
-// Purpose:
-//-----------------------------------------------------------------------------
-void CMDLPanel::SetModelAnglesAndPosition(const QAngle& angRot, const Vector& vecPos)
-{
-	SetIdentityMatrix(m_RootMDL.m_MDLToWorld);
-	AngleMatrix(angRot, vecPos, m_RootMDL.m_MDLToWorld);
-}
 
 //-----------------------------------------------------------------------------
 // Rendering options
@@ -193,6 +126,52 @@ void CMDLPanel::SetLockView( bool bLocked )
 void CMDLPanel::SetLookAtCamera( bool bLookAtCamera )
 {
 	m_bLookAtCamera = bLookAtCamera;
+}
+
+//-----------------------------------------------------------------------------
+// Lock the camera position and angles to an attachment point
+//-----------------------------------------------------------------------------
+void CMDLPanel::SetCameraAttachment( const char *pszAttachment )
+{
+	// Check to see if we have a valid model to look at.
+	if ( m_RootMDL.m_MDL.GetMDL() == MDLHANDLE_INVALID )
+		return;
+
+	SetLookAtCamera( false );
+
+	CStudioHdr studioHdr( g_pMDLCache->GetStudioHdr( m_RootMDL.m_MDL.GetMDL() ), g_pMDLCache );
+
+	m_iCameraAttachment = Studio_FindAttachment( &studioHdr, pszAttachment );
+}
+
+//-----------------------------------------------------------------------------
+// Set the light render capture camera position and angles to an attachment point
+//-----------------------------------------------------------------------------
+void CMDLPanel::SetRenderCaptureCameraAttachment( const char *pszAttachment )
+{
+	// Check to see if we have a valid model to look at.
+	if ( m_RootMDL.m_MDL.GetMDL() == MDLHANDLE_INVALID )
+		return;
+
+	CStudioHdr studioHdr( g_pMDLCache->GetStudioHdr( m_RootMDL.m_MDL.GetMDL() ), g_pMDLCache );
+
+	m_iRenderCaptureCameraAttachment = Studio_FindAttachment( &studioHdr, pszAttachment );
+}
+
+//-----------------------------------------------------------------------------
+// Set the directional light attachment point for direction animation
+//-----------------------------------------------------------------------------
+void CMDLPanel::SetDirectionalLightAttachment( int idx, const char *pszAttachment )
+{
+	// Check to see if we have a valid model to look at.
+	if ( m_RootMDL.m_MDL.GetMDL() == MDLHANDLE_INVALID )
+		return;
+	if ( idx < 0 || idx >= MATERIAL_MAX_LIGHT_COUNT )
+		return;
+
+	CStudioHdr studioHdr( g_pMDLCache->GetStudioHdr( m_RootMDL.m_MDL.GetMDL() ), g_pMDLCache );
+
+	m_iDirectionalLightAttachments[idx] = Studio_FindAttachment( &studioHdr, pszAttachment );
 }
 
 //-----------------------------------------------------------------------------
@@ -322,7 +301,7 @@ void CMDLPanel::DrawCollisionModel()
 				{
 					MatrixCopy( pBoneToWorld[ boneIndex ], xform );
 				}
-				IMesh *pMesh = pRenderContext->GetDynamicMesh( true, NULL, NULL, m_Wireframe );
+				IMesh *pMesh = pRenderContext->GetDynamicMesh( true, NULL, NULL, GetWireframeMaterial() );
 
 				CMeshBuilder meshBuilder;
 				meshBuilder.Begin( pMesh, MATERIAL_TRIANGLES, vertCount/3 );
@@ -365,71 +344,450 @@ void CMDLPanel::OnPaint3D()
 	UpdateStudioRenderConfig();
 
 	CMatRenderContextPtr pRenderContext( vgui::MaterialSystem() );
-	ITexture* pLocalCube = pRenderContext->GetLocalCubemap();
-	if (vgui::MaterialSystemHardwareConfig()->GetHDRType() == HDR_TYPE_NONE) {
-		ITexture* pMyCube =
-			HasLightProbe() ? GetLightProbeCubemap(false) : m_DefaultEnvCubemap;
-		pRenderContext->BindLocalCubemap(pMyCube);
-	}
-	else {
-		ITexture* pMyCube =
-			HasLightProbe() ? GetLightProbeCubemap(true) : m_DefaultHDREnvCubemap;
-		pRenderContext->BindLocalCubemap(pMyCube);
+	
+	// We want the models to use their natural alpha, not depth in alpha
+	pRenderContext->SetIntRenderingParameter( INT_RENDERPARM_WRITE_DEPTH_TO_DESTALPHA, 0 );
+
+	//if ( IsPaint3dForRenderCapture() )
+	//{
+	//	// We are rendering into flashlight depth texture
+	//	pRenderContext->SetFlashlightMode( false ); // disable shadows since we should be using DEPTH_WRITE material
+	//}
+	//else if ( GetRenderingWithFlashlightConfiguration() )
+	//{
+	//	// Setup shadow state that we configured
+	//	g_pStudioRender->ClearAllShadows();
+	//	// NOTE: flashlight shadow is added post bone setup
+	//}
+	//else
+	{
+		// flashlights can't work in the model panel under queued mode (the state isn't ready yet, so causes a crash)
+		pRenderContext->SetFlashlightMode( false );
 	}
 
-	if (m_bGroundGrid) {
+	ITexture *pMyCube = materials->FindTexture( "engine/defaultcubemap", TEXTURE_GROUP_CUBE_MAP, true );
+
+	if ( HasLightProbe() )
+	{
+		pMyCube = GetLightProbeCubemap( vgui::MaterialSystemHardwareConfig()->GetHDRType() != HDR_TYPE_NONE );
+	}
+	pRenderContext->BindLocalCubemap( pMyCube );
+
+	if ( m_bGroundGrid )
+	{
 		DrawGrid();
 	}
 
-	if (m_bLookAtCamera)
+	if ( m_bLookAtCamera )
 	{
 		matrix3x4_t worldToCamera;
-		ComputeCameraTransform(&worldToCamera);
+		ComputeCameraTransform( &worldToCamera );
 
 		Vector vecPosition;
-		MatrixGetColumn(worldToCamera, 3, vecPosition);
+		MatrixGetColumn( worldToCamera, 3, vecPosition );
 		m_RootMDL.m_MDL.m_bWorldSpaceViewTarget = true;
 		m_RootMDL.m_MDL.m_vecViewTarget = vecPosition;
 	}
 
-	if (m_bDrawCollisionModel) {
-		DrawCollisionModel();
-	}
+	//Draw();
+	if (!g_pMDLCache)
+		return;
 
-	pRenderContext->Flush();
-	StudioRender()->UpdateConfig(oldStudioRenderConfig);
-	pRenderContext->BindLocalCubemap(pLocalCube);
+	if (m_RootMDL.m_MDL.GetMDL() == MDLHANDLE_INVALID)
+		return;
 
-}
+	// Draw the MDL
+	CStudioHdr* pRootStudioHdr = new CStudioHdr(g_pMDLCache->GetStudioHdr(m_RootMDL.m_MDL.GetMDL()), g_pMDLCache);
+	CMatRenderData< matrix3x4_t > rdBoneToWorld(pRenderContext, pRootStudioHdr->numbones());
+	const matrix3x4_t* pRootMergeHdrModelToWorld = &m_RootMDL.m_MDLToWorld;
+	const matrix3x4_t* pFollowBoneToWorld = rdBoneToWorld.Base();
+	m_RootMDL.m_MDL.SetUpBones(m_RootMDL.m_MDLToWorld, pRootStudioHdr->numbones(), rdBoneToWorld.Base());
 
-//-----------------------------------------------------------------------------
-// Sets the current sequence
-//-----------------------------------------------------------------------------
-void CMDLPanel::SetSequence(int nSequence)
-{
-	m_RootMDL.m_MDL.m_nSequence = nSequence;
-}
+	OnPostSetUpBonesPreDraw();
 
-//-----------------------------------------------------------------------------
-// Set the overlay sequence layers
-//-----------------------------------------------------------------------------
-void CMDLPanel::SetSequenceLayers(const MDLSquenceLayer_t* pSequenceLayers, int nCount)
-{
-	if (pSequenceLayers)
+	int nFlags = STUDIORENDER_DRAW_NO_SHADOWS;
+
+	OnModelDrawPassStart(0, pRootStudioHdr, nFlags);
+	m_RootMDL.m_MDL.Draw(m_RootMDL.m_MDLToWorld, rdBoneToWorld.Base(), nFlags);
+	OnModelDrawPassFinished(0, pRootStudioHdr, nFlags);
+
+	// Draw the merge MDLs.
+	matrix3x4_t* pStackCopyOfRootMergeHdrModelToWorld = NULL;
+	matrix3x4_t matMergeBoneToWorld[MAXSTUDIOBONES];
+	int nMergeCount = m_aMergeMDLs.Count();
+	for (int iMerge = 0; iMerge < nMergeCount; ++iMerge)
 	{
-		m_nNumSequenceLayers = MIN(MAX_SEQUENCE_LAYERS, nCount);
-		for (int iLayer = 0; iLayer < m_nNumSequenceLayers; ++iLayer)
+		matrix3x4_t* pMergeBoneToWorld = &matMergeBoneToWorld[0];
+
+		// Get the merge studio header.
+		CStudioHdr* pMergeHdr = new CStudioHdr(g_pMDLCache->GetStudioHdr(m_aMergeMDLs[iMerge].m_MDL.GetMDL()), g_pMDLCache);
+		m_aMergeMDLs[iMerge].m_MDL.SetupBonesWithBoneMerge(pMergeHdr, pMergeBoneToWorld, pRootStudioHdr, pFollowBoneToWorld, *pRootMergeHdrModelToWorld);
+
+		OnModelDrawPassStart(0, pMergeHdr, nFlags);
+		m_aMergeMDLs[iMerge].m_MDL.Draw(m_aMergeMDLs[iMerge].m_MDLToWorld, pMergeBoneToWorld, nFlags);
+		OnModelDrawPassFinished(0, pMergeHdr, nFlags);
+
+		//if (m_aMergeMDLs[iMerge].m_bRequestBoneMergeTakeover && (iMerge + 1 < nMergeCount))
+		//{
+		//	// This model is requesting bonemerge takeover and we have more models to render after it
+		//	delete pRootStudioHdr;
+		//	pRootStudioHdr = pMergeHdr;
+		//	pRootMergeHdrModelToWorld = &m_aMergeMDLs[iMerge].m_MDLToWorld;
+
+		//	// Make a copy of bone to world transforms in a separate stack buffer and repoint root transforms
+		//	// for future bonemerge into that buffer
+		//	if (!pStackCopyOfRootMergeHdrModelToWorld)
+		//		pStackCopyOfRootMergeHdrModelToWorld = (matrix3x4_t*)stackalloc(sizeof(matMergeBoneToWorld));
+		//	Q_memcpy(pStackCopyOfRootMergeHdrModelToWorld, matMergeBoneToWorld, sizeof(matMergeBoneToWorld));
+		//	pFollowBoneToWorld = pStackCopyOfRootMergeHdrModelToWorld;
+		//}
+		//else
 		{
-			m_SequenceLayers[iLayer] = pSequenceLayers[iLayer];
+			delete pMergeHdr;
 		}
 	}
-	else
+	rdBoneToWorld.Release();
+
+	delete pRootStudioHdr;
+
+	//if ( IsPaint3dForRenderCapture() )
+	//{
+	//	// We are finished rendering into flashlight buffer
+	//}
+	//else if ( GetRenderingWithFlashlightConfiguration() )
+	//{
+	//	// Clear all shadow state that we configured and used now
+	//	g_pStudioRender->ClearAllShadows();
+	//}
+
+	pRenderContext->Flush();
+	StudioRender()->UpdateConfig( oldStudioRenderConfig );
+}
+
+void CMDLPanel::OnModelDrawPassStart( int iPass, CStudioHdr *pStudioHdr, int &nFlags )
+{
+	//if ( IsPaint3dForRenderCapture() )
+	//	nFlags |= STUDIORENDER_SHADOWDEPTHTEXTURE;
+	//else if ( GetRenderingWithFlashlightConfiguration() )
+	//	nFlags &=~STUDIORENDER_DRAW_NO_SHADOWS;
+}
+
+void CMDLPanel::OnModelDrawPassFinished( int iPass, CStudioHdr *pStudioHdr, int &nFlags )
+{
+}
+
+void CMDLPanel::OnPostSetUpBonesPreDraw()
+{
+	bool bFlashlightPosKnown = false;
+	Vector vecPositionFlashlight;
+	QAngle anglesFlashlight;
+
+	bool bCameraPosKnown = false;
+	Vector vecPositionCamera;
+	QAngle anglesCamera;
+
+	if ( m_iRenderCaptureCameraAttachment >= 0 )
 	{
-		m_nNumSequenceLayers = 0;
-		V_memset(m_SequenceLayers, 0, sizeof(m_SequenceLayers));
+		matrix3x4_t camera;
+		if ( GetAttachment( m_iRenderCaptureCameraAttachment+1, camera ) )
+		{
+			Vector vecPosition;
+			QAngle angles;
+
+			MatrixPosition( camera, vecPosition );
+			MatrixAngles( camera, angles );
+
+			bFlashlightPosKnown = true;
+			vecPositionFlashlight = vecPosition;
+			anglesFlashlight = angles;
+		}
+	}
+	
+	if ( m_iCameraAttachment >= 0 )
+	{
+		matrix3x4_t camera;
+		if ( GetAttachment( m_iCameraAttachment+1, camera ) )
+		{
+			Vector vecPosition;
+			QAngle angles;
+
+			MatrixPosition( camera, vecPosition );
+			MatrixAngles( camera, angles );
+
+			bCameraPosKnown = true;
+			vecPositionCamera = vecPosition;
+			anglesCamera = angles;
+
+			if ( IsCameraPositionOverrideEnabled() )
+			{
+				vecPositionCamera += m_vecCameraPositionOverride;			
+			}
+
+			if ( !bFlashlightPosKnown )
+			{
+				// DEBUG: move light off from the actual camera
+				Vector basisUp, basisRight, basisForward;
+				AngleVectors( angles, &basisForward, &basisRight, &basisUp );
+
+				float flCycle0to1 = ( m_RootMDL.m_MDL.m_flTime - floor( m_RootMDL.m_MDL.m_flTime ) );
+				float flDistance = 1.0f + ( flCycle0to1 - 0.5f ) * ( flCycle0to1 - 0.5f ) * 4 * 9;
+				vecPosition += basisUp * flDistance;
+
+				bFlashlightPosKnown = true;
+				vecPositionFlashlight = vecPosition;
+				anglesFlashlight = angles;
+			}
+
+			if ( IsCameraOrientOverrideEnabled() )
+			{
+				anglesCamera.x += m_vecCameraOrientOverride.x;
+				anglesCamera.y += m_vecCameraOrientOverride.y;
+				anglesCamera.z += m_vecCameraOrientOverride.z;
+			}
+
+		}
+	}
+
+	//if ( bFlashlightPosKnown && GetRenderingWithFlashlightConfiguration() != NULL )
+	//{
+	//	CRenderCaptureConfigurationState *pFlashlightInfo = reinterpret_cast< CRenderCaptureConfigurationState * >( GetRenderingWithFlashlightConfiguration() );
+	//	
+	//	//
+	//	// Update flashlight position
+	//	//
+	//	{
+	//		pFlashlightInfo->m_renderFlashlightState.m_vecLightOrigin = vecPositionFlashlight;
+	//		AngleQuaternion( anglesFlashlight, pFlashlightInfo->m_renderFlashlightState.m_quatOrientation );
+	//	}
+
+	//	//
+	//	// Build world to shadow matrix, then perspective projection and concatenate
+	//	//
+	//	{
+	//		VMatrix matWorldToShadowView, matPerspective;
+	//		matrix3x4_t matOrientation;											
+	//		QuaternionMatrix( pFlashlightInfo->m_renderFlashlightState.m_quatOrientation, matOrientation );		// Convert quat to matrix3x4
+	//		PositionMatrix( vec3_origin, matOrientation );				// Zero out translation elements
+
+	//		VMatrix matBasis( matOrientation );							// Convert matrix3x4 to VMatrix
+
+	//		Vector vForward, vLeft, vUp;
+	//		matBasis.GetBasisVectors( vForward, vLeft, vUp );
+	//		matBasis.SetForward( vLeft );								// Bizarre vector flip inherited from earlier code, WTF?
+	//		matBasis.SetLeft( vUp );
+	//		matBasis.SetUp( vForward );
+	//		matWorldToShadowView = matBasis.Transpose();					// Transpose
+
+	//		Vector translation;
+	//		Vector3DMultiply( matWorldToShadowView, pFlashlightInfo->m_renderFlashlightState.m_vecLightOrigin, translation );
+
+	//		translation *= -1.0f;
+	//		matWorldToShadowView.SetTranslation( translation );
+
+	//		// The the bottom row.
+	//		matWorldToShadowView[3][0] = matWorldToShadowView[3][1] = matWorldToShadowView[3][2] = 0.0f;
+	//		matWorldToShadowView[3][3] = 1.0f;
+
+	//		MatrixBuildPerspective( matPerspective, pFlashlightInfo->m_renderFlashlightState.m_fHorizontalFOVDegrees,
+	//			pFlashlightInfo->m_renderFlashlightState.m_fVerticalFOVDegrees,
+	//			pFlashlightInfo->m_renderFlashlightState.m_NearZ, pFlashlightInfo->m_renderFlashlightState.m_FarZ );
+
+	//		MatrixMultiply( matPerspective, matWorldToShadowView, pFlashlightInfo->m_renderMatrixWorldToShadow );
+	//	}
+	//}
+
+	for ( int j = 0; j < ( int ) MIN( m_LightingState.m_nLocalLightCount, Q_ARRAYSIZE( m_iDirectionalLightAttachments ) ); ++ j )
+	{
+		if ( m_iDirectionalLightAttachments[j] >= 0 )
+		{
+			matrix3x4_t camera;
+			if ( GetAttachment( m_iDirectionalLightAttachments[j]+1, camera ) )
+			{
+				Vector vecPosition;
+				QAngle angles;
+
+				MatrixPosition( camera, vecPosition );
+				MatrixAngles( camera, angles );
+
+				Vector vecForward;
+				AngleVectors( angles, &vecForward );
+				m_LightingState.m_pLocalLightDesc[j].m_Direction = vecForward;
+				m_LightingState.m_pLocalLightDesc[j].RecalculateDerivedValues();
+			}
+		}
+	}
+
+	//if ( IsPaint3dForRenderCapture() )
+	//{
+	//	Assert( bFlashlightPosKnown );
+	//	CRenderCaptureConfigurationState *pFlashlightInfo = reinterpret_cast< CRenderCaptureConfigurationState * >( GetRenderingWithFlashlightConfiguration() );
+	//	SetCameraPositionAndAngles( vecPositionFlashlight, anglesFlashlight );
+
+	//	Camera_t &cameraSettings = GetCameraSettings();
+	//	float flZnear = cameraSettings.m_flZNear, flZfar = cameraSettings.m_flZFar;
+	//	cameraSettings.m_flZNear = pFlashlightInfo->m_renderFlashlightState.m_NearZ;
+	//	cameraSettings.m_flZFar = pFlashlightInfo->m_renderFlashlightState.m_FarZ;
+	//	SetupRenderStateDelayed();	// Configure view with the updated camera settings and restore Z planes
+	//	cameraSettings.m_flZNear = flZnear, cameraSettings.m_flZFar = flZfar;
+	//}
+	//else
+	{
+		if ( bCameraPosKnown )
+		{
+			SetCameraPositionAndAngles( vecPositionCamera, anglesCamera );
+		}
+		//SetupRenderStateDelayed();
+		//if ( GetRenderingWithFlashlightConfiguration() )
+		//{
+		//	Assert( bFlashlightPosKnown );
+		//	// Add the shadow we rendered in previous pass to our model
+		//	CRenderCaptureConfigurationState *pFlashlightInfo = reinterpret_cast< CRenderCaptureConfigurationState * >( GetRenderingWithFlashlightConfiguration() );
+		//	g_pStudioRender->AddShadow( NULL, NULL, &pFlashlightInfo->m_renderFlashlightState, &pFlashlightInfo->m_renderMatrixWorldToShadow, pFlashlightInfo->m_pFlashlightDepthTexture );
+		//}
 	}
 }
 
+//-----------------------------------------------------------------------------
+// called when we're ticked...
+//-----------------------------------------------------------------------------
+void CMDLPanel::OnTick()
+{
+	BaseClass::OnTick();
+	float flCurrentTime = GetAutoPlayTime();
+	float flMdlTime = flCurrentTime - m_flAutoPlayTimeBase;
+	m_flAutoPlayTimeBase = flCurrentTime;
+	// we dont have AdjustTime in portal2
+	//if ( m_RootMDL.m_MDL.GetMDL() != MDLHANDLE_INVALID && !m_bAnimationPause )
+	//{
+	//	m_RootMDL.m_MDL.AdjustTime( flMdlTime );
+	//}
+	//for ( int k = 0; k < m_aMergeMDLs.Count(); ++ k )
+	//{
+	//	if ( m_aMergeMDLs[k].m_MDL.GetMDL() != MDLHANDLE_INVALID && !m_bAnimationPause )
+	//	{
+	//		m_aMergeMDLs[k].m_MDL.AdjustTime( flMdlTime );
+	//	}
+	//}
+}
+
+//-----------------------------------------------------------------------------
+// input
+//-----------------------------------------------------------------------------
+void CMDLPanel::OnMouseDoublePressed( vgui::MouseCode code )
+{
+	float flRadius;
+	Vector vecCenter;
+	GetBoundingSphere( vecCenter, flRadius );
+	LookAt( vecCenter, flRadius );
+
+	BaseClass::OnMouseDoublePressed( code );
+}
+
+//-----------------------------------------------------------------------------
+// Stores the clip
+//-----------------------------------------------------------------------------
+void CMDLPanel::SetMDL(MDLHandle_t handle)
+{
+	m_RootMDL.m_MDL.SetMDL(handle);
+
+	Vector vecMins, vecMaxs;
+	GetMDLBoundingBox(&vecMins, &vecMaxs, handle, m_RootMDL.m_MDL.m_nSequence);
+
+	m_RootMDL.m_MDL.m_bWorldSpaceViewTarget = false;
+	m_RootMDL.m_MDL.m_vecViewTarget.Init(100.0f, 0.0f, vecMaxs.z);
+
+	// Set the pose parameters to the default for the mdl
+	SetPoseParameters(NULL, 0);
+
+	// Clear any sequence layers
+	SetSequenceLayers(NULL, 0);
+}
+
+//-----------------------------------------------------------------------------
+// An MDL was selected
+//-----------------------------------------------------------------------------
+void CMDLPanel::SetMDL(const char* pMDLName)
+{
+	MDLHandle_t hMDL = pMDLName ? g_pMDLCache->FindMDL(pMDLName) : MDLHANDLE_INVALID;
+	if (g_pMDLCache->IsErrorModel(hMDL))
+	{
+		hMDL = MDLHANDLE_INVALID;
+	}
+
+	SetMDL(hMDL);
+}
+
+void CMDLPanel::SetSkin(int nSkin)
+{
+	m_RootMDL.m_MDL.m_nSkin = nSkin;
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: Returns a model bounding box.
+//-----------------------------------------------------------------------------
+bool CMDLPanel::GetBoundingBox(Vector& vecBoundsMin, Vector& vecBoundsMax)
+{
+	// Check to see if we have a valid model to look at.
+	if (m_RootMDL.m_MDL.GetMDL() == MDLHANDLE_INVALID)
+		return false;
+
+	GetMDLBoundingBox(&vecBoundsMin, &vecBoundsMax, m_RootMDL.m_MDL.GetMDL(), m_RootMDL.m_MDL.m_nSequence);
+
+	return true;
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: Returns a more accurate bounding sphere
+//-----------------------------------------------------------------------------
+bool CMDLPanel::GetBoundingSphere(Vector& vecCenter, float& flRadius)
+{
+	// Check to see if we have a valid model to look at.
+	if (m_RootMDL.m_MDL.GetMDL() == MDLHANDLE_INVALID)
+		return false;
+
+	Vector vecEngineCenter;
+	GetMDLBoundingSphere(&vecEngineCenter, &flRadius, m_RootMDL.m_MDL.GetMDL(), m_RootMDL.m_MDL.m_nSequence);
+	VectorTransform(vecEngineCenter, m_RootMDL.m_MDLToWorld, vecCenter);
+
+	return true;
+}
+
+//-----------------------------------------------------------------------------
+// Purpose:
+//-----------------------------------------------------------------------------
+bool CMDLPanel::GetAttachment(const char* pszAttachment, matrix3x4_t& matrixOut)
+{
+	if (m_RootMDL.m_MDL.GetMDL() == MDLHANDLE_INVALID)
+		return false;
+
+	CStudioHdr studioHdr(g_pMDLCache->GetStudioHdr(m_RootMDL.m_MDL.GetMDL()), g_pMDLCache);
+
+	int iAttachmentNum = Studio_FindAttachment(&studioHdr, pszAttachment);
+	if (iAttachmentNum == -1)
+		return false;
+
+	return GetAttachment(iAttachmentNum + 1, matrixOut);
+}
+
+//-----------------------------------------------------------------------------
+// Purpose:
+//-----------------------------------------------------------------------------
+bool CMDLPanel::GetAttachment(int iAttachmentNum, matrix3x4_t& matrixOut)
+{
+	if (m_RootMDL.m_MDL.GetMDL() == MDLHANDLE_INVALID)
+		return false;
+
+	return m_RootMDL.m_MDL.GetAttachment(iAttachmentNum, matrixOut);
+}
+
+//-----------------------------------------------------------------------------
+// Purpose:
+//-----------------------------------------------------------------------------
+void CMDLPanel::SetModelAnglesAndPosition(const QAngle& angRot, const Vector& vecPos)
+{
+	SetIdentityMatrix(m_RootMDL.m_MDLToWorld);
+	AngleMatrix(angRot, vecPos, m_RootMDL.m_MDLToWorld);
+}
 
 //-----------------------------------------------------------------------------
 // Set the current pose parameters. If NULL the pose parameters will be reset
@@ -452,36 +810,31 @@ void CMDLPanel::SetPoseParameters(const float* pPoseParameters, int nCount)
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Set the current skin
-//-----------------------------------------------------------------------------
-void CMDLPanel::SetSkin(int nSkin)
-{
-	m_RootMDL.m_MDL.m_nSkin = nSkin;
-}
 
 //-----------------------------------------------------------------------------
-// called when we're ticked...
+// Set the overlay sequence layers
 //-----------------------------------------------------------------------------
-void CMDLPanel::OnTick()
+void CMDLPanel::SetSequenceLayers(const MDLSquenceLayer_t* pSequenceLayers, int nCount)
 {
-	BaseClass::OnTick();
-	if (m_RootMDL.m_MDL.GetMDL() != MDLHANDLE_INVALID) {
-		m_RootMDL.m_MDL.m_flTime = GetAutoPlayTime();
+	if (pSequenceLayers)
+	{
+		m_nNumSequenceLayers = MIN(MAX_SEQUENCE_LAYERS, nCount);
+		for (int iLayer = 0; iLayer < m_nNumSequenceLayers; ++iLayer)
+		{
+			m_SequenceLayers[iLayer] = pSequenceLayers[iLayer];
+		}
+	}
+	else
+	{
+		m_nNumSequenceLayers = 0;
+		V_memset(m_SequenceLayers, 0, sizeof(m_SequenceLayers));
 	}
 }
 
 //-----------------------------------------------------------------------------
-// input
+// Sets the current sequence
 //-----------------------------------------------------------------------------
-void CMDLPanel::OnMouseDoublePressed( vgui::MouseCode code )
+void CMDLPanel::SetSequence(int nSequence)
 {
-	float flRadius;
-	Vector vecCenter;
-	GetBoundingSphere( vecCenter, flRadius );
-	LookAt( vecCenter, flRadius );
-
-	BaseClass::OnMouseDoublePressed( code );
+	m_RootMDL.m_MDL.m_nSequence = nSequence;
 }
-
-

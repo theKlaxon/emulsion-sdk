@@ -6,7 +6,7 @@
 
 #include "matsys_controls/vmtpreviewpanel.h"
 #include "matsys_controls/matsyscontrols.h"
-#include "matsys_controls/sheetsequencepanel.h"
+//#include "matsys_controls/sheetsequencepanel.h"
 #include "VGuiMatSurface/IMatSystemSurface.h"
 #include "materialsystem/MaterialSystemUtil.h"
 #include "materialsystem/imaterialsystem.h"
