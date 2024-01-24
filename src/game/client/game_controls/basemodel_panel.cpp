@@ -1,4 +1,4 @@
-//====== Copyright © 1996-2008, Valve Corporation, All rights reserved. =======
+//====== Copyright ï¿½ 1996-2008, Valve Corporation, All rights reserved. =======
 //
 // Purpose: 
 //
@@ -266,7 +266,7 @@ void CBaseModelPanel::SetModelAnim( const char *pszName )
 //-----------------------------------------------------------------------------
 void CBaseModelPanel::SetMDL( MDLHandle_t handle )
 {
-	BaseClass::SetMDL( handle );
+	BaseClass::SetMDL( handle, NULL );
 
 	SetupModelDefaults();
 
@@ -281,7 +281,7 @@ void CBaseModelPanel::SetMDL( const char *pMDLName )
 {
 	SetSequence( 0 );
 
-	BaseClass::SetMDL( pMDLName );
+	BaseClass::SetMDL( pMDLName, NULL );
 
 	// Need to invalidate the layout so the panel will adjust is LookAt for the new model.
 //	InvalidateLayout();
