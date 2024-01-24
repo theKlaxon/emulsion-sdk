@@ -195,6 +195,8 @@ public:
 	virtual void SetEmptyListText(const char *text);
 	virtual void SetEmptyListText(const wchar_t *text);
 
+	void ScrollToItem(int nItemID);
+	
 	// relayout the scroll bar in response to changing the items in the list panel
 	// do this if you RemoveAll()
 	void ResetScrollBar();

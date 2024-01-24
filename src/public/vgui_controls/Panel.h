@@ -77,6 +77,153 @@ struct DragDrop_t;
 class Menu;
 #endif
 
+class Panel;
+
+struct SizerAddArgs_t
+{
+	SizerAddArgs_t()
+	{
+		m_flExpandFactor = 0.0f;
+		m_nPadding = 5;
+		m_bMinorExpand = true;
+		m_nMinX = -1;
+		m_nMinY = -1;
+		m_bIgnoreMemberMin = false;
+	}
+
+	SizerAddArgs_t& Expand(float flExpandFactor) { m_flExpandFactor = flExpandFactor; return *this; }
+	SizerAddArgs_t& Padding(int nPadding) { m_nPadding = nPadding; return *this; }
+	SizerAddArgs_t& MinorExpand(bool bMinorExpand) { m_bMinorExpand = bMinorExpand; return *this; }
+	SizerAddArgs_t& MinSize(int nMinX, int nMinY) { m_nMinX = nMinX; m_nMinY = nMinY; return *this; }
+	SizerAddArgs_t& MinX(int nMinX) { m_nMinX = nMinX; return *this; }
+	SizerAddArgs_t& MinY(int nMinY) { m_nMinY = nMinY; return *this; }
+
+	// IgnoreMemberMin --> MinX and MinY (when set) are the only criteria for minimum size; member-requested min size is ignored
+	SizerAddArgs_t& IgnoreMemberMin(bool bIgnoreMemberMin = true) { m_bIgnoreMemberMin = bIgnoreMemberMin; return *this; }
+
+	SizerAddArgs_t& FixedSize(int nX, int nY)
+	{
+		IgnoreMemberMin(true);
+		MinSize(nX, nY);
+		Expand(0.f);
+		MinorExpand(false);
+		return *this;
+	}
+
+	float m_flExpandFactor;
+	int m_nPadding;
+	bool m_bMinorExpand;
+	int m_nMinX;
+	int m_nMinY;
+	bool m_bIgnoreMemberMin;
+};
+
+enum SizerLayoutDirection_t
+{
+	ESLD_HORIZONTAL, // major axis = X
+	ESLD_VERTICAL	 // major axis = Y
+};
+
+enum SizerElementType_t
+{
+	ESET_SIZER,
+	ESET_PANEL,
+	ESET_SPACER,
+};
+
+class CSizerBase
+{
+public:
+	CSizerBase();
+	virtual ~CSizerBase();
+
+	int GetElementCount() { return m_Members.Count(); }
+	SizerElementType_t GetElementType(int i);
+	Panel* GetPanel(int i);
+
+	void SetElementArgs(int nIndex, const SizerAddArgs_t& args) { m_Members[nIndex].Fill(args); }
+
+	// The containing panel's layout should be invalidated if members are added to this sizer.
+
+	// Inserts a panel/sizer/spacer at the specified index and shifts remaining elements down
+	void InsertPanel(int nIndex, Panel* pPanel, const SizerAddArgs_t& args);
+	void InsertSizer(int nIndex, CSizerBase* pSizer, const SizerAddArgs_t& args);
+	void InsertSpacer(int nIndex, const SizerAddArgs_t& args);
+
+	void AddPanel(Panel* pPanel, const SizerAddArgs_t& args) { InsertPanel(GetElementCount(), pPanel, args); }
+	void AddSizer(CSizerBase* pSizer, const SizerAddArgs_t& args) { InsertSizer(GetElementCount(), pSizer, args); }
+	void AddSpacer(const SizerAddArgs_t& args) { InsertSpacer(GetElementCount(), args); }
+
+	void RemoveElement(int i, bool bDelete);
+	void RemoveAllMembers(bool bDelete);
+
+	void GetMinSize(int& OutX, int& OutY);
+
+	// Called by Panel on PerformLayout() so that sizer client size computations are up-to-date
+	void RecursiveInvalidateCachedSize();
+
+	virtual void DoLayout(int BaseX, int BaseY, int SizeX, int SizeY) = 0;
+	virtual void CalculateSize() = 0;
+
+protected:
+	class CSizerMember
+	{
+		friend class CSizerBase; // allow CSizerBase to populate the private members directly
+
+	public:
+		SizerElementType_t GetElementType() const;
+		Panel* GetPanel() const;
+
+		void GetMemberMinSize(int& OutX, int& OutY);
+		void RecursiveInvalidateCachedSize();
+		void Place(int BaseX, int BaseY, int SizeX, int SizeY);
+
+		float GetExpandFactor() { return m_flExpandFactor; }
+		bool GetMinorExpand() { return m_bMinorExpand; }
+
+		void DiscardOwnedSizer();
+
+		bool IsVisible();
+
+		void Fill(const SizerAddArgs_t& args);
+
+	private:
+		void RecursiveRemove(bool bDelete);
+
+		Panel* m_pPanel;
+		CSizerBase* m_pSizer;
+
+		int m_nPadding; // if m_pPanel and m_pSizer are both NULL, this is the spacer min size
+		float m_flExpandFactor;
+		bool m_bMinorExpand;
+		bool m_bIgnoreMemberMin;
+		int m_nMinX;
+		int m_nMinY;
+	};
+
+	CUtlVector<CSizerMember> m_Members;
+	int m_nMinXSize;
+	int m_nMinYSize;
+};
+
+inline int SizerMajorAxis(SizerLayoutDirection_t Dir, int X, int Y) { return (Dir == ESLD_HORIZONTAL) ? X : Y; }
+inline int SizerMinorAxis(SizerLayoutDirection_t Dir, int X, int Y) { return (Dir == ESLD_VERTICAL) ? X : Y; }
+inline int SizerXAxis(SizerLayoutDirection_t Dir, int MajorAxis, int MinorAxis) { return (Dir == ESLD_HORIZONTAL) ? MajorAxis : MinorAxis; }
+inline int SizerYAxis(SizerLayoutDirection_t Dir, int MajorAxis, int MinorAxis) { return (Dir == ESLD_VERTICAL) ? MajorAxis : MinorAxis; }
+
+class CBoxSizer : public CSizerBase
+{
+public:
+	CBoxSizer(SizerLayoutDirection_t LayoutDirection);
+
+	virtual void CalculateSize();
+	virtual void DoLayout(int BaseX, int BaseY, int SizeX, int SizeY);
+
+protected:
+	SizerLayoutDirection_t m_LayoutDirection;
+};
+
+
 //-----------------------------------------------------------------------------
 // Purpose: Macro to handle Colors that can be overridden in .res files
 //-----------------------------------------------------------------------------
@@ -962,6 +1109,17 @@ private:
 
 	// obselete, remove soon
 	void OnOldMessage(KeyValues *params, VPANEL ifromPanel);
+
+public:
+
+	void GetSizerMinimumSize(int& wide, int& tall);
+	void GetSizerClientArea(int& x, int& y, int& wide, int& tall);
+	CSizerBase* GetSizer();
+	void SetSizer(CSizerBase* pSizer);
+
+protected:
+
+	CSizerBase* m_pSizer;
 };
 
 inline void Panel::DisableMouseInputForThisPanel( bool bDisable )

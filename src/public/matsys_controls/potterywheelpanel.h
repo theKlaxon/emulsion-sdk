@@ -1,4 +1,4 @@
-//====== Copyright © 1996-2005, Valve Corporation, All rights reserved. =======
+//====== Copyright ï¿½ 1996-2005, Valve Corporation, All rights reserved. =======
 //
 // Purpose: 
 //
@@ -79,7 +79,9 @@ public:
 	int	 GetCameraFOV( void );
 	void SetCameraFOV( float flFOV );
 	void SetCameraPositionAndAngles( const Vector &vecPos, const QAngle &angDir );
+	void GetCameraPositionAndAngles( Vector &vecPos, QAngle &angDir );
 	void SetCameraOffset( const Vector &vecOffset );
+	void GetCameraOffset( Vector &vecOffset );
 	void ResetCameraPivot( void );
 	void ComputeCameraTransform( matrix3x4_t *pWorldToCamera );
 	void UpdateCameraTransform();

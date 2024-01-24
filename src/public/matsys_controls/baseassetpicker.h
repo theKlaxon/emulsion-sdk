@@ -132,6 +132,8 @@ protected:
 	// Is a particular asset visible?
 	bool IsAssetVisible( int nAssetIndex );
 
+	const char* GetModPath( int nModIndex );
+	
 	MESSAGE_FUNC_PARAMS( OnTextChanged, "TextChanged", kv );
 	MESSAGE_FUNC_PARAMS( OnItemSelected, "ItemSelected", kv );
 	MESSAGE_FUNC_PARAMS( OnItemDeselected, "ItemDeselected", kv );

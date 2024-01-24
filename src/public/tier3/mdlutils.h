@@ -1,4 +1,4 @@
-//===== Copyright © 2005-2005, Valve Corporation, All rights reserved. ======//
+//===== Copyright ï¿½ 2005-2005, Valve Corporation, All rights reserved. ======//
 //
 // Purpose: A higher level link library for general use in the game and tools.
 //
@@ -86,6 +86,7 @@ public:
 	float		m_pFlexControls[ MAXSTUDIOFLEXCTRL * 4 ];
 	Vector		m_vecViewTarget;
 	bool		m_bWorldSpaceViewTarget;
+	void		*m_pProxyData;
 };
 
 

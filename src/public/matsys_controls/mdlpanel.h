@@ -1,4 +1,4 @@
-//====== Copyright © 1996-2005, Valve Corporation, All rights reserved. =======
+//====== Copyright ï¿½ 1996-2005, Valve Corporation, All rights reserved. =======
 //
 // Purpose: 
 //
@@ -46,8 +46,8 @@ public:
 	virtual void OnTick();
 
 	// Sets the current mdl
-	virtual void SetMDL( MDLHandle_t handle );
-	virtual void SetMDL( const char *pMDLName );
+	virtual void SetMDL( MDLHandle_t handle, void* pProxyData );
+	virtual void SetMDL( const char *pMDLName, void* pProxyData );
 
 	// Sets the camera to look at the model
 	void LookAtMDL( );
