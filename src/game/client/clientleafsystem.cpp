@@ -2219,16 +2219,16 @@ int CClientLeafSystem::ComputeTranslucency( int nFrameNumber, int nViewID, int n
 
 		pRenderContext->GetWorldSpaceCameraVectors( NULL, NULL, &info.m_vecViewUp );
 
-		if ( GetViewRenderInstance()->AllowScreenspaceFade() )
-		{
-			float flMinLevelFadeArea, flMaxLevelFadeArea;
-			modelinfo->GetLevelScreenFadeRange( &flMinLevelFadeArea, &flMaxLevelFadeArea );
-			ComputeScreenFade( info, flMinLevelFadeArea, flMaxLevelFadeArea, nCount, pAlphaInfo );
-
-			float flMinViewFadeArea, flMaxViewFadeArea;
-			view->GetScreenFadeDistances( &flMinViewFadeArea, &flMaxViewFadeArea );
-			ComputeScreenFade( info, flMinViewFadeArea, flMaxViewFadeArea, nCount, pAlphaInfo );
-		}
+		//if ( GetViewRenderInstance()->AllowScreenspaceFade() )
+		//{
+		//	float flMinLevelFadeArea, flMaxLevelFadeArea;
+		//	modelinfo->GetLevelScreenFadeRange( &flMinLevelFadeArea, &flMaxLevelFadeArea );
+		//	ComputeScreenFade( info, flMinLevelFadeArea, flMaxLevelFadeArea, nCount, pAlphaInfo );
+		//
+		//	float flMinViewFadeArea, flMaxViewFadeArea;
+		//	view->GetScreenFadeDistances( &flMinViewFadeArea, &flMaxViewFadeArea );
+		//	ComputeScreenFade( info, flMinViewFadeArea, flMaxViewFadeArea, nCount, pAlphaInfo );
+		//}
 
 		for ( int i = 0; i < nCount; ++i )
 		{

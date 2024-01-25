@@ -403,10 +403,7 @@ public:
 
 	void			GetWaterLODParams( float &flCheapWaterStartDistance, float &flCheapWaterEndDistance );
 
-	virtual void	QueueOverlayRenderView( const CViewSetup &view, int nClearFlags, int whatToDraw );
-
-	virtual void	GetScreenFadeDistances( float *min, float *max );
-	virtual bool	AllowScreenspaceFade( void ) { return true; }
+	virtual void	GetScreenFadeDistances( float *min, float *max, float* pScale );
 
 	virtual C_BaseEntity *GetCurrentlyDrawingEntity();
 	virtual void		  SetCurrentlyDrawingEntity( C_BaseEntity *pEnt );

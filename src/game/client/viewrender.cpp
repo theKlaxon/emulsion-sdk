@@ -902,8 +902,8 @@ void SetupCurrentView( const Vector &vecOrigin, const QAngle &angles, view_id_t 
 	AllowCurrentViewAccess( true );
 
 	// Cache off fade distances
-	float flScreenFadeMinSize, flScreenFadeMaxSize;
-	view->GetScreenFadeDistances( &flScreenFadeMinSize, &flScreenFadeMaxSize );
+	float flScreenFadeMinSize, flScreenFadeMaxSize, flFadeDistScale;
+	view->GetScreenFadeDistances( &flScreenFadeMinSize, &flScreenFadeMaxSize, &flFadeDistScale );
 	modelinfo->SetViewScreenFadeRange( flScreenFadeMinSize, flScreenFadeMaxSize );
 
 	CMatRenderContextPtr pRenderContext( materials );
@@ -1297,17 +1297,11 @@ void CViewRender::DrawUnderwaterOverlay( void )
 // Purpose: Returns the min/max fade distances
 //-----------------------------------------------------------------------------
 static ConVar r_fade360style( "r_fade360style", "1" );
-void CViewRender::GetScreenFadeDistances( float *pMin, float *pMax )
+void CViewRender::GetScreenFadeDistances( float *pMin, float *pMax, float *pScale )
 {
-	if ( pMin )
-	{
-		*pMin = m_FadeData.m_flPixelMin;
-	}
-
-	if ( pMax )
-	{
-		*pMax = m_FadeData.m_flPixelMax;
-	}
+	*pMin = m_FadeData.m_flPixelMin;
+	*pMax = m_FadeData.m_flPixelMax;
+	*pScale = m_FadeData.m_flFadeDistScale;
 
 	// A complete, brutal hack, necessitated by our next-week ship date. 
 	// On the 360, we use fade distances to deal with splitscreen. 
@@ -1322,14 +1316,8 @@ void CViewRender::GetScreenFadeDistances( float *pMin, float *pMax )
 		if ( screenHeight != 720 )
 		{
 			float flRatio = (float)screenHeight / 720.0f;
-			if ( pMin )
-			{
-				*pMin *= flRatio;
-			}
-			if ( pMax )
-			{
-				*pMax *= flRatio;
-			}
+			*pMin *= flRatio;
+			*pMax *= flRatio;
 		}
 	}
 
@@ -2171,20 +2159,6 @@ void CViewRender::CleanupMain3DView( const CViewSetup &view )
 	pRenderContext.SafeRelease();
 }
 
-
-//-----------------------------------------------------------------------------
-// Queues up an overlay rendering
-//-----------------------------------------------------------------------------
-void CViewRender::QueueOverlayRenderView( const CViewSetup &view, int nClearFlags, int whatToDraw )
-{
-	// Can't have 2 in a single scene
-	Assert( !m_bDrawOverlay );
-
-    m_bDrawOverlay = true;
-	m_OverlayViewSetup = view;
-	m_OverlayClearFlags = nClearFlags;
-	m_OverlayDrawFlags = whatToDraw;
-}
 
 //-----------------------------------------------------------------------------
 // Purpose: Force the view to freeze on the next frame for the specified time
