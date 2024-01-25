@@ -46,6 +46,11 @@ $Project "bonesetup"
 	"bonesetup\bonesetup.vpc"
 }
 
+$Project "responserules_runtime"
+{
+	"responserules/runtime/responserules_runtime.vpc"
+}
+
 $Project "matsys_controls"
 {
 	"vgui2/matsys_controls/matsys_controls.vpc"
