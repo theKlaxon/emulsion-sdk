@@ -128,15 +128,11 @@ public:
 	virtual void		WriteSaveGameScreenshot( const char *pFilename ) = 0;
 	virtual void		WriteSaveGameScreenshotOfSize( const char *pFilename, int width, int height ) = 0;
 
-	// Draws another rendering over the top of the screen
-	virtual void		QueueOverlayRenderView( const CViewSetup &view, int nClearFlags, int whatToDraw ) = 0;
-
 	// Returns znear and zfar
 	virtual float		GetZNear() = 0;
 	virtual float		GetZFar() = 0;
 
-	virtual void		GetScreenFadeDistances( float *min, float *max ) = 0;
-	virtual bool		AllowScreenspaceFade( void ) = 0;
+	virtual void		GetScreenFadeDistances( float *min, float *max, float* pScale ) = 0;
 
 	virtual C_BaseEntity *GetCurrentlyDrawingEntity() = 0;
 	virtual void		SetCurrentlyDrawingEntity( C_BaseEntity *pEnt ) = 0;
