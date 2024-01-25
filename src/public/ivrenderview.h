@@ -46,6 +46,8 @@ enum
 	DRAWWORLDLISTS_DRAW_REFLECTION				= 0x100,
 	DRAWWORLDLISTS_DRAW_WORLD_GEOMETRY			= 0x200,
 	DRAWWORLDLISTS_DRAW_DECALS_AND_OVERLAYS		= 0x400,
+	DRAWWORLDLISTS_DRAW_SIMPLE_WORLD_MODEL		= 0x800,
+	DRAWWORLDLISTS_DRAW_SIMPLE_WORLD_MODEL_WATER = 0x1000,
 };
 
 enum
@@ -256,7 +258,7 @@ public:
 
 	virtual void			BuildWorldLists( IWorldRenderList *pList, WorldListInfo_t* pInfo, int iForceFViewLeaf, const VisOverrideData_t* pVisData = NULL, bool bShadowDepth = false, float *pReflectionWaterHeight = NULL ) = 0;
 	virtual void			DrawWorldLists( IMatRenderContext* pRenderContext, IWorldRenderList *pList, unsigned long flags, float waterZAdjust ) = 0;
-	virtual int				GetNumIndicesForWorldLists( WorldListIndicesInfo_t* p1, IWorldRenderList *pList, unsigned long nFlags ) = 0;
+	virtual void			GetWorldListIndicesInfo( WorldListIndicesInfo_t* p1, IWorldRenderList *pList, unsigned long nFlags ) = 0;
 
 	// Optimization for top view
 	virtual void			DrawTopView( bool enable ) = 0;
