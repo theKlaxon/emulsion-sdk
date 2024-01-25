@@ -17,6 +17,7 @@
 #include "datamap.h"
 #include "mathlib/bumpvects.h"
 #include "mathlib/compressed_light_cube.h"
+#include "datalinker_interface.h"
 
 // little-endian "VBSP"
 #define IDBSPHEADER	(('P'<<24)+('S'<<16)+('B'<<8)+'V')		
@@ -480,7 +481,7 @@ struct DiskPhysics2Polytope_t
 	int32 offsetInertia;
 };
 
-/*
+
 struct DiskPhysics2LevelMesh_t
 {
 	DECLARE_BYTESWAP_DATADESC();
@@ -509,7 +510,6 @@ struct dphyslevelV0_t
 	DataLinker::OffsetAndSize_t< DataLinker::Offset_t<char> > levelStaticModels;
 	int32 nReserved2[8];
 };
-*/
 
 
 // contains the binary blob for each displacement surface's virtual hull
@@ -878,6 +878,12 @@ struct dfaceid_t
 	unsigned short	hammerfaceid;
 };
 
+struct dfacebrushlist_t
+{
+	DECLARE_BYTESWAP_DATADESC();
+	unsigned short	m_nFaceBrushCount;		// number of brushes that contributed a side to this face
+	unsigned short	m_nFaceBrushStart;		// first brush. NOTE: if m_nFaceBrushCount is 1, this is a brush index!
+};
 
 // NOTE: Only 7-bits stored on disk!!!
 #define LEAF_FLAGS_SKY			0x01		// This leaf has 3D sky in its PVS

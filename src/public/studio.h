@@ -71,15 +71,15 @@ struct studiohdr_t;
 #define MAXSTUDIOVERTS		65536	// TODO: tune this
 #define	MAXSTUDIOFLEXVERTS	10000	// max number of verts that can be flexed per mesh.  TODO: tune this
 #endif
-#define MAXSTUDIOSKINS		32		// total textures
-#define MAXSTUDIOBONES		128		// total bones actually used
+#define MAXSTUDIOSKINS		64		// total textures
+#define MAXSTUDIOBONES		256		// total bones actually used
 #define MAXSTUDIOFLEXDESC	1024	// maximum number of low level flexes (actual morph targets)
 #define MAXSTUDIOFLEXCTRL	96		// maximum number of flexcontrollers (input sliders)
 #define MAXSTUDIOPOSEPARAM	24
 #define MAXSTUDIOBONECTRLS	4
 #define MAXSTUDIOANIMBLOCKS 256
 
-#define MAXSTUDIOBONEBITS	7		// NOTE: MUST MATCH MAXSTUDIOBONES
+#define MAXSTUDIOBONEBITS	8		// NOTE: MUST MATCH MAXSTUDIOBONES
 
 // NOTE!!! : Changing this number also changes the vtx file format!!!!!
 #define MAX_NUM_BONES_PER_VERT 3
@@ -262,6 +262,141 @@ struct mstudiotwistbone_t
 private:
 	// No copy constructors allowed
 	mstudiotwistbone_t( const mstudiotwistbone_t &vOther );
+};
+
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+struct mstudioconstraintslave_t
+{
+	DECLARE_BYTESWAP_DATADESC();
+
+	int				m_nBone;
+	Vector			m_vBasePosition;
+	Quaternion		m_qBaseOrientation;
+
+	mstudioconstraintslave_t() {}
+private:
+	// No copy constructors allowed
+	mstudioconstraintslave_t( const mstudioconstraintslave_t &vOther );
+};
+
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+struct mstudioconstrainttarget_t
+{
+	DECLARE_BYTESWAP_DATADESC();
+
+	int				m_nBone;
+	float			m_flWeight;
+	Vector			m_vOffset;
+	Quaternion		m_qOffset;
+
+	mstudioconstrainttarget_t() {}
+private:
+	// No copy constructors allowed
+	mstudioconstrainttarget_t( const mstudioconstrainttarget_t &vOther );
+};
+
+
+//-----------------------------------------------------------------------------
+// Point constraint, slave position matches target position
+//-----------------------------------------------------------------------------
+struct mstudiopointconstraint_t
+{
+	DECLARE_BYTESWAP_DATADESC();
+
+	mstudioconstraintslave_t m_slave;	// DEFINE_EMBEDDED
+
+	int				m_nTargetCount;
+	int				m_nTargetIndex;
+	inline mstudioconstrainttarget_t *pTarget( int i ) const { return ( mstudioconstrainttarget_t * )( ( ( byte * )this) + m_nTargetIndex ) + i; }
+
+	mstudiopointconstraint_t() {}
+private:
+	// No copy constructors allowed
+	mstudiopointconstraint_t( const mstudiopointconstraint_t &vOther );
+};
+
+
+//-----------------------------------------------------------------------------
+// Orient constraint, slave orientation matches target orientation
+//-----------------------------------------------------------------------------
+struct mstudioorientconstraint_t
+{
+	DECLARE_BYTESWAP_DATADESC();
+
+	mstudioconstraintslave_t m_slave;	// DEFINE_EMBEDDED
+
+	int				m_nTargetCount;
+	int				m_nTargetIndex;
+	inline mstudioconstrainttarget_t *pTarget( int i ) const { return ( mstudioconstrainttarget_t * )( ( ( byte * )this) + m_nTargetIndex ) + i; }
+
+	mstudioorientconstraint_t() {}
+private:
+	// No copy constructors allowed
+	mstudioorientconstraint_t( const mstudioorientconstraint_t &vOther );
+};
+
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+struct mstudioaimconstraint_t
+{
+	DECLARE_BYTESWAP_DATADESC();
+
+	mstudioconstraintslave_t m_slave;	// DEFINE_EMBEDDED
+
+	int				m_nTargetCount;
+	int				m_nTargetIndex;
+	inline mstudioconstrainttarget_t *pTarget( int i ) const { return ( mstudioconstrainttarget_t * )( ( ( byte * )this) + m_nTargetIndex ) + i; }
+
+	Quaternion		m_qAimOffset;
+	Vector			m_vUp;
+	short			m_nUpSpaceTarget;
+	unsigned char	m_nUpType;
+	unsigned char	m_unused;
+
+	mstudioaimconstraint_t() {}
+private:
+	// No copy constructors allowed
+	mstudioaimconstraint_t( const mstudioaimconstraint_t &vOther );
+};
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+struct mstudioikconstraint_t
+{
+	DECLARE_BYTESWAP_DATADESC();
+
+	mstudioikconstraint_t() {}
+private:
+	// No copy constructors allowed
+	mstudioikconstraint_t( const mstudioaimconstraint_t &vOther );
+};
+
+//-----------------------------------------------------------------------------
+// Parent constraint, slave position and orientation are updated to behave as children of the target
+//-----------------------------------------------------------------------------
+struct mstudioparentconstraint_t
+{
+	DECLARE_BYTESWAP_DATADESC();
+
+	mstudioconstraintslave_t m_slave;	// DEFINE_EMBEDDED
+
+	int				m_nTargetCount;
+	int				m_nTargetIndex;
+	inline mstudioconstrainttarget_t *pTarget( int i ) const { return ( mstudioconstrainttarget_t * )( ( ( byte * )this) + m_nTargetIndex ) + i; }
+
+	mstudioparentconstraint_t() {}
+private:
+	// No copy constructors allowed
+	mstudioparentconstraint_t( const mstudioparentconstraint_t &vOther );
 };
 
 
