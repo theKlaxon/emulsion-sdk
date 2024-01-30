@@ -125,6 +125,8 @@ public:
 
 	virtual const model_t			*FindOrLoadModel( const char *name ) const = 0;
 
+	//virtual void unused02() {}
+
 	virtual MDLHandle_t				GetCacheHandle( const model_t *model ) const = 0;
 
 	virtual void*					RegisterDynamicModel(const char* par1, bool par2) = 0; // p2sdk

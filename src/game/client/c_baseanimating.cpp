@@ -1448,7 +1448,7 @@ void C_BaseAnimating::BuildTransformations( CStudioHdr *hdr, Vector *pos, Quater
 
 	// no bones have been simulated
 	memset( boneSimulated, 0, sizeof(boneSimulated) );
-	mstudiobone_t *pbones = hdr->pBone( 0 );
+	const mstudiobone_t *pbones = hdr->pBone( 0 );
 	bool bFixupSimulatedPositions = false;
 	if ( m_pRagdoll )
 	{
@@ -1686,7 +1686,7 @@ void C_BaseAnimating::SaveRagdollInfo( int numbones, const matrix3x4_t &cameraTr
 		memset( m_pRagdollInfo, 0, sizeof( *m_pRagdollInfo ) );
 	}
 
-	mstudiobone_t *pbones = hdr->pBone( 0 );
+	const mstudiobone_t *pbones = hdr->pBone( 0 );
 
 	m_pRagdollInfo->m_bActive = true;
 	m_pRagdollInfo->m_flSaveTime = gpGlobals->curtime;
@@ -5375,7 +5375,7 @@ bool C_BaseAnimating::TestHitboxes( const Ray_t &ray, unsigned int fContentsMask
 	if ( TraceToStudio( physprops, ray, pStudioHdr, set, hitboxbones, fContentsMask, GetRenderOrigin(), GetModelScale(), tr ) )
 	{
 		mstudiobbox_t *pbox = set->pHitbox( tr.hitbox );
-		mstudiobone_t *pBone = pStudioHdr->pBone(pbox->bone);
+		const mstudiobone_t *pBone = pStudioHdr->pBone(pbox->bone);
 		tr.surface.name = "**studio**";
 		tr.surface.flags = SURF_HITBOX;
 		tr.surface.surfaceProps = pBone->GetSurfaceProp();
@@ -6662,7 +6662,7 @@ CBoneList *C_BaseAnimating::RecordBones( CStudioHdr *hdr, matrix3x4_t *pBoneStat
 		matrix3x4_t inverted;
 		matrix3x4_t output;
 
-		mstudiobone_t *bone = hdr->pBone( i );
+		const mstudiobone_t *bone = hdr->pBone( i );
 
 		// Only update bones referenced during setup
 		if ( !(bone->flags & BONE_USED_BY_ANYTHING ) )

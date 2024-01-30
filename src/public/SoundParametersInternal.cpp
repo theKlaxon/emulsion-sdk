@@ -342,7 +342,8 @@ CSoundParametersInternal::CSoundParametersInternal()
 
 	// TERROR:
 	m_pGameData = NULL;
-
+	//unused0 = 1;
+	m_pOperatorsKV = NULL;
 }
 
 CSoundParametersInternal::CSoundParametersInternal( const CSoundParametersInternal& src )
@@ -418,6 +419,11 @@ void CSoundParametersInternal::CopyFrom( const CSoundParametersInternal& src )
 	else
 	{
 		m_pConvertedNames = NULL;
+	}
+
+	if (src.m_pOperatorsKV)
+	{
+		SetOperatorsKV(src.m_pOperatorsKV);
 	}
 
 	had_missing_wave_files = src.had_missing_wave_files;
@@ -585,5 +591,18 @@ void CSoundParametersInternal::AddToTail( SoundFile **pDest, uint16 *pDestCount,
 		}
 	}
 }
+
+void CSoundParametersInternal::SetOperatorsKV(KeyValues* src)
+{
+	if (m_pOperatorsKV)
+	{
+		m_pOperatorsKV->deleteThis();
+	}
+	m_pOperatorsKV = NULL;
+
+	m_pOperatorsKV = new KeyValues("Operators");
+	src->CopySubkeys(m_pOperatorsKV);
+}
+
 
 #endif // !_STATIC_LINKED || SOUNDEMITTERSYSTEM_DLL

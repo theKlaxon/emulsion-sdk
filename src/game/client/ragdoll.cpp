@@ -194,7 +194,7 @@ CRagdoll::~CRagdoll( void )
 }
 
 
-void CRagdoll::RagdollBone( C_BaseEntity *ent, mstudiobone_t *pbones, int boneCount, bool *boneSimulated, CBoneAccessor &pBoneToWorld )
+void CRagdoll::RagdollBone( C_BaseEntity *ent, const mstudiobone_t *pbones, int boneCount, bool *boneSimulated, CBoneAccessor &pBoneToWorld )
 {
 	for ( int i = 0; i < m_ragdoll.listCount; i++ )
 	{
@@ -607,7 +607,7 @@ void C_ServerRagdoll::BuildTransformations( CStudioHdr *hdr, Vector *pos, Quater
 
 	// no bones have been simulated
 	memset( boneSimulated, 0, sizeof(boneSimulated) );
-	mstudiobone_t *pbones = hdr->pBone( 0 );
+	const mstudiobone_t *pbones = hdr->pBone( 0 );
 
 	mstudioseqdesc_t *pSeqDesc = NULL;
 	if ( m_nOverlaySequence >= 0 && m_nOverlaySequence < hdr->GetNumSeq() )

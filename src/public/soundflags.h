@@ -130,6 +130,9 @@ enum SoundFlags_t
 	SND_SHOULDPAUSE		= (1<<7),		// this sound should be paused if the game is paused
 	SND_IGNORE_PHONEMES	= (1<<8),
 	SND_IGNORE_NAME		= (1<<9),		// used to change all sounds emitted by an entity, regardless of scriptname
+
+	SND_IS_SCRIPTHANDLE = (1 << 10),		// server has passed the actual SoundEntry instead of wave filename
+
 };
 
 #define SND_FLAG_BITS_ENCODE 9

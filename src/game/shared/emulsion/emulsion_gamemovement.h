@@ -33,8 +33,10 @@ public:
 
 	// paint specifics
 	void ProcessPowerUpdate();
-	void BouncePlayer(cplane_t plane);
-	void StickPlayer(PaintInfo_t info);
+	void BouncePlayer(cplane_t plane, float multiplier = 2);
+
+	// StickPlayer() is handled by the player entity
+	void CalculateStickAngles();
 	void UnStickPlayer();
 
 	Vector GetGravityDir() { return m_vecGravity; }
@@ -44,7 +46,7 @@ public:
 	void PlayPaintExitSound(PaintPowerType type);
 	void DetermineExitSound(PaintPowerType type);
 
-	void CalculateStickAngles();
+	
 
 	friend class CEmulsionPlayer;
 	friend class C_EmulsionPlayer;

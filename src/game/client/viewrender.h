@@ -436,6 +436,9 @@ public:
 		m_UnderWaterOverlayMaterial.Init( pMaterial );
 	}
 protected:
+	friend class CRendering3dView;
+	friend class CShadowDepthView;
+
 	int				m_BuildWorldListsNumber;
 
 
@@ -448,9 +451,10 @@ protected:
 	bool			DrawOneMonitor( ITexture *pRenderTarget, int cameraNum, C_PointCamera *pCameraEnt, const CViewSetup &cameraView, C_BasePlayer *localPlayer, 
 						int x, int y, int width, int height );
 
+	
 	// Drawing primitives
 	bool			ShouldDrawViewModel( bool drawViewmodel );
-	void			DrawViewModels( const CViewSetup &view, bool drawViewmodel );
+	void			DrawViewModels( const CViewSetup &view, bool drawViewmodel, bool bShadowDepth = false );
 
 	void			PerformScreenSpaceEffects( int x, int y, int w, int h );
 

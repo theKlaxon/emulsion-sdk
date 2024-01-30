@@ -36,13 +36,12 @@ private:
 
 	COutputEvent m_outButtonPressed;
 	COutputEvent m_outButtonUnPressed;
-
 	COutputEvent m_outUnused;
+
+	CHandle<CTriggerFloorButton> m_hButtonTrigger;
 
 	bool m_bActive;
 	int m_seqUp, m_seqDown;
-	CHandle<CTriggerFloorButton> m_hButtonTrigger;
-
 };
 
 class CTriggerFloorButton : public CBaseTrigger {

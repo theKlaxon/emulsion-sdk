@@ -23,7 +23,7 @@ void CTriggerFloorButton::Spawn() {
 
 	SetSolid(SOLID_BBOX);
 	AddSolidFlags(FSOLID_TRIGGER);
-	AddSpawnFlags(SF_TRIGGER_ALLOW_ALL);// SF_TRIGGER_ALLOW_PHYSICS | SF_TRIGGER_ALLOW_CLIENTS);
+	AddSpawnFlags(SF_TRIGGER_ALLOW_ALL);
 }
 
 bool CTriggerFloorButton::PassesTriggerFilters(CBaseEntity* pOther)
@@ -117,6 +117,9 @@ void CPropFloorButton::Spawn() {
 	DispatchSpawn(m_hButtonTrigger.Get());
 
 	SetNextThink(gpGlobals->curtime + 0.1f);
+
+	SetFadeDistance(-1.0f, 0.0f);
+	SetGlobalFadeScale(0.0f);
 }
 
 void CPropFloorButton::Think() {
@@ -147,12 +150,6 @@ void CPropFloorButton::ButtonDeactivate(inputdata_t& inputdata) {
 
 bool CPropFloorButton::PassesTriggerFilters(CBaseEntity* pOther)
 {
-	//bool bPassedFilter = BaseClass::PassesTriggerFilters(pOther);
-
-	//// did I fail the baseclass filter check?
-	//if (!bPassedFilter)
-	//	return false;
-
 	if (pOther->IsPlayer() || pOther->GetClassname() == "prop_weighted_cube")
 		return true;
 
@@ -163,22 +160,8 @@ bool CPropFloorButton::PassesTriggerFilters(CBaseEntity* pOther)
 
 void CPropFloorButton::StartTouch(CBaseEntity* pOther) {
 
-	//if (!pOther->IsPlayer() && !pOther->ClassMatches("prop_weighted_cube"))
-	//	return;
-
-	//if (touching < 1)
-	//	ButtonActivate();
-
-	//touching++;
 }
 
 void CPropFloorButton::EndTouch(CBaseEntity* pOther) {
 
-	//if (!pOther->IsPlayer() && !pOther->ClassMatches("prop_weighted_cube"))
-	//	return;
-
-	//touching--;
-
-	//if (touching < 1)
-	//	ButtonDeactivate();
 }

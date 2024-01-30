@@ -66,9 +66,10 @@ CTEBreakModel::~CTEBreakModel( void )
 
 IMPLEMENT_SERVERCLASS_ST(CTEBreakModel, DT_TEBreakModel)
 	SendPropVector( SENDINFO(m_vecOrigin), -1, SPROP_COORD),
-	SendPropAngle( SENDINFO_VECTORELEM(m_angRotation, 0), 13 ),
-	SendPropAngle( SENDINFO_VECTORELEM(m_angRotation, 1), 13 ),
-	SendPropAngle( SENDINFO_VECTORELEM(m_angRotation, 2), 13 ),
+	SendPropVector(SENDINFO(m_angRotation), 0, SPROP_COORD),
+	//SendPropAngle( SENDINFO_VECTORELEM(m_angRotation, 0), 13 ),
+	//SendPropAngle( SENDINFO_VECTORELEM(m_angRotation, 1), 13 ),
+	//SendPropAngle( SENDINFO_VECTORELEM(m_angRotation, 2), 13 ),
 	SendPropVector( SENDINFO(m_vecSize), -1, SPROP_COORD),
 	SendPropVector( SENDINFO(m_vecVelocity), -1, SPROP_COORD),
 	SendPropModelIndex( SENDINFO(m_nModelIndex) ),

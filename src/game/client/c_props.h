@@ -33,6 +33,12 @@ public:
 	bool TestBoneFollowers( const Ray_t &ray, unsigned int fContentsMask, trace_t& tr );
 	bool TestCollision( const Ray_t &ray, unsigned int fContentsMask, trace_t& tr );
 
+	// Should this object receive shadows?
+	virtual bool ShouldReceiveProjectedTextures(int flags) override
+	{
+		return true;
+	}
+
 private:
 	C_DynamicProp( const C_DynamicProp & );
 

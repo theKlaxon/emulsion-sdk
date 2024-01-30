@@ -10,6 +10,10 @@
 extern CPaintBlobStream* g_pBouncePaintStream;
 extern CPaintBlobStream* g_pSpeedPaintStream;
 extern CPaintBlobStream* g_pStickPaintStream;
+
+extern CUtlVector<int> g_pBounceRemovalQueue;
+extern CUtlVector<int> g_pSpeedRemovalQueue;
+extern CUtlVector<int> g_pStickRemovalQueue;
 #endif
 
 #define BLOB_BATCH_COUNT 2
@@ -39,9 +43,17 @@ public:
 	
 #else
 	void PreClientUpdate();
+	
+	CPaintBlobStream* GetStream(int streamIndex);
+	int GetStreamIndex(int paintType);
+	CUtlVector<int>* GetRemovalQueue(int streamIndex);
 
 	// blob manufacturing!
 	void CreateBlob(Vector origin, Vector velocity, int batch);
+	void QueueBlobForRemoval(int particleIndex, int batch);
+	void RemoveQueuedBlobs();
+
+	virtual void FrameUpdatePostEntityThink();
 #endif
 	
 protected:
@@ -66,6 +78,7 @@ private:
 };
 
 extern IGameSystem* BlobulatorSystem();
+extern CBlobManager* PaintBlobManager();
 
 namespace Paint {
 

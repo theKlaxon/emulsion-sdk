@@ -107,6 +107,7 @@ enum MDLCacheFlush_t
 abstract_class IMDLCache : public IAppSystem
 {
 public:
+
 	// Used to install callbacks for when data is loaded + unloaded
 	// Returns the prior notify
 	virtual void SetCacheNotify( IMDLCacheNotify *pNotify ) = 0;

@@ -32,6 +32,10 @@ class CStringTableSaveRestoreOps;
 #define MAX_PARTICLESYSTEMS_STRINGS			( 1 << MAX_PARTICLESYSTEMS_STRING_BITS )
 #define PARTICLESYSTEMS_INVALID_STRING	( MAX_PARTICLESYSTEMS_STRINGS - 1 )
 
+#define MAX_MOVIE_STRING_BITS			4
+#define MAX_MOVIE_STRINGS				( 1 << MAX_MOVIE_STRING_BITS )
+#define OVERLAY_MOVIE_INVALID_STRING	( MAX_MOVIE_STRINGS - 1 )
+
 extern INetworkStringTableContainer *networkstringtable;
 extern INetworkStringTable *g_pStringTableVguiScreen;
 extern INetworkStringTable *g_pStringTableClientSideChoreoScenes;

@@ -1,2 +1,2 @@
-START portal2.exe -game emulsion -dev -sw -w 1280 -h 720 -noassert
+START portal2.exe -game emulsion -noassert
 pause 

@@ -31,7 +31,14 @@
 	#define CHECK_USENETWORKVARS // don't check for g_bUseNetworkVars
 #endif
 
+//
+// Networkvar flags.
+//
+#define NETWORKVAR_IS_A_VECTOR				0x0001		// Is it any type of network vector?
+#define NETWORKVAR_VECTOR_XYZ_FLAG			0x0002		// Is it a CNetworkVectorXYZ?
+#define NETWORKVAR_VECTOR_XY_SEPARATEZ_FLAG	0x0004		// Is it a CNetworkVectorXY_SeparateZ?
 
+#define NETWORKVAR_ALL_FLAGS ( NETWORKVAR_IS_A_VECTOR | NETWORKVAR_VECTOR_XYZ_FLAG | NETWORKVAR_VECTOR_XY_SEPARATEZ_FLAG )
 
 // network vars use memcmp when fields are set.  To ensure proper behavior your
 // object's memory should be initialized to zero.  This happens for entities automatically
@@ -359,6 +366,10 @@ protected:
 	{
 		Changer::NetworkStateChanged( this );
 	}
+	//FORCEINLINE void NetworkStateChanged(void* pVar)
+	//{
+	//	Changer::NetworkStateChanged( pVar);
+	//}
 };
 
 template< class Type, class Changer >
@@ -706,6 +717,7 @@ private:
 #define CNetworkVectorInternal( type, name, stateChangedFn ) \
 	NETWORK_VAR_START( type, name ) \
 	NETWORK_VAR_END( type, name, CNetworkVectorBase, stateChangedFn )
+//#include "networkvar_vector.h"
 
 #define CNetworkQuaternion( name ) \
 	NETWORK_VAR_START( Quaternion, name ) \

@@ -47,10 +47,12 @@ public:
 
 	CUtlVector<IPhysicsObject*> m_vecToWake;
 
-private:
+protected:
+	friend class CBlobManager;
 
 	CUtlVector<IPhysicsObject*> m_vecParticles;
 
+private:
 	int m_nNewParticles;
 	int m_nActiveParticlesInternal;
 

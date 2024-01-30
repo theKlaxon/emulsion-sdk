@@ -61,7 +61,7 @@ void CBoneMergeCache::UpdateCache()
 			m_BoneMergeBits.Resize( pOwnerHdr->numbones() );
 			m_BoneMergeBits.ClearAll();
 
-			mstudiobone_t *pOwnerBones = m_pOwnerHdr->pBone( 0 );
+			const mstudiobone_t *pOwnerBones = m_pOwnerHdr->pBone( 0 );
 			
 			m_nFollowBoneSetupMask = BONE_USED_BY_BONE_MERGE;
 			const bool bDeveloperDebugPrints = developer.GetBool();

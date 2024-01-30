@@ -245,6 +245,7 @@ INetworkStringTable *g_pStringTableMaterials = NULL;
 INetworkStringTable *g_pStringTableInfoPanel = NULL;
 INetworkStringTable *g_pStringTableClientSideChoreoScenes = NULL;
 INetworkStringTable *g_pStringTableExtraParticleFiles = NULL;
+INetworkStringTable* g_pStringTableMovies = NULL;
 
 CStringTableSaveRestoreOps g_VguiScreenStringOps;
 
@@ -1498,6 +1499,7 @@ void CServerGameDLL::CreateNetworkStringTables( void )
 	g_pStringTableMaterials = networkstringtable->CreateStringTable( "Materials", MAX_MATERIAL_STRINGS, 0, 0, NSF_DICTIONARY_ENABLED );
 	g_pStringTableInfoPanel = networkstringtable->CreateStringTable( "InfoPanel", MAX_INFOPANEL_STRINGS );
 	g_pStringTableClientSideChoreoScenes = networkstringtable->CreateStringTable( "Scenes", MAX_CHOREO_SCENES_STRINGS, 0, 0, NSF_DICTIONARY_ENABLED );
+	g_pStringTableMovies = networkstringtable->CreateStringTable("Movies", MAX_MOVIE_STRINGS, 0, 0, NSF_DICTIONARY_ENABLED);
 
 	Assert( g_pStringTableParticleEffectNames &&
 			g_pStringTableEffectDispatch &&
@@ -1505,7 +1507,8 @@ void CServerGameDLL::CreateNetworkStringTables( void )
 			g_pStringTableMaterials &&
 			g_pStringTableInfoPanel &&
 			g_pStringTableClientSideChoreoScenes &&
-			g_pStringTableExtraParticleFiles );
+			g_pStringTableExtraParticleFiles &&
+			g_pStringTableMovies);
 
 	// Need this so we have the error material always handy
 	PrecacheMaterial( "debug/debugempty" );
@@ -2272,7 +2275,7 @@ void PrecacheParticleFileAndSystems( const char *pParticleSystemFile )
 
 void PrecacheGameSoundsFile( const char *pSoundFile )
 {
-	soundemitterbase->AddSoundsFromFile( pSoundFile, true );
+	soundemitterbase->AddSoundsFromFile( pSoundFile, true, true, true );
 	SoundSystemPreloadSounds();
 }
 
@@ -2343,7 +2346,47 @@ const char *GetEffectNameFromIndex( int nEffectIndex )
 	return "error";
 }
 
+//-----------------------------------------------------------------------------
+// Precaches a movie
+//-----------------------------------------------------------------------------
+void PrecacheMovie(const char* pMovieName)
+{
+	Assert(CBaseEntity::IsPrecacheAllowed());
 
+	Assert(pMovieName && pMovieName[0]);
+	g_pStringTableMovies->AddString(CBaseEntity::IsServer(), pMovieName);
+}
+
+//-----------------------------------------------------------------------------
+// Converts a previously precached material into an index
+//-----------------------------------------------------------------------------
+int GetMovieIndex(const char* pMovieName)
+{
+	if (pMovieName)
+	{
+		int nIndex = g_pStringTableMovies->FindStringIndex(pMovieName);
+		if (nIndex != INVALID_STRING_INDEX)
+		{
+			return nIndex;
+		}
+		else
+		{
+			DevMsg("Warning! GetMovieIndex: couldn't find movie %s\n ", pMovieName);
+			return 0;
+		}
+	}
+
+	// This is the invalid string index
+	return 0;
+}
+
+//-----------------------------------------------------------------------------
+// Converts a previously precached movie index into a string
+//-----------------------------------------------------------------------------
+const char* GetMovieNameFromIndex(int nMovieIndex)
+{
+	return g_pStringTableMovies->GetString(nMovieIndex);
+}
 
 //-----------------------------------------------------------------------------
 // Returns true if host_thread_mode is set to non-zero (and engine is running in threaded mode)

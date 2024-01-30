@@ -3,6 +3,7 @@
 #include "saverestore_utlvector.h"
 #include "dt_utlvector_send.h"
 #include "collisionutils.h"
+#include "blob_manager.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -108,6 +109,9 @@ void CPaintBlobStream::Spawn() {
 
 	NPCInit();
 	SetNextThink(TICK_INTERVAL);
+
+	SetFadeDistance(-1.0f, 0.0f);
+	SetGlobalFadeScale(0.0f);
 }
 
 void CPaintBlobStream::VPhysicsCollision(int index, gamevcollisionevent_t* pEvent) {
@@ -129,9 +133,9 @@ void CPaintBlobStream::VPhysicsCollision(int index, gamevcollisionevent_t* pEven
 		if (tr.DidHitWorld()) {
 			model_t* mdl = tr.m_pEnt->GetModel();
 			engine->SpherePaintSurface(mdl, position, m_nPaintType, 35.0f, 5);
+			//PaintBlobManager()->QueueBlobForRemoval(pEvent->pObjects[index]->GetGameIndex(), PaintBlobManager()->GetStreamIndex(m_nPaintType));
 		}
 	}
-
 }
 
 bool CPaintBlobStream::CreateVPhysics() {

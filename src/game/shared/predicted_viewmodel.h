@@ -40,6 +40,9 @@ public:
 
 		return BaseClass::ShouldPredict();
 	}
+
+	virtual bool ShouldReceiveProjectedTextures(int flags) { return true; }
+
 #endif
 
 private:

@@ -9,6 +9,7 @@
 #include "blob_manager.h"
 #include "..\server\ilagcompensationmanager.h"
 #include "..\game\shared\portal2\paint_enum.h"
+#include "emulsion/emulsion_gamemovement.h"
 
 #define PLAYER_MDL "models/player.mdl"
 #define PLAYER_MAX_LIFT_MASS 85
@@ -311,6 +312,8 @@ void CEmulsionPlayer::PreThink() {
 	BaseClass::PreThink();
 
 	// do paint stuff here
+	//((CEmulsionGameMovement*)g_pGameMovement)->ProcessPowerUpdate();
+	
 	ProcessPowerUpdate();
 }
 
@@ -323,40 +326,45 @@ void CEmulsionPlayer::ProcessPowerUpdate() {
 	//debugoverlay->AddBoxOverlay(GetAbsOrigin(), GetPlayerMins(), GetPlayerMaxs(), QAngle(0, 0, 1), 0, 255, 0, 150, 0);
 
 	switch (m_tNewInfo.type) {
-	case BOUNCE_POWER:
-		if (m_tCurPaintInfo.type == SPEED_POWER) {
-			BouncePlayer(m_tNewInfo.plane);
-			break;
-		}
-		else if (GetGroundEntity() != NULL) {
-			pMove->PlayPaintEntrySound(m_tNewInfo.type);
-			m_nPaintPower = BOUNCE_POWER;
-		}
-		break;
-	case SPEED_POWER:
-		if (GetGroundEntity() != NULL) {
-			pMove->PlayPaintEntrySound(m_tNewInfo.type);
-			m_nPaintPower = SPEED_POWER;
-		}
-		break;
+	//case BOUNCE_POWER:
+	//	if (m_tCurPaintInfo.type == SPEED_POWER) {
+	//		pMove->BouncePlayer(m_tNewInfo.plane);
+	//		break;
+	//	}
+	//	else if (GetGroundEntity() != NULL) {
+	//		pMove->PlayPaintEntrySound(m_tNewInfo.type);
+	//		m_nPaintPower = BOUNCE_POWER;
+	//	}
+	//	break;
+	//case SPEED_POWER:
+	//	if (GetGroundEntity() != NULL) {
+	//		pMove->PlayPaintEntrySound(m_tNewInfo.type);
+	//		m_nPaintPower = SPEED_POWER;
+	//	}
+	//	break;
 	case PORTAL_POWER:
 		if (m_tCurPaintInfo.type != PORTAL_POWER || (m_tNewInfo.plane.normal != m_tCurPaintInfo.plane.normal)) {
 			StickPlayer(m_tNewInfo);
 			pMove->PlayPaintEntrySound(m_tNewInfo.type);
 			m_nPaintPower = PORTAL_POWER;
+			m_tCurPaintInfo = m_tNewInfo;
+			pMove->m_tCurPaintInfo = m_tNewInfo;
 		}
 		break;
 	default:
 		if (m_tCurPaintInfo.type == PORTAL_POWER) {
 			UnStickPlayer();
 			m_nPaintPower = NO_POWER;
+
+			m_tCurPaintInfo = m_tNewInfo;
+			pMove->m_tCurPaintInfo = m_tNewInfo;
 		}
-		pMove->DetermineExitSound(m_tNewInfo.type);
-		break;
+	//	pMove->DetermineExitSound(m_tNewInfo.type);
+	//	break;
 	}
 
-	m_tCurPaintInfo = m_tNewInfo;
-	pMove->m_tCurPaintInfo = m_tNewInfo;
+	//m_tCurPaintInfo = m_tNewInfo;
+	//pMove->m_tCurPaintInfo = m_tNewInfo;
 }
 
 extern ConVar pl_bouncePaintWallFactor;
@@ -394,20 +402,32 @@ void CEmulsionPlayer::StickPlayer(PaintInfo_t info) {
 	RotateBBox(info.plane.normal);
 }
 
+bool g_bStickPaintJumpRelease = false;
+
 void CEmulsionPlayer::UnStickPlayer() {
+
+	//if (m_tCurPaintInfo.plane.normal != Vector(0, 0, 1))
+	if (m_vecGravity == Vector(0, 0, 1)) {
+		SetAbsOrigin(GetAbsOrigin() + (GetViewOffset().Length() * (m_tCurPaintInfo.plane.normal)) * 1.5f);// (g_bStickPaintJumpRelease ? 1.5f : 1.0f));
+	}
+	else if (m_vecGravity != Vector(0, 0, -1))
+		SetAbsOrigin(GetAbsOrigin() + (GetViewOffset().Length() * (m_tCurPaintInfo.plane.normal)));
+
+	g_bStickPaintJumpRelease = false;
+
 	SetGravityDir(Vector(0, 0, -1));
-	pMove->SetGravityDir(Vector(0, 0, -1));
-	pMove->CalculateStickAngles();
+	//pMove->SetGravityDir(Vector(0, 0, -1));
+	//pMove->CalculateStickAngles();
+	pMove->UnStickPlayer();
 
 	SetStickParent(NULL);
 	SetGroundEntity(NULL);
 	m_bIsTouchingStickParent = false;
 	pMove->m_bIsTouchingStickParent = false;
 
-	if (m_tCurPaintInfo.plane.normal != Vector(0, 0, 1))
-		SetAbsOrigin(GetAbsOrigin() + (GetViewOffset().Length() * (m_tCurPaintInfo.plane.normal)) * 1.2f);
 
 	RotateBBox(Vector(0, 0, 1));
+	SetMoveType(MOVETYPE_WALK);
 }
 
 static CViewVectors g_OriginalDefaultViewVectors(

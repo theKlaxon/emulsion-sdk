@@ -152,7 +152,7 @@ public:
 	// Returns the shadow cast type
 	virtual ShadowType_t ShadowCastType() = 0;
 
-	//virtual void Unused2() {}
+	virtual void Unused2() {}
 
 	// Create/get/destroy model instance
 	virtual void CreateModelInstance() = 0;
@@ -166,7 +166,7 @@ public:
 	virtual	bool GetAttachment( int number, Vector &origin, QAngle &angles ) = 0;
 	virtual bool GetAttachment( int number, matrix3x4_t &matrix ) = 0;
 
-	virtual bool ComputeLightingOrigin(int par1, Vector par2, const matrix3x4_t& par3, Vector& par4) { return false; } // p2sdk
+	//virtual bool ComputeLightingOrigin(int par1, Vector par2, const matrix3x4_t& par3, Vector& par4) { return false; } // p2sdk
 
 	// Rendering clip plane, should be 4 floats, return value of NULL indicates a disabled render clip plane
 	virtual float *GetRenderClipPlane( void ) = 0;
@@ -193,6 +193,11 @@ public:
 	virtual uint8	OverrideShadowAlphaModulation( uint8 nAlpha ) = 0;
 
 	virtual IClientModelRenderable* GetClientModelRenderable() = 0;
+};
+
+struct action_bind
+{
+	const char* str_debug_name;
 };
 
 

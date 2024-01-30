@@ -49,7 +49,7 @@ struct CSoundParameters
 		delay_msec	= 0;
 
 		m_nSoundEntryVersion = 1;
-		m_hSoundScriptHash = SOUNDEMITTER_INVALID_HANDLE;
+		m_hSoundScriptHandle = SOUNDEMITTER_INVALID_HANDLE;
 		m_pOperatorsKV = NULL;
 		m_nRandomSeed = -1;
 	}
@@ -66,13 +66,11 @@ struct CSoundParameters
 	int				delay_msec;
 
 
-	HSOUNDSCRIPTHANDLE m_hSoundScriptHash;
+	HSOUNDSCRIPTHANDLE m_hSoundScriptHandle;
 	int			    m_nSoundEntryVersion;
-	KeyValues* m_pOperatorsKV;
+	KeyValues*		m_pOperatorsKV;
 	int				m_nRandomSeed;
 
-	bool			e1;
-	bool			e2;
 };
 
 // A bit of a hack, but these are just utility function which are implemented in the SouneParametersInternal.cpp file which all users of this lib also compile
@@ -154,20 +152,26 @@ struct CSoundParametersInternal
 	const pitch_interval_t &GetPitch() const				{ return pitch; }
 	const soundlevel_interval_t &GetSoundLevel() const		{ return soundlevel; }
 	int			GetDelayMsec() const						{ return delay_msec; }
+	int			GetSoundEntryVersion() const { return m_nSoundEntryVersion; }
 	bool		OnlyPlayToOwner() const						{ return play_to_owner_only; }
 	bool		HadMissingWaveFiles() const					{ return had_missing_wave_files; }
 	bool		UsesGenderToken() const						{ return uses_gender_token; }
 	bool		ShouldPreload() const						{ return m_bShouldPreload; }
+
+	bool		ShouldAutoCache() const { return m_bShouldAutoCache; }
+	bool        HasCached() const { return m_bHasCached; }
 
 	void		SetChannel( int newChannel )				{ channel = newChannel; }
 	void		SetVolume( float start, float range = 0.0 )	{ volume.start = start; volume.range = range; }
 	void		SetPitch( float start, float range = 0.0 )	{ pitch.start = start; pitch.range = range; }
 	void		SetSoundLevel( float start, float range = 0.0 )	{ soundlevel.start = start; soundlevel.range = range; }
 	void		SetDelayMsec( int delay )					{ delay_msec = delay; }
+	void		SetSoundEntryVersion(int gameSoundVersion) { m_nSoundEntryVersion = gameSoundVersion; }
 	void		SetShouldPreload( bool bShouldPreload )		{ m_bShouldPreload = bShouldPreload;	}
 	void		SetOnlyPlayToOwner( bool b )				{ play_to_owner_only = b; }
 	void		SetHadMissingWaveFiles( bool b )			{ had_missing_wave_files = b; }
 	void		SetUsesGenderToken( bool b )				{ uses_gender_token = b; }
+	void		SetCached(bool b) { m_bHasCached = b; }
 
 	void		AddSoundName( const SoundFile &soundFile )	{ AddToTail( &m_pSoundNames, &m_nSoundNames, soundFile ); }
 	int			NumSoundNames() const						{ return m_nSoundNames; }
@@ -178,6 +182,11 @@ struct CSoundParametersInternal
 	int			NumConvertedNames() const					{ return m_nConvertedNames; }
 	SoundFile * GetConvertedNames()							{ return ( m_nConvertedNames == 1 ) ? (SoundFile *)&m_pConvertedNames : m_pConvertedNames; }
 	const SoundFile *GetConvertedNames() const				{ return ( m_nConvertedNames == 1 ) ? (SoundFile *)&m_pConvertedNames : m_pConvertedNames; }
+
+	// Sound Operator System: this should be optimized into something less heavy
+	KeyValues* GetOperatorsKV(void) const { return m_pOperatorsKV; }
+	void SetOperatorsKV(KeyValues* src);
+
 
 private:
 	void operator=( const CSoundParametersInternal& src ); // disallow implicit copies
@@ -196,15 +205,21 @@ private:
 	uint16					channel;				// 24
 	uint16					delay_msec;				// 26
 	
+	uint16					m_nSoundEntryVersion;				// these offsets need to be updated -Klaxon
+
 	bool			play_to_owner_only:1; // For weapon sounds...	// 27
 	// Internal use, for warning about missing .wav files
 	bool			had_missing_wave_files:1;
 	bool			uses_gender_token:1;
 	bool			m_bShouldPreload:1;
 
+	bool			m_bHasCached : 1;
+	bool			m_bShouldAutoCache : 1;
+
 	byte			reserved;						// 28
 
 	KeyValues *				m_pGameData;			// 32
+	KeyValues* m_pOperatorsKV;
 };
 #pragma pack()
 
@@ -276,10 +291,10 @@ public:
 	virtual bool			GetParametersForSoundEx( const char *soundname, HSOUNDSCRIPTHANDLE& handle, CSoundParameters& params, gender_t gender, bool isbeingemitted = false ) = 0;
 	virtual soundlevel_t	LookupSoundLevelByHandle( char const *soundname, HSOUNDSCRIPTHANDLE& handle ) = 0;
 
-	virtual void* GetOperatorKVByHandle(unsigned int p1) = 0;
+	virtual void*			GetOperatorKVByHandle(unsigned int p1) = 0;
 
 	virtual char const		*GetSoundNameForHash( unsigned int hash ) = 0; // Returns NULL if hash not found!!!
-	virtual const char*		GetSoundIndexForHash(unsigned int p1) = 0;
+	virtual int				GetSoundIndexForHash(unsigned int p1) = 0;
 	virtual unsigned int	HashSoundName( char const *pchSndName ) = 0;
 	virtual bool			IsValidHash( unsigned int hash ) = 0;
 

@@ -197,7 +197,7 @@ public:
 	virtual void OnRestore() {}
 	virtual void SafeRemoveIfDesired() {}
 
-	virtual bool	IsPerFrame() { return true; }
+	virtual bool IsPerFrame() { return true; }
 
 #ifdef CLIENT_DLL
 	// Called before rendering

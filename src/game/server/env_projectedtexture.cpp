@@ -7,6 +7,7 @@
 #include "cbase.h"
 #include "shareddefs.h"
 #include "env_projectedtexture.h"
+#include "world.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -14,8 +15,9 @@
 LINK_ENTITY_TO_CLASS( env_projectedtexture, CEnvProjectedTexture );
 
 BEGIN_DATADESC( CEnvProjectedTexture )
-	DEFINE_FIELD( m_hTargetEntity, FIELD_EHANDLE ),
+	DEFINE_FIELD( m_hTargetEntity, FIELD_EHANDLE ), //
 	DEFINE_FIELD( m_bState, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_bAlwaysUpdate, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_bSimpleProjection, FIELD_BOOLEAN ),
 	DEFINE_KEYFIELD( m_flLightFOV, FIELD_FLOAT, "lightfov" ),
 	DEFINE_KEYFIELD( m_bEnableShadows, FIELD_BOOLEAN, "enableshadows" ),
@@ -35,6 +37,10 @@ BEGIN_DATADESC( CEnvProjectedTexture )
 	DEFINE_KEYFIELD( m_flProjectionSize, FIELD_FLOAT, "projection_size" ),
 	DEFINE_KEYFIELD( m_flRotation, FIELD_FLOAT, "projection_rotation" ),
 
+	DEFINE_KEYFIELD( m_iStyle, FIELD_INTEGER, "style" ),
+	DEFINE_KEYFIELD( m_iDefaultStyle, FIELD_INTEGER, "defaultstyle" ),
+	DEFINE_KEYFIELD( m_iszPattern, FIELD_STRING, "pattern" ),
+
 	DEFINE_INPUTFUNC( FIELD_VOID, "TurnOn", InputTurnOn ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "TurnOff", InputTurnOff ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "AlwaysUpdateOn", InputAlwaysUpdateOn ),
@@ -48,6 +54,10 @@ BEGIN_DATADESC( CEnvProjectedTexture )
 	DEFINE_INPUTFUNC( FIELD_COLOR32, "LightColor", InputSetLightColor ),
 	DEFINE_INPUTFUNC( FIELD_FLOAT, "Ambient", InputSetAmbient ),
 	DEFINE_INPUTFUNC( FIELD_STRING, "SpotlightTexture", InputSetSpotlightTexture ),
+	DEFINE_INPUTFUNC( FIELD_INTEGER, "SetLightStyle", InputSetLightStyle ),
+	DEFINE_INPUTFUNC( FIELD_STRING, "SetPattern", InputSetPattern ),
+	DEFINE_INPUTFUNC( FIELD_FLOAT, "SetNearZ", InputSetNearZ ),
+	DEFINE_INPUTFUNC( FIELD_FLOAT, "SetFarZ", InputSetFarZ ),
 	DEFINE_THINKFUNC( InitialThink ),
 END_DATADESC()
 
@@ -68,10 +78,11 @@ IMPLEMENT_SERVERCLASS_ST( CEnvProjectedTexture, DT_EnvProjectedTexture )
 	SendPropString( SENDINFO( m_SpotlightTextureName ) ),
 	SendPropInt( SENDINFO( m_nSpotlightTextureFrame ) ),
 	SendPropFloat( SENDINFO( m_flNearZ ), 16, SPROP_ROUNDDOWN, 0.0f,  500.0f ),
-	SendPropFloat( SENDINFO( m_flFarZ ),  18, SPROP_ROUNDDOWN, 0.0f, 1500.0f ),
+	SendPropFloat( SENDINFO( m_flFarZ ),  18, SPROP_ROUNDDOWN, 0.0f, 2500.0f ),
 	SendPropInt( SENDINFO( m_nShadowQuality ), 1, SPROP_UNSIGNED ),  // Just one bit for now
 	SendPropFloat( SENDINFO( m_flProjectionSize ) ),
 	SendPropFloat( SENDINFO( m_flRotation ) ),
+	SendPropInt( SENDINFO( m_iStyle ) ),
 END_SEND_TABLE()
 
 //-----------------------------------------------------------------------------
@@ -131,7 +142,7 @@ bool CEnvProjectedTexture::KeyValue( const char *szKeyName, const char *szValue 
 	}
 	else if ( FStrEq( szKeyName, "texturename" ) )
 	{
-#if defined( _X360 )
+#if defined( _GAMECONSOLE )
 		if ( Q_strcmp( szValue, "effects/flashlight001" ) == 0 )
 		{
 			// Use this as the default for Xbox
@@ -170,6 +181,9 @@ bool CEnvProjectedTexture::GetKeyValue( const char *szKeyName, char *szValue, in
 
 void CEnvProjectedTexture::InputTurnOn( inputdata_t &inputdata )
 {
+	// Force all other projected textures off
+	EnforceSingleProjectionRules();
+
 	m_bState = true;
 }
 
@@ -228,20 +242,94 @@ void CEnvProjectedTexture::InputSetAmbient( inputdata_t &inputdata )
 	m_flAmbient = inputdata.value.Float();
 }
 
-void CEnvProjectedTexture::InputSetSpotlightTexture( inputdata_t &inputdata )
+void CEnvProjectedTexture::InputSetLightStyle( inputdata_t &inputdata )
 {
-	Q_strcpy( m_SpotlightTextureName.GetForModify(), inputdata.value.String() );
+	m_iStyle = inputdata.value.Int();
 }
 
-void CEnvProjectedTexture::Activate( void )
+void CEnvProjectedTexture::InputSetPattern( inputdata_t &inputdata )
+{
+	m_iszPattern = inputdata.value.StringID();
+	engine->LightStyle( m_iStyle, (char *) STRING( m_iszPattern ) );
+}
+
+void CEnvProjectedTexture::InputSetNearZ( inputdata_t &inputdata )
+{
+	m_flNearZ = inputdata.value.Float();
+}
+
+void CEnvProjectedTexture::InputSetFarZ( inputdata_t &inputdata )
+{
+	m_flFarZ = inputdata.value.Float();
+}
+
+void CEnvProjectedTexture::InputSetSpotlightTexture( inputdata_t &inputdata )
+{
+	Assert( 0 );
+	Warning( "SetSpotlightTexture is disabled. If you need this feature reimplemented, tell a programmer.\n" );
+	//Q_strcpy( m_SpotlightTextureName.GetForModify(), inputdata.value.String() );
+}
+
+void CEnvProjectedTexture::Spawn( void )
 {
 	m_bState = ( ( GetSpawnFlags() & ENV_PROJECTEDTEXTURE_STARTON ) != 0 );
 	m_bAlwaysUpdate = ( ( GetSpawnFlags() & ENV_PROJECTEDTEXTURE_ALWAYSUPDATE ) != 0 );
 
+	// Update light styles
+	if ( m_iStyle >= 32 )
+	{
+		if ( m_iszPattern == NULL_STRING && m_iDefaultStyle > 0 )
+		{
+			m_iszPattern = MAKE_STRING( GetDefaultLightstyleString( m_iDefaultStyle ) );
+		}
+
+		if ( m_bState == false )
+			engine->LightStyle( m_iStyle, "a" );
+		else if ( m_iszPattern != NULL_STRING )
+			engine->LightStyle( m_iStyle, (char *) STRING( m_iszPattern ) );
+		else
+			engine->LightStyle( m_iStyle, "m" );
+	}
+
+	BaseClass::Spawn();
+}
+
+void CEnvProjectedTexture::EnforceSingleProjectionRules( bool bWarnOnEnforcement )
+{
+	// Once a light is turned on, turn off all other possible lights in the level
+	CBaseEntity *pFlashlight = NULL;
+	while ( ( pFlashlight = gEntList.FindEntityByClassname( pFlashlight, "env_projectedtexture" ) ) != NULL )
+	{
+		// Obviously, don't turn yourself off
+		if ( pFlashlight == this )
+			continue;
+
+		if ( bWarnOnEnforcement )
+		{
+			CEnvProjectedTexture *pProjTex = static_cast<CEnvProjectedTexture *>(pFlashlight);
+			if ( pProjTex && pProjTex->m_bState )
+			{
+				Warning( "Warning: env_projected_texture (%s) forced off by (%s)\n", pProjTex->GetEntityNameAsCStr(), GetEntityNameAsCStr() );
+			}
+		}
+
+		variant_t emptyVariant;
+		pFlashlight->AcceptInput( "TurnOff", this, this, emptyVariant, 0 );
+	}
+}
+
+void CEnvProjectedTexture::Activate( void )
+{
 	SetThink( &CEnvProjectedTexture::InitialThink );
 	SetNextThink( gpGlobals->curtime + 0.1f );
 
 	BaseClass::Activate();
+
+	if ( m_bState )
+	{
+		// Make sure that we stomp any other active projected texture off when we activate
+		EnforceSingleProjectionRules( true );
+	}
 }
 
 void CEnvProjectedTexture::InitialThink( void )

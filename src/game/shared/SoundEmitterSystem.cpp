@@ -30,10 +30,21 @@
 #define CRecipientFilter C_RecipientFilter
 #endif
 
+BEGIN_DEFINE_LOGGING_CHANNEL(LOG_SND_EMITTERSYSTEM, "SndEmitterSystem", LCF_CONSOLE_ONLY, LS_MESSAGE);
+ADD_LOGGING_CHANNEL_TAG("SndEmitterSystem");
+
+END_DEFINE_LOGGING_CHANNEL();
 
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
+
+// csgo
+#if defined( CLIENT_DLL )
+ConVar snd_sos_show_client_xmit("snd_sos_show_client_xmit", "0", FCVAR_CHEAT);
+#else
+ConVar snd_sos_show_server_xmit("snd_sos_show_server_xmit", "0", FCVAR_CHEAT);
+#endif
 
 ConVar sv_soundemitter_trace( "sv_soundemitter_trace", "-1", FCVAR_REPLICATED, "Show all EmitSound calls including their symbolic name and the actual wave file they resolved to. (-1 = for nobody, 0 = for everybody, n = for one entity)\n" );
 ConVar cc_showmissing( "cc_showmissing", "0", FCVAR_REPLICATED, "Show missing closecaption entries." );
@@ -479,9 +490,37 @@ public:
 		}
 	}
 
+	void PrecacheSOSScriptSounds(KeyValues* pRootKV)
+	{
+		if (!pRootKV)
+			return;
+
+		// iterate through all values
+		for (KeyValues* pValue = pRootKV->GetFirstValue(); pValue; pValue = pValue->GetNextValue())
+		{
+			const char* pName = pValue->GetName();
+			if (pName && !V_stricmp(pName, "entry_name"))
+			{
+				const char* pScriptName = pValue->GetString();
+				if (pScriptName && pScriptName[0])
+				{
+					PrecacheScriptSound(pScriptName);
+				}
+			}
+		}
+
+		// iterate and recurse into each true subkey
+		for (KeyValues* pSubKey = pRootKV->GetFirstTrueSubKey(); pSubKey; pSubKey = pSubKey->GetNextTrueSubKey())
+		{
+			PrecacheSOSScriptSounds(pSubKey);
+		}
+	}
+
 	HSOUNDSCRIPTHANDLE PrecacheScriptSound( const char *soundname )
 	{
-		int soundIndex = soundemitterbase->GetSoundIndex( soundname );
+		HSOUNDSCRIPTHANDLE hash_handle = soundemitterbase->HashSoundName(soundname);
+		int soundIndex = soundemitterbase->GetSoundIndexForHash(hash_handle);
+		//int soundIndex = soundemitterbase->GetSoundIndex( soundname );
 		if ( !soundemitterbase->IsValidIndex( soundIndex ) )
 		{
 			if ( Q_stristr( soundname, ".wav" ) || Q_strstr( soundname, ".mp3" ) )
@@ -512,6 +551,14 @@ public:
 #if !defined( CLIENT_DLL )
 		LogPrecache( soundname );
 #endif
+		// get yoinked lmao
+		// recursively descend into possible operator stacks to precache all their script sounds
+		CSoundParametersInternal* pInternal = soundemitterbase->InternalGetParametersForSound(soundIndex);
+		if (pInternal && !pInternal->HasCached())
+		{
+			pInternal->SetCached(true);
+			PrecacheSOSScriptSounds(pInternal->GetOperatorsKV());
+		}
 
 		InternalPrecacheWaves( soundIndex );
 		return (HSOUNDSCRIPTHANDLE)soundIndex;
@@ -533,7 +580,7 @@ public:
 	}
 public:
 
-	void EmitSoundByHandle( IRecipientFilter& filter, int entindex, const EmitSound_t & ep, HSOUNDSCRIPTHANDLE& handle )
+	int EmitSoundByHandle( IRecipientFilter& filter, int entindex, const EmitSound_t & ep, HSOUNDSCRIPTHANDLE& handle )
 	{
 		// Pull data from parameters
 		CSoundParameters params;
@@ -549,11 +596,11 @@ public:
 
 		if ( !soundemitterbase->GetParametersForSoundEx( ep.m_pSoundName, handle, params, gender, true ) )
 		{
-			return;
+			return 0;
 		}
 
 		if ( !params.soundname[0] )
-			return;
+			return 0;
 
 		if ( !Q_strncasecmp( params.soundname, "vo", 2 ) &&
 			!( params.channel == CHAN_STREAM ||
@@ -586,7 +633,7 @@ public:
 			ep.m_flSoundTime,
 			ep.m_UtlVecSoundOrigin );
 		if ( bSwallowed )
-			return;
+			return 0;
 #endif
 
 #if defined( _DEBUG ) && !defined( CLIENT_DLL )
@@ -625,7 +672,7 @@ public:
 		filterCopy.CopyFrom((CRecipientFilter&)filter);
 
 		// use the cracked script params
-		enginesound->EmitSound(
+		int guid = enginesound->EmitSound(
 			filterCopy,
 			entindex,
 			params.channel,
@@ -682,122 +729,292 @@ public:
 		{
 			EmitCloseCaption( filter, entindex, params, ep );
 		}
+		return guid;
 	}
 
-	void EmitSound( IRecipientFilter& filter, int entindex, const EmitSound_t & ep )
+	// spew utility
+	void TraceEmitSoundEntry(HSOUNDSCRIPTHANDLE handle, const char* pSoundEntryName, const char* pSoundFileName)
 	{
-		VPROF( "CSoundEmitterSystem::EmitSound (calls engine)" );
-		if ( ep.m_pSoundName && 
-			( Q_stristr( ep.m_pSoundName, ".wav" ) || 
-			  Q_stristr( ep.m_pSoundName, ".mp3" ) || 
-			  ep.m_pSoundName[0] == '!' ) )
+
+
+#if defined( CLIENT_DLL )
+		if (!snd_sos_show_client_xmit.GetInt())
 		{
-#if !defined( CLIENT_DLL )
-			bool bSwallowed = CEnvMicrophone::OnSoundPlayed( 
-				entindex, 
-				ep.m_pSoundName, 
-				ep.m_SoundLevel, 
-				ep.m_flVolume, 
-				ep.m_nFlags, 
-				ep.m_nPitch, 
-				ep.m_pOrigin, 
-				ep.m_flSoundTime,
-				ep.m_UtlVecSoundOrigin );
-			if ( bSwallowed )
-				return;
+			return;
+		}
+		Log_Msg(LOG_SND_EMITTERSYSTEM, Color(180, 256, 180, 255), "Client: Emitting SoundEntry: %i : %s : %s\n", handle, pSoundEntryName, pSoundFileName);
+#else
+		if (!snd_sos_show_server_xmit.GetInt())
+		{
+			return;
+		}
+		Log_Msg(LOG_SND_EMITTERSYSTEM, Color(180, 180, 256, 255), "Server: Emitting SoundEntry: %i : %s : %s\n", handle, pSoundEntryName, pSoundFileName);
 #endif
 
-			// TERROR:
-			float startTime = Plat_FloatTime();
+	}
 
-			if ( ep.m_bWarnOnDirectWaveReference && 
-				Q_stristr( ep.m_pSoundName, ".wav" ) )
-			{
-				WaveTrace( ep.m_pSoundName, "Emitsound" );
-			}
+	//---------------------------------------------------------------------
+	// Emits sound via a direct sound file reference, 
+	//---------------------------------------------------------------------
+	int EmitSoundBySoundFile(IRecipientFilter& filter, int entindex, const EmitSound_t& ep)
+	{
+
+#if !defined( CLIENT_DLL )
+		bool bSwallowed = CEnvMicrophone::OnSoundPlayed(
+			entindex,
+			ep.m_pSoundName,
+			ep.m_SoundLevel,
+			ep.m_flVolume,
+			ep.m_nFlags,
+			ep.m_nPitch,
+			ep.m_pOrigin,
+			ep.m_flSoundTime,
+			ep.m_UtlVecSoundOrigin);
+		if (bSwallowed)
+			return 0;
+#endif
+
+		// Emission by soundfile is typically because the calling code has 
+		// already cracked the soundscript, loaded it's parameters and altered some.
+		// However, we want to retain BOTH the calling code's parameters
+		// AND the soundscript handle so that we have ALL the data for processing.
+		//
+		// if this has been updated to include soundscript handle, we can tell
+		// by the soundentry version and a valid soundscript handle. We flag it
+		// and add the data to transmission.
+		//
+		int nFlags = ep.m_nFlags;
+		const char* pSoundEntryName = ep.m_pSoundName;
+		if (ep.m_hSoundScriptHandle != -1 &&
+			ep.m_nSoundEntryVersion > 1)
+		{
+			// reget original soundentry name
+			pSoundEntryName = soundemitterbase->GetSoundName(ep.m_hSoundScriptHandle);
+			nFlags |= SND_IS_SCRIPTHANDLE;
+			TraceEmitSoundEntry(ep.m_hSoundScriptHandle, pSoundEntryName, ep.m_pSoundName);
+
+		}
+
+		// TERROR:
+		double startTime = Plat_FloatTime();
+		if (ep.m_bWarnOnDirectWaveReference &&
+			Q_stristr(ep.m_pSoundName, ".wav"))
+		{
+			WaveTrace(ep.m_pSoundName, "Emitsound");
+		}
+
+
 
 #if defined( _DEBUG ) && !defined( CLIENT_DLL )
-			if ( !enginesound->IsSoundPrecached( ep.m_pSoundName ) )
-			{
-				Msg( "Sound %s was not precached\n", ep.m_pSoundName );
-			}
-#endif
-			//enginesound->EmitSound( 
-			//	filter, 
-			//	entindex, 
-			//	ep.m_nChannel, 
-			//	ep.m_pSoundName, 
-			//	ep.m_flVolume, 
-			//	ep.m_SoundLevel, 
-			//	ep.m_nFlags, 
-			//	ep.m_nPitch, 
-			//	ep.m_pOrigin,
-			//	NULL, 
-			//	&ep.m_UtlVecSoundOrigin,
-			//	true, 
-			//	ep.m_flSoundTime,
-			//	ep.m_nSpeakerEntity );
-
-			CRecipientFilter filterCopy;
-			filterCopy.CopyFrom((CRecipientFilter&)filter);
-
-			enginesound->EmitSound(
-				filterCopy,
-				entindex,
-				ep.m_nChannel,
-				ep.m_pSoundName,
-				ep.m_hSoundScriptHandle,
-				ep.m_pSoundName,
-				ep.m_flVolume,
-				ep.m_SoundLevel,
-				0,
-				0,
-				ep.m_nPitch,
-				ep.m_pOrigin,
-				NULL,
-				&ep.m_UtlVecSoundOrigin,
-				true,
-				ep.m_flSoundTime,
-				ep.m_nSpeakerEntity);
-			if ( ep.m_pflSoundDuration )
-			{
-				// TERROR:
-#ifdef GAME_DLL
-				UTIL_LogPrintf( "getting wav duration for %s\n", ep.m_pSoundName );
-#endif
-				VPROF( "CSoundEmitterSystem::EmitSound GetSoundDuration (calls engine)" );
-				*ep.m_pflSoundDuration = enginesound->GetSoundDuration( ep.m_pSoundName );
-			}
-
-			TraceEmitSound( entindex, "%f EmitSound:  Raw wave emitted '%s' (ent %i) (vol %f)\n",
-				gpGlobals->curtime, ep.m_pSoundName, entindex, ep.m_flVolume );
-
-			// TERROR:
-			float timeSpent = ( Plat_FloatTime() - startTime ) * 1000.0f;
-			const float thinkLimit = 50.0f;
-			if ( timeSpent > thinkLimit )
-			{
-#ifdef GAME_DLL
-				UTIL_LogPrintf( "CSoundEmitterSystem::EmitSound(%s) took %f milliseconds (server)\n",
-					ep.m_pSoundName, timeSpent );
-#else
-				DevMsg( "CSoundEmitterSystem::EmitSound(%s) took %f milliseconds (client)\n",
-					ep.m_pSoundName, timeSpent );
-#endif
-			}
-			return;
-		}
-
-		if ( ep.m_hSoundScriptHandle == SOUNDEMITTER_INVALID_HANDLE )
+		if (!enginesound->IsSoundPrecached(ep.m_pSoundName))
 		{
-			ep.m_hSoundScriptHandle = (HSOUNDSCRIPTHANDLE)soundemitterbase->GetSoundIndex( ep.m_pSoundName );
+			Msg("Sound %s was not precached\n", ep.m_pSoundName);
+		}
+#endif
+
+
+		// NOTE:  We must make a copy or else if the filter is owned by a SoundPatch, we'll end up destructively removing
+		//  all players from it!!!!
+		CRecipientFilter filterCopy;
+		filterCopy.CopyFrom((CRecipientFilter&)filter);
+
+		// THIS FUNCTION IS SUFFICIENT FOR PORTAL2 SPECIFIC CIRCUMSTANCES
+		// AND MAY OR MAY NOT FUNCTION AS EXPECTED WHEN USED WITH MULTIPLE
+		// SPLITSCREEN CLIENTS NETWORKED TOGETHER, ETC.
+#ifdef PORTAL2
+		if (snd_prevent_ss_duplicates.GetBool())
+		{
+			filterCopy.ReplaceSplitScreenPlayersWithOwners();
+		}
+#endif
+
+		// Emit sound via direct soundfile reference, unless tagged as a soundentry
+		int nGuid = enginesound->EmitSound(
+			filterCopy,
+			entindex,
+			ep.m_nChannel,
+			pSoundEntryName,
+			ep.m_hSoundScriptHandle,
+			ep.m_pSoundName,
+			ep.m_flVolume,
+			ep.m_SoundLevel,
+			0,
+			nFlags,
+			ep.m_nPitch,
+			ep.m_pOrigin,
+			NULL,
+			&ep.m_UtlVecSoundOrigin,
+			true,
+			ep.m_flSoundTime,
+			ep.m_nSpeakerEntity);
+
+
+		//// -------------------------------------------------------------------
+		if (ep.m_pflSoundDuration)
+		{
+			// TERROR:
+#ifdef GAME_DLL
+			UTIL_LogPrintf("getting wav duration for %s\n", ep.m_pSoundName);
+#endif
+			VPROF("CSoundEmitterSystem::EmitSound GetSoundDuration (calls engine)");
+			*ep.m_pflSoundDuration = enginesound->GetSoundDuration(ep.m_pSoundName);
 		}
 
-		if ( ep.m_hSoundScriptHandle == -1 )
-			return;
+		TraceEmitSound(entindex, "%f EmitSound:  Raw wave emitted '%s' (ent %i) (vol %f)\n",
+			gpGlobals->curtime, ep.m_pSoundName, entindex, ep.m_flVolume);
 
-		EmitSoundByHandle( filter, entindex, ep, ep.m_hSoundScriptHandle );
+		// TERROR:
+		float timeSpent = (Plat_FloatTime() - startTime) * 1000.0f;
+		const float thinkLimit = 50.0f;
+		if (timeSpent > thinkLimit)
+		{
+#ifdef GAME_DLL
+			UTIL_LogPrintf("CSoundEmitterSystem::EmitSound(%s) took %f milliseconds (server)\n",
+				ep.m_pSoundName, timeSpent);
+#else
+			DevMsg("CSoundEmitterSystem::EmitSound(%s) took %f milliseconds (client)\n",
+				ep.m_pSoundName, timeSpent);
+#endif
+		}
+		return nGuid;
 	}
+
+	int EmitSound(IRecipientFilter& filter, int entindex, const EmitSound_t& ep)
+	{
+		VPROF("CSoundEmitterSystem::EmitSound (calls engine)");
+
+		// Is this a direct soundfile reference or pre-parameterized call?
+		if (ep.m_pSoundName &&
+			(Q_stristr(ep.m_pSoundName, ".wav") ||
+				Q_stristr(ep.m_pSoundName, ".mp3") ||
+				ep.m_pSoundName[0] == '!'))
+		{
+			return EmitSoundBySoundFile(filter, entindex, ep);
+		}
+
+		// handle as a script sound entry
+		if (ep.m_hSoundScriptHandle == -1)
+		{
+			ep.m_hSoundScriptHandle = soundemitterbase->HashSoundName(ep.m_pSoundName);
+		}
+
+		return EmitSoundByHandle(filter, entindex, ep, ep.m_hSoundScriptHandle);
+	}
+
+//	void EmitSound( IRecipientFilter& filter, int entindex, const EmitSound_t & ep )
+//	{
+//		VPROF( "CSoundEmitterSystem::EmitSound (calls engine)" );
+//		if ( ep.m_pSoundName && 
+//			( Q_stristr( ep.m_pSoundName, ".wav" ) || 
+//			  Q_stristr( ep.m_pSoundName, ".mp3" ) || 
+//			  ep.m_pSoundName[0] == '!' ) )
+//		{
+//#if !defined( CLIENT_DLL )
+//			bool bSwallowed = CEnvMicrophone::OnSoundPlayed( 
+//				entindex, 
+//				ep.m_pSoundName, 
+//				ep.m_SoundLevel, 
+//				ep.m_flVolume, 
+//				ep.m_nFlags, 
+//				ep.m_nPitch, 
+//				ep.m_pOrigin, 
+//				ep.m_flSoundTime,
+//				ep.m_UtlVecSoundOrigin );
+//			if ( bSwallowed )
+//				return;
+//#endif
+//
+//			// TERROR:
+//			float startTime = Plat_FloatTime();
+//
+//			if ( ep.m_bWarnOnDirectWaveReference && 
+//				Q_stristr( ep.m_pSoundName, ".wav" ) )
+//			{
+//				WaveTrace( ep.m_pSoundName, "Emitsound" );
+//			}
+//
+//#if defined( _DEBUG ) && !defined( CLIENT_DLL )
+//			if ( !enginesound->IsSoundPrecached( ep.m_pSoundName ) )
+//			{
+//				Msg( "Sound %s was not precached\n", ep.m_pSoundName );
+//			}
+//#endif
+//			//enginesound->EmitSound( 
+//			//	filter, 
+//			//	entindex, 
+//			//	ep.m_nChannel, 
+//			//	ep.m_pSoundName, 
+//			//	ep.m_flVolume, 
+//			//	ep.m_SoundLevel, 
+//			//	ep.m_nFlags, 
+//			//	ep.m_nPitch, 
+//			//	ep.m_pOrigin,
+//			//	NULL, 
+//			//	&ep.m_UtlVecSoundOrigin,
+//			//	true, 
+//			//	ep.m_flSoundTime,
+//			//	ep.m_nSpeakerEntity );
+//
+//			CRecipientFilter filterCopy;
+//			filterCopy.CopyFrom((CRecipientFilter&)filter);
+//
+//			enginesound->EmitSound(
+//				filterCopy,
+//				entindex,
+//				ep.m_nChannel,
+//				ep.m_pSoundName,
+//				ep.m_hSoundScriptHandle,
+//				ep.m_pSoundName,
+//				ep.m_flVolume,
+//				ep.m_SoundLevel,
+//				0,
+//				0,
+//				ep.m_nPitch,
+//				ep.m_pOrigin,
+//				NULL,
+//				&ep.m_UtlVecSoundOrigin,
+//				true,
+//				ep.m_flSoundTime,
+//				ep.m_nSpeakerEntity);
+//			if ( ep.m_pflSoundDuration )
+//			{
+//				// TERROR:
+//#ifdef GAME_DLL
+//				UTIL_LogPrintf( "getting wav duration for %s\n", ep.m_pSoundName );
+//#endif
+//				VPROF( "CSoundEmitterSystem::EmitSound GetSoundDuration (calls engine)" );
+//				*ep.m_pflSoundDuration = enginesound->GetSoundDuration( ep.m_pSoundName );
+//			}
+//
+//			TraceEmitSound( entindex, "%f EmitSound:  Raw wave emitted '%s' (ent %i) (vol %f)\n",
+//				gpGlobals->curtime, ep.m_pSoundName, entindex, ep.m_flVolume );
+//
+//			// TERROR:
+//			float timeSpent = ( Plat_FloatTime() - startTime ) * 1000.0f;
+//			const float thinkLimit = 50.0f;
+//			if ( timeSpent > thinkLimit )
+//			{
+//#ifdef GAME_DLL
+//				UTIL_LogPrintf( "CSoundEmitterSystem::EmitSound(%s) took %f milliseconds (server)\n",
+//					ep.m_pSoundName, timeSpent );
+//#else
+//				DevMsg( "CSoundEmitterSystem::EmitSound(%s) took %f milliseconds (client)\n",
+//					ep.m_pSoundName, timeSpent );
+//#endif
+//			}
+//			return;
+//		}
+//
+//		if ( ep.m_hSoundScriptHandle == SOUNDEMITTER_INVALID_HANDLE )
+//		{
+//			ep.m_hSoundScriptHandle = (HSOUNDSCRIPTHANDLE)soundemitterbase->GetSoundIndex( ep.m_pSoundName );
+//		}
+//
+//		if ( ep.m_hSoundScriptHandle == -1 )
+//			return;
+//
+//		EmitSoundByHandle( filter, entindex, ep, ep.m_hSoundScriptHandle );
+//	}
 
 	void EmitCloseCaption( IRecipientFilter& filter, int entindex, bool fromplayer, char const *token, CUtlVector< Vector >& originlist, float duration, bool warnifmissing /*= false*/, bool bForceSubtitle = false )
 	{
@@ -1571,7 +1788,8 @@ void CBaseEntity::EmitSound( const char *soundname, float soundtime /*= 0.0f*/, 
 	VPROF_BUDGET( "CBaseEntity::EmitSound", _T( "CBaseEntity::EmitSound" ) );
 
 	ABS_QUERY_GUARD( true );
-	CPASAttenuationFilter filter( this, soundname );
+	//CPASAttenuationFilter filter( this, soundname );
+	CBroadcastRecipientFilter filter;
 	EmitSound_t params;
 	params.m_pSoundName = soundname;
 	params.m_flSoundTime = soundtime;
@@ -1591,8 +1809,8 @@ void CBaseEntity::EmitSound( const char *soundname, HSOUNDSCRIPTHANDLE& handle, 
 
 	// VPROF( "CBaseEntity::EmitSound" );
 	ABS_QUERY_GUARD( true );
-	CPASAttenuationFilter filter( this, soundname, handle );
-
+	//CPASAttenuationFilter filter( this, soundname, handle );
+	CBroadcastRecipientFilter filter;
 	EmitSound_t params;
 	params.m_pSoundName = soundname;
 	params.m_flSoundTime = soundtime;

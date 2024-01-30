@@ -18,6 +18,8 @@ ConVar erase_visual_color("erase_visual_color", "0 0 0 255", FCVAR_REPLICATED);
 ConVar paint_color_max_diff("paint_color_max_diff", "32", FCVAR_REPLICATED, "The maximum difference between two colors for matching.");
 // ---
 
+ConVar paintgun_fire_blobs("paintgun_fire_blobs", "1", 0, "Blobs are experimental!");
+
 // Paintgun power commands
 void Paintgun_NextPower();
 void Paintgun_PrevPower();
@@ -100,9 +102,10 @@ void CWeaponPaintgun::FirePaint(bool erase) {
 
 		if (tr.DidHitWorld())
 			if (!erase) {
-				//engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, g_CurPaintgunPower, paintgun_rad.GetInt(), paintgun_strength.GetInt());
-				//Paint::CreateBlob(tr.startpos, pPlayer->GetForward_Stick() * 50.0f);
-				((CBlobManager*)BlobulatorSystem())->CreateBlob(tr.startpos + (pPlayer->Forward() * 72.0f), pPlayer->GetForward_Stick().Normalized() * 800.0f, GetStreamIndex(g_CurPaintgunPower));
+				if(!paintgun_fire_blobs.GetBool())
+					engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, g_CurPaintgunPower, paintgun_rad.GetInt(), paintgun_strength.GetInt());
+				else
+					((CBlobManager*)BlobulatorSystem())->CreateBlob(tr.startpos + (pPlayer->Forward() * 72.0f), pPlayer->GetForward_Stick().Normalized() * 800.0f, GetStreamIndex(g_CurPaintgunPower));
 			}
 			else
 				engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, NO_POWER, paintgun_rad.GetInt(), paintgun_strength.GetInt()); // erase 

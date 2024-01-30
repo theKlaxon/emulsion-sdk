@@ -20,7 +20,6 @@ void CServerGameClients::GetPlayerLimits( int& minplayers, int& maxplayers, int 
 	maxplayers = MAX_PLAYERS;
 }
 
-
 // -------------------------------------------------------------------------------------------- //
 // Mod-specific CServerGameDLL implementation.
 // -------------------------------------------------------------------------------------------- //

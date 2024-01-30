@@ -15,8 +15,8 @@
 #include "view_shared.h"
 #include "texture_group_names.h"
 #include "tier0/icommandline.h"
+#include "tier0/platform.h"
 
-ConVar r_env_proj_volumetric("r_env_proj_volumetric", "0", FCVAR_DEVELOPMENTONLY);
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -45,6 +45,7 @@ IMPLEMENT_CLIENTCLASS_DT( C_EnvProjectedTexture, DT_EnvProjectedTexture, CEnvPro
 	RecvPropInt(	 RECVINFO( m_nShadowQuality )	),
 	RecvPropFloat(	 RECVINFO( m_flProjectionSize )	),
 	RecvPropFloat(	 RECVINFO( m_flRotation )	),
+	RecvPropInt(	 RECVINFO( m_iStyle ) ),
 END_RECV_TABLE()
 
 C_EnvProjectedTexture *C_EnvProjectedTexture::Create( )
@@ -56,7 +57,7 @@ C_EnvProjectedTexture *C_EnvProjectedTexture::Create( )
 //	strcpy( pEnt->m_SpotlightTextureName, "particle/rj" );
 	pEnt->m_bLightWorld = true;
 	pEnt->m_bLightOnlyTarget = false;
-	pEnt->m_bSimpleProjection = false;
+	pEnt->m_bSimpleProjection = true;
 	pEnt->m_nShadowQuality = 1;
 	pEnt->m_flLightFOV = 10.0f;
 	pEnt->m_LightColor.r = 255;
@@ -80,6 +81,7 @@ C_EnvProjectedTexture::C_EnvProjectedTexture( void )
 	m_LightHandle = CLIENTSHADOW_INVALID_HANDLE;
 	m_bForceUpdate = true;
 	m_pMaterial = NULL;
+	m_bIsCurrentlyProjected = false;
 	AddToEntityList( ENTITY_LIST_SIMULATE );
 }
 
@@ -103,12 +105,18 @@ void C_EnvProjectedTexture::ShutDownLightHandle( void )
 		}
 		m_LightHandle = CLIENTSHADOW_INVALID_HANDLE;
 	}
+
+	m_bIsCurrentlyProjected = false;
 }
 
 
 void C_EnvProjectedTexture::SetMaterial( IMaterial *pMaterial )
 {
-	m_pMaterial = pMaterial;
+	if ( pMaterial != m_ProjectedMaterial )
+	{
+		m_ProjectedMaterial.Init( pMaterial );
+		pMaterial->AddRef();
+	}
 }
 
 
@@ -126,15 +134,12 @@ void C_EnvProjectedTexture::SetSize( float flSize )
 	m_flProjectionSize = flSize;
 }
 
-// add to rotation
+
 void C_EnvProjectedTexture::SetRotation( float flRotation )
 {
-	if ( m_flRotation != flRotation )
-	{
-		m_flRotation = flRotation;
-//		m_bForceUpdate = true;
-	}
+	m_flRotation = flRotation;
 }
+
 
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -142,10 +147,13 @@ void C_EnvProjectedTexture::SetRotation( float flRotation )
 //-----------------------------------------------------------------------------
 void C_EnvProjectedTexture::OnDataChanged( DataUpdateType_t updateType )
 {
-	if ( updateType == DATA_UPDATE_CREATED )
+	if ( updateType == DATA_UPDATE_CREATED ) //
 	{
+		Assert( m_SpotlightTexture.IsValid() == false );
 		m_SpotlightTexture.Init( m_SpotlightTextureName, TEXTURE_GROUP_OTHER, true );
+		m_ProjectedMaterial.Init( m_SpotlightTextureName, TEXTURE_GROUP_OTHER );
 	}
+
 
 	m_bForceUpdate = true;
 	UpdateLight();
@@ -153,8 +161,42 @@ void C_EnvProjectedTexture::OnDataChanged( DataUpdateType_t updateType )
 }
 
 static ConVar asw_perf_wtf("asw_perf_wtf", "0", FCVAR_DEVELOPMENTONLY, "Disable updating of projected shadow textures from UpdateLight" );
+extern ConVar r_flashlightenableculling;
+
+bool C_EnvProjectedTexture::ShouldUpdate( void )
+{
+	if ( !IsX360() )
+	{
+		CPULevel_t nCPULevel = GetCPULevel();
+		bool bNoDraw = ( GetMinCPULevel() && GetMinCPULevel()-1 > nCPULevel );
+		bNoDraw = bNoDraw || ( GetMaxCPULevel() && GetMaxCPULevel()-1 < nCPULevel );
+		if ( bNoDraw )
+			return false;
+
+		GPULevel_t nGPULevel = GetGPULevel();
+		bNoDraw = ( GetMinGPULevel() && GetMinGPULevel()-1 > nGPULevel );
+		bNoDraw = bNoDraw || ( GetMaxGPULevel() && GetMaxGPULevel()-1 < nGPULevel );
+		if ( bNoDraw )
+			return false;
+	}
+
+	return true;
+}
+
+ConVar r_flashlightforcevolumetric("r_flashlightforcevolumetric", "0");
+ConVar r_flashlightvolumetricint("r_flashlightvolumetricint", "1.0f");
+
 void C_EnvProjectedTexture::UpdateLight( void )
 {
+	if ( !ShouldUpdate() )
+	{
+		if ( m_bIsCurrentlyProjected )
+		{
+			ShutDownLightHandle();
+		}
+		return;
+	}
+
 	VPROF("C_EnvProjectedTexture::UpdateLight");
 	bool bVisible = true;
 
@@ -178,7 +220,7 @@ void C_EnvProjectedTexture::UpdateLight( void )
 		m_bForceUpdate = true;
 	}
 	
-	if ( !m_bForceUpdate )
+	if ( !m_bForceUpdate && r_flashlightenableculling.GetBool() )
 	{
 		bVisible = IsBBoxVisible();		
 	}
@@ -257,11 +299,14 @@ void C_EnvProjectedTexture::UpdateLight( void )
 		state.m_NearZ = m_flNearZ;
 		state.m_FarZ = m_flFarZ;
 
-		// quickly check the proposed light's bbox against the view frustum to determine whether we
-		// should bother to create it, if it doesn't exist, or cull it, if it does.
-		if ( m_bSimpleProjection == false )
+		if ( r_flashlightenableculling.GetBool() )
 		{
+			// quickly check the proposed light's bbox against the view frustum to determine whether we
+			// should bother to create it, if it doesn't exist, or cull it, if it does.
+
+#ifndef LINUX
 #pragma message("OPTIMIZATION: this should be made SIMD")
+#endif
 			// get the half-widths of the near and far planes, 
 			// based on the FOV which is in degrees. Remember that
 			// on planet Valve, x is forward, y left, and z up. 
@@ -290,7 +335,7 @@ void C_EnvProjectedTexture::UpdateLight( void )
 				kFAR = 1,
 			};
 			VectorAligned vOutRects[2][4];
-
+			
 			for ( int i = 0 ; i < 4 ; ++i )
 			{
 				VectorTransform( vNearRect[i].Base(), matOrientation, vOutRects[0][i].Base() );
@@ -324,6 +369,8 @@ void C_EnvProjectedTexture::UpdateLight( void )
 #endif
 			
 			bool bVisible = IsBBoxVisible( mins, maxs );
+
+
 			if (!bVisible)
 			{
 				// Spotlight's extents aren't in view
@@ -338,12 +385,12 @@ void C_EnvProjectedTexture::UpdateLight( void )
 
 		float flAlpha = m_flCurrentLinearFloatLightAlpha * ( 1.0f / 255.0f );
 
-		if(r_env_proj_volumetric.GetBool())
-			state.m_bVolumetric = true; // FOR TESTING ONLY
+		// Get the current light style value to throttle the brightness by
+		flAlpha *= engine->LightStyleValue( m_iStyle );
 
 		state.m_fQuadraticAtten = 0.0;
 		state.m_fLinearAtten = 100;
-		state.m_fConstantAtten = 0.0f;
+		state.m_fConstantAtten = 0.0f;//
 		state.m_FarZAtten = m_flFarZ;
 		state.m_fBrightnessScale = m_flBrightnessScale;
 		state.m_Color[0] = m_CurrentLinearFloatLightColor.x * ( 1.0f / 255.0f ) * flAlpha;
@@ -353,23 +400,32 @@ void C_EnvProjectedTexture::UpdateLight( void )
 		state.m_flShadowSlopeScaleDepthBias = g_pMaterialSystemHardwareConfig->GetShadowSlopeScaleDepthBias();
 		state.m_flShadowDepthBias = g_pMaterialSystemHardwareConfig->GetShadowDepthBias();
 		state.m_bEnableShadows = m_bEnableShadows;
-		state.m_pSpotlightTexture = m_SpotlightTexture;
-		state.m_pProjectedMaterial = NULL; // only complain if we're using material projection
+		extern ConVar r_flashlightdepthreshigh;
+		state.m_flShadowMapResolution = r_flashlightdepthreshigh.GetFloat();
+		//state.m_flShadowFilterSize = 0.2f;
+
+		if (r_flashlightforcevolumetric.GetBool()) {
+			state.m_bVolumetric = true;
+			state.m_flVolumetricIntensity = r_flashlightvolumetricint.GetFloat();
+		}
+
+		if ( m_bSimpleProjection )
+		{
+			state.m_pSpotlightTexture = NULL;
+			state.m_pProjectedMaterial = m_ProjectedMaterial;
+		}
+		else
+		{
+			state.m_pSpotlightTexture = m_SpotlightTexture;
+			state.m_pProjectedMaterial = NULL;
+		}
+
 		state.m_nSpotlightTextureFrame = m_nSpotlightTextureFrame;
 		state.m_flProjectionSize = m_flProjectionSize;
 		state.m_flProjectionRotation = m_flRotation;
 
 		state.m_nShadowQuality = m_nShadowQuality; // Allow entity to affect shadow quality
-
-		if ( m_bSimpleProjection == true )
-		{
-			/*state.m_bSimpleProjection = true;*/
-			state.m_bOrtho = true;
-			state.m_fOrthoLeft = -m_flProjectionSize;
-			state.m_fOrthoTop = -m_flProjectionSize;
-			state.m_fOrthoRight = m_flProjectionSize;
-			state.m_fOrthoBottom = m_flProjectionSize;
-		}
+		state.m_bGlobalLight = true;	// projected flashlight entities should always be shared among players, because they live in a map.
 
 		if( m_LightHandle == CLIENTSHADOW_INVALID_HANDLE )
 		{
@@ -415,7 +471,7 @@ void C_EnvProjectedTexture::UpdateLight( void )
 	}
 	else
 	{
-		g_pClientShadowMgr->SetFlashlightTarget( m_LightHandle, NULL );
+		g_pClientShadowMgr->SetFlashlightTarget(m_LightHandle, NULL);
 	}
 
 	g_pClientShadowMgr->SetFlashlightLightWorld( m_LightHandle, m_bLightWorld );
@@ -424,6 +480,8 @@ void C_EnvProjectedTexture::UpdateLight( void )
 	{
 		g_pClientShadowMgr->UpdateProjectedTexture( m_LightHandle, true );
 	}
+
+	m_bIsCurrentlyProjected = true;
 }
 
 bool C_EnvProjectedTexture::Simulate( void )

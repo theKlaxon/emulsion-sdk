@@ -105,7 +105,7 @@ bool CBoneFollowerManager::CreatePhysicsFollower( CBaseAnimating *pParentEntity,
 
 	if ( boneIndex >= 0 )
 	{
-		mstudiobone_t *pBone = pStudioHdr->pBone( boneIndex );
+		const mstudiobone_t *pBone = pStudioHdr->pBone( boneIndex );
 
 		int physicsBone = pBone->physicsbone;
 		if ( !pSolid )

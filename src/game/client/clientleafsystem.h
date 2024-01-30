@@ -97,6 +97,10 @@ public:
 	IClientRenderable	*m_pBoneSetupDependency[MAX_BONE_SETUP_DEPENDENCY];
 };
 
+struct ViewmodelRenderableInstance_t : public RenderableInstance_t
+{
+	uint8 m_bTwoPass;
+};
 
 //-----------------------------------------------------------------------------
 // Render list for viewmodels
@@ -114,7 +118,7 @@ public:
 	struct CEntry
 	{
 		IClientRenderable	*m_pRenderable;
-		RenderableInstance_t m_InstanceData;
+		ViewmodelRenderableInstance_t m_InstanceData;
 	};
 
 	typedef CUtlVectorFixedGrowable< CEntry, 32 > RenderGroups_t;

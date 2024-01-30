@@ -16,7 +16,7 @@
 #include "isaverestore.h"
 #include "gamerules.h"
 #ifdef _WIN32
-//#include "vscript_server_nut.h"
+#include "vscript_server_nut.h"
 #endif
 
 extern ScriptClassDesc_t * GetScriptDesc( CBaseEntity * );
@@ -35,6 +35,18 @@ extern ScriptClassDesc_t * GetScriptDesc( CBaseEntity * );
 
 #endif // VMPROFILE
 
+// EXTRA VSCRIPT HELPERS
+// added for portal 2 vscript support. they wont be exactly the same but they should work.
+static ConVar vs_loopsingleplayermaps("loopsingleplayermaps", "0", FCVAR_ACCESSIBLE_FROM_THREADS);
+static ConVar vs_ismultiplayer("ismultiplayer", "0", FCVAR_ACCESSIBLE_FROM_THREADS);
+
+static bool LoopSinglePlayerMaps() {
+	return vs_loopsingleplayermaps.GetBool();
+}
+
+static bool IsMultiplayer() {
+	return vs_ismultiplayer.GetBool();
+}
 
 //-----------------------------------------------------------------------------
 //
@@ -299,6 +311,9 @@ static void DoEntFire( const char *pszTarget, const char *pszAction, const char 
 	g_EventQueue.AddEvent( target, action, value, delay, ToEnt(hActivator), ToEnt(hCaller) );
 }
 
+static void EntFire(const char* pszTarget, const char* pszAction, const char* pszValue, float delay, HSCRIPT hActivator = nullptr, HSCRIPT hCaller = nullptr) {
+	DoEntFire(pszTarget, pszAction, pszValue, delay, hActivator, hCaller);
+}
 
 bool DoIncludeScript( const char *pszScript, HSCRIPT hScope )
 {
@@ -430,7 +445,12 @@ bool VScriptServerInit()
 				ScriptRegisterFunction( g_pScriptVM, DoIncludeScript, "Execute a script (internal)" );
 				ScriptRegisterFunction( g_pScriptVM, CreateProp, "Create a physics prop" );
 
-				
+				extern void PrecacheMovie(const char* pszMovie);
+				// portal 2 compat / helpers
+				ScriptRegisterFunction(g_pScriptVM, LoopSinglePlayerMaps, "Are we looping the singleplayer maps?");
+				ScriptRegisterFunction(g_pScriptVM, IsMultiplayer, "Are we in a mulitplayer map or mode?");
+				ScriptRegisterFunction(g_pScriptVM, PrecacheMovie, "Precaches a named movie. Only valid to call within the entity's 'Precache' function called on mapspawn.");
+
 				if ( GameRules() )
 				{
 					GameRules()->RegisterScriptFunctions();
@@ -440,7 +460,7 @@ bool VScriptServerInit()
 
 				if ( scriptLanguage == SL_SQUIRREL )
 				{
-					//g_pScriptVM->Run( g_Script_vscript_server );
+					g_pScriptVM->Run( g_Script_vscript_server );
 				}
 
 				VScriptRunScript( "mapspawn", false );
@@ -783,5 +803,3 @@ void *CBaseEntityScriptInstanceHelper::BindOnRead( HSCRIPT hInstance, void *pOld
 
 
 CBaseEntityScriptInstanceHelper g_BaseEntityScriptInstanceHelper;
-
-

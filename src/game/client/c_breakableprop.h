@@ -26,6 +26,11 @@ public:
 		return true;
 	};
 
+	virtual bool ShouldReceiveProjectedTextures(int flags) override
+	{
+		return true;
+	}
+
 	// Copy fade from another breakable prop
 	void CopyFadeFrom( C_BreakableProp *pSource );
 	virtual void OnDataChanged( DataUpdateType_t type );

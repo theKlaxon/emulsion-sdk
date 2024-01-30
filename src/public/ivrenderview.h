@@ -198,7 +198,7 @@ enum DrawBrushModelMode_t {
 
 struct BrushArrayInstanceData_t {
 	matrix3x4a_t* m_pBrushToWorld;
-	model_t* m_pBrushModel;
+	const model_t* m_pBrushModel;
 	Vector4D m_DiffuseModulation;
 	ShaderStencilState_t* m_pStencilState;
 };

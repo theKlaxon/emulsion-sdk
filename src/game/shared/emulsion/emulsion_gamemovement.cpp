@@ -251,6 +251,8 @@ C:
 	UpdateDuckJumpEyeOffset();
 	Duck();
 
+	ProcessPowerUpdate();
+
 	// Handle movement modes.
 	switch (player->GetMoveType())
 	{
@@ -536,7 +538,7 @@ void CEmulsionGameMovement::FullWalkMove()
 			//mv->m_vecVelocity[2] = 0.0;
 			//mv->m_vecVelocity *= vecInvGravity;
 
-			player->m_Local.m_flFallVelocity = 0.0f;
+			//player->m_Local.m_flFallVelocity = 0.0f;
 			Friction();
 		}
 
@@ -970,8 +972,9 @@ void CEmulsionGameMovement::CheckFalling()
 				break;
 
 			if (player->m_Local.m_flFallVelocity != 0.0f) {
-				m_tCurPaintInfo = m_tTempPaintInfo;
-				BouncePlayer(m_tTempPaintInfo.plane);
+				//m_tCurPaintInfo = m_tTempPaintInfo;
+				//Msg("Fall Vel: %f", player->m_Local.m_flFallVelocity);
+				//BouncePlayer(m_tTempPaintInfo.plane);
 				
 			}
 			
@@ -1028,6 +1031,34 @@ void CEmulsionGameMovement::CheckFalling()
 
 		if (bAlive)
 			MoveHelper()->PlayerSetAnimation(PLAYER_WALK);
+	}
+	else {
+#ifdef GAME_DLL
+		//if(m_tCurPaintInfo.type != PORTAL_POWER)
+		PaintInfo_t m_tTempPaintInfo = CheckPaintedSurface();
+
+		switch (m_tTempPaintInfo.type) {
+		case BOUNCE_POWER:
+			if (player->m_nButtons & IN_DUCK)
+				break;
+
+			if (player->m_Local.m_flFallVelocity != 0.0f) {
+				m_tCurPaintInfo = m_tTempPaintInfo;
+				//Msg("(%f, %f, %f)\n", mv->m_vecVelocity.x, mv->m_vecVelocity.y, mv->m_vecVelocity.z);
+				float bounceMult = mv->m_vecVelocity.Length();
+				BouncePlayer(m_tTempPaintInfo.plane, sqrt(bounceMult) * 0.25f);
+
+			}
+
+			if (player->GetGroundEntity() != NULL)
+				player->m_Local.m_flFallVelocity = 0;
+
+			return;
+
+		default:
+			break;
+		}
+#endif
 	}
 	
 	//
@@ -1112,9 +1143,6 @@ void CEmulsionGameMovement::FinishGravity() {
 
 void CEmulsionGameMovement::SetGroundEntity(trace_t* pm)
 {
-	//BaseClass::SetGroundEntity(pm);
-	//return; 
-
 	Vector nAxis = GetGravityDir();
 	VecNeg(nAxis);
 
@@ -1271,6 +1299,12 @@ bool CEmulsionGameMovement::CheckJumpButton() {
 		mv->m_vecVelocity += (-1 * m_vecGravity) * flGroundFactor * flMul;
 	}
 
+#ifdef GAME_DLL
+	extern bool g_bStickPaintJumpRelease;
+	if (m_tCurPaintInfo.type == PORTAL_POWER)
+		g_bStickPaintJumpRelease = true;
+#endif
+
 	FinishGravity();
 
 	CheckV(player->CurrentCommandNumber(), "CheckJump", mv->m_vecVelocity);
@@ -1312,7 +1346,9 @@ int CEmulsionGameMovement::TryPlayerMove(Vector* pFirstDest, trace_t* pFirstTrac
 	float		time_left, allFraction;
 	int			blocked;
 
-	short doBounce = 0;
+	//float bounceMult = mv->m_vecVelocity.Length();
+
+	//short doBounce = 0;
 
 	numbumps = 4;           // Bump up to four times
 
@@ -1413,21 +1449,12 @@ int CEmulsionGameMovement::TryPlayerMove(Vector* pFirstDest, trace_t* pFirstTrac
 		//  it's probably a floor
 		if (pm.plane.normal[2] > 0.7)
 		{
-			blocked |= 1;		// floor
-
-			if (m_tCurPaintInfo.type == BOUNCE_POWER)
-				doBounce = 1;
+			blocked |= 1;		// floor	
 		}
 		// If the plane has a zero z component in the normal, then it's a 
 		//  step or wall
 		if (!pm.plane.normal[2])
-		{
-			// i put this here to avoid running extra checks for non grounded paint bounces.
-			// saving perf :/
-			if (m_tCurPaintInfo.type == BOUNCE_POWER && player->GetGroundEntity() == NULL) {
-				doBounce = 1, wallBounce = 1;
-			}
-			
+		{		
 			blocked |= 2;		// step / wall
 		}
 
@@ -1536,9 +1563,6 @@ int CEmulsionGameMovement::TryPlayerMove(Vector* pFirstDest, trace_t* pFirstTrac
 	//if (fSlamVol > 0.0f)
 	//	PlayerRoughLandingEffects(fSlamVol);
 
-	if (doBounce)
-		BouncePlayer(m_tCurPaintInfo.plane);
-
 	return blocked;
 }
 
@@ -1549,13 +1573,7 @@ void CEmulsionGameMovement::ProcessPowerUpdate() {
 #ifdef GAME_DLL
 	PaintInfo_t m_tNewInfo = CheckPaintedSurface();
 	CEmulsionPlayer* pPlayer = ToEmulsionPlayer(player);
-
-	//debugoverlay->AddBoxOverlay(mv->GetAbsOrigin(), pPlayer->GetPlayerMins(), pPlayer->GetPlayerMaxs(), QAngle(0, 0, 1), 0, 255, 0, 150, 0);
-	//Msg("player origin: %f, %f, %f\n", mv->GetAbsOrigin().x, mv->GetAbsOrigin().y, mv->GetAbsOrigin().z);
-
-	if (m_tCurPaintInfo.type == PORTAL_POWER)
-		g_flCurStickTransitionTime -= gpGlobals->frametime;
-
+	
 	switch (m_tNewInfo.type) {
 	case BOUNCE_POWER:
 		if (m_tCurPaintInfo.type == SPEED_POWER) {
@@ -1571,16 +1589,11 @@ void CEmulsionGameMovement::ProcessPowerUpdate() {
 			PlayPaintEntrySound(m_tNewInfo.type);
 		}
 		break;
-	case PORTAL_POWER:
-		if (m_tCurPaintInfo.type != PORTAL_POWER) {
-			StickPlayer(m_tNewInfo);
-			PlayPaintEntrySound(m_tNewInfo.type);
-			g_flCurStickTransitionTime = g_flStickTransitionTime;
-		}
+	case PORTAL_POWER: // handled by the player
 		break;
 	default:
-		if (m_tCurPaintInfo.type == PORTAL_POWER && g_flCurStickTransitionTime <= 0.0f)
-			UnStickPlayer();
+		//if (m_tCurPaintInfo.type == PORTAL_POWER && g_flCurStickTransitionTime <= 0.0f)
+		//	pPlayer->UnStickPlayer();
 		DetermineExitSound(m_tNewInfo.type);
 		break;
 	}
@@ -1592,9 +1605,14 @@ void CEmulsionGameMovement::ProcessPowerUpdate() {
 
 // POWERS:
 
-void CEmulsionGameMovement::BouncePlayer(cplane_t plane) {
+void CEmulsionGameMovement::BouncePlayer(cplane_t plane, float multiplier) {
 
-	float flMul = sqrt(2 * sv_gravity.GetFloat() * pl_bouncePaintFactor.GetFloat());
+	Msg("Bounce mult: %f \n", multiplier);
+
+	if (multiplier < 2) multiplier = 2;
+	if (m_tCurPaintInfo.type == SPEED_POWER) multiplier + 1;
+
+	float flMul = sqrt(multiplier * sv_gravity.GetFloat() * pl_bouncePaintFactor.GetFloat());
 
 	Vector curForwardVel;
 	Vector curNegVel;
@@ -1605,47 +1623,55 @@ void CEmulsionGameMovement::BouncePlayer(cplane_t plane) {
 		curNegVel *= -1;
 	
 	curForwardVel = player->Forward() * curNegVel;
-	result = curForwardVel.Normalized() * (flMul / 12);
+
+	if(m_tCurPaintInfo.type != SPEED_POWER)
+		result = curForwardVel.Normalized() * (flMul / 2);
 	result += (plane.normal) * flMul;
 
-	if (wallBounce)
-		result += (-1 * m_vecGravity) * (flMul / 2);
+	if (plane.normal[2] == 0)
+		result += (-1 * m_vecGravity) * (flMul);
 
-	mv->m_vecVelocity += result;
+	if (m_tCurPaintInfo.type == SPEED_POWER)
+		mv->m_vecVelocity += result;
+	else
+		mv->m_vecVelocity = result;
 
 	wallBounce = 0;
 	m_bCancelNextExitSound = true;
 	PlaySoundInternal("Player.JumpPowerUse");
 
-	if (pl_showBouncePowerNormal.GetBool())
-		Msg("(%f, %f, %f)\n", result.x, result.y, result.z);
+	if (pl_showBouncePowerNormal.GetBool()) {
+		Msg("Result: (%f, %f, %f)\n", result.x, result.y, result.z);
+		Msg("Actual: (%f, %f, %f)\n", mv->m_vecVelocity.x, mv->m_vecVelocity.y, mv->m_vecVelocity.z);
+	}
+		
 
 	SetGroundEntity(NULL);
 }
 
-void CEmulsionGameMovement::StickPlayer(PaintInfo_t info) {
+void CEmulsionGameMovement::CalculateStickAngles() {
 
-	if (pl_showStickPowerNormal.GetBool())
-		Msg("(%f, %f, %f)\n", info.plane.normal.x, info.plane.normal.y, info.plane.normal.z);
+	if (m_angDefaultAngles == QAngle(0, 0, 0))
+		m_angDefaultAngles = mv->m_vecViewAngles;
 
-#ifdef GAME_DLL
-	CEmulsionPlayer* pPlayer = ToEmulsionPlayer(player);
-	pPlayer->SetGravityDir(-1 * info.plane.normal);
-	pPlayer->SetStickParent(info.m_pEnt);
+	QAngle stickAngles = player->EyeAngles();
+	Vector vecAxisOfRotation = CrossProduct(Vector(0, 0, 1), -1 * m_vecGravity);
+	float flAngleOfRotation = RAD2DEG(acos(DotProduct(Vector(0, 0, 1), -1 * m_vecGravity)));
+	
+	VMatrix eyerotmat;
+	MatrixBuildRotationAboutAxis(eyerotmat, vecAxisOfRotation, flAngleOfRotation);
 
-#endif
-	SetGravityDir(-1 * info.plane.normal);
-	player->SetMoveType(MOVETYPE_STICK);
+	Vector vecForward, vecUp;
+	AngleVectors(stickAngles, &vecForward, nullptr, &vecUp);
+	VectorRotate(vecForward, eyerotmat.As3x4(), vecForward);
+	VectorRotate(vecUp, eyerotmat.As3x4(), vecUp);
+
+	VectorAngles(vecForward, vecUp, m_angStickAngles);
+	m_vecStickForward = vecForward;
+	m_vecStickUp = vecUp;
 }
 
 void CEmulsionGameMovement::UnStickPlayer() {
-
-#ifdef GAME_DLL
-	CEmulsionPlayer* pPlayer = ToEmulsionPlayer(player);
-	pPlayer->SetGravityDir(Vector(0, 0, -1));
-	pPlayer->SetStickParent(NULL);
-
-#endif
 	SetGravityDir(Vector(0, 0, -1));
 	player->SetMoveType(MOVETYPE_WALK);
 }
@@ -1770,7 +1796,7 @@ PaintInfo_t CEmulsionGameMovement::CheckPaintedSurface() {
 
 	PaintInfo_t info = PaintInfo_t();
 
-	if (mv == NULL)
+	if (mv == NULL || !engine->HasPaintmap())
 		return info;
 
 	if (g_bInStickTransition)
@@ -1864,27 +1890,3 @@ PaintPowerType CEmulsionGameMovement::GetHighestPriorityPaint(CUtlVector<unsigne
 }
 
 #endif
-
-void CEmulsionGameMovement::CalculateStickAngles() {
-
-	if (m_angDefaultAngles == QAngle(0, 0, 0))
-		m_angDefaultAngles = mv->m_vecViewAngles;
-
-	QAngle stickAngles = player->EyeAngles();
-	Vector vecAxisOfRotation = CrossProduct(Vector(0, 0, 1), -1 * m_vecGravity);
-	float flAngleOfRotation = RAD2DEG(acos(DotProduct(Vector(0, 0, 1), -1 * m_vecGravity)));
-
-	//Msg("(%f, %f, %f)\n", m_vecGravity.x, m_vecGravity.y, m_vecGravity.z);
-
-	VMatrix eyerotmat;
-	MatrixBuildRotationAboutAxis(eyerotmat, vecAxisOfRotation, flAngleOfRotation);
-
-	Vector vecForward, vecUp;
-	AngleVectors(stickAngles, &vecForward, nullptr, &vecUp);
-	VectorRotate(vecForward, eyerotmat.As3x4(), vecForward);
-	VectorRotate(vecUp, eyerotmat.As3x4(), vecUp);
-
-	VectorAngles(vecForward, vecUp, m_angStickAngles);
-	m_vecStickForward = vecForward;
-	m_vecStickUp = vecUp;
-}

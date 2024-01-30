@@ -311,15 +311,15 @@ int C_BaseViewModel::DrawModel( int flags, const RenderableInstance_t &instance 
 	// If the local player's overriding the viewmodel rendering, let him do it
 	if ( pPlayer && pPlayer->IsOverridingViewmodel() )
 	{
-		ret = pPlayer->DrawOverriddenViewmodel( this, flags, instance );
+		ret = pPlayer->DrawOverriddenViewmodel( this, /*STUDIO_SHADOWDEPTHTEXTURE |*/ flags, instance );
 	}
 	else if ( pWeapon && pWeapon->IsOverridingViewmodel() )
 	{
-		ret = pWeapon->DrawOverriddenViewmodel( this, flags, instance );
+		ret = pWeapon->DrawOverriddenViewmodel( this, /*STUDIO_SHADOWDEPTHTEXTURE |*/ flags, instance );
 	}
 	else
 	{
-		ret = BaseClass::DrawModel( flags, instance );
+		ret = BaseClass::DrawModel( /*STUDIO_SHADOWDEPTHTEXTURE |*/ flags, instance );
 	}
 
 	pRenderContext->CullMode( MATERIAL_CULLMODE_CCW );

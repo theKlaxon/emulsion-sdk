@@ -105,6 +105,7 @@
 #define VPROF_BUDGETGROUP_STATICPROP_RENDERING		_T("Static_Prop_Rendering")
 #define VPROF_BUDGETGROUP_MODEL_RENDERING			_T("Other_Model_Rendering")
 #define VPROF_BUDGETGROUP_MODEL_FAST_PATH_RENDERING _T("Fast Path Model Rendering")
+#define VPROF_BUDGETGROUP_BRUSH_FAST_PATH_RENDERING _T("Fast Path Brush Rendering") // csgo
 #define VPROF_BUDGETGROUP_BRUSHMODEL_RENDERING		_T("Brush_Model_Rendering")
 #define VPROF_BUDGETGROUP_SHADOW_RENDERING			_T("Shadow_Rendering")
 #define VPROF_BUDGETGROUP_DETAILPROP_RENDERING		_T("Detail_Prop_Rendering")

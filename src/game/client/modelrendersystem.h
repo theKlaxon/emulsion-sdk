@@ -45,8 +45,7 @@ enum ModelRenderMode_t
 {
 	MODEL_RENDER_MODE_NORMAL,
 	MODEL_RENDER_MODE_SHADOW_DEPTH,
-	MODEL_RENDER_MODE_RTT_SHADOWS,
-	MODEL_RENDER_MODE_SSAO
+	MODEL_RENDER_MODE_RTT_SHADOWS
 };
 
 //-----------------------------------------------------------------------------
