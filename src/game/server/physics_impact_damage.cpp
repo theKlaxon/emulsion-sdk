@@ -302,7 +302,7 @@ float CalculatePhysicsImpactDamage( int index, gamevcollisionevent_t *pEvent, co
 		int count = pEvent->pEntities[otherIndex]->VPhysicsGetObjectList( pList, ARRAYSIZE(pList) );
 		for ( int i = 0; i < count; i++ )
 		{
-			if ( pList[i]->GetGameFlags() & gameFlagsNoDamage )
+ 			if ( pList[i]->GetGameFlags() & gameFlagsNoDamage )
 				return 0;
 		}
 	}

@@ -113,7 +113,7 @@
 #endif
 
 #ifdef EMULSION_DLL
-#include "blob_manager.h"
+#include "paintblob_manager.h"
 #endif
 
 
@@ -598,7 +598,7 @@ static bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 #endif // SERVER_USES_VGUI
 
 #if defined(EMULSION_DLL)
-	IGameSystem::Add(BlobulatorSystem());
+	IGameSystem::Add(PaintBlobManager_System());
 #endif
 
 	// load Mod specific game events ( MUST be before InitAllSystems() so it can pickup the mod specific events)

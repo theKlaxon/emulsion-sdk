@@ -5,13 +5,14 @@
 #include "weapon_paintgun.h"
 #include "emulsion_player.h"
 #include "..\public\game\shared\portal2\paint_enum.h"
-#include "blobulator/blob_manager.h"
+#include "paintblob_manager.h"
 
-// -- paint colours 
-//ConVar bounce_paint_color("bounce_paint_color", "15 252 11 255", FCVAR_REPLICATED); // i like greemn - Klax
+// -- paint colours
 ConVar bounce_paint_color("bounce_paint_color", "0 165 255 255", FCVAR_REPLICATED);
 ConVar speed_paint_color("speed_paint_color", "255 106 0 255", FCVAR_REPLICATED);
-ConVar portal_paint_color("portal_paint_color", "140 0 255 255", FCVAR_REPLICATED); // using this for stick paint
+ConVar portal_paint_color("portal_paint_color", "0 200 33 255", FCVAR_REPLICATED); // p2ce's green (i was allowed to use it) -Klax
+//ConVar portal_paint_color("portal_paint_color", "15 252 11 255", FCVAR_REPLICATED); // i like greemn -Klax
+//ConVar portal_paint_color("portal_paint_color", "140 0 255 255", FCVAR_REPLICATED); // using this for stick paint
 
 ConVar erase_color("erase_color", "0 0 0 255", FCVAR_REPLICATED);
 ConVar erase_visual_color("erase_visual_color", "0 0 0 255", FCVAR_REPLICATED);
@@ -30,9 +31,9 @@ PaintPowerType g_CurPaintgunPower = BOUNCE_POWER;
 ConCommand paintgun_next("paintgun_next", Paintgun_NextPower);
 ConCommand paintgun_prev("paintgun_prev", Paintgun_PrevPower);
 
-ConVar paintgun_rad("paintgun_rad", "35", FCVAR_REPLICATED);
+ConVar paintgun_rad("paintgun_rad", "64", FCVAR_REPLICATED);
 ConVar paintgun_strength("paintgun_strength", "5", FCVAR_REPLICATED);
-ConVar paintgun_timing("paintgun_timing", "0.001f", FCVAR_REPLICATED);
+ConVar paintgun_timing("paintgun_timing", "0.025f", FCVAR_REPLICATED);
 
 void SetPaintDisplayColour(PaintPowerType power) {
 	if (g_playerPaintgun == nullptr)
@@ -52,13 +53,12 @@ void SetPaintDisplayColour(PaintPowerType power) {
 			g_playerPaintgun->SetRenderColor(bounce_paint_color.GetColor().r(), bounce_paint_color.GetColor().g(), bounce_paint_color.GetColor().b());
 			break;
 	}
-
-	
 }
 
 LINK_ENTITY_TO_CLASS(weapon_paintgun, CWeaponPaintgun);
 
 IMPLEMENT_SERVERCLASS_ST(CWeaponPaintgun, DT_WeaponPaintgun)
+	SendPropInt(SENDINFO(m_nPaintType), 12, SPROP_UNSIGNED)
 END_SEND_TABLE()
 
 CWeaponPaintgun::CWeaponPaintgun() {
@@ -66,25 +66,8 @@ CWeaponPaintgun::CWeaponPaintgun() {
 	g_playerPaintgun = this;
 }
 
-int GetStreamIndex(PaintPowerType power) {
-
-	int ret = 0;
-
-	switch (power) {
-	case BOUNCE_POWER:
-		ret = 0;
-		break;
-	//case REFLECT_POWER:
-	//	break;
-	case SPEED_POWER:
-		ret = 1;
-		break;
-	case PORTAL_POWER:
-		ret = 2;
-		break;
-	}
-
-	return ret;
+int GetStreamIndex(PaintPowerType type) {
+	return PaintBlobManager()->GetStreamIndex(type);
 }
 
 void CWeaponPaintgun::FirePaint(bool erase) {
@@ -93,25 +76,37 @@ void CWeaponPaintgun::FirePaint(bool erase) {
 		return;
 
 	CEmulsionPlayer* pPlayer = ToEmulsionPlayer(UTIL_PlayerByIndex(1));
-	Vector halfHeightOrigin = pPlayer->GetHalfHeight_Stick();// player->GetAbsOrigin() + Vector(0, 0, player->BoundingRadius() / 2);
+	Vector halfHeightOrigin = pPlayer->GetHalfHeight_Stick();
 
-	trace_t tr;
-	UTIL_TraceLine(halfHeightOrigin, pPlayer->GetForward_Stick() * MAX_TRACE_LENGTH, MASK_ALL, pPlayer, COLLISION_GROUP_PLAYER_MOVEMENT, &tr);
+	if (paintgun_fire_blobs.GetBool()) {
 
-	if (tr.DidHit()) {
-
-		if (tr.DidHitWorld())
-			if (!erase) {
-				if(!paintgun_fire_blobs.GetBool())
-					engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, g_CurPaintgunPower, paintgun_rad.GetInt(), paintgun_strength.GetInt());
-				else
-					((CBlobManager*)BlobulatorSystem())->CreateBlob(tr.startpos + (pPlayer->Forward() * 72.0f), pPlayer->GetForward_Stick().Normalized() * 800.0f, GetStreamIndex(g_CurPaintgunPower));
-			}
-			else
-				engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, NO_POWER, paintgun_rad.GetInt(), paintgun_strength.GetInt()); // erase 
-
-		m_flCurPaintDelay = gpGlobals->curtime + paintgun_timing.GetFloat();
+		if (!erase)
+			PaintBlobManager()->CreateBlob(halfHeightOrigin + (pPlayer->Forward() * 55.0f), pPlayer->GetForward_Stick().Normalized() * 800.0f, GetStreamIndex(g_CurPaintgunPower));
+		else
+			PaintBlobManager()->CreateBlob(halfHeightOrigin + (pPlayer->Forward() * 55.0f), pPlayer->GetForward_Stick().Normalized() * 800.0f, GetStreamIndex(NO_POWER));
 	}
+	else {
+		trace_t tr;
+		UTIL_TraceLine(halfHeightOrigin, pPlayer->GetForward_Stick() * MAX_TRACE_LENGTH, MASK_ALL, pPlayer, COLLISION_GROUP_PLAYER_MOVEMENT, &tr);
+
+		if (tr.DidHit()) {
+
+			if (tr.DidHitWorld())
+				if (!erase) {
+					engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, g_CurPaintgunPower, paintgun_rad.GetInt(), paintgun_strength.GetInt());
+				}
+				else
+					engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, NO_POWER, paintgun_rad.GetInt(), paintgun_strength.GetInt()); // erase		
+		}
+	}
+
+	m_flCurPaintDelay = gpGlobals->curtime + paintgun_timing.GetFloat();
+}
+
+int CWeaponPaintgun::UpdateClientData(CBasePlayer* pPlayer) {
+	m_nPaintType = g_CurPaintgunPower;
+
+	return BaseClass::UpdateClientData(pPlayer);
 }
 
 // TODO: maybe make this stuff into it's own class, make an interface 

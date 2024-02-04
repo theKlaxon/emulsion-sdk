@@ -32,7 +32,7 @@
 
 #include "blobulator/implicit/imp_tiler.h"
 #include "blobulator/implicit/sweep_renderer.h"
-#include "blobulator/blob_render.h"
+#include "blobulator/paint_defs.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"

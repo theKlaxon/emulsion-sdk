@@ -6,7 +6,7 @@
 #include "ai_basenpc.h"
 #include "shareddefs.h"
 #include "globalstate.h"
-#include "blob_manager.h"
+#include "paintblob_manager.h"
 #include "..\server\ilagcompensationmanager.h"
 #include "..\game\shared\portal2\paint_enum.h"
 #include "emulsion/emulsion_gamemovement.h"

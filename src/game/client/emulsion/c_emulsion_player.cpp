@@ -5,6 +5,7 @@
 #include "ivieweffects.h"
 #include "emulsion_shareddefs.h"
 #include "emulsion_gamemovement.h"
+#include "emulsion_in_main.h"
 #include "igamemovement.h"
 
 static ConVar pl_stickcameralerpspeed("pl_stickcameralerpspeed", "3.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
@@ -27,6 +28,8 @@ C_EmulsionPlayer::C_EmulsionPlayer() {
 }
 
 extern IGameMovement* g_pGameMovement;
+
+static Vector g_RoofStickNormal = Vector(0, 0, 1);
 
 void C_EmulsionPlayer::CalcPlayerView(Vector& eyeOrigin, QAngle& eyeAngles, float& fov)
 {
@@ -63,8 +66,11 @@ void C_EmulsionPlayer::CalcPlayerView(Vector& eyeOrigin, QAngle& eyeAngles, floa
 	QAngle baseEyeAngles = eyeAngles;
 
 	if (pl_stickcamerauselerp.GetBool()) {
-		//m_vecCurLerpUp = VectorLerp(m_vecCurLerpUp, -1 * m_vecGravity, (gpGlobals->frametime * pl_stickcameralerpspeed.GetFloat()));
 		m_vecCurLerpUp = Lerp<Vector>((gpGlobals->frametime * pl_stickcameralerpspeed.GetFloat()), m_vecCurLerpUp, -1 * m_vecGravity);
+		if (m_vecGravity == g_RoofStickNormal)
+			GetPaintInput()->SetUseStickMouseFix(true);
+		else
+			GetPaintInput()->SetUseStickMouseFix(false);
 	}
 
 	CEmulsionGameMovement* pMove = (CEmulsionGameMovement*)g_pGameMovement;
@@ -108,8 +114,6 @@ void C_EmulsionPlayer::CalcPlayerView(Vector& eyeOrigin, QAngle& eyeAngles, floa
 		// Shake it up baby!
 		GetViewEffects()->CalcShake();
 		GetViewEffects()->ApplyShake(eyeOrigin, eyeAngles, 1.0);
-
-		// Tilting handled in CInput::AdjustAngles
 	}
 #endif
 

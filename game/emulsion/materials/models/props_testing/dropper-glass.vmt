@@ -1,0 +1,19 @@
+VertexlitGeneric
+{
+$baseTexture "models\props_testing\dropper-glass"
+$additive 1
+$envmap env_cubemap
+$alphaenvmapmask 1
+$bumpmap "models\props_testing\dropper-glass_normal"
+$envmaptint "[.20 .30 .35]"
+$translucent 1
+$nocull 1
+
+$phongexponenttexture "models\props_testing\dropper-glass_exponent"
+$phongexponent 1
+$phongboost 1
+
+$phongfresnelranges "[1 2 5]"
+
+
+}

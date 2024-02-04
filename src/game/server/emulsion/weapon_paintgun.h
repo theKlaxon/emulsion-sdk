@@ -12,8 +12,11 @@ public:
 	void PrimaryAttack() { FirePaint(); }
 	void SecondaryAttack() { FirePaint(true); }
 
+	virtual	int	UpdateClientData(CBasePlayer* pPlayer);
+
 private:
 
 	float m_flCurPaintDelay;
+	CNetworkVar(int, m_nPaintType);
 
 };

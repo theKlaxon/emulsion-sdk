@@ -1,6 +1,13 @@
 #include "cbase.h"
 #include "c_basecombatweapon.h"
 #include "c_emulsion_player.h"
+#include "game/shared/portal2/paint_enum.h"
+
+// -- paint colours
+ConVar bounce_paint_color("bounce_paint_color", "0 165 255 255", FCVAR_REPLICATED);
+ConVar speed_paint_color("speed_paint_color", "255 106 0 255", FCVAR_REPLICATED);
+ConVar portal_paint_color("portal_paint_color", "0 200 33 255", FCVAR_REPLICATED); // p2ce's green (i was allowed to use it) -Klax
+//ConVar portal_paint_color("portal_paint_color", "15 252 11 255", FCVAR_REPLICATED); // i like greemn -Klax
 
 #define	HL2_BOB_CYCLE_MIN	1.0f
 #define	HL2_BOB_CYCLE_MAX	0.45f
@@ -26,20 +33,24 @@ public:
 	virtual	float	CalcViewmodelBob();
 	virtual bool	ShouldDrawCrosshair(void) { return true; }
 
+	void PostDataUpdate(DataUpdateType_t updateType);
+
 private:
 
 	float m_flVerticalBob;
 	float m_flLateralBob;
+
+	int m_nPaintType;
 };
 
-//LINK_ENTITY_TO_CLASS(weapon_paintgun, C_WeaponPaintgun)
-
 IMPLEMENT_CLIENTCLASS_DT(C_WeaponPaintgun, DT_WeaponPaintgun, CWeaponPaintgun)
+	RecvPropInt(RECVINFO(m_nPaintType)),
 END_RECV_TABLE()
 
 C_WeaponPaintgun::C_WeaponPaintgun() {
 
 }
+
 float C_WeaponPaintgun::CalcViewmodelBob(void)
 {
 	static	float bobtime;
@@ -47,10 +58,8 @@ float C_WeaponPaintgun::CalcViewmodelBob(void)
 	float	cycle;
 
 	CBasePlayer* player = ToBasePlayer(GetOwner());
-	//Assert( player );
-
+	
 	//NOTENOTE: For now, let this cycle continue when in the air, because it snaps badly without it
-
 	if ((!gpGlobals->frametime) || (player == NULL))
 	{
 		//NOTENOTE: We don't use this return value in our case (need to restructure the calculation function setup!)
@@ -120,12 +129,6 @@ void C_WeaponPaintgun::AddViewmodelBob(CBaseViewModel* viewmodel, Vector& origin
 
 	CalcViewmodelBob();
 
-	// thanks Bank, but we're not in Kansas anymore
-	// Note: we need to use paint code for gun bob so the gun bobs correctly when player sticks on walls (Bank)
-	//C_Portal_Player* pPortalPlayer = ToPortalPlayer(GetOwner());
-	//if (!pPortalPlayer)
-	//	return;
-
 	C_EmulsionPlayer* pPortalPlayer = (C_EmulsionPlayer*)(GetOwner());
 	if (!pPortalPlayer)
 		return;
@@ -134,7 +137,7 @@ void C_WeaponPaintgun::AddViewmodelBob(CBaseViewModel* viewmodel, Vector& origin
 	VectorMA(origin, g_verticalBob * 0.1f, forward, origin);
 
 	// Z bob a bit more
-	origin += g_verticalBob * 0.1f * pPortalPlayer->m_vecCurLerpUp;// pPortalPlayer->GetPortalPlayerLocalData().m_Up;
+	origin += g_verticalBob * 0.1f * pPortalPlayer->m_vecCurLerpUp;
 
 	//move left and right
 	VectorMA(origin, g_lateralBob * 0.8f, right, origin);
@@ -161,4 +164,25 @@ void C_WeaponPaintgun::AddViewmodelBob(CBaseViewModel* viewmodel, Vector& origin
 	forward = rotMatrix * forward;
 
 	VectorAngles(forward, up, angles);
+}
+
+void C_WeaponPaintgun::PostDataUpdate(DataUpdateType_t updateType) {
+
+	C_EmulsionPlayer* pPlayer = (C_EmulsionPlayer*)UTIL_PlayerByIndex(1);
+
+	switch (m_nPaintType) {
+	case BOUNCE_POWER:
+		pPlayer->GetViewModel(0)->SetRenderColor(bounce_paint_color.GetColor().r(), bounce_paint_color.GetColor().g(), bounce_paint_color.GetColor().b());
+		break;
+	case SPEED_POWER:
+		pPlayer->GetViewModel(0)->SetRenderColor(speed_paint_color.GetColor().r(), speed_paint_color.GetColor().g(), speed_paint_color.GetColor().b());
+		break;
+	case PORTAL_POWER:		
+		pPlayer->GetViewModel(0)->SetRenderColor(portal_paint_color.GetColor().r(), portal_paint_color.GetColor().g(), portal_paint_color.GetColor().b());
+		break;
+	default:
+		break;
+	}
+
+	BaseClass::PostDataUpdate(updateType);
 }

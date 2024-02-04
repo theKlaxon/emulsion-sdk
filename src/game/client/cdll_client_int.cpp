@@ -128,7 +128,7 @@
 
 #ifdef EMULSION_DLL
 #include "c_discord.h"
-#include "blob_manager.h"
+#include "paintblob_manager.h"
 #endif
 
 #ifdef INFESTED_PARTICLES
@@ -1004,7 +1004,7 @@ bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 #endif
 
 #if defined(EMULSION_DLL)
-	IGameSystem::Add(BlobulatorSystem());
+	IGameSystem::Add(PaintBlobManager_System());
 #endif
 
 	ActivityList_Init();

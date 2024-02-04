@@ -11,7 +11,7 @@
 #include "filesystem.h"
 
 // NOTE: This has to be the last file included!
-#include "tier0/memdbgon.h" //
+#include "tier0/memdbgon.h"
 
 class CMovieDisplay : public CBaseEntity
 {
@@ -20,11 +20,6 @@ public:
 	DECLARE_CLASS( CMovieDisplay, CBaseEntity );
 	DECLARE_DATADESC();
 	DECLARE_SERVERCLASS();
-
-	CMovieDisplay()
-		: m_bForcePrecache( false )
-	{
-	}
 
 	virtual ~CMovieDisplay();
 
@@ -46,15 +41,6 @@ public:
 	void	InputEnable( inputdata_t &inputdata );
 
 	void	InputSetDisplayText( inputdata_t &inputdata );
-	void	InputTakeOverAsMaster( inputdata_t &inputdata );
-
-	void	InputSetMovie( inputdata_t &inputdata );
-
-	void	InputSetUseCustomUVs( inputdata_t &inputdata );
-	void	InputSetUMin( inputdata_t &inputdata );
-	void	InputSetVMin( inputdata_t &inputdata );
-	void	InputSetUMax( inputdata_t &inputdata );
-	void	InputSetVMax( inputdata_t &inputdata );	
 
 private:
 
@@ -67,15 +53,6 @@ private:
 private:
 	CNetworkVar( bool, m_bEnabled );
 	CNetworkVar( bool, m_bLooping );
-	CNetworkVar( bool, m_bStretchToFill );
-	CNetworkVar( bool, m_bForcedSlave );
-	bool m_bForcePrecache;
-
-	CNetworkVar( bool, m_bUseCustomUVs );
-	CNetworkVar( float, m_flUMin );
-	CNetworkVar( float, m_flUMax );
-	CNetworkVar( float, m_flVMin );
-	CNetworkVar( float, m_flVMax );
 
 	CNetworkString( m_szDisplayText, 128 );
 
@@ -116,15 +93,6 @@ BEGIN_DATADESC( CMovieDisplay )
 	DEFINE_KEYFIELD( m_iScreenWidth, FIELD_INTEGER, "width" ),
 	DEFINE_KEYFIELD( m_iScreenHeight, FIELD_INTEGER, "height" ),
 	DEFINE_KEYFIELD( m_bLooping, FIELD_BOOLEAN, "looping" ),
-	DEFINE_KEYFIELD( m_bStretchToFill, FIELD_BOOLEAN, "stretch" ),
-	DEFINE_KEYFIELD( m_bForcedSlave, FIELD_BOOLEAN, "forcedslave" ),
-	DEFINE_KEYFIELD( m_bForcePrecache, FIELD_BOOLEAN, "forceprecache" ),
-
-	DEFINE_FIELD( m_bUseCustomUVs, FIELD_BOOLEAN ),
-	DEFINE_FIELD( m_flUMin, FIELD_FLOAT ),
-	DEFINE_FIELD( m_flUMax, FIELD_FLOAT ),
-	DEFINE_FIELD( m_flVMin, FIELD_FLOAT ),
-	DEFINE_FIELD( m_flVMax, FIELD_FLOAT ),
 
 	DEFINE_FIELD( m_bDoFullTransmit, FIELD_BOOLEAN ),
 
@@ -135,15 +103,6 @@ BEGIN_DATADESC( CMovieDisplay )
 
 	DEFINE_INPUTFUNC( FIELD_STRING, "SetDisplayText", InputSetDisplayText ),
 
-	DEFINE_INPUTFUNC( FIELD_STRING, "SetMovie", InputSetMovie ),
-
-	DEFINE_INPUTFUNC( FIELD_BOOLEAN, "SetUseCustomUVs", InputSetUseCustomUVs ),
-	DEFINE_INPUTFUNC( FIELD_FLOAT, "SetUMin", InputSetUMin ),
-	DEFINE_INPUTFUNC( FIELD_FLOAT, "SetUMax", InputSetUMax ),
-	DEFINE_INPUTFUNC( FIELD_FLOAT, "SetVMin", InputSetVMin ),
-	DEFINE_INPUTFUNC( FIELD_FLOAT, "SetVMax", InputSetVMax ),
-
-	DEFINE_INPUTFUNC( FIELD_VOID, "TakeOverAsMaster", InputTakeOverAsMaster ),
 END_DATADESC()
 
 IMPLEMENT_SERVERCLASS_ST( CMovieDisplay, DT_MovieDisplay )
@@ -151,13 +110,6 @@ IMPLEMENT_SERVERCLASS_ST( CMovieDisplay, DT_MovieDisplay )
 	SendPropBool( SENDINFO( m_bLooping ) ),
 	SendPropString( SENDINFO( m_szMovieFilename ) ),
 	SendPropString( SENDINFO( m_szGroupName ) ),
-	SendPropBool( SENDINFO( m_bStretchToFill ) ),
-	SendPropBool( SENDINFO( m_bForcedSlave ) ),
-	SendPropBool( SENDINFO( m_bUseCustomUVs ) ),
-	SendPropFloat( SENDINFO( m_flUMin ) ),
-	SendPropFloat( SENDINFO( m_flUMax ) ),
-	SendPropFloat( SENDINFO( m_flVMin ) ),
-	SendPropFloat( SENDINFO( m_flVMax ) ),
 END_SEND_TABLE()
 
 CMovieDisplay::~CMovieDisplay()
@@ -243,15 +195,8 @@ void CMovieDisplay::Spawn( void )
 	ScreenVisible( m_bEnabled );
 
 	m_bDoFullTransmit = true;
-
-	m_bUseCustomUVs = false;
-	m_flUMin = 0;
-	m_flUMax = 1;
-	m_flVMin = 0;
-	m_flVMax = 1;
 }
 
-extern void PrecacheMovie(const char* pszMovie);
 //-----------------------------------------------------------------------------
 // 
 //-----------------------------------------------------------------------------
@@ -259,12 +204,7 @@ void CMovieDisplay::Precache( void )
 {
 	BaseClass::Precache();
 
-	PrecacheVGuiScreen( "movie_display_screen" );
-	if ( m_bForcePrecache )
-	{
-		DevMsg( "Precaching vgui_movie_display %s with movie %s\n", m_iName->ToCStr(), m_szMovieFilename.Get() );
-		PrecacheMovie( m_szMovieFilename );
-	}
+	PrecacheVGuiScreen( "video_display_screen" );
 }
 
 //-----------------------------------------------------------------------------
@@ -273,8 +213,6 @@ void CMovieDisplay::Precache( void )
 void CMovieDisplay::OnRestore( void )
 {
 	BaseClass::OnRestore();
-
-	m_bDoFullTransmit = true;
 
 	RestoreControlPanels();
 
@@ -344,71 +282,10 @@ void CMovieDisplay::InputEnable( inputdata_t &inputdata )
 //-----------------------------------------------------------------------------
 // 
 //-----------------------------------------------------------------------------
-void CMovieDisplay::InputSetUseCustomUVs( inputdata_t &inputdata )
-{
-	m_bUseCustomUVs = inputdata.value.Bool();
-}
-
-//-----------------------------------------------------------------------------
-// 
-//-----------------------------------------------------------------------------
-void CMovieDisplay::InputSetUMin( inputdata_t &inputdata )
-{
-	m_flUMin = inputdata.value.Float();
-}
-
-//-----------------------------------------------------------------------------
-// 
-//-----------------------------------------------------------------------------
-void CMovieDisplay::InputSetUMax( inputdata_t &inputdata )
-{
-	m_flUMax = inputdata.value.Float();
-}
-
-//-----------------------------------------------------------------------------
-// 
-//-----------------------------------------------------------------------------
-void CMovieDisplay::InputSetVMin( inputdata_t &inputdata )
-{
-	m_flVMin = inputdata.value.Float();
-}
-
-//-----------------------------------------------------------------------------
-// 
-//-----------------------------------------------------------------------------
-void CMovieDisplay::InputSetVMax( inputdata_t &inputdata )
-{
-	m_flVMax = inputdata.value.Float();
-}
-
-//-----------------------------------------------------------------------------
-// 
-//-----------------------------------------------------------------------------
-void CMovieDisplay::InputTakeOverAsMaster( inputdata_t &inputdata )
-{
-	Enable();
-
-	EntityMessageBegin( this );
-		WRITE_BYTE( 0 );
-	MessageEnd();
-}
-
-//-----------------------------------------------------------------------------
-// 
-//-----------------------------------------------------------------------------
 void CMovieDisplay::InputSetDisplayText( inputdata_t &inputdata )
 {
 	Q_strcpy( m_szDisplayText.GetForModify(), inputdata.value.String() );
 }
-
-//-----------------------------------------------------------------------------
-// 
-//-----------------------------------------------------------------------------
-void CMovieDisplay::InputSetMovie( inputdata_t &inputdata )
-{
-	Q_strncpy( m_szMovieFilename.GetForModify(), inputdata.value.String(), 128 );
-}
-
 
 //-----------------------------------------------------------------------------
 // 

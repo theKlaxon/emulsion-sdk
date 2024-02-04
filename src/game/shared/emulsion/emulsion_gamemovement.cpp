@@ -1793,7 +1793,7 @@ static bool IsPaintHigherPriority(PaintPowerType a, PaintPowerType b) {
 }
 
 PaintInfo_t CEmulsionGameMovement::CheckPaintedSurface() {
-
+	
 	PaintInfo_t info = PaintInfo_t();
 
 	if (mv == NULL || !engine->HasPaintmap())

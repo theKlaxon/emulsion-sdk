@@ -20,7 +20,7 @@ struct PaintResult_t {
 struct PaintInfo_t {
 public:
 	PaintInfo_t() {
-		type = INVALID_PAINT_POWER;
+		type = NO_POWER;
 		plane = cplane_t();
 		pos = Vector(0, 0, 0);
 		m_pEnt = NULL;

@@ -1,0 +1,15 @@
+VertexlitGeneric
+{
+$basetexture "models\props_testing\dropper-body"
+$bumpmap "models\props_testing\dropper-body_normal"
+
+$phong 1
+$phongboost 1
+$phongfresnelranges "[5 1 2]"
+$phongexponenttexture "models\props_testing\dropper-body_exponent"
+
+$nocull 1 
+ 
+$selfillum 1
+$selfillummask "models\props_testing\dropper-body_emissive"
+}
