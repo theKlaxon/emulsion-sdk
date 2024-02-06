@@ -1,4 +1,4 @@
-//========= Copyright ï¿½ 1996-2009, Valve Corporation, All rights reserved. ============//
+//========= Copyright © 1996-2009, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -6,19 +6,21 @@
 
 #include "cbase.h"
 #include "c_vguiscreen.h"
-#include "vgui_controls/ImagePanel.h"
-#include <vgui/IVGui.h>
+#include "vgui_controls/Label.h"
+#include "vgui_BitmapPanel.h"
+#include <vgui/IVGUI.h>
+#include "c_slideshow_display.h"
 #include "ienginevgui.h"
 #include "fmtstr.h"
 #include "vgui_controls/ImagePanel.h"
 #include <vgui/ISurface.h>
 #include "avi/ibik.h"
-#include "engine/IEngineSound.h"
-#include "VGuiMatSurface/IMatSystemSurface.h"
+#include "engine/ienginesound.h"
+#include "VGUIMatSurface/IMatSystemSurface.h"
 #include "c_movie_display.h"
 
 // NOTE: This has to be the last file included!
-#include "tier0/memdbgon.h" //
+#include "tier0/memdbgon.h"
 
 using namespace vgui;
 
@@ -53,14 +55,11 @@ public:
 
 private:
 	bool	IsActive( void );
-	bool	IsAGroupPeer( CMovieDisplayScreen* pScreen );
 
 	void	SetupMovie( void );
 	void	UpdateMovie( void );
 	bool	BeginPlayback( const char *pFilename );
 	void	CalculatePlaybackDimensions( int nSrcWidth, int nSrcHeight );
-	
-	void	TakeOverAsMaster();
 
 	inline void GetPanelPos( int &xpos, int &ypos )
 	{
@@ -86,7 +85,10 @@ private:
 	bool			m_bLastActiveState;		// HACK: I'd rather get a real callback...
 
 	// VGUI specifics
-	ImagePanel		*m_pScanLineImage;
+	Label			*m_pDisplayTextLabel;
+
+	Color			m_cDefault;
+	Color			m_cInvisible;
 
 	bool bIsAlreadyVisible;
 };
@@ -99,10 +101,9 @@ CUtlVector <CMovieDisplayScreen *>	g_MovieDisplays;
 // Constructor: 
 //-----------------------------------------------------------------------------
 CMovieDisplayScreen::CMovieDisplayScreen( vgui::Panel *parent, const char *panelName )
-: BaseClass( parent, "CMovieDisplayScreen" ) 
+: BaseClass( parent, "CMovieDisplayScreen", vgui::scheme()->LoadSchemeFromFileEx( enginevgui->GetPanel( PANEL_CLIENTDLL ), "resource/MovieDisplayScreen.res", "MovieDisplayScreen" ) ) 
 {
-	m_pScanLineImage = new vgui::ImagePanel( this, "ScanLines");
-	m_pScanLineImage->SetImage( "elevator_video_lines" );
+	m_pDisplayTextLabel = new vgui::Label( this, "NumberDisplay", "testing!");
 
 	m_BIKHandle = BIKHANDLE_INVALID;
 	m_nTextureId = -1;
@@ -123,18 +124,13 @@ CMovieDisplayScreen::~CMovieDisplayScreen( void )
 {
 	if ( m_BIKHandle != BIKHANDLE_INVALID )
 	{
-		if ( bik )
-			bik->DestroyMaterial( m_BIKHandle );
+		bik->DestroyMaterial( m_BIKHandle );
 		m_BIKHandle = BIKHANDLE_INVALID;
 	}
 
 	// Clean up our texture reference
-	if ( m_nTextureId != -1 )
-	{
-		g_pMatSystemSurface->DestroyTextureID( m_nTextureId );
-		m_nTextureId = -1;
-	}
-	
+	g_pMatSystemSurface->DestroyTextureID( m_nTextureId );
+
 	// Remove ourselves from the global list of movie displays
 	g_MovieDisplays.FindAndRemove( this );
 }
@@ -146,13 +142,12 @@ void CMovieDisplayScreen::ApplySchemeSettings( IScheme *pScheme )
 {
 	assert( pScheme );
 
-	BaseClass::ApplySchemeSettings(pScheme);
+	m_cDefault = Color( 255, 255, 255, 255 );
+	m_cInvisible = Color( 0, 0, 0, 0 );	
 
-	m_pScanLineImage->SetShouldScaleImage( true );
-	int wide, tall;
-	this->GetSize( wide, tall );
-	m_pScanLineImage->SetSize( wide, tall );
-	m_pScanLineImage->SetDrawColor( Color( 100, 100, 100, 255 ) );
+	m_pDisplayTextLabel->SetFgColor( m_cDefault );
+	m_pDisplayTextLabel->SetText( "" );
+	m_pDisplayTextLabel->SetVisible( false );
 }
 
 //-----------------------------------------------------------------------------
@@ -197,21 +192,30 @@ bool CMovieDisplayScreen::IsActive( void )
 void CMovieDisplayScreen::SetupMovie( void )
 {
 	// Only bother if we haven't been setup yet
-	if ( m_bInitialized || !IsActive() )
+	if ( m_bInitialized )
 		return;
 
-#if defined( _GAMECONSOLE )
-	Assert( bik );
-#endif
-
-	if ( !bik )
-		return;
+	const char *szGroupName = m_hScreenEntity->GetGroupName();
 
 	CMovieDisplayScreen *pMasterScreen = NULL;
 	for ( int i = 0; i < g_MovieDisplays.Count(); i++ )
 	{
-		// Must be a valid peer and not be us
-		if ( !IsAGroupPeer( g_MovieDisplays[i] ) || g_MovieDisplays[i] == this )
+		// Must be valid and not us
+		if ( g_MovieDisplays[i] == NULL || g_MovieDisplays[i] == this )
+			continue;
+
+		// Must have an associated movie entity
+		if ( g_MovieDisplays[i]->m_hScreenEntity == NULL )
+			continue;
+
+		// Must have a group name to care
+		if ( szGroupName[0] == NULL )
+			continue;
+
+		// Group names must match!
+		// FIXME: Use an ID instead?
+		const char *szTestGroupName = g_MovieDisplays[i]->m_hScreenEntity->GetGroupName();
+		if ( Q_strnicmp( szTestGroupName, szGroupName, 128 ) )
 			continue;
 
 		// See if we've found a master display
@@ -240,68 +244,15 @@ void CMovieDisplayScreen::SetupMovie( void )
 		return;
 
 	// No master found, become one
-	if ( pMasterScreen == NULL && !m_hScreenEntity->IsForcedSlave() )
+	if ( pMasterScreen == NULL )
 	{
 		const char *szFilename = m_hScreenEntity->GetMovieFilename();
 		BeginPlayback( szFilename );
 		m_bSlaved = false;
-		m_bInitialized = true;			// we are the new master - we are done
 	}
-	else if ( pMasterScreen != NULL )	// we are a slave then we are done.
-	{
-		m_bInitialized = true;
-	}
-}
 
-bool CMovieDisplayScreen::IsAGroupPeer( CMovieDisplayScreen* pScreen )
-{
-	// Must be valid 
-	if ( pScreen == NULL )
-		return false;
-
-	// Must have an associated movie entity
-	if ( pScreen->m_hScreenEntity == NULL )
-		return false;
-
-	// Must have a group name to care
-	const char *szGroupName = m_hScreenEntity->GetGroupName();
-	if ( szGroupName[0] == NULL )
-		return false;
-
-	// Group names must match!
-	// FIXME: Use an ID instead?
-	const char *szTestGroupName = pScreen->m_hScreenEntity->GetGroupName();
-	if ( Q_strnicmp( szTestGroupName, szGroupName, 128 ) )
-		return false;
-
-	return true;
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: Try to take over as the master for playback.
-//-----------------------------------------------------------------------------
-void CMovieDisplayScreen::TakeOverAsMaster( void )
-{
-	// Tell all of the screens that are peers to us that they need to be set up again
-	for ( int i = 0; i < g_MovieDisplays.Count(); i++ )
-	{
-		if ( IsAGroupPeer( g_MovieDisplays[i] ) )
-		{
-			if ( g_MovieDisplays[i]->m_nTextureId != -1 )
-			{
-				g_pMatSystemSurface->DestroyTextureID( g_MovieDisplays[i]->m_nTextureId );
-				g_MovieDisplays[i]->m_nTextureId = -1;
-			}
-
-			// make it so we will reinitialize ourselves.
-			g_MovieDisplays[i]->m_bInitialized = false;
-		}
-	}	
-
-	// Even if we don't become the master we should stop trying
-	m_hScreenEntity->SetMasterAttempted();
-
-	SetupMovie();
+	// Done
+	m_bInitialized = true;
 }
 
 //-----------------------------------------------------------------------------
@@ -321,22 +272,16 @@ void CMovieDisplayScreen::UpdateMovie( void )
 	bool bScreenActive = IsActive();
 
 	// Pause if the game has paused
-	bool bPaused = ( engine->IsPaused() || engine->Con_IsVisible() );
-	if ( bPaused )
+	if ( engine->IsPaused() || engine->Con_IsVisible() )
 	{
 		bScreenActive = false;
 	}
 
 	// See if we've changed our activity state
-	if ( bik && bScreenActive != m_bLastActiveState )
+	if ( bScreenActive != m_bLastActiveState )
 	{
 		if ( bScreenActive )
 		{
-			if ( /*m_bRestartOnResume*/ 1 && !bPaused )
-			{
-				bik->SetFrame( m_BIKHandle, 1.0f );
-			}
-			
 			bik->Unpause( m_BIKHandle );
 		}
 		else
@@ -352,7 +297,7 @@ void CMovieDisplayScreen::UpdateMovie( void )
 	if ( bScreenActive  )
 	{
 		// Update our frame
-		if ( bik && bik->Update( m_BIKHandle ) == false )
+		if ( bik->Update( m_BIKHandle ) == false )
 		{
 			// Issue a close command
 			// OnVideoOver();
@@ -366,12 +311,7 @@ void CMovieDisplayScreen::UpdateMovie( void )
 //-----------------------------------------------------------------------------
 void CMovieDisplayScreen::OnTick()
 {
-	BaseClass::OnTick(); 
-
-	if( m_hScreenEntity && m_hScreenEntity->GetWantsToBeMaster() )
-	{
-		TakeOverAsMaster();
-	}
+	BaseClass::OnTick();
 
 	// Create our playback or slave to another screen already playing
 	SetupMovie();
@@ -385,14 +325,6 @@ void CMovieDisplayScreen::OnTick()
 //-----------------------------------------------------------------------------
 void CMovieDisplayScreen::CalculatePlaybackDimensions( int nSrcWidth, int nSrcHeight )
 {
-	// Change our stretching type
-	if ( m_hScreenEntity && m_hScreenEntity->IsStretchingToFill() )
-	{
-		m_nPlaybackWidth = GetWide();
-		m_nPlaybackHeight = GetTall();
-		return;
-	}
-
 	float flFrameRatio = ( (float) GetWide() / (float) GetTall() );
 	float flVideoRatio = ( (float) nSrcWidth / (float) nSrcHeight );
 
@@ -419,50 +351,44 @@ void CMovieDisplayScreen::CalculatePlaybackDimensions( int nSrcWidth, int nSrcHe
 //-----------------------------------------------------------------------------
 bool CMovieDisplayScreen::BeginPlayback( const char *pFilename )
 {
-#if defined( _GAMECONSOLE )
-	Assert( bik );
-#endif
-
-	if ( !bik )
-		return false;
-
-	if ( m_BIKHandle == BIKHANDLE_INVALID )
+	// Destroy any previously allocated video
+	if ( m_BIKHandle != BIKHANDLE_INVALID )
 	{
-		// Create a globally unique name for this material
-		char szMaterialName[256];
-		
-		// Append our group name if we have one
-		const char *szGroupName = m_hScreenEntity->GetGroupName();
-		if ( szGroupName[0] != NULL )
-		{
-			Q_snprintf( szMaterialName, sizeof(szMaterialName), "%s_%s", pFilename, szGroupName );
-		}
-		else
-		{
-			Q_strncpy( szMaterialName, pFilename, sizeof(szMaterialName) );
-		}
-
-		// Load and create our BINK video
-		int nFlags = BIK_NO_AUDIO;	// FIXME: Allow?
-
-		nFlags |= BIK_PRELOAD;
-		if ( m_hScreenEntity->IsLooping() )
-		{
-			nFlags |= BIK_LOOP;
-		}
-		
-		if ( bik )
-			m_BIKHandle = bik->CreateMaterial( szMaterialName, pFilename, "GAME", nFlags );
-		if ( m_BIKHandle == BIKHANDLE_INVALID )
-			return false;
+		bik->DestroyMaterial( m_BIKHandle );
+		m_BIKHandle = BIKHANDLE_INVALID;
 	}
 
-	// NOTE: This class shouldn't turn off all sounds (Bank)
-	//if ( ( nFlags & BIK_NO_AUDIO ) != 0 )
-	//{
-	//	// We want to be the sole audio source
-	//	enginesound->NotifyBeginMoviePlayback();
-	//}
+	// Create a globally unique name for this material
+	char szMaterialName[256];
+	
+	// Append our group name if we have one
+	const char *szGroupName = m_hScreenEntity->GetGroupName();
+	if ( szGroupName[0] != NULL )
+	{
+		Q_snprintf( szMaterialName, sizeof(szMaterialName), "%s_%s", pFilename, szGroupName );
+	}
+	else
+	{
+		Q_strncpy( szMaterialName, pFilename, sizeof(szMaterialName) );
+	}
+
+	// Load and create our BINK video
+	int nFlags = BIK_NO_AUDIO;	// FIXME: Allow?
+
+	if ( m_hScreenEntity->IsLooping() )
+	{
+		nFlags |= BIK_LOOP;
+	}
+	
+	m_BIKHandle = bik->CreateMaterial( szMaterialName, pFilename, "GAME", nFlags );
+	if ( m_BIKHandle == BIKHANDLE_INVALID )
+		return false;
+
+	if ( ( nFlags & BIK_NO_AUDIO ) != 0 )
+	{
+		// We want to be the sole audio source
+		enginesound->NotifyBeginMoviePlayback();
+	}
 
 	// Get our basic info from the movie
 	bik->GetFrameSize( m_BIKHandle, &m_playbackInfo.m_nSourceWidth, &m_playbackInfo.m_nSourceHeight );
@@ -495,11 +421,8 @@ void CMovieDisplayScreen::Paint( void )
 	int xpos, ypos;
 	GetPanelPos( xpos, ypos );
 
-	bool bStretchToFill = ( m_hScreenEntity != NULL ) ? m_hScreenEntity->IsStretchingToFill() : false;
-	bool bUsingCustomUVs = ( m_hScreenEntity != NULL ) ? m_hScreenEntity->IsUsingCustomUVs() : false;
-
 	// Black out the background (we could omit drawing under the video surface, but this is straight-forward)
-	if ( m_bBlackBackground && !bStretchToFill )
+	if ( m_bBlackBackground )
 	{
 		surface()->DrawSetColor(  0, 0, 0, 255 );
 		surface()->DrawFilledRect( 0, 0, GetWide(), GetTall() );
@@ -508,20 +431,8 @@ void CMovieDisplayScreen::Paint( void )
 	// Draw it
 	surface()->DrawSetTexture( m_nTextureId );
 	surface()->DrawSetColor(  255, 255, 255, 255 );
-
-	if ( bUsingCustomUVs )
-	{
-		surface()->DrawTexturedSubRect( xpos, ypos, xpos+m_nPlaybackWidth, ypos+m_nPlaybackHeight, 
-			m_hScreenEntity->GetUMin(), 
-			m_hScreenEntity->GetVMin(), 
-			m_hScreenEntity->GetUMax(), 
-			m_hScreenEntity->GetVMax() );
-	}
-	else
-	{
-		surface()->DrawTexturedSubRect( xpos, ypos, xpos+m_nPlaybackWidth, ypos+m_nPlaybackHeight, 0.f, 0.f, m_playbackInfo.m_flU, m_playbackInfo.m_flV );
-	}
-
+	surface()->DrawTexturedSubRect( xpos, ypos, xpos+m_nPlaybackWidth, ypos+m_nPlaybackHeight, 0.0f, 0.0f, m_playbackInfo.m_flU, m_playbackInfo.m_flV );
+	
 	// Parent's turn
 	BaseClass::Paint();
 }

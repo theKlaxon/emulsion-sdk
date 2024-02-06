@@ -59,7 +59,7 @@ void CPaintBlobManager::LevelInitPostEntity() {
 	SweepRenderer::setCalcSign2Func(calcSign2);
 	SweepRenderer::setCalcCornerFunc(32, calcCornerNormalColor);
 	SweepRenderer::setCalcVertexFunc(calcVertexNormalNColorUVTan);
-#else 
+#else
 	// create the paint streams
 	g_pBouncePaintStream = (CPaintBlobStream*)CreateEntityByName("env_paint_stream");
 	g_pSpeedPaintStream = (CPaintBlobStream*)CreateEntityByName("env_paint_stream");

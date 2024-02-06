@@ -1,5 +1,7 @@
+//==== Blobulator. Copyright © 2004-2007, Rosware LLC, All rights reserved. ====//
 #pragma once
-//#include "unit_test.h"
+#include "implicit/imp_tiler.h"
+#include "materialsystem/imesh.h"
 
 struct vbId_t;
 
@@ -37,24 +39,3 @@ private:
 	
 	unsigned short m_stat_no_flushes;
 };
-
-#ifdef BLOBULATOR_UNIT_TESTS
-class IndexTriVertexBuffer_Test : public IUnitTest {
-public:
-
-	void CompileMe() {
-		IndexTriVertexBuffer* pBuffer = new IndexTriVertexBuffer();
-		pBuffer->beginFrame(nullptr);
-		pBuffer->endFrame();
-		pBuffer->beginCube(0);
-		pBuffer->endCube();
-		pBuffer->beginTile(nullptr);
-		pBuffer->endTile();
-		pBuffer->beginVertex(nullptr);
-		pBuffer->drawVertex(nullptr);
-		pBuffer->endVertex(nullptr);
-		pBuffer->isIdValid(nullptr);
-	}
-
-};
-#endif

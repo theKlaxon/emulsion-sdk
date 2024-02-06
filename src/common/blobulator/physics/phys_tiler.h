@@ -1,3 +1,4 @@
+//==== Blobulator. Copyright © 2004-2007, Rosware LLC, All rights reserved. ====//
 #pragma once
 #include "point_3D.h"
 #include "physics/phys_particle_cache.h"

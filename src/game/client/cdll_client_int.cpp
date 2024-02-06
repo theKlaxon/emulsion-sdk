@@ -129,6 +129,7 @@
 #ifdef EMULSION_DLL
 #include "c_discord.h"
 #include "paintblob_manager.h"
+#include "dll_patch.h"
 #endif
 
 #ifdef INFESTED_PARTICLES
@@ -1222,8 +1223,6 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 		return false;
 #endif
 
-
-
 	if ( !CommandLine()->CheckParm( "-noscripting") )
 	{
 		scriptmanager = (IScriptManager *)appSystemFactory( VSCRIPT_INTERFACE_VERSION, NULL );
@@ -1292,6 +1291,11 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 	COM_TimestampedLog( "C_BaseAnimating::InitBoneSetupThreadPool" );
 
 	C_BaseAnimating::InitBoneSetupThreadPool();
+	
+#ifdef EMULSION_DLL
+	// patch the dlls
+	PatchAll();
+#endif
 
 	// This is a fullscreen element, so only lives on slot 0!!!
 	m_pHudCloseCaption = GET_FULLSCREEN_HUDELEMENT( CHudCloseCaption );

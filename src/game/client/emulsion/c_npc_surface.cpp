@@ -777,7 +777,7 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 				Point3D vec = (pParticle - pCenter);
 
 				imp_particle->center = pParticle;
-				//imp_particle->fieldRScaleSq = MAX(1.2f - vec.length() / 30.0f, 0.25f);
+				imp_particle->fieldRScaleSq = MAX(1.2f - vec.length() / 30.0f, 0.25f);
 
 				// interpolants[0..2] is the color. interpolants[3] is the v coordinate
 				// imp_particle->interpolants[3] = min(max(1.4f - vec.length()/17.0f, 0.0f), 1.0f);

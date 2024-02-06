@@ -138,25 +138,22 @@ void CPaintBlobStream::Spawn() {
 void CPaintBlobStream::VPhysicsCollision(int index, gamevcollisionevent_t* pEvent) {
 	BaseClass::VPhysicsCollision(index, pEvent);
 	
-	// do parented_func callback here for any blob
-	// that decides it wants to kiss a wall
-	
 	Vector contact, position;
+	AngularImpulse angVel;
 	pEvent->pInternalData->GetContactPoint(contact);
 	pEvent->pObjects[index]->GetPosition(&position, nullptr);
-	
 
 	trace_t tr;
 	UTIL_TraceLine(position, pEvent->preVelocity[1].Normalized() * 2.0f, MASK_ALL, this, COLLISION_GROUP_PLAYER_MOVEMENT, &tr);
 	
-	if (tr.m_pEnt) {
-
-		if (tr.DidHitWorld()) {
+	if (tr.DidHit()) {
+		if (tr.DidHitWorld() && tr.m_pEnt) {
 			model_t* mdl = tr.m_pEnt->GetModel();
 			engine->SpherePaintSurface(mdl, position, m_nPaintType, 48.0f, 3.0f);
-			PaintBlobManager()->QueueBlobForRemoval(pEvent->pObjects[index]->GetGameIndex(), PaintBlobManager()->GetStreamIndex(m_nPaintType));
-			DispatchParticleEffect(g_PaintSplatParticles[m_nPaintType], position, QAngle());
 		}
+
+		PaintBlobManager()->QueueBlobForRemoval(pEvent->pObjects[index]->GetGameIndex(), PaintBlobManager()->GetStreamIndex(m_nPaintType));
+		DispatchParticleEffect(g_PaintSplatParticles[m_nPaintType], position, QAngle());
 	}
 }
 
@@ -196,7 +193,7 @@ int CPaintBlobStream::VPhysicsGetObjectList(IPhysicsObject** pList, int listMax)
 	{
 		int i = m_nIndices[k];
 
-		if (m_vecSurfaceRs[i] > 0.0f)
+		if (m_vecRadii[i] > 0.0f)
 		{
 			pList[count++] = m_vecParticles[i];
 		}
@@ -251,8 +248,8 @@ void CPaintBlobStream::AddParticle(Vector center, Vector velocity) {
 		i = m_nActiveParticlesInternal;
 	
 	m_vecSurfacePositions[i] = center;
-	m_vecRadii[i] = RandomFloat(0.4f, 1.2f);
-	m_vecParticles[i] = physenv->CreateSphereObject(/*paintblob_stream_radius.GetFloat()*/m_vecRadii[i], surfaceIndex, m_vecSurfacePositions[i], GetAbsAngles(), &params, false);
+	m_vecRadii[i] = RandomFloat(0.4f, 1.0f);
+	m_vecParticles[i] = physenv->CreateSphereObject(m_vecRadii[i], surfaceIndex, m_vecSurfacePositions[i], GetAbsAngles(), &params, false);
 
 	if (m_vecParticles[i]) {
 		m_vecParticles[i]->SetVelocity(&velocity, NULL);

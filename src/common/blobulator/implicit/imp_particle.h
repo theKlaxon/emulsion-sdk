@@ -1,3 +1,4 @@
+//==== Blobulator. Copyright © 2004-2007, Rosware LLC, All rights reserved. ====//
 #pragma once
 #include "point_3D.h"
 
@@ -7,8 +8,8 @@ public:
 	ImpParticle();
 
 	Point3D center;
-	float fieldRScaleSq;
-	float scale;
+	float fieldRScaleSq;	// particle scale (0.25f - 1.0f == safe range)
+	float scale;			// texture influence scale 
 };
 
 class ImpParticleWithOneInterpolant : public ImpParticle {

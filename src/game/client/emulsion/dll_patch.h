@@ -40,10 +40,16 @@ public:
 
     void Patch();
 
-protected:
-
     class EngineOffsets {
     public:
+
+        EngineOffsets() {
+            g_HostState_Shutdown = Offset("engine.dll", 0x101a6bc0);
+            g_HostState = Offset("engine.dll", 0x1043f7d4);
+        }
+
+        Offset g_HostState_Shutdown;
+        Offset g_HostState;
 
     };
 

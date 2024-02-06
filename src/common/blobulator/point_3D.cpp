@@ -1,64 +1,7 @@
-// == Valve Copyright somthinorother 2077 ==
-// 
-// Dis-fucking-claimer! This is not my code, this is valve code thats  
-// been partially reconstructed in order to preserve it's functionality
-// while at the same time avoiding outdated references in static
-// library obj files. -Klax
-// 
-// Blobulator Point3D - Alien Swarm/particles.lib/(multiple files).obj
-// =========================================
+//==== Blobulator. Copyright © 2004-2007, Rosware LLC, All rights reserved. ====//
 #include "cbase.h"
 #include "iblob_renderer.h"
 #include "Point3D.h"
-//
-//Point3D::Point3D() {
-//	sse_vec3.m128_f32[3] = 0; // is this even correct??
-//	return;
-//}
-//
-//Point3D::Point3D(float x, float y, float z) {
-//	sse_vec3.m128_f32[0] = x;
-//	sse_vec3.m128_f32[1] = y;
-//	sse_vec3.m128_f32[2] = z;
-//	sse_vec3.m128_f32[3] = 0;
-//	return;
-//}
-//
-//Point3D Point3D::operator*(float x) const {
-//	return Point3D(
-//		sse_vec3.m128_f32[0] * x, 
-//		sse_vec3.m128_f32[1] * x,
-//		sse_vec3.m128_f32[2] * x);
-//}
-//
-//Point3D Point3D::operator+(const Point3D& x) const {
-//	return Point3D(
-//		sse_vec3.m128_f32[0] + x.sse_vec3.m128_f32[0], 
-//		sse_vec3.m128_f32[1] + x.sse_vec3.m128_f32[1], 
-//		sse_vec3.m128_f32[2] + x.sse_vec3.m128_f32[2]);
-//}
-//
-//Point3D Point3D::operator-(const Point3D& x) const {
-//	return Point3D(
-//		sse_vec3.m128_f32[0] - x.sse_vec3.m128_f32[0], 
-//		sse_vec3.m128_f32[1] - x.sse_vec3.m128_f32[1], 
-//		sse_vec3.m128_f32[2] - x.sse_vec3.m128_f32[2]);
-//}
-//
-//Point3D Point3D::operator/(const Point3D& x) const {
-//	return Point3D(
-//		sse_vec3.m128_f32[0] / x.sse_vec3.m128_f32[0],
-//		sse_vec3.m128_f32[1] / x.sse_vec3.m128_f32[1],
-//		sse_vec3.m128_f32[2] / x.sse_vec3.m128_f32[2]);
-//}
-//
-//float* Point3D::operator[](int index) {
-//	return (float*)&sse_vec3.m128_f32[index];
-//}
-//
-//const float Point3D::operator[](int index) const {
-//	return sse_vec3.m128_f32[index];
-//}
 
 Point3D* Point3D::normalize() {
 
@@ -80,14 +23,6 @@ Point3D* Point3D::normalize() {
 	return this;
 }
 
-//Point3D* Point3D::mult(float x) {
-//	sse_vec3.m128_f32[0] *= x;
-//	sse_vec3.m128_f32[1] *= x;
-//	sse_vec3.m128_f32[2] *= x;
-//
-//	return this;
-//}
-
 Point3D* Point3D::crossProduct(const Point3D& x) {
 	Point3D in_stack_00000008 = x;
 
@@ -108,27 +43,6 @@ Point3D* Point3D::crossProduct(const Point3D& x) {
 	return &in_stack_00000008;
 }
 
-// TODO: find this somewhere in source 2007 maybe?
 Point3D* Point3D::unit() {
 	return &Point3D(sse_vec3.m128_f32[0] / length(), sse_vec3.m128_f32[1] / length(), sse_vec3.m128_f32[2] / length());
 }
-//
-//float Point3D::dot(const Point3D& x) const {
-//	return 
-//		x.sse_vec3.m128_f32[0] * sse_vec3.m128_f32[0] +
-//		x.sse_vec3.m128_f32[1] * sse_vec3.m128_f32[1] +
-//		x.sse_vec3.m128_f32[2] * sse_vec3.m128_f32[2];
-//}
-//
-//float Point3D::length() const {
-//	return sqrt(
-//		sse_vec3.m128_f32[0] * sse_vec3.m128_f32[0] +
-//		sse_vec3.m128_f32[1] * sse_vec3.m128_f32[1] +
-//		sse_vec3.m128_f32[2] * sse_vec3.m128_f32[0]);
-//}
-//
-//void Point3D::set(float x, float y, float z) {
-//	sse_vec3.m128_f32[0] = x;
-//	sse_vec3.m128_f32[1] = y;
-//	sse_vec3.m128_f32[2] = z;
-//}

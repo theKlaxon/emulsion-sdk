@@ -1,3 +1,4 @@
+//==== Blobulator. Copyright © 2004-2007, Rosware LLC, All rights reserved. ====//
 #pragma once
 #include "implicit/imp_tiler.h"
 #include "implicit/imp_particle.h"
@@ -94,8 +95,6 @@ private:
 	void render_slices();
 
 	void seed_surface(Point3D& p1);
-
-	//unsigned char undefined0[175];
 
 	ProjectingParticleCache* pCache;
 	IndexTriVertexBuffer* vertexBuffer;

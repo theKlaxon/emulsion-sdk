@@ -1,3 +1,4 @@
+//==== Blobulator. Copyright © 2004-2007, Rosware LLC, All rights reserved. ====//
 #pragma once
 #include "..\blobulator\point_3D.h"
 #include "imp_particle.h"
@@ -7,8 +8,6 @@ class SweepRenderer;
 
 class ImpTile {
 public:
-
-	//ImpTile();
 
 	bool done;
 	int x, y, z;
@@ -71,32 +70,3 @@ private:
 	ImpTilerFactory();
 
 };
-
-#ifdef BLOBULATOR_UNIT_TESTS
-class ImpTiler_Test {
-public:
-
-	void CompileMe() {
-		
-		ImpTiler* pTiler = new ImpTiler(nullptr);
-		pTiler->beginFrame(Point3D(), nullptr, false);
-		pTiler->endFrame();
-		pTiler->insertParticle(nullptr);
-		//pTiler->addParticleToTile(nullptr, 0, 0, 0);
-		//pTiler->createTile(0, 0, 0);
-		//pTiler->findTile(0, 0, 0);
-		pTiler->drawSurface();
-		pTiler->drawSurfaceSorted(Point3D());
-		pTiler->drawTile(nullptr);
-		pTiler->drawTile(0, 0, 0);
-		pTiler->getNoTiles();
-		pTiler->getTile(0);
-		pTiler->getTileOffset(0);
-
-		// dont run game with this PLEASE, this is just to test if everything compiles
-		ImpTilerFactory* pFactory = nullptr;
-		pTiler = pFactory->getTiler();
-		pFactory->returnTiler(pTiler);
-	}
-};
-#endif

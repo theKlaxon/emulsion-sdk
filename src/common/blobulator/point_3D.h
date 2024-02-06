@@ -1,3 +1,4 @@
+//==== Blobulator. Copyright © 2004-2007, Rosware LLC, All rights reserved. ====//
 #pragma once
 #include "utlvector.h"
 #include <xmmintrin.h>
@@ -57,13 +58,9 @@ public:
 	void set(float x, float y, float z);
 
 	Vector AsVector() const { return Vector(p[0], p[1], p[2]); }
-
-	//void clear();
-	//void add(Point3D point);
-	//void subtract(Point3D point);
+	
 private:
-
-	//float x, y, z;
+	
 	/*DECL_ALIGN(4)*/ union
 	{
 		__m128 sse_vec3;

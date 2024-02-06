@@ -6,7 +6,7 @@
 #include "implicit/imp_tiler.h"
 #include "implicit/sweep_renderer.h"
 
-ConVar paintblob_stream_radius("r_paintblob_stream_radius", "8", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
+ConVar paintblob_stream_radius("r_paintblob_stream_radius", "7", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
 ConVar paintblob_stream_max_blobs("r_paintblob_stream_max_blobs", "350", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
 ConVar paintblob_surface_max_tiles("r_paintblob_surface_max_tiles", "-1", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
 
@@ -180,8 +180,8 @@ int C_PaintBlobStream::DrawModel(int flags, const RenderableInstance_t& instance
 
 		ImpParticleWithOneInterpolant* imp_particle = &imp_particles[i];
 		imp_particle->center = Point3D(m_vecSurfacePositions[i].x, m_vecSurfacePositions[i].y, m_vecSurfacePositions[i].z);
-		imp_particle->fieldRScaleSq = m_vecSurfaceRs[i];
-		imp_particle->scale = m_vecRadii[i];
+		imp_particle->fieldRScaleSq = m_vecRadii[i];// m_vecSurfaceRs[i];
+		imp_particle->scale = 1.0f;// m_vecRadii[i];
 		imp_particle->interpolants1[3] = m_vecSurfaceVs[i];
 		n_particles++;
 	}
@@ -197,8 +197,7 @@ int C_PaintBlobStream::DrawModel(int flags, const RenderableInstance_t& instance
 	center.Init();
 
 	float flRadius = paintblob_stream_radius.GetFloat();
-	float rdiv1 = (1.0f / flRadius); // dont do the same math twice
-	Vector transformedCenter = center * rdiv1;
+	float rdiv1 = (1.0f / flRadius);
 
 	CMatRenderContextPtr pRenderContext(materials);
 	pRenderContext->MatrixMode(MATERIAL_MODEL);
@@ -208,43 +207,29 @@ int C_PaintBlobStream::DrawModel(int flags, const RenderableInstance_t& instance
 	pRenderContext->Translate(center.x, center.y, center.z);
 	pRenderContext->Scale(flRadius, flRadius, flRadius);
 
-	// TODO: enable paintblob stream rotation here?
-	VMatrix rotationMatrix;
-	VMatrix invRotationMatrix;
-	Vector transformedEye;
-	float angle = 0.0f;
-
-	rotationMatrix.Identity();
-	invRotationMatrix.Identity();
-	transformedEye.Init();
-	angle = 0.0f;
-	// --
-
 	tiler->beginFrame(Point3D(0.0f, 0.0f, 0.0f), (void*)&pRenderContext, 1);
 
 	for (int i = 0; i < n_particles; i++) {
 		ImpParticleWithOneInterpolant* imp_particle = &imp_particles[i];
-		if (imp_particle->scale <= 0.1f) continue;
-
+		
+		//Vector transformedCenter = center * rdiv1;
 		Vector vParticle = imp_particle->center.AsVector();
 		Vector transformedParticle = (vParticle - center) * rdiv1;
 
-		Point3D pParticle = transformedParticle;
-		Point3D pCenter = transformedCenter;
-		Point3D vec = (pParticle - pCenter);
+		Point3D pParticle = transformedParticle; 
+		//Point3D pCenter = transformedCenter;
+		//Point3D vec = (pParticle - pCenter);
 
 		imp_particle->center = pParticle;
 
 		tiler->insertParticle(imp_particle);
 	}
 
-	{
-		tiler->drawSurface();
-	}
-
+	tiler->drawSurface();
 	tiler->endFrame();
 	ImpTilerFactory::factory->returnTiler(tiler);
 
 	pRenderContext->PopMatrix();
+	pRenderContext.SafeRelease();
 	return 1;
 }

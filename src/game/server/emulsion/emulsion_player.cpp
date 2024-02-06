@@ -473,7 +473,7 @@ void CEmulsionPlayer::RotateBBox(Vector vecUp) {
 }
 
 Vector CEmulsionPlayer::GetHalfHeight_Stick() {
-	return GetAbsOrigin() + ((-1 * m_vecGravity) * (GetViewOffset().Length() * 0.75f));
+	return GetAbsOrigin() + ((- 1 * m_vecGravity) * (GetViewOffset().Length() * 0.75f));
 }
 
 Vector CEmulsionPlayer::GetForward_Stick() {
