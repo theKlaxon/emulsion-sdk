@@ -1,0 +1,24 @@
+"Refract"
+{
+	"$model" 1
+//	"$fadeoutonsilhouette" 1
+	"$bluramount" 1
+	"$refractamount" "5.0"
+//	"$refractamount" "0.0"
+	"$refracttint" "[.8 .8 .8]"
+
+	"$dudvmap" "stone/stonefloor003a_dudv"
+	"$normalmap" "stone/stonefloor003a_normal"
+	
+	"$bumpframe" "0"
+
+	"Proxies"
+	{
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$bumpmap"
+			"animatedtextureframenumvar" "$bumpframe"
+			"animatedtextureframerate" 30.00
+		}
+	}
+}

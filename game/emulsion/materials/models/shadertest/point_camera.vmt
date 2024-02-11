@@ -1,0 +1,12 @@
+"Refract"
+{
+	"$model" 1
+	"$basetexture" "_rt_Camera"
+	"$refractamount" "0.05"
+	"$bluramount" "0"
+	"$scale" "[1 1]"
+	"$dudvmap" "shadertest/point_camera_dudv"
+	"$normalmap" "shadertest/point_camera_normal"
+	"$bumpframe" 0
+	"$translucent" 1
+}

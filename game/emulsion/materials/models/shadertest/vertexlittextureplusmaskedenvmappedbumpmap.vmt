@@ -1,0 +1,51 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/shadertest/vertexlittextureplusmaskedenvmap_base"
+	"$bumpmap" "shadertest/bumpy_normal"
+	"$envmap" "shadertest/cubemap"
+	"$model" 1
+	"$normalmapalphaenvmapmask" 1
+	"$bumpoffset" "[0 0]"
+
+	// Color green + blue is sinusoidal
+	"Proxies"
+	{
+		"Sine"
+		{
+			"resultVar" "$envmaptint[0]"
+			"sineperiod" 7.00
+			"sinemin" 0
+			"sinemax" 2
+		}
+
+		"Sine"
+		{
+			"resultVar" "$color[1]"
+			"sineperiod" 7.00
+			"sinemin" 0
+			"sinemax" 2
+		}
+
+		// Alpha is sinusoidal
+		"Sine"
+		{
+			"resultVar" "$alpha"
+			"sineperiod" 10.00
+			"sinemin" 0
+			"sinemax" 3
+		}
+		// Scroll the bumpmap
+		"Sine"
+		{
+			"resultVar" "$bumpoffset[0]"
+			"sineperiod" 40.00
+			"sinemin" 2
+			"sinemax" -2
+		}
+		"TextureTransform"
+		{
+			"translateVar" "$bumpoffset"
+			"resultVar" "$bumptransform"
+		}
+	}
+}

@@ -58,62 +58,12 @@ void CMatSysPatch::Patch() {
 #endif
 }
 
-typedef void (*fn_nopar)(void);
-void (*en_HostState_Shutdown)(void);
-
-typedef enum
-{
-	HS_NEW_GAME = 0,
-	HS_LOAD_GAME,
-	HS_CHANGE_LEVEL_SP,
-	HS_CHANGE_LEVEL_MP,
-	HS_RUN,
-	HS_GAME_SHUTDOWN,
-	HS_SHUTDOWN,
-	HS_RESTART,
-} HOSTSTATES;
-
-
-class CHostState {
-public:
-
-	HOSTSTATES m_currentState;
-	HOSTSTATES m_nextState;
-
-	Vector m_vecLocation;
-	QAngle m_angLocation;
-
-	char m_levelName[265];
-	char m_landmarkName[265];
-	char m_saveName[265];
-
-	float m_flShortFrameTime;
-
-	bool m_activeGame;
-	bool m_bRememberLocation;
-	bool m_bBackgroundLevel;
-	bool m_bWaitingForConnection;
-	bool m_bLetToolsOverrideLoadGameEnts;
-	bool m_bSplitScreenConnect;
-	bool m_bGameHasShutDownAndFlushedMemory;
-};
-
-CHostState* g_pHostState;
-
 // Engine
 void CEnginePatch::Patch() {
-	unsigned int ex = m_Offsets.g_HostState_Shutdown.GetAddress();
-	en_HostState_Shutdown = (fn_nopar)(ex);
 
-	// 1043f7f0
-	g_pHostState = ((CHostState*)m_Offsets.g_HostState.GetAddress());
 }
 
 
 void HostState_Shutdown2() {
 
-	HOSTSTATES cur = g_pHostState->m_currentState;
-	g_pHostState->m_nextState = HS_SHUTDOWN;
 }
-
-ConCommand exit2("exit2", HostState_Shutdown2, "Exit the game.");

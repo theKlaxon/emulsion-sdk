@@ -79,14 +79,9 @@ static ConVar	sv_surface_ideal( "surface_ideal", "2", 0, "ideal distance (N * ra
 static ConVar	sv_surface_nearby( "surface_nearby", "3", 0, "acceptable distance (N * radius) between each and still be considered touching" );
 static ConVar	sv_surface_scale( "surface_scale", "0.5" );
 
-
 static ConVar	sv_lj_strength( "lj_strength", "1", 0 );
 
-
-
 //-------------------------------------
-
-
 /*
 
 BEGIN_SIMPLE_DATADESC( CSurfaceController )
@@ -145,7 +140,7 @@ void CNPC_Surface::Spawn()
 	// setup model
 	SetSolid( SOLID_BBOX );
 	AddSolidFlags( FSOLID_FORCE_WORLD_ALIGNED | FSOLID_NOT_STANDABLE );
-	//SetCollisionBounds( -Vector(400,400,100), Vector(400,400,400) );
+	SetCollisionBounds( -Vector(400,400,100), Vector(400,400,400) );
 	//SetSolid(SOLID_VPHYSICS);
 	SetMoveType( MOVETYPE_VPHYSICS );
 
@@ -329,9 +324,8 @@ void CNPC_Surface::PhysicsSimulate() {
 	BaseClass::PhysicsSimulate();
 
 	for (int i = 0; i < m_nActiveParticles; i++) {
-
-		QAngle ang;
-		m_pSpheres[i]->VPhysicsGetObject()->GetPosition(&m_vecSurfacePos[i], &ang); // TODO: try nullptr > ang?
+	
+		m_pSpheres[i]->VPhysicsGetObject()->GetPosition(&m_vecSurfacePos[i], nullptr);
 		m_pSpheres[i]->SetAbsOrigin(m_vecSurfacePos[i]);
 	}
 

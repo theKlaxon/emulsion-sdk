@@ -26,10 +26,8 @@ class CNPC_Surface;
 
 class CNPC_Surface;
 
-//#include "../common/blobulator/Physics/PhysParticleCache_inl.h"
-//#include "../common/blobulator/Physics/PhysTiler.h"
-#include "blobulator/physics/phys_particle_cache.h"
-#include "blobulator/physics/phys_tiler.h"
+#include "blobulator/Physics/PhysParticleCache.h"
+#include "blobulator/Physics/PhysTiler.h"
 
 class CLennardJonesForce
 {
@@ -93,7 +91,7 @@ public:
 
 	int ObjectCaps() {
 		int caps = BaseClass::ObjectCaps();
-		return caps |= FCAP_IMPULSE_USE;
+		return caps |= FCAP_IMPULSE_USE | FCAP_USE_IN_RADIUS;
 	}
 
 	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value) {

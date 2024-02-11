@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/shadertest/VertexLitSelfIlluminatedTexture"
+	"$envmap" "shadertest/shadertest_env"
+	"$selfillum" 1
+	"$envmapmode" 1
+	"$multipass" 1
+}

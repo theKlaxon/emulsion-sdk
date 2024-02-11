@@ -818,7 +818,7 @@ public:
 	virtual bool IsPuzzleMakerBlockingInGameMenu() { return false; }
 	virtual bool IsPuzzleMakerActive() { return false; }
 	virtual bool IsPuzzleMakerCompiling() { return false; }
-	virtual bool PuzzleMakerRequestQuitGame() { return false; };
+	virtual bool PuzzleMakerRequestQuitGame() { return true; };
 
 public:
 	void PrecacheMaterial(const char* pMaterialName);

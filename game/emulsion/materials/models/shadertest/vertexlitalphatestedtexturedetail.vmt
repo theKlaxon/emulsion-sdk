@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/shadertest/VertexLitAlphaTestedTexture"
+	"$alphatest" 1
+	"$detail" "shadertest/shadertestdetail"
+}

@@ -1,0 +1,20 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/shadertest/VertexLitTranslucentTexture"
+	"$envmap" "shadertest/shadertest_env"
+	"$basealphaenvmapmask" 1
+	"$multipass" 1
+	"$envmapmode" 1
+
+	"Proxies"
+	{
+		// Alpha is sinusoidal
+		"Sine"
+		{
+			"resultVar" "$alpha"
+			"sineperiod" 4.00
+			"sinemin" 0.5
+			"sinemax" 1
+		}
+	}
+}

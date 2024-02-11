@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"%tooltexture" "shadertest/shadertest_env"
+	"$envmap" "shadertest/shadertest_env"
+	"$envmapcameraspace" 1
+	"$multipass" 1
+}

@@ -1,0 +1,6 @@
+"unlitgeneric"
+{
+//	"$basetexture" "models/ihvtest/eyeball_r"
+//	"$iris" "models/ihvtest/pupil_r"
+	"$model" 1
+}

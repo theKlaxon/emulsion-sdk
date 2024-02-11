@@ -2,9 +2,9 @@
 #include "c_paintblob_stream.h"
 #include "paintblob_manager.h"
 #include "dt_utlvector_recv.h"
-#include "implicit/imp_particle.h"
-#include "implicit/imp_tiler.h"
-#include "implicit/sweep_renderer.h"
+#include "Implicit/ImpParticle.h"
+#include "Implicit/ImpTiler.h"
+#include "Implicit/SweepRenderer.h"
 
 ConVar paintblob_stream_radius("r_paintblob_stream_radius", "7", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
 ConVar paintblob_stream_max_blobs("r_paintblob_stream_max_blobs", "350", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);

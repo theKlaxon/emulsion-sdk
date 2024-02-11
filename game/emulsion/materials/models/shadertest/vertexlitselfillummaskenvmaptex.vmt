@@ -1,0 +1,45 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/shadertest/VertexLitSelfIlluminatedTexture"
+	"$envmap" "shadertest/shadertest_env"
+	"$envmapmask" "shadertest/shadertest_envmask"
+	"$selfillum" 1
+	"$multipass" 1
+
+	"$temp" 0
+	"$one" 1
+
+	// Color green + blue is sinusoidal
+	"Proxies"
+	{
+		"Sine"
+		{
+			"resultVar" "$color[0]"
+			"sineperiod" 3.00
+			"sinemin" 0
+			"sinemax" 1
+		}
+
+		"Sine"
+		{
+			"resultVar" "$selfillumtint[2]"
+			"sineperiod" 1.00
+			"sinemin" 0
+			"sinemax" 7
+		}
+
+		// Gets less green as we move
+		"PlayerSpeed"
+		{
+			"resultVar" "$temp"
+			"scale"		0.005
+		}
+
+		"Subtract"
+		{
+			"srcVar1"	"$one"
+			"srcVar2"	"$temp"
+			"resultVar"	"$envmaptint[1]" 
+		}
+	}
+}

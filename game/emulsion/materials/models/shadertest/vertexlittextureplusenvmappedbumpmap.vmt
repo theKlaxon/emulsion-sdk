@@ -1,0 +1,37 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/shadertest/vertexlittexture"
+	"$bumpmap" "shadertest/bumpy_normal"
+	"$envmap" "shadertest/cubemap"
+	"$model" 1
+	"$translucent" 1
+
+	// Color green + blue is sinusoidal
+	"Proxies"
+	{
+		"Sine"
+		{
+			"resultVar" "$envmaptint[0]"
+			"sineperiod" 7.00
+			"sinemin" 0
+			"sinemax" 2
+		}
+
+		"Sine"
+		{
+			"resultVar" "$color[1]"
+			"sineperiod" 7.00
+			"sinemin" 0
+			"sinemax" 2
+		}
+
+		// Alpha is sinusoidal
+		"Sine"
+		{
+			"resultVar" "$alpha"
+			"sineperiod" 10.00
+			"sinemin" 0
+			"sinemax" 3
+		}
+	}
+}

@@ -1,0 +1,53 @@
+"UnlitGeneric"
+{
+	"$model" 1
+	"$tooltexture" "shadertest/shadertest_env"
+	"$envmap" "shadertest/shadertest_env"
+
+	"$temp" 0
+	"$one" 1
+	 
+	"Proxies"
+	{
+		// Gets less blue as we get closer
+		"PlayerProximity"
+		{
+			"resultVar" "$envmaptint[2]"
+			"scale" 0.002 
+		}
+
+		// Fades out as we look away from it
+		"PlayerView"
+		{
+			"resultVar" "$alpha"
+			"scale" 2
+		}
+
+		"Subtract"
+		{
+			"srcVar1"	"$alpha"
+			"srcVar2"	"$one"
+			"resultVar"	"$alpha" 
+		}
+
+		"Equals"
+		{
+			"srcVar1"	"$alpha"
+			"resultVar"	"$color[1]" 
+		}
+
+		// Gets less blue as we move
+		"PlayerSpeed"
+		{
+			"resultVar" "$temp"
+			"scale"		0.005
+		}
+
+		"Subtract"
+		{
+			"srcVar1"	"$one"
+			"srcVar2"	"$temp"
+			"resultVar"	"$envmaptint[0]" 
+		}
+	}
+}

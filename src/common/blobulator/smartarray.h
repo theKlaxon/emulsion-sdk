@@ -1,4 +1,4 @@
-//==== Blobulator. Copyright © 2004-2007, Rosware LLC, All rights reserved. ====//
+//==== Blobulator. Copyright © 2004-2024, Ilya D. Rosenberg, All rights reserved. ====//
 #pragma once
 
 #include "tier0/platform.h"

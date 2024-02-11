@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"%tooltexture"	"shadertest/shadertest_env"
+	"$envmap"		"shadertest/shadertest_env"
+	"$envmapmask"	"models/shadertest/shadertest_envmask"
+}

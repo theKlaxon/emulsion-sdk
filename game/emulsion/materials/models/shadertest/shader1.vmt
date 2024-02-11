@@ -1,0 +1,27 @@
+"Refract"
+{
+	"$bluramount" "1"
+ 	"$model" 1
+ 	"$refractamount" "2"
+//	"$REFRACTTINT" "{0 250 250}"
+	"$scale" "[1 1]"
+ 	"$dudvmap" "models/shadertest/shader1_dudv"
+// 	"$normalmap" "models/shadertest/shader1_normal"
+//	"$envmap" "Env_cubemap"
+//	"$envmaptint" "[.4 .4 .4]"
+ 	"$surfaceprop" "water"
+	"$bumpframe" "0"
+ 	"$bumpoffset" "[0 0]"
+	"$nocull" 1
+	"$REFRACTTINTTEXTURE" "models/shadertest/shield"
+
+	"Proxies"
+	{
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$REFRACTTINTTEXTURE"
+			"animatedtextureframenumvar" "$bumpframe"
+			"animatedtextureframerate" 19.00
+		}
+	}
+}

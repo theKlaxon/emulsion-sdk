@@ -1,0 +1,27 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/shadertest/VertexLitTexture"
+	"$detail" "shadertest/shadertestdetail"
+
+//	"Proxies"
+//	{
+//		// Alpha is sinusoidal
+//		"Sine"
+//		{
+//			"resultVar" "$alpha"
+//			"sineperiod" 8.00
+//			"sinemin" -0.2
+//			"sinemax" 1
+//		}
+  //
+	//	// Color is sinusoidal
+//		"Sine"
+//		{
+//			"resultVar" "$color[0]"
+//			"sineperiod" 1.00
+//			"sinemin" 0
+//			"sinemax" 1
+//		}
+
+//	}
+}

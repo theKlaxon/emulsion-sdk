@@ -1,0 +1,19 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/shadertest/vertexlitalphatestedtexture"
+	"$bumpmap" "shadertest/bumpy_normal"
+	"$model" 1
+	"$selfillum" 1
+
+	// Color green + blue is sinusoidal
+	"Proxies"
+	{
+		"Sine"
+		{
+			"resultVar" "$selfillumtint"
+			"sineperiod" 7.00
+			"sinemin" 0
+			"sinemax" 1
+		}
+	}
+}

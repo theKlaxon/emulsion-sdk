@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+	"$basetexture" "models/shadertest/VertexLitTranslucentTexture"
+	"$translucent" 1
+	"$detail" "shadertest/shadertestdetail"
+}

@@ -1,0 +1,34 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/shadertest/VertexLitSelfIlluminatedTexture"
+	"$selfillum" 1
+
+	// Color green + blue is sinusoidal
+	"Proxies"
+	{
+		"Sine"
+		{
+			"resultVar" "$selfillumtint[2]"
+			"sineperiod" 1.00
+			"sinemin" 0
+			"sinemax" 1
+		}
+
+		"Sine"
+		{
+			"resultVar" "$color[1]"
+			"sineperiod" 3.00
+			"sinemin" 0
+			"sinemax" 1
+		}
+
+		// Alpha is sinusoidal
+		"Sine"
+		{
+			"resultVar" "$alpha"
+			"sineperiod" 10.00
+			"sinemin" 1
+			"sinemax" 1
+		}
+	}
+}

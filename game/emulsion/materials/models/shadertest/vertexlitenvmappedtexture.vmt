@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/shadertest/VertexLitTexture"
+	"$envmap" "shadertest/shadertest_env"
+	"$multipass" 1
+}

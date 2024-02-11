@@ -1,0 +1,6 @@
+"Teeth"
+{
+	"$basetexture" "models/ihvtest/lower_teeth"
+	"$model" 1
+	"$clientshader" "MouthShader"
+}

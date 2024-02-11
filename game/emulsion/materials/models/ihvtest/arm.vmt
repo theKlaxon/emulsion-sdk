@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitMaskedEnvMappedTexture
+	"$basetexture" "models/ihvtest/arm"
+	"$envmapmask" "models/ihvtest/arm_mask"
+	"$envmap" "models/ihvtest/envmap"
+	//"$envmapsphere" 1
+	"$multipass" 1
+}

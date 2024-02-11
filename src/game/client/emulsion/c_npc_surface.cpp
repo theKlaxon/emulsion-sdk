@@ -18,21 +18,21 @@
 #include "soundinfo.h"
 
 // TODO: These should be in public by the time the SDK ships
-//#if 1
-//	#include "../../common/blobulator/Implicit/ImpDefines.h"
-//	#include "../../common/blobulator/Implicit/ImpRenderer.h"
-//	#include "../../common/blobulator/Implicit/ImpTiler.h"
-//	#include "../../common/blobulator/Implicit/UserFunctions.h"
-//#else
-//	#include "../common/blobulator/Implicit/ImpDefines.h"
-//	#include "../../common/blobulator/Implicit/SweepRenderer2.h"
-//	#include "../../common/blobulator/Implicit/ImpTiler2.h"
-//	#include "../../common/blobulator/Implicit/UserFunctions2.h"
-//#endif
-
-#include "blobulator/implicit/imp_tiler.h"
-#include "blobulator/implicit/sweep_renderer.h"
-#include "blobulator/paint_defs.h"
+#if 1
+	#include "../../common/blobulator/Implicit/ImpDefines.h"
+	#include "../../common/blobulator/Implicit/ImpRenderer.h"
+	#include "../../common/blobulator/Implicit/ImpTiler.h"
+	#include "../../common/blobulator/Implicit/UserFunctions.h"
+#else
+	#include "../common/blobulator/Implicit/ImpDefines.h"
+	#include "../../common/blobulator/Implicit/SweepRenderer2.h"
+	#include "../../common/blobulator/Implicit/ImpTiler2.h"
+	#include "../../common/blobulator/Implicit/UserFunctions2.h"
+#endif
+//
+//#include "blobulator/implicit/imp_tiler.h"
+//#include "blobulator/implicit/sweep_renderer.h"
+//#include "blobulator/paint_defs.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -143,7 +143,6 @@ C_NPC_Surface::C_NPC_Surface()
 C_NPC_Surface::~C_NPC_Surface()
 {
 }
-
 
 //-----------------------------------------------------------------------------
 // Purpose: Draw a Sphere
@@ -291,7 +290,6 @@ int g_FastSphereTriData[84][3] = {
 { 33, 49, 50 }
 };
 
-
 void DrawFastSphere( CMeshBuilder &meshBuilder, const Vector &center, float radius, int r, int g, int b )
 {
 	int i;
@@ -320,26 +318,22 @@ void DrawFastSphere( CMeshBuilder &meshBuilder, const Vector &center, float radi
 	}
 }
 
-
-
-
 //-----------------------------------------------------------------------------
 // Purpose: Custom model rendering
 //-----------------------------------------------------------------------------
-
 
 static ConVar	sv_blr_cubewidth( "blr_cubewidth", "0.8", 0, "Set cubewidth (coarseness of the mesh)" );
 static ConVar	sv_blr_render_radius( "blr_render_radius", "1.3", 0, "Set render radius (how far from particle center surface will be)" );
 static ConVar	sv_blr_cutoff_radius( "blr_cutoff_radius", "3.3", 0, "Set cutoff radius (how far field extends from each particle)" );
 
 static ConVar	sv_surface_center( "surface_center", "0", FCVAR_ARCHIVE, "Adjust render center" );
-static ConVar	sv_surface_rotate("surface_rotate", "1", 0, "Whether to rotate for transparency");
+static ConVar	sv_surface_rotate("surface_rotate", "0", 0, "Whether to rotate for transparency");
 static ConVar	sv_surface_testshape( "surface_testshape", "0", 0, "Use a test shape instead of the hydra" );
 static ConVar	sv_surface_fountain( "surface_fountain", "0", FCVAR_ARCHIVE, "Turns on settings for rendering the fountain" );
 
 static ConVar	sv_surface_draw( "surface_draw", "1", 0, "Draw the surface" );
 static ConVar	sv_surface_wireframe( "surface_wireframe", "0", FCVAR_ARCHIVE, "Draw wireframe" );
-static ConVar	sv_surface_material("surface_material", "3", FCVAR_ARCHIVE, "Choose a material from 0 to N");
+static ConVar	sv_surface_material("surface_material", "11", FCVAR_ARCHIVE, "Choose a material from 0 to N");
 static ConVar	sv_surface_shader("surface_shader", "", FCVAR_ARCHIVE, "Choose a shader");
 
 static ConVar	sv_surface_use_tiler("surface_use_tiler", "1", 0, "Use the tiler");
@@ -352,7 +346,8 @@ static ConVar	sv_surface_calc_uv_and_tan( "surface_calc_uv_and_tan", "1", FCVAR_
 static ConVar	sv_surface_calc_tan_only( "surface_calc_tan_only", "0", FCVAR_ARCHIVE, "Calculate Only Tangents" );
 static ConVar	sv_surface_calc_color( "surface_calc_color", "0", FCVAR_ARCHIVE, "Just interpolate colors" );
 static ConVar	sv_surface_calc_hifreq_color( "surface_calc_hifreq_color", "0", FCVAR_ARCHIVE, "Experimental hi-freq colors" );
-static ConVar	sv_surface_calc_tile_color( "surface_calc_tile_color", "0", FCVAR_ARCHIVE, "Shows color of the tile" );
+static ConVar	sv_surface_calc_tile_color("surface_calc_tile_color", "0", FCVAR_ARCHIVE, "Shows color of the tile" );
+static ConVar	sv_surface_calc_default( "sv_surface_calc_default", "0", FCVAR_ARCHIVE, "Default calc used by Alien Swarm particles (render_blobs)" );
 
 extern ConVar	mat_wireframe;
 
@@ -442,8 +437,7 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 		} else if(sv_surface_material.GetInt() == 2) {
 			m_pMaterial = materials->FindMaterial( "models/debug/debugwhite3", TEXTURE_GROUP_OTHER, true );
 		} else if(sv_surface_material.GetInt() == 3) {
-			//m_pMaterial = materials->FindMaterial( "debug/debugvertexcolor", TEXTURE_GROUP_OTHER, true );
-			m_pMaterial = materials->FindMaterial( "paintblobs/blob_surface_erase", TEXTURE_GROUP_OTHER, true );
+			m_pMaterial = materials->FindMaterial( "debug/debugvertexcolor", TEXTURE_GROUP_OTHER, true );
 		} else if(sv_surface_material.GetInt() == 4) {
 			m_pMaterial = materials->FindMaterial( "debug/env_cubemap_model", TEXTURE_GROUP_OTHER, true );
 		} else if(sv_surface_material.GetInt() == 5) {
@@ -458,8 +452,10 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 			m_pMaterial = materials->FindMaterial( "models/debug/debugbumps", TEXTURE_GROUP_OTHER, true );
 		} else if(sv_surface_material.GetInt() == 10) {
 			m_pMaterial = materials->FindMaterial( "debug/env_cubemap_model_translucent_no_bumps", TEXTURE_GROUP_OTHER, true );
+		} else if (sv_surface_material.GetInt() == 11) {
+			m_pMaterial = materials->FindMaterial("paintblobs/blob_surface_erase", TEXTURE_GROUP_OTHER, true);
 		} else {
-			//pMaterial = materials->FindMaterial( "effects/tp_refract", TEXTURE_GROUP_OTHER, true );
+			//m_pMaterial = materials->FindMaterial( "effects/tp_refract", TEXTURE_GROUP_OTHER, true );
 			//m_pMaterial = materials->FindMaterial( "debug/debugrefract", TEXTURE_GROUP_OTHER, true );
 			//m_pMaterial = materials->FindMaterial( "shadertest/water_refract_only", TEXTURE_GROUP_OTHER, true );
 			//m_pMaterial = materials->FindMaterial( "nature/sewer_water001", TEXTURE_GROUP_OTHER, true );
@@ -481,7 +477,7 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 
 
 	#define MAX_EXTRA_ELEMENTS 400
-	static ImpParticleWithOneInterpolant imp_particles[MAX_SURFACE_ELEMENTS + MAX_EXTRA_ELEMENTS]; // This doesn't specify alignment, might have problems with SSE
+	static ImpParticleWithFourInterpolants imp_particles[MAX_SURFACE_ELEMENTS + MAX_EXTRA_ELEMENTS]; // This doesn't specify alignment, might have problems with SSE
 	int n_particles = 0;
 
 	if (sv_surface_testshape.GetBool())
@@ -500,8 +496,8 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 		{
 			ImpParticleWithOneInterpolant* imp_particle = &imp_particles[i];
 			imp_particle->center = Point3D(m_vecSurfacePos[i].x, m_vecSurfacePos[i].y, m_vecSurfacePos[i].z);
-			imp_particle->fieldRScaleSq = m_flSurfaceR[i];
-			imp_particle->scale = 1.0f;
+			//imp_particle->fieldRScaleSq = m_flSurfaceR[i];
+			imp_particle->scale = 1.0f;// m_flSurfaceR[i];
 			imp_particle->interpolants1[3] = m_flSurfaceV[i];
 			n_particles++;
 		}
@@ -524,7 +520,8 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 				float dist = sqrtf(sqr(imp_particle->center[0]) + sqr(imp_particle->center[1]));
 					
 				imp_particle->center[2] += 2.0f*sin(2.0f*time + 2.0f*dist);
-				imp_particle->fieldRScaleSq = 1.0f;
+				//imp_particle->fieldRScaleSq = 1.0f;
+				imp_particle->scale = 1.0f;
 				imp_particle->interpolants1[3] = 0.0f;
 			}
 			for (int i = -2; i <= 2; i++)
@@ -532,17 +529,17 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 			{
 				ImpParticleWithOneInterpolant* imp_particle = &imp_particles[n_particles++];
 				imp_particle->center = fountainOrigin + Vector(i * 2.0f * m_flRadius, j * 2.0f * m_flRadius, 15.0f - 2.0f * m_flRadius);
-				imp_particle->fieldRScaleSq = 1.0f;
+				//imp_particle->fieldRScaleSq = 1.0f;
+				imp_particle->scale = 1.0f;
 				imp_particle->interpolants1[3] = 0.0f;
 			}
 			ImpParticleWithOneInterpolant* imp_particle = &imp_particles[n_particles++];
 			imp_particle->center = fountainOrigin + Vector(0.0f, 0.0f, 15.0f - 4.0f * m_flRadius);
-			imp_particle->fieldRScaleSq = 1.0f;
+			//imp_particle->fieldRScaleSq = 1.0f;
+			imp_particle->scale = 1.0f;
 			imp_particle->interpolants1[3] = 0.0f;
 		}
 	}
-
-
 
 	if( !IsErrorMaterial( m_pMaterial ) )
 	{
@@ -610,92 +607,82 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 		else
 		{
 			// Note: it is not good to have these static variables here.
-			//static RENDERER_CLASS* sweepRenderer = NULL;
 			static ImpTiler* tiler = ImpTilerFactory::factory->getTiler();
-
-			//if(!sweepRenderer)
-			//{
-			//	sweepRenderer = new RENDERER_CLASS();
-			//	tiler = new ImpTiler(sweepRenderer);
-			//}
-
 			tiler->maxNoTileToDraw = sv_surface_max_tiles.GetInt();
-			//sweepRenderer->setMaxNoSlicesToDraw(sv_surface_max_slices.GetInt());
-			
+
 			SweepRenderer::setCubeWidth(sv_blr_cubewidth.GetFloat());
 			SweepRenderer::setRenderR(sv_blr_render_radius.GetFloat());
 			SweepRenderer::setCutoffR(sv_blr_cutoff_radius.GetFloat());
 
-			SweepRenderer::setCalcSignFunc(calcSign);
-			SweepRenderer::setCalcSign2Func(calcSign2);
-			SweepRenderer::setCalcCornerFunc(32, calcCornerNormalColor);
-			SweepRenderer::setCalcVertexFunc(calcVertexNormalNColorUVTan);
-
-			//if(sv_surface_calc_uv_and_tan.GetBool())
-			//{
-			//	RENDERER_CLASS::setCalcSignFunc(calcSign);
-			//	RENDERER_CLASS::setCalcSign2Func(calcSign2);
-			//	RENDERER_CLASS::setCalcCornerFunc(calcCornerNormalColorUVTan);
-			//	RENDERER_CLASS::setCalcVertexFunc(calcVertexNormalNColorUVTan);
-			//}
-			//else if(sv_surface_calc_tan_only.GetBool())
-			//{
-			//	RENDERER_CLASS::setCalcSignFunc(calcSign);
-			//	RENDERER_CLASS::setCalcSign2Func(calcSign2);
-			//	RENDERER_CLASS::setCalcCornerFunc(calcCornerNormalColorTanNoUV);
-			//	RENDERER_CLASS::setCalcVertexFunc(calcVertexNormalNColorTanNoUV);
-			//}
-			//else if	(sv_surface_calc_color.GetBool())
-			//{
-			//	RENDERER_CLASS::setCalcSignFunc(calcSign);
-			//	RENDERER_CLASS::setCalcSign2Func(calcSign2);
-			//	RENDERER_CLASS::setCalcCornerFunc(calcCornerNormalColor);
-			//	RENDERER_CLASS::setCalcVertexFunc(calcVertexNormalNColor);
-			//}
-			//else if (sv_surface_calc_hifreq_color.GetBool())
-			//{
-			//	RENDERER_CLASS::setCalcSignFunc(calcSign);
-			//	RENDERER_CLASS::setCalcSign2Func(calcSign2);
-			//	RENDERER_CLASS::setCalcCornerFunc(calcCornerNormalHiFreqColor);
-			//	RENDERER_CLASS::setCalcVertexFunc(calcVertexNormalNColor);
-			//}
-			//else if (sv_surface_calc_tile_color.GetBool())
-			//{
-			//	RENDERER_CLASS::setCalcSignFunc(calcSign);
-			//	RENDERER_CLASS::setCalcSign2Func(calcSign2);
-			//	RENDERER_CLASS::setCalcCornerFunc(calcCornerNormal);
-			//	RENDERER_CLASS::setCalcVertexFunc(calcVertexNormalDebugColor);
-			//}
-			//else
-			//{
-			//	RENDERER_CLASS::setCalcSignFunc(calcSign);
-			//	RENDERER_CLASS::setCalcSign2Func(calcSign2);
-			//	RENDERER_CLASS::setCalcCornerFunc(calcCornerNormal);
-			//	RENDERER_CLASS::setCalcVertexFunc(calcVertexNormal);
-			//}
-			//	
-
-			Vector center; 
-			//if(sv_surface_testshape.GetBool())
-			//{
-			//	center.Init(); // set center to 0,0,0
-			//}
-			//else if(sv_surface_fountain.GetBool())
-			//{
-			//	center = fountainOrigin;
-			//}
-			//else
+			// Klaxnote: this is what was used for the render_blobs opertor in Alien Swarm,
+			// if you're encountering render issues and you've x2 checked all math, try
+			// enabling this block and disabling the if chain below.
+			// 
+			//SweepRenderer::setCalcSignFunc(calcSign);
+			//SweepRenderer::setCalcSign2Func(calcSign2);
+			//SweepRenderer::setCalcCornerFunc(32, calcCornerNormalColor);
+			//SweepRenderer::setCalcVertexFunc(calcVertexNormalNColorUVTan);
+			
+			if(sv_surface_calc_uv_and_tan.GetBool())
 			{
-				center.Init();
+				SweepRenderer::setCalcSignFunc(calcSign);
+				SweepRenderer::setCalcSign2Func(calcSign2);
+				SweepRenderer::setCalcCornerFunc(calcCornerNormalColorUVTan);
+				SweepRenderer::setCalcVertexFunc(calcVertexNormalNColorUVTan);
+			}
+			else if(sv_surface_calc_tan_only.GetBool())
+			{
+				SweepRenderer::setCalcSignFunc(calcSign);
+				SweepRenderer::setCalcSign2Func(calcSign2);
+				SweepRenderer::setCalcCornerFunc(calcCornerNormalColorTanNoUV);
+				SweepRenderer::setCalcVertexFunc(calcVertexNormalNColorTanNoUV);
+			}
+			else if (sv_surface_calc_color.GetBool())
+			{
+				SweepRenderer::setCalcSignFunc(calcSign);
+				SweepRenderer::setCalcSign2Func(calcSign2);
+				SweepRenderer::setCalcCornerFunc(calcCornerNormalColor);
+				SweepRenderer::setCalcVertexFunc(calcVertexNormalNColor);
+			}
+			else if (sv_surface_calc_hifreq_color.GetBool())
+			{
+				SweepRenderer::setCalcSignFunc(calcSign);
+				SweepRenderer::setCalcSign2Func(calcSign2);
+				SweepRenderer::setCalcCornerFunc(calcCornerNormalHiFreqColor);
+				SweepRenderer::setCalcVertexFunc(calcVertexNormalNColor);
+			}
+			else if (sv_surface_calc_tile_color.GetBool())
+			{
+				SweepRenderer::setCalcSignFunc(calcSign);
+				SweepRenderer::setCalcSign2Func(calcSign2);
+				SweepRenderer::setCalcCornerFunc(calcCornerNormal);
+				SweepRenderer::setCalcVertexFunc(calcVertexNormalDebugColor);
+			}
+			else if (sv_surface_calc_default.GetBool())
+			{
+				SweepRenderer::setCalcSignFunc(calcSign);
+				SweepRenderer::setCalcSign2Func(calcSign2);
+				SweepRenderer::setCalcCornerFunc(calcCornerNormalColor);
+				SweepRenderer::setCalcVertexFunc(calcVertexNormalNColorUVTan);
+			}
+			else
+			{
+				SweepRenderer::setCalcSignFunc(calcSign);
+				SweepRenderer::setCalcSign2Func(calcSign2);
+				SweepRenderer::setCalcCornerFunc(calcCornerNormal);
+				SweepRenderer::setCalcVertexFunc(calcVertexNormal);
+			}
+			
+			Vector center; 
+			center.Init();
 
-				if(sv_surface_center.GetBool())
+			if (sv_surface_center.GetBool())
+			{
+				for (int i = 0; i < m_nActiveParticles; i++)
 				{
-					for(int i = 0; i < m_nActiveParticles; i++)
-					{
-						center += m_vecSurfacePos[i];
-					}
-					center /= m_nActiveParticles;
+					center += m_vecSurfacePos[i];
 				}
+				center /= m_nActiveParticles;
 			}
 
 			Vector transformedCenter = center * (1.0f/m_flRadius);
@@ -706,15 +693,7 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 			pRenderContext->PushMatrix();
 			pRenderContext->LoadIdentity();
 
-			//if(sv_surface_testshape.GetBool())
-			//{
-			//	pRenderContext->Translate(-150.0f, 50.0f, 150.0f);
-			//}
-			//else
-			{
-				pRenderContext->Translate(center.x, center.y, center.z);
-			}
-
+			pRenderContext->Translate(center.x, center.y, center.z);
 			pRenderContext->Scale(m_flRadius, m_flRadius, m_flRadius);
 
 			VMatrix rotationMatrix;
@@ -727,11 +706,7 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 
 				//ConMsg("Angle = %f\n", angle);
 				pRenderContext->Rotate(angle, 0.0f, 0.0f, 1.0f);
-
-				//VMatrix rotationMatrix2 = SetupMatrixAngles(view->GetViewSetup()->angles);
-				//pRenderContext->MultMatrix(rotationMatrix2);
-				//VMatrix rotationMatrix = rotationMatrix2.InverseTR(); //SetupMatrixAngles(-(view->GetViewSetup()->angles));
-
+				
 				rotationMatrix = SetupMatrixAxisRot(Vector(0.0f, 0.0f, 1.0f), -angle);
 				invRotationMatrix = SetupMatrixAxisRot(Vector(0.0f, 0.0f, 1.0f), angle);
 				Vector eye = view->GetViewSetup()->origin;
@@ -751,20 +726,13 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 			{
 				tiler->beginFrame(Point3D(0.0f, 0.0f, 0.0f), (void*)&pRenderContext, !(sv_surface_draw_margin.GetBool()));
 			}
-			//else
-			//{
-			//	sweepRenderer->beginFrame(!(sv_surface_draw_margin.GetBool()), (void*)&pRenderContext);
-			//	sweepRenderer->setOffset(Point3D(0.0f, 0.0f, 0.0f));
-			//	//sweepRenderer->beginTile();
-			//}
-
+			
 			for (int i = 0 ; i < n_particles; i++)
 			{
-				ImpParticleWithOneInterpolant* imp_particle = &imp_particles[i];
+				ImpParticleWithFourInterpolants* imp_particle = &imp_particles[i];
 				if(imp_particle->scale <= 0.1f) continue;
 
 				Vector vParticle = imp_particle->center.AsVector();
-				//vParticle.Init(imp_particle->center[0], imp_particle->center[1], imp_particle->center[2]);
 				Vector transformedParticle = (vParticle-center) * (1.0f/m_flRadius);
 
 				if(sv_surface_rotate.GetBool())
@@ -777,28 +745,24 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 				Point3D vec = (pParticle - pCenter);
 
 				imp_particle->center = pParticle;
-				imp_particle->fieldRScaleSq = MAX(1.2f - vec.length() / 30.0f, 0.25f);
-
+				//imp_particle->fieldRScaleSq = MAX(1.2f - vec.length() / 30.0f, 0.25f);
+				
 				// interpolants[0..2] is the color. interpolants[3] is the v coordinate
 				// imp_particle->interpolants[3] = min(max(1.4f - vec.length()/17.0f, 0.0f), 1.0f);
 				// interpolants2[0..2] is the tangent vector.
 				// interpolants3[0..2] and interpolants4[0..2] are the normal and
 				// binormal which are used to generate a u coordinate
-				//imp_particle->interpolants2 = vec.unit();
-				//imp_particle->interpolants4.set(0.0f, 0.0f, -1.0f);
-				//imp_particle->interpolants3 = imp_particle->interpolants2.crossProduct(imp_particle->interpolants4);
-				//imp_particle->interpolants3.normalize();
-				//imp_particle->interpolants4 = imp_particle->interpolants2.crossProduct(imp_particle->interpolants3);
-				//imp_particle->interpolants4.normalize();
-				
+				imp_particle->interpolants2 = vec.unit();
+				imp_particle->interpolants4.set(0.0f, 0.0f, -1.0f);
+				imp_particle->interpolants3 = imp_particle->interpolants2.crossProduct(imp_particle->interpolants4);
+				imp_particle->interpolants3.normalize();
+				imp_particle->interpolants4 = imp_particle->interpolants2.crossProduct(imp_particle->interpolants3);
+				imp_particle->interpolants4.normalize();
+
 				if(sv_surface_use_tiler.GetBool())
 				{
 					tiler->insertParticle(imp_particle);
 				}
-				//else
-				//{
-				//	sweepRenderer->addParticle(imp_particle);
-				//}
 			}
 
 			if(sv_surface_use_tiler.GetBool())
@@ -811,6 +775,7 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 					}
 					else
 					{
+						//tiler->drawSurfaceSorted(Point3D(transformedEye));
 						tiler->drawSurface();
 					}
 				}
@@ -820,14 +785,9 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 				}
 				tiler->endFrame();
 			}
-
-			ImpTilerFactory::factory->returnTiler(tiler);
-			//else
-			//{
-			//	sweepRenderer->endTile();
-			//	sweepRenderer->endFrame();
-			//}
-
+			
+			// Klaxnote: this code is for some debug visuals. Going to fix it up sometime soon and add an sv_debug_monster ConVar.
+			// 
 			//if(sv_surface_max_tiles.GetInt() > 0 || sv_surface_tile.GetBool()==false)
 			//{
 			//	//debugoverlay->AddBoxOverlay( fountainOrigin, Vector(-30, -30, -30), Vector(30, 30, 30), QAngle( 0, 0, 0 ), 0, 255, 0, 0, 0 );
@@ -847,6 +807,8 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 			//	}
 			//}
 
+			// Always return borrowed items!
+			ImpTilerFactory::factory->returnTiler(tiler);
 			pRenderContext->PopMatrix();
 		}
 	}

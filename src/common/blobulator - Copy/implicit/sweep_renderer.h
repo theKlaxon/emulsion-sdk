@@ -1,4 +1,4 @@
-//==== Blobulator. Copyright © 2004-2007, Rosware LLC, All rights reserved. ====//
+//==== Blobulator. Copyright © 2004-2007, Ilya D. Rosenberg, All rights reserved. ====//
 #pragma once
 #include "implicit/imp_tiler.h"
 #include "implicit/imp_particle.h"
@@ -69,6 +69,7 @@ public:
 	bool isParticleWithinBounds(ImpParticle* pParticle);
 
 	static void setCalcCornerFunc(int p1, CalcCornerFunc_t pFunc);
+	static void setCalcCornerFunc(CalcCornerFunc_t pFunc) { setCalcCornerFunc(32, pFunc); } // shortcut, since they all should use 32 (as far as i know) -Klax
 	static void setCalcSignFunc(CalcSignFunc_t pFunc);
 	static void setCalcSign2Func(CalcSign2Func_t pFunc);
 	static void setCalcVertexFunc(CalcVertexFunc_t pFunc);
