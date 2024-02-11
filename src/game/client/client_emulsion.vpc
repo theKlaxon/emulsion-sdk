@@ -27,39 +27,6 @@ $Project "Client (Emulsion)"
 
 	$Folder "Source Files"
 	{
-		$Folder "Blobulator"
-		{
-			$Folder "Headers"
-			{
-				$Folder "implicit"
-				{
-					$File "$SRCDIR\common\blobulator\implicit\imp_particle.h"
-					$File "$SRCDIR\common\blobulator\implicit\imp_renderer.h"
-					$File "$SRCDIR\common\blobulator\implicit\imp_tiler.h"
-					$File "$SRCDIR\common\blobulator\implicit\sweep_renderer.h"
-				}
-
-				$Folder "physics"
-				{
-					$File "$SRCDIR\common\blobulator\physics\phys_particle.h"
-					$File "$SRCDIR\common\blobulator\physics\phys_particle_cache.h"
-					$File "$SRCDIR\common\blobulator\physics\phys_tiler.h"
-				}
-
-				$File "$SRCDIR\common\blobulator\blob_manager.h"
-				$File "$SRCDIR\common\blobulator\blob_render.h"
-				$File "$SRCDIR\common\blobulator\index_tri_vertex_buffer.h"
-				$File "$SRCDIR\common\blobulator\parented_func.h"
-				$File "$SRCDIR\common\blobulator\point_3D.h"
-				$File "$SRCDIR\common\blobulator\smartarray.h"
-			}
-
-			$File "$SRCDIR\common\blobulator\blob_manager.cpp"
-			$File "$SRCDIR\common\blobulator\blob_render.cpp"
-			$File "$SRCDIR\common\blobulator\c_paint_stream.h"
-			$File "$SRCDIR\common\blobulator\c_paint_stream.cpp"
-		}
-
 		$Folder	"Emulsion"
 		{		
 			$Folder "GameUI"
@@ -83,6 +50,8 @@ $Project "Client (Emulsion)"
 				$File	"$SRCDIR\game\shared\emulsion\emulsion_shareddefs.h"
 				$File	"$SRCDIR\game\shared\emulsion\emulsion_usermessages.cpp"
 				$File	"$SRCDIR\game\shared\emulsion\emulsion_parsers.cpp"
+				$File	"$SRCDIR\game\shared\emulsion\paintblob_manager.cpp"
+				$File	"$SRCDIR\game\shared\emulsion\paintblob_manager.h"
 				$File 	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
 			}
 
@@ -92,11 +61,15 @@ $Project "Client (Emulsion)"
 			$File	"emulsion\c_weapon_paintgun.cpp"
 			$File	"emulsion\c_discord.cpp"
 			$File	"emulsion\c_discord.h"
+
+			$File	"emulsion\c_paintblob_stream.cpp"
+			$File	"emulsion\c_paintblob_stream.h"
 			
 			$File	"emulsion\clientmode_emulsion.h"
 			$File	"emulsion\clientmode_emulsion.cpp"
 			$File	"emulsion\emulsion_fx.cpp"
 			$File	"emulsion\emulsion_in_main.cpp"
+			$File	"emulsion\emulsion_in_main.h"
 			$File	"emulsion\emulsion_prediction.cpp"
 			$File	"emulsion\emulsion_rootpanel.cpp"
 			$File	"emulsion\c_prop_devcube.cpp"
