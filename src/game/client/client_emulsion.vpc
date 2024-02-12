@@ -63,6 +63,7 @@ $Project "Client (Emulsion)"
 			$File	"emulsion\c_discord.h"
 
 			$File	"emulsion\dll_patch.cpp"
+			$File	"emulsion\dll_offset.cpp"
 			$File	"emulsion\c_paintblob_stream.cpp"
 			$File	"emulsion\c_paintblob_stream.h"
 			

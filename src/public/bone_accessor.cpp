@@ -20,7 +20,7 @@
 			CStudioHdr *pHdr = m_pAnimating->GetModelPtr();
 			if ( pHdr )
 			{
-				mstudiobone_t *pBone = pHdr->pBone( iBone );
+				const mstudiobone_t *pBone = pHdr->pBone( iBone );
 				if ( bReadable )
 				{
 					AssertOnce( pBone->flags & m_ReadableBones );

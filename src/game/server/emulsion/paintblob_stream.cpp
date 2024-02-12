@@ -117,6 +117,8 @@ void CPaintBlobStream::Spawn() {
 	m_vecSurfaceVs[0] = 0.0;
 	m_vecSurfaceRs[0] = 1.0;
 	m_vecRadii[0] = 1.0;
+
+	m_nFreeIndices = CUtlVector<short>();
 	
 	for (int i = 1; i < paintblob_stream_max_blobs.GetInt(); i++)
 	{
@@ -265,7 +267,9 @@ void CPaintBlobStream::AddParticle(Vector center, Vector velocity) {
 		m_vecParticles[i]->SetDamping(&flDamping, &flAngDamping);
 		m_nActiveParticlesInternal++;
 
-		m_nFreeIndices.FastRemove(0);
+		if(m_nFreeIndices.Count() > 0)
+			m_nFreeIndices.FastRemove(0);
+
 		m_nIndices.AddToTail(i);
 		m_nNewIndices.AddToTail(i);
 	}
