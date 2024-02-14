@@ -7327,7 +7327,8 @@ QAngle CBasePlayer::AutoaimDeflection( Vector &vecSrc, autoaim_params_t &params 
 	if ( maxDeflection < 0 )
 	{
 		// use the weapon's specification
-		maxDeflection = GetActiveWeapon()->GetMaxAutoAimDeflection();
+		if(GetActiveWeapon())
+			maxDeflection = GetActiveWeapon()->GetMaxAutoAimDeflection();
 	}
 
 	return bestang;

@@ -34,6 +34,13 @@
 		1:  "Disabled" : 0
 	]
 
+	TripwireMode(choices) : "Tripwire Mode" : 0 : "Makes this sentry aim in a fixed direction and not follow the player. Still fires rockets when beam is crossed." =
+	[
+		0 : "Disabled"
+		1 : "Enabled"
+	]
+	
+	TripwireAimTarget(target_destination) : "Tripwire Aim Target" : : "(tripwire mode only) An info target this sentry will aim it's beam at. If not specified, will aim down world angles." 
 	RocketSpeed(float) : "Rocket Speed" : 450 : "Speed the rocket will travel at."
 	RocketLifetime(float) : "Rocket Lifetime" : 20 : "The rocket will automatically detonate after this number of seconds."
 	

@@ -975,7 +975,6 @@ bool InitParticleManager()
 
 bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 {
-
 	if (!VGui_Startup( appSystemFactory ))
 		return false;
 

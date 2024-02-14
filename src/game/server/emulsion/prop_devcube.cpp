@@ -11,8 +11,6 @@
 #define CUBE_LASER_MDL		"models/props/metal_box.mdl" // TODO
 #define CUBE_EDGELESS_MDL	"models/props/metal_box.mdl" // TODO
 
-
-
 ConVar sv_portal2_pickup_hint_range("sv_portal2_pickup_hint_range", "350.0f", FCVAR_CHEAT | FCVAR_REPLICATED);
 
 //enum CUBE_SKIN_LASER {
@@ -28,7 +26,6 @@ ConVar sv_portal2_pickup_hint_range("sv_portal2_pickup_hint_range", "350.0f", FC
 //	REPULSIVE,
 //	PROPULSIVE
 //};
-
 
 LINK_ENTITY_TO_CLASS(prop_weighted_cube, CPropDevCube);
 

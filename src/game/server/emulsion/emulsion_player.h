@@ -18,8 +18,9 @@ public:
 	virtual void Spawn();
 	virtual void Activate();
 
-	virtual int UpdateTransmitState() override { return SetTransmitState(FL_EDICT_ALWAYS); }
+	virtual int		UpdateTransmitState() override { return SetTransmitState(FL_EDICT_ALWAYS); }
 
+	void			CalcPlayerView(Vector& eyeOrigin, QAngle& eyeAngles, float& fov);
 	void			CreateViewModel(int index);
 	virtual void	Touch(CBaseEntity* pOther) override;
 	virtual void	EndTouch(CBaseEntity* pOther) override;
@@ -58,6 +59,7 @@ protected:
 
 	QAngle m_angInitialAngles;
 
+	Vector m_vecCurLerpUp;
 	//Vector m_vecGravity;
 	Vector m_vecEyeAxisRot;
 

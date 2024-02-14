@@ -19,7 +19,7 @@ ConVar erase_visual_color("erase_visual_color", "0 0 0 255", FCVAR_REPLICATED);
 ConVar paint_color_max_diff("paint_color_max_diff", "32", FCVAR_REPLICATED, "The maximum difference between two colors for matching.");
 // ---
 
-ConVar paintgun_fire_blobs("paintgun_fire_blobs", "1", 0, "Blobs are experimental!");
+ConVar paintgun_fire_blobs("paintgun_fire_blobs", "1", FCVAR_NOTIFY, "Blobs are experimental!");
 
 // Paintgun power commands
 void Paintgun_NextPower();
@@ -77,6 +77,9 @@ void CWeaponPaintgun::FirePaint(bool erase) {
 
 	CEmulsionPlayer* pPlayer = ToEmulsionPlayer(UTIL_PlayerByIndex(1));
 	Vector halfHeightOrigin = pPlayer->GetHalfHeight_Stick();
+
+	Vector forward;
+	AngleVectors(pPlayer->EyeAngles(), &forward);
 
 	if (paintgun_fire_blobs.GetBool()) {
 

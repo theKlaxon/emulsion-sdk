@@ -85,16 +85,16 @@
 		"topoffset"		"0"	[$GAMECONSOLE]
 	}
 
-	//HudChat
-	//{
-//		"fieldName" "HudChat"
-		//"visible" "0"
-		//"enabled" "1"
-		//"xpos"	"0"
-		//"ypos"	"0"
-		//"wide"	 "4"
-		//"tall"	 "4"
-	//}
+	HudChat
+	{
+		"fieldName" "HudChat"
+		"visible" "0"
+		"enabled" "1"
+		"xpos"	"0"
+		"ypos"	"0"
+		"wide"	 "4"
+		"tall"	 "4"
+	}
 
 	HUDQuickInfo
 	{

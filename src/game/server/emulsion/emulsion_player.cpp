@@ -26,6 +26,11 @@ extern ConVar sv_maxspeed;
 extern ConVar sv_debug_player_use;
 extern ConVar pl_normspeed;
 
+static ConVar pl_stickcameralerpspeed("pl_stickcameralerpspeed", "3.0f", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
+static ConVar pl_stickcamerauselerp("pl_stickcamerauselerp", "1", FCVAR_REPLICATED | FCVAR_CHEAT | FCVAR_NOTIFY);
+
+static Vector g_RoofStickNormal = Vector(0, 0, 1);
+
 extern float IntervalDistance(float x, float x0, float x1);
 
 static int hasNoclip = 0;
@@ -91,6 +96,7 @@ void CEmulsionPlayer::Spawn() {
 	//
 	engine->ClientCommand(edict(), "bind n tog_noclip");
 	engine->ClientCommand(edict(), "give weapon_paintgun");
+	//engine->ClientCommand(edict(), "give weapon_placement");
 	engine->ClientCommand(edict(), "bind mwheeldown paintgun_next");
 	engine->ClientCommand(edict(), "bind mwheelup paintgun_prev");
 
@@ -478,4 +484,104 @@ Vector CEmulsionPlayer::GetHalfHeight_Stick() {
 
 Vector CEmulsionPlayer::GetForward_Stick() {
 	return pMove->m_vecStickForward;
+}
+
+void CEmulsionPlayer::CalcPlayerView(Vector& eyeOrigin, QAngle& eyeAngles, float& fov)
+{
+#if defined( CLIENT_DLL )
+	if (!prediction->InPrediction())
+	{
+		// FIXME: Move into prediction
+		view->DriftPitch();
+	}
+#endif
+
+	// TrackIR
+	if (IsHeadTrackingEnabled())
+	{
+		VectorCopy(EyePosition() + GetEyeOffset(), eyeOrigin);
+		VectorCopy(EyeAngles() + GetEyeAngleOffset(), eyeAngles);
+	}
+	else
+	{
+		VectorCopy(EyePosition(), eyeOrigin);
+		VectorCopy(EyeAngles(), eyeAngles);
+	}
+
+
+#if defined( CLIENT_DLL )
+	if (!prediction->InPrediction())
+#endif
+	{
+		SmoothViewOnStairs(eyeOrigin);
+	}
+
+	// Snack off the origin before bob + water offset are applied
+	Vector vecBaseEyePosition = eyeOrigin;
+	QAngle baseEyeAngles = eyeAngles;
+
+	if (pl_stickcamerauselerp.GetBool()) {
+		m_vecCurLerpUp = Lerp<Vector>((gpGlobals->frametime * pl_stickcameralerpspeed.GetFloat()), m_vecCurLerpUp, -1 * m_vecGravity);
+#ifdef CLIENT_DLL
+		if (m_vecGravity == g_RoofStickNormal)
+			GetPaintInput()->SetUseStickMouseFix(true);
+		else
+			GetPaintInput()->SetUseStickMouseFix(false);
+#endif
+	}
+
+	CEmulsionGameMovement* pMove = (CEmulsionGameMovement*)g_pGameMovement;
+	{
+		Vector initial = Vector(0, 0, 1);
+		Vector axOf = pl_stickcamerauselerp.GetBool() ? m_vecCurLerpUp : -1 * m_vecGravity;
+
+		Vector vecAxisOfRotation = CrossProduct(initial, axOf); // build around out new up vector
+		float flAngleOfRotation = RAD2DEG(acos(DotProduct(initial, axOf))); // build around out new up vector
+
+		// build rotation matrix for new eye angles
+		VMatrix eyerotmat;
+		MatrixBuildRotationAboutAxis(eyerotmat, vecAxisOfRotation, flAngleOfRotation);
+
+		// rotate the eyeAngles we already have by the new matrix
+		Vector vecForward, vecUp;
+		AngleVectors(eyeAngles, &vecForward, nullptr, &vecUp);
+		VectorRotate(vecForward, eyerotmat.As3x4(), vecForward);
+		VectorRotate(vecUp, eyerotmat.As3x4(), vecUp);
+
+		// set the eyeAngles to our new result
+		VectorAngles(vecForward, vecUp, eyeAngles);
+
+		Vector vecRotOffset = GetViewOffset();
+		VectorRotate(vecRotOffset, eyerotmat.As3x4(), vecRotOffset);
+
+		// take the normal view offset and apply it to a new axis
+		float totalOffset = GetViewOffset().Length();
+		eyeOrigin = GetAbsOrigin() + ((pl_stickcamerauselerp.GetBool() ? m_vecCurLerpUp.Normalized() : -1 * m_vecGravity) * totalOffset);
+	}
+
+	CalcViewBob(eyeOrigin);
+	CalcViewRoll(eyeAngles);
+
+	// Apply punch angle
+	VectorAdd(eyeAngles, m_Local.m_vecPunchAngle, eyeAngles);
+
+#if defined( CLIENT_DLL )
+	if (!prediction->InPrediction())
+	{
+		// Shake it up baby!
+		GetViewEffects()->CalcShake();
+		GetViewEffects()->ApplyShake(eyeOrigin, eyeAngles, 1.0);
+	}
+#endif
+
+#if defined( CLIENT_DLL )
+	// Apply a smoothing offset to smooth out prediction errors.
+	Vector vSmoothOffset;
+	GetPredictionErrorSmoothingVector(vSmoothOffset);
+	eyeOrigin += vSmoothOffset;
+	m_flObserverChaseDistance = 0.0;
+#endif
+
+	// calc current FOV
+	fov = GetFOV();
 }

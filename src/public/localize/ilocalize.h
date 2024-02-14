@@ -128,23 +128,26 @@ public:
 	virtual void RemoveChangeCallback( ILocalizationChangeCallback *pCallback ) = 0;
 
 	// TODO: GetAsianFrquencySequence
-	virtual void* GetAsianFrequencySequence(char* par1) = 0;
+	virtual wchar_t* GetAsianFrequencySequence(const char* par1) = 0;
 	// TODO: FindAsUTF8
-	virtual char* FindAsUTF8(char* par1) = 0;
-	// TODO: ConstructStringVArgsInternal
-	virtual void ConstructVArgsInternal(int param_2, char* param_3, int param_4, char* param_5) = 0;
-	// TODO: ConstructStringVArgsInternal
-	virtual void ConstructVArgsInternal(wchar_t* param_1, int param_2, wchar_t* param_3, int param_4, char* param_5) = 0;
-	// TODO: ConstructStringKeyValuesInternal
-	virtual void ConstructStringKeyValuesInternal(char* param_1, int param_2, char* param_3, KeyValues* param_4) = 0;
-	// TODO: ConstructStringKeyValuesInternal
-	virtual void ConstructStringKeyValuesInternal(wchar_t* param_1, int param_2, wchar_t* param_3, KeyValues* param_4) = 0;
+	virtual const char* FindAsUTF8(const char* par1) = 0;
 
-	void ConstructString(wchar_t* unicodeOuput, int unicodeBufferSizeInBytes, const wchar_t* formatString, int numFormatParameters, ...) {
+	// TODO: ConstructStringVArgsInternal
+	virtual void ConstructStringVArgsInternal(char* param_1, int param_2, const char* param_3, int param_4, va_list param_5) = 0;
+	// TODO: ConstructStringVArgsInternal
+	virtual void ConstructStringVArgsInternal(wchar_t* param_1, int param_2, const wchar_t* param_3, int param_4, va_list param_5) = 0;
+
+	// TODO: ConstructStringKeyValuesInternal
+	virtual void ConstructStringKeyValuesInternal(char* param_1, int param_2, const char* param_3, KeyValues* param_4) = 0;
+	// TODO: ConstructStringKeyValuesInternal
+	virtual void ConstructStringKeyValuesInternal(wchar_t* param_1, int param_2, const wchar_t* param_3, KeyValues* param_4) = 0;
+	
+	template <typename T>
+	void ConstructString(T* unicodeOuput, int unicodeBufferSizeInBytes, const T* formatString, int numFormatParameters, ...) {
 		va_list args;
 		va_start(args, numFormatParameters);
 
-		ConstructString(unicodeOuput, unicodeBufferSizeInBytes, formatString, numFormatParameters, args);
+		ConstructStringVArgsInternal(unicodeOuput, unicodeBufferSizeInBytes, formatString, numFormatParameters, args);
 		va_end(args);
 	}
 

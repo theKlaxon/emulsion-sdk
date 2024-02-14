@@ -1605,6 +1605,72 @@ void CEmulsionGameMovement::ProcessPowerUpdate() {
 
 // POWERS:
 
+// halfway there bounce paint
+//void CEmulsionGameMovement::BouncePlayer(cplane_t plane, float multiplier) {
+//
+//	Msg("Bounce mult: %f \n", multiplier);
+//
+//	if (multiplier < 2) multiplier = 2;
+//	if (m_tCurPaintInfo.type == SPEED_POWER) multiplier + 1;
+//
+//	float flMul = sqrt(multiplier * sv_gravity.GetFloat() * pl_bouncePaintFactor.GetFloat());
+//
+//	Vector curForwardVel;
+//	Vector curNegVel;
+//	Vector result;
+//
+//	curNegVel = mv->m_vecVelocity * player->Forward();
+//	if (curNegVel.LargestComponent() < 0) 
+//		curNegVel *= -1;
+//	
+//	curForwardVel = player->Forward() * curNegVel;
+//
+//	if(m_tCurPaintInfo.type != SPEED_POWER)
+//		result = curForwardVel.Normalized() * (flMul / 2);
+//	result += (plane.normal) * flMul;
+//
+//	if (plane.normal[2] == 0)
+//		result += (-1 * m_vecGravity) * (flMul);
+//
+//	if (m_tCurPaintInfo.type == SPEED_POWER)
+//		mv->m_vecVelocity += result;
+//	else
+//		mv->m_vecVelocity = result;
+//
+//	wallBounce = 0;
+//	m_bCancelNextExitSound = true;
+//	PlaySoundInternal("Player.JumpPowerUse");
+//
+//	if (pl_showBouncePowerNormal.GetBool()) {
+//		Msg("Result: (%f, %f, %f)\n", result.x, result.y, result.z);
+//		Msg("Actual: (%f, %f, %f)\n", mv->m_vecVelocity.x, mv->m_vecVelocity.y, mv->m_vecVelocity.z);
+//	}
+//		
+//
+//	SetGroundEntity(NULL);
+//}
+
+/// <summary>
+///  this should've been a thing already. wtf source
+/// </summary>
+/// <param name="in">: the original vector</param>
+/// <param name="min">: new min</param>
+/// <param name="max">: new max</param>
+/// <returns>the clamped vector (duh)</returns>
+//inline Vector ClampVector(Vector in, Vector min, Vector max) {
+//
+//}
+
+Vector ClampMinVector(Vector in, Vector min) {
+
+	Vector result = in;
+	for (int i = 0; i < 3; i++)
+		if (result[i] < min[i])
+			result[i] = min[i];
+
+	return result;
+}
+
 void CEmulsionGameMovement::BouncePlayer(cplane_t plane, float multiplier) {
 
 	Msg("Bounce mult: %f \n", multiplier);
@@ -1612,39 +1678,32 @@ void CEmulsionGameMovement::BouncePlayer(cplane_t plane, float multiplier) {
 	if (multiplier < 2) multiplier = 2;
 	if (m_tCurPaintInfo.type == SPEED_POWER) multiplier + 1;
 
-	float flMul = sqrt(multiplier * sv_gravity.GetFloat() * pl_bouncePaintFactor.GetFloat());
-
-	Vector curForwardVel;
-	Vector curNegVel;
-	Vector result;
-
-	curNegVel = mv->m_vecVelocity * player->Forward();
-	if (curNegVel.LargestComponent() < 0) 
-		curNegVel *= -1;
+	float flMul = sqrt(multiplier /** sv_gravity.GetFloat()*/ * (mv->m_vecVelocity.Length() * 0.5f)/*pl_bouncePaintFactor.GetFloat()*/);
 	
-	curForwardVel = player->Forward() * curNegVel;
+	Vector min = plane.normal * 500.0f;
+	Vector result = min + (plane.normal * flMul);// + addVel;
 
-	if(m_tCurPaintInfo.type != SPEED_POWER)
-		result = curForwardVel.Normalized() * (flMul / 2);
-	result += (plane.normal) * flMul;
+	Vector positive = mv->m_vecVelocity * plane.normal;
+	positive[positive.LargestComponent()] *= -1; // gotta add back this velocity somehow
+	
+	Vector curNegVel = mv->m_vecVelocity * player->Forward();
+	Vector forward = player->Forward() * curNegVel;
+	forward *= 0.5f;
+	forward[plane.normal.LargestComponent()] = 0; // zero out the main bounce axis
 
-	if (plane.normal[2] == 0)
-		result += (-1 * m_vecGravity) * (flMul);
-
-	if (m_tCurPaintInfo.type == SPEED_POWER)
-		mv->m_vecVelocity += result;
-	else
-		mv->m_vecVelocity = result;
+	mv->m_vecVelocity += result + positive + forward;
 
 	wallBounce = 0;
 	m_bCancelNextExitSound = true;
 	PlaySoundInternal("Player.JumpPowerUse");
 
 	if (pl_showBouncePowerNormal.GetBool()) {
+		Msg("flMul: %f\n", flMul);
+		Msg("positive: (%f, %f, %f)\n", positive.x, positive.y, positive.z);
+		Msg("min: (%f, %f, %f)\n", min.x, min.y, min.z);
 		Msg("Result: (%f, %f, %f)\n", result.x, result.y, result.z);
 		Msg("Actual: (%f, %f, %f)\n", mv->m_vecVelocity.x, mv->m_vecVelocity.y, mv->m_vecVelocity.z);
 	}
-		
 
 	SetGroundEntity(NULL);
 }
