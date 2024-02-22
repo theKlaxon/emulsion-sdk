@@ -36,6 +36,11 @@ byte *studiohdr_t::GetAnimBlock( int iBlock ) const
 	return modelinfo->GetAnimBlock( this, iBlock );
 }
 
+bool studiohdr_t::hasAnimBlockBeenPreloaded(int i) const
+{
+	return modelinfo->HasAnimBlockBeenPreloaded(this, i);
+}
+
 int	studiohdr_t::GetAutoplayList( unsigned short **pOut ) const
 {
 	return modelinfo->GetAutoplayList( this, pOut );

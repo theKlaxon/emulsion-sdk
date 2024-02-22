@@ -294,28 +294,29 @@ void CEnvProjectedTexture::Spawn( void )
 	BaseClass::Spawn();
 }
 
+// WHY????????!!!!! AT LEAST DOCUMENT THESE THINGS SO I CAN FIND AND REMOVE THEM QUICKER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 void CEnvProjectedTexture::EnforceSingleProjectionRules( bool bWarnOnEnforcement )
 {
 	// Once a light is turned on, turn off all other possible lights in the level
-	CBaseEntity *pFlashlight = NULL;
-	while ( ( pFlashlight = gEntList.FindEntityByClassname( pFlashlight, "env_projectedtexture" ) ) != NULL )
-	{
-		// Obviously, don't turn yourself off
-		if ( pFlashlight == this )
-			continue;
+	//CBaseEntity *pFlashlight = NULL;
+	//while ( ( pFlashlight = gEntList.FindEntityByClassname( pFlashlight, "env_projectedtexture" ) ) != NULL )
+	//{
+	//	// Obviously, don't turn yourself off
+	//	if ( pFlashlight == this )
+	//		continue;
 
-		if ( bWarnOnEnforcement )
-		{
-			CEnvProjectedTexture *pProjTex = static_cast<CEnvProjectedTexture *>(pFlashlight);
-			if ( pProjTex && pProjTex->m_bState )
-			{
-				Warning( "Warning: env_projected_texture (%s) forced off by (%s)\n", pProjTex->GetEntityNameAsCStr(), GetEntityNameAsCStr() );
-			}
-		}
+	//	if ( bWarnOnEnforcement )
+	//	{
+	//		CEnvProjectedTexture *pProjTex = static_cast<CEnvProjectedTexture *>(pFlashlight);
+	//		if ( pProjTex && pProjTex->m_bState )
+	//		{
+	//			Warning( "Warning: env_projected_texture (%s) forced off by (%s)\n", pProjTex->GetEntityNameAsCStr(), GetEntityNameAsCStr() );
+	//		}
+	//	}
 
-		variant_t emptyVariant;
-		pFlashlight->AcceptInput( "TurnOff", this, this, emptyVariant, 0 );
-	}
+	//	variant_t emptyVariant;
+	//	pFlashlight->AcceptInput( "TurnOff", this, this, emptyVariant, 0 );
+	//}
 }
 
 void CEnvProjectedTexture::Activate( void )

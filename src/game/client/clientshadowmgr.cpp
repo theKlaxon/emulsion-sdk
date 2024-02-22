@@ -1648,7 +1648,7 @@ void CClientShadowMgr::PreCacheDepthTex(int count) {
 
 		// SAUL: ensure the depth texture size wasn't changed
 		if(depthTex->GetActualWidth() != nTextureResolution)
-			Msg("BAD! depth tex wasnt created with the correct size!\n");
+			Msg("BAD! depth tex wasnt created with the correct size! %i != %i\n", depthTex->GetActualWidth(), nTextureResolution);
 
 		m_DepthTextureCache.AddToTail(depthTex);
 		m_DepthTextureCacheLocks.AddToTail(bFalse);
@@ -1675,7 +1675,7 @@ void CClientShadowMgr::InitDepthTextureShadows()
 		return;
 
 	if (!m_bDepthTexturesAllocated || m_nDepthTextureResolution != r_flashlightdepthres.GetInt() || m_nDepthTextureResolutionHigh != r_flashlightdepthreshigh.GetInt())
-		PreCacheDepthTex();
+		PreCacheDepthTex(8);
 //	{
 //		CalculateRenderTargetsAndSizes();
 //		m_bDepthTexturesAllocated = true;

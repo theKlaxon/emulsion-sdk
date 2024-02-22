@@ -38,6 +38,7 @@
 #include "tier0/icommandline.h"
 #include "fmtstr.h"
 
+#include "..\public\steam\steam_api.h"
 #include "matchmaking/swarm/imatchext_swarm.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -61,7 +62,7 @@ static ConVar ui_play_online_browser( "ui_play_online_browser",
 
 ConVar asw_show_all_singleplayer_maps( "asw_show_all_singleplayer_maps", "0", FCVAR_NONE, "If set, offline practice option on the main menu will show all maps." );
 
-void Demo_DisableButton( Button *pButton );
+//void Demo_DisableButton( Button *pButton );
 void OpenGammaDialog( VPANEL parent );
 
 //=============================================================================
@@ -909,7 +910,7 @@ void MainMenu::Demo_DisableButtons( void )
 
 		if ( pButton )
 		{
-			Demo_DisableButton( pButton );
+			//Demo_DisableButton( pButton );
 		}
 	}
 }

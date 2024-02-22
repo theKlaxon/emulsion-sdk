@@ -1,0 +1,9 @@
+patch
+{
+include "materials/models/props_foliage/tree_include.vmt"
+insert
+{
+$baseTexture "models\props_foliage\Trees_farm01"
+
+}
+}

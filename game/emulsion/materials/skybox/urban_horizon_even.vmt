@@ -1,0 +1,7 @@
+UnlitGeneric
+{
+$baseTexture "skybox/urban_horizon_even"
+$translucent 1
+$color "[ .5 .5 .5 ]"
+
+}

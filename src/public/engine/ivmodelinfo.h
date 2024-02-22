@@ -89,7 +89,7 @@ public:
 	virtual	virtualmodel_t			*GetVirtualModel( const studiohdr_t *pStudioHdr ) const = 0;
 	virtual byte					*GetAnimBlock( const studiohdr_t *pStudioHdr, int iBlock, bool p3 = false ) const = 0; // p3 for p2sdk
 
-	virtual bool					HadAnimBlockBeenPreloaded(studiohdr_t* param_1, int param_2) = 0; // p2sdk
+	virtual bool					HasAnimBlockBeenPreloaded(const studiohdr_t* param_1, int param_2) = 0; // p2sdk
 
 	// Available on client only!!!
 	virtual void					GetModelMaterialColorAndLighting( const model_t *model, Vector const& origin,

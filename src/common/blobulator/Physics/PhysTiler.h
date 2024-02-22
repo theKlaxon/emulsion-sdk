@@ -4,6 +4,12 @@
 #include "..\Point3D.h"
 #include "..\SmartArray.h"
 
+class TileParticle {
+public:
+	PhysParticle* p;
+	bool in_margin;
+};
+
 class PhysTile {
 public:
 
@@ -14,18 +20,28 @@ public:
 	void endIteration();
 
 	PhysParticle* getNextParticleAndNeighbors(PhysParticle*** p1, int* p2);
+
+	int x, y, z;
+	Point3D center;
+	float dist;
+
+	SmartArray<TileParticle> tparticles;
+	PhysParticleCache* m_pParticleCache;
+	int n;
 };
 
 class PhysTiler;
 class PhysTileIterator {
 public:
 
+	void reset();
+
 private:
 
 	PhysTileIterator(PhysTiler* pTiler);
 
-	void reset();
-
+	int n;
+	PhysTiler* tiler;
 };
 
 class PhysTiler {
@@ -51,7 +67,7 @@ public:
 
 	void processTiles();
 
-	//PhysParticleCache* getParticleCache();
+	PhysParticleCache* getParticleCache() const { return m_pParticleCache; }
 
 private:
 

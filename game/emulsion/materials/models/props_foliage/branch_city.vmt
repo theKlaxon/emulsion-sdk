@@ -1,0 +1,11 @@
+VertexlitGeneric
+{
+$baseTexture "models\props_foliage\branch_city"
+$translucent 1
+
+
+
+$nocull 1
+$model 1
+$FlashlightNoLambert 1
+}

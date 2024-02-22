@@ -1,0 +1,20 @@
+patch
+{
+include "materials/models/props_foliage/tree_include_hedges.vmt"
+insert
+{
+$baseTexture "models\props_foliage/swamp_shrubwall01"
+
+$AlphaTest 1
+$AlphaTestReference ".4"
+
+$nocull 1
+$model 1
+$FlashlightNoLambert 1
+"%keywords" l4d2
+$treeSwayRadius 200
+$treeSwayHeight 150
+$treeSwayStrength 1
+$nodecal 1
+}
+}

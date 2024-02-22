@@ -1,0 +1,15 @@
+patch
+{
+include "materials/models/props_foliage/tree_include_clusters.vmt"
+insert
+{
+$baseTexture "models\props_foliage\Urban_Trees_branches01_mip0"
+$translucent 1
+
+
+$nocull 1
+$model 1
+$FlashlightNoLambert 1
+"%keywords" l4d2
+}
+}

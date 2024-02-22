@@ -1,0 +1,8 @@
+LightmappedGeneric
+{
+	"$basetexture"		"models\props\de_dust\hr_dust\dust_skybox\hr_dust_ground_sand_skybox"
+
+        "$surfaceprop" 		"sand"
+	
+
+}

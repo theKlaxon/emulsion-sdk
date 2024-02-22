@@ -1,0 +1,13 @@
+Sky
+{
+	// if you compiled with nocompress:
+	$hdrbasetexture		"skybox/vertigoBlue_hdrup"
+ 
+	// if you didn't:
+	//$hdrcompressedtexture	"skybox/vertigoBlue_hdrup"
+ 
+	$basetexture		"skybox/vertigoBlue_up"
+	
+	$nofog 1
+	$ignorez 1
+}

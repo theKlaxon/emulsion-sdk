@@ -12,7 +12,7 @@
 #include "vGenericConfirmation.h"
 #include "VQuickJoin.h"
 #include "basemodpanel.h"
-#include "UIGameData.h"
+#include "emulsion/gameui/UIGameData.h"
 #include "VGameSettings.h"
 #include "VSteamCloudConfirmation.h"
 #include "vaddonassociation.h"
@@ -38,7 +38,7 @@
 #include "tier0/icommandline.h"
 #include "fmtstr.h"
 
-#include "matchmaking/swarm/imatchext_swarm.h"
+//#include "matchmaking/swarm/imatchext_swarm.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"

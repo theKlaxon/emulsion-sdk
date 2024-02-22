@@ -127,7 +127,7 @@ Class_T	CNPC_Surface::Classify( void )
 void CNPC_Surface::Spawn()
 {
 	Precache();
-
+	
 	BaseClass::Spawn();
 
 	//SetModel( "models/Hydra.mdl" ); // ep3 hydra ???
@@ -161,13 +161,15 @@ void CNPC_Surface::Spawn()
 
 	m_vecStart = GetAbsOrigin( );
 
+	m_nPhysObjCount = 0;
+
 	m_vecSurfacePos[0] = m_vecStart;
 	m_flSurfaceV[0] = 0.0;
-	m_flSurfaceR[0] = 1.0;
+	m_flSurfaceR[0] = 0.0;
 
 	m_flRadius = sv_surface_radius.GetFloat();
 
-	m_nActiveParticles.Set(12);
+	m_nActiveParticles.Set(128);
 
 	for (int i = 1; i < MAX_SURFACE_ELEMENTS; i++)
 	{
@@ -178,8 +180,6 @@ void CNPC_Surface::Spawn()
 
 	NPCInit();
 }
-
-
 
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -267,28 +267,31 @@ bool CNPC_Surface::CreateVPhysics( bool bFromRestore )
 			m_vecSurfacePos[i] = GetAbsOrigin() + Vector( RandomFloat( -10, 10 ), RandomFloat( -10, 10 ), RandomFloat( 0, 2 ) ) * m_flRadius;
 		}
 
-		m_pSpheres[i] = (CUseablePhysSphere*)CreateEntityByName("prop_useable_phys");
-		m_pSpheres[i]->SetPhysParticle(physenv->CreateSphereObject(m_flRadius, nMaterialIndex, m_vecSurfacePos[i], GetAbsAngles(), &params, false));
+		//m_pSpheres[i] = (CUseablePhysSphere*)CreateEntityByName("prop_useable_phys");
+		//m_pSpheres[i]->SetPhysParticle(physenv->CreateSphereObject(m_flRadius, nMaterialIndex, m_vecSurfacePos[i], GetAbsAngles(), &params, false));
 		//m_pSpheres[i] = new CUseablePhysSphere(physenv->CreateSphereObject( m_flRadius, nMaterialIndex, m_vecSurfacePos[i], GetAbsAngles(), &params, false ));
-		m_pSpheres[i]->Spawn();
+		m_pSpheres[i] = physenv->CreateSphereObject(m_flRadius, nMaterialIndex, m_vecSurfacePos[i], GetAbsAngles(), &params, false);
+		//m_pSpheres[i]->Spawn();
 		if ( m_pSpheres[i] )
 		{
 			Vector vVelocity = Vector( RandomFloat( -1, 1 ), RandomFloat( -1, 1 ), RandomFloat( 1, 2 ) ) * 10.0f;
-			m_pSpheres[i]->VPhysicsGetObject()->SetVelocity( &vVelocity, NULL );
-			//PhysSetGameFlags( m_pSpheres[i], FVPHYSICS_MULTIOBJECT_ENTITY );
-			PhysSetGameFlags( m_pSpheres[i]->VPhysicsGetObject(), FVPHYSICS_NO_SELF_COLLISIONS | FVPHYSICS_MULTIOBJECT_ENTITY ); // call collisionruleschanged if this changes dynamically
-			m_pSpheres[i]->VPhysicsGetObject()->SetGameIndex( i );
+			m_pSpheres[i]->SetVelocity( &vVelocity, NULL );
+			PhysSetGameFlags( m_pSpheres[i], FVPHYSICS_MULTIOBJECT_ENTITY );
+			//PhysSetGameFlags( m_pSpheres[i], FVPHYSICS_NO_SELF_COLLISIONS | FVPHYSICS_MULTIOBJECT_ENTITY ); // call collisionruleschanged if this changes dynamically
+			m_pSpheres[i]->SetGameIndex( i );
 
-			m_pSpheres[i]->VPhysicsGetObject()->SetMass( 10.0f );
-			m_pSpheres[i]->VPhysicsGetObject()->EnableGravity( true );
-			m_pSpheres[i]->VPhysicsGetObject()->EnableDrag( true );
+			m_pSpheres[i]->SetMass( 10.0f );
+			m_pSpheres[i]->EnableGravity( true );
+			m_pSpheres[i]->EnableDrag( true );
 
 			//m_pSpheres[i]->EnableMotion( false );
 
 			float flDamping = 0.5f;
 			float flAngDamping = 0.5f;
-			m_pSpheres[i]->VPhysicsGetObject()->SetDamping( &flDamping, &flAngDamping );
-			//m_pSpheres[i]->SetInertia( Vector( 1e30, 1e30, 1e30 ) );
+			m_pSpheres[i]->SetDamping( &flDamping, &flAngDamping );
+			m_nPhysObjCount++;
+			m_flSurfaceR[i] = 1.0f;
+			m_pSpheres[i]->SetInertia( Vector( 1e30, 1e30, 1e30 ) );
 		}
 		//VPhysicsSetObject( m_pSpheres[i] );
 	}
@@ -307,13 +310,37 @@ int CNPC_Surface::VPhysicsGetObjectList( IPhysicsObject **pList, int listMax )
 	{
 		if (m_flSurfaceR[i] > 0.0f)
 		{
-			pList[count++] = m_pSpheres[i]->VPhysicsGetObject();
+			pList[count++] = m_pSpheres[i];
 		}
 	}
 
 	return count;
 }
 
+//void CNPC_Surface::CallNPCThink(void)
+//{
+//	BaseClass::RebalanceThinks();
+//
+//	//---------------------------------
+//
+//	m_bUsingStandardThinkTime = false;
+//
+//	//---------------------------------
+//
+//	if (!PreNPCThink())
+//	{
+//		return;
+//	}
+//
+//	// reduce cache queries by locking model in memory
+//	MDLCACHE_CRITICAL_SECTION();
+//
+//	this->NPCThink();
+//
+//	m_flLastRealThinkTime = gpGlobals->curtime;
+//
+//	PostNPCThink();
+//}
 
 bool CNPC_Surface::VPhysicsIsFlesh( void )
 {
@@ -323,11 +350,11 @@ bool CNPC_Surface::VPhysicsIsFlesh( void )
 void CNPC_Surface::PhysicsSimulate() {
 	BaseClass::PhysicsSimulate();
 
-	for (int i = 0; i < m_nActiveParticles; i++) {
-	
-		m_pSpheres[i]->VPhysicsGetObject()->GetPosition(&m_vecSurfacePos[i], nullptr);
-		m_pSpheres[i]->SetAbsOrigin(m_vecSurfacePos[i]);
-	}
+	//for (int i = 0; i < m_nActiveParticles; i++) {
+	//
+	//	m_pSpheres[i]->GetPosition(&m_vecSurfacePos[i], nullptr);
+	//	//m_pSpheres[i]->SetAbsOrigin(m_vecSurfacePos[i]);
+	//}
 
 }
 
@@ -372,7 +399,7 @@ bool CNPC_Surface::OnAttemptPhysGunPickup( CBasePlayer *pPhysGunUser, PhysGunPic
 
 				// no idea what sort of forces to use when punting
 				// also, forceoffset just applies a spin, it doesn't act like being hit with a larger sphere
-				m_pSpheres[i]->VPhysicsGetObject()->ApplyForceOffset( forward * 1000.0f, p1 );
+				m_pSpheres[i]->ApplyForceOffset( forward * 1000.0f, p1 );
 			}
 		}
 
@@ -404,7 +431,7 @@ void CNPC_Surface::ApplyDamageForce( const CTakeDamageInfo &info )
 				float flDist2 = (m_vecSurfacePos[i] - info.GetDamagePosition()).LengthSqr();
 				if (flDist2 < flMinDist2)
 				{
-					m_pSpheres[i]->VPhysicsGetObject()->ApplyForceOffset( info.GetDamageForce() * (1.0 - flDist2 / flMinDist2), info.GetDamagePosition() );
+					m_pSpheres[i]->ApplyForceOffset( info.GetDamageForce() * (1.0 - flDist2 / flMinDist2), info.GetDamagePosition() );
 				}
 			}
 		}
@@ -420,7 +447,7 @@ void CNPC_Surface::ApplyDamageForce( const CTakeDamageInfo &info )
 				if (flDist2 < flMinDist2)
 				{
 					Vector dir = (m_vecSurfacePos[i] - info.GetDamagePosition()) / sqrt( flDist2 );
-					m_pSpheres[i]->VPhysicsGetObject()->ApplyForceCenter( dir * flForce * (1.0 - flDist2 / flMinDist2) );
+					m_pSpheres[i]->ApplyForceCenter( dir * flForce * (1.0 - flDist2 / flMinDist2) );
 				}
 			}
 		}
@@ -648,6 +675,8 @@ Vector CNPC_Surface::BodyTarget( const Vector &posSrc, bool bNoisy)
 	return m_vecSurfacePos[iShortest];
 }
 
+#define USE_BLOBULATOR
+
 #if !defined(_X360) && defined( USE_BLOBULATOR )
 //-------------------------------------
 
@@ -743,11 +772,16 @@ void CLennardJonesForce::addParticleForce(PhysParticle* a, PhysParticle* b, floa
 	if(f > m_fMaxAttraction) f = m_fMaxAttraction;
 
 	Point3D scaledr = (b->center - a->center) * (f/(d+FLT_EPSILON)) * flStrength; // Dividing by d scales distance down to a unit vector
-	a->force.add(scaledr); 
-	b->force.subtract(scaledr);
+
+	a->force = a->force + scaledr;
+	b->force = b->force - scaledr;
+
+	//a->force.add(scaledr); 
+	//b->force.subtract(scaledr);
 }
 
 void CLennardJonesForce::AddForces( IPhysicsObject **pObject, int nObjects, float flRadius, float flStrength, Vector *pForces )
+//void CLennardJonesForce::AddForces( CUseablePhysSphere **pObject, int nObjects, float flRadius, float flStrength, Vector *pForces )
 {
 	int nParticles = nObjects;
 
@@ -773,7 +807,8 @@ void CLennardJonesForce::AddForces( IPhysicsObject **pObject, int nObjects, floa
 	for(int i=0;i<nObjects;i++)
 	{
 		PhysParticle* particle = &(imp_particles_sa[i]);
-		particle->force.clear();
+		particle->force.set(0, 0, 0);
+		//particle->force.clear();
 
 		Vector pos;
 		QAngle ang;
@@ -785,14 +820,15 @@ void CLennardJonesForce::AddForces( IPhysicsObject **pObject, int nObjects, floa
 		m_pPhysTiler->insertParticle(particle);
 	}
 
-	m_pPhysTiler->processTiles();
+	// TODO: implement use of tile iterator???? what it doo???????????????
+	//m_pPhysTiler->processTiles();
 
 
 	float timeStep = 1.0f; // This should be customizable
 	float nearNeighborInteractionRadius = 2.3f;
 	float nearNeighborInteractionRadiusSq = nearNeighborInteractionRadius * nearNeighborInteractionRadius;
 	
-	PhysParticleCache* pCache = m_pPhysTiler->getParticleCache();
+	PhysParticleCache* pCache; //= m_pPhysTiler->getParticleCache();
 
 	// Calculate number of near neighbors for each particle
 	for(int i = 0; i < nParticles; i++)
@@ -821,7 +857,7 @@ void CLennardJonesForce::AddForces( IPhysicsObject **pObject, int nObjects, floa
 	{
 		PhysParticle* b1 = &(imp_particles_sa[i]);
 
-		PhysParticleAndDist* node = pCache->get(b1);
+		PhysParticleAndDist* node;// = pCache->get(b1);
 
 		while(node->particle != NULL)
 		{
@@ -1077,8 +1113,38 @@ bool CNPC_BlobFountain::CreateVPhysics( bool bFromRestore )
 	int i;
 	for (i = 0; i < m_nActiveParticles; i++)
 	{
+		/*
+		m_pSpheres[i] = (CUseablePhysSphere*)CreateEntityByName("prop_useable_phys");
+		m_pSpheres[i]->SetPhysParticle(physenv->CreateSphereObject(m_flRadius, nMaterialIndex, m_vecSurfacePos[i], GetAbsAngles(), &params, false));
+		//m_pSpheres[i] = new CUseablePhysSphere(physenv->CreateSphereObject( m_flRadius, nMaterialIndex, m_vecSurfacePos[i], GetAbsAngles(), &params, false ));
+		m_pSpheres[i]->Spawn();
+		if ( m_pSpheres[i] )
+		{
+			Vector vVelocity = Vector( RandomFloat( -1, 1 ), RandomFloat( -1, 1 ), RandomFloat( 1, 2 ) ) * 10.0f;
+			m_pSpheres[i]->VPhysicsGetObject()->SetVelocity( &vVelocity, NULL );
+			//PhysSetGameFlags( m_pSpheres[i], FVPHYSICS_MULTIOBJECT_ENTITY );
+			PhysSetGameFlags( m_pSpheres[i]->VPhysicsGetObject(), FVPHYSICS_NO_SELF_COLLISIONS | FVPHYSICS_MULTIOBJECT_ENTITY ); // call collisionruleschanged if this changes dynamically
+			m_pSpheres[i]->VPhysicsGetObject()->SetGameIndex( i );
+
+			m_pSpheres[i]->VPhysicsGetObject()->SetMass( 10.0f );
+			m_pSpheres[i]->VPhysicsGetObject()->EnableGravity( true );
+			m_pSpheres[i]->VPhysicsGetObject()->EnableDrag( true );
+
+			//m_pSpheres[i]->EnableMotion( false );
+
+			float flDamping = 0.5f;
+			float flAngDamping = 0.5f;
+			m_pSpheres[i]->VPhysicsGetObject()->SetDamping( &flDamping, &flAngDamping );
+			//m_pSpheres[i]->SetInertia( Vector( 1e30, 1e30, 1e30 ) );
+		}
+		*/
+
 		m_vecSurfacePos[i] = m_vecStart + Vector(0,0,10.0f);
 		m_pSpheres[i] = physenv->CreateSphereObject( m_flRadius, nMaterialIndex, m_vecSurfacePos[i], GetAbsAngles(), &params, false );
+
+		//m_pSpheres[i] = (CUseablePhysSphere*)CreateEntityByName("prop_useable_phys");
+		//m_pSpheres[i]->SetPhysParticle(physenv->CreateSphereObject(m_flRadius, nMaterialIndex, m_vecSurfacePos[i], GetAbsAngles(), &params, false));
+		//m_pSpheres[i]->Spawn();
 
 		if ( m_pSpheres[i] )
 		{
@@ -1548,13 +1614,13 @@ BEGIN_DATADESC( CNPC_BlobArmTest )
 END_DATADESC()
 
 
-LINK_ENTITY_TO_CLASS( npc_surface, CNPC_BlobArmTest );
+//LINK_ENTITY_TO_CLASS( npc_surface, CNPC_BlobArmTest );
 LINK_ENTITY_TO_CLASS( npc_blob_armtest, CNPC_BlobArmTest );
 
 void CNPC_BlobArmTest::Spawn( void )
 {
 	BaseClass::Spawn( );
-
+	
 	m_flSimTime			= 0;
 	m_bDoArms = false;
 
@@ -1595,13 +1661,21 @@ void CNPC_BlobArmTest::RunAI( void )
 	{
 		imp_particles_sa.pushAutoSize(PhysParticle());
 	}
+
 	
-	PhysTiler *m_pPhysTiler = new PhysTiler(sv_surface_nearby.GetFloat());
+	
+	PhysTiler* m_pPhysTiler = PhysTilerFactory::factory->getTiler();//new PhysTiler(sv_surface_nearby.GetFloat());
+	m_pPhysTiler->setCacheParams(sv_surface_nearby.GetFloat(), 0);
 
 	// centered and scaled?
 	m_pPhysTiler->beginFrame(Point3D(0.0f, 0.0f, 0.0f));
 
 	int nParticles = 0;
+
+	PhysParticleCacheFactory::factory->getCache();
+
+	PhysParticleCache* pCache = PhysParticleCacheFactory::factory->getCache();//m_pPhysTiler->getParticleCache();
+	pCache->setCacheParams(sv_surface_nearby.GetFloat(), 0);
 
 	// Move the spheres into particles
 	float projection = 0.5;
@@ -1623,13 +1697,11 @@ void CNPC_BlobArmTest::RunAI( void )
 		}
 	}
 
-	m_pPhysTiler->processTiles();
-
-	PhysParticleCache* pCache = m_pPhysTiler->getParticleCache();
+	//m_pPhysTiler->processTiles();
 
 	for (int k = 0; k < nParticles; k++)
 	{
-		PhysParticle *b1 = &(imp_particles_sa[k]);
+		PhysParticle* b1 = &(imp_particles_sa[k]); // was k
 		i = b1->temp1;
 
 		Vector estPos = b1->center.AsVector() * m_flRadius;
@@ -1642,57 +1714,57 @@ void CNPC_BlobArmTest::RunAI( void )
 		float flDist2;
 		Vector dir;
 
-		PhysParticleAndDist* node = pCache->get(b1);
+		//PhysParticleAndDist* node = pCache->get(b1);
 
-		while(node->particle != NULL)
-		{
-			PhysParticle* b2 = node->particle;
-			if (b2 == b1)
-			{
-				node++;
-				continue;
-			}
-			j = b2->temp1;
+		//while(node->particle != NULL)
+		//{
+		//	PhysParticle* b2 = node->particle;
+		//	if (b2 == b1)
+		//	{
+		//		node++;
+		//		continue;
+		//	}
+		//	j = b2->temp1;
 
-			int bSameArm = (m_nArm[i] == m_nArm[j]) && (m_nArm[i] > -1);
+		//	int bSameArm = (m_nArm[i] == m_nArm[j]) && (m_nArm[i] > -1);
 
-			Vector estEffectorPos =  b2->center.AsVector() * m_flRadius;
-			flDist2 = (estPos - estEffectorPos).LengthSqr();
+		//	Vector estEffectorPos =  b2->center.AsVector() * m_flRadius;
+		//	flDist2 = (estPos - estEffectorPos).LengthSqr();
 
-			flNearbyDist2 = (m_flSurfaceR[i] + m_flSurfaceR[j]) * 0.5 * flNearbyDistance;
-			flNearbyDist2 = flNearbyDist2 * flNearbyDist2;
+		//	flNearbyDist2 = (m_flSurfaceR[i] + m_flSurfaceR[j]) * 0.5 * flNearbyDistance;
+		//	flNearbyDist2 = flNearbyDist2 * flNearbyDist2;
 
-			// NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 0, 255, 0, true, .1);
+		//	// NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 0, 255, 0, true, .1);
 
-			if (!bSameArm && m_nTargetSlot[j] != 0)
-			{
-				if (flDist2 < flIdealDist2)
-				{
-					// repluse if they're too close, and they're not in the same group, and they're on an arm
-					dir = (estPos - estEffectorPos);
-					VectorNormalize( dir );
-					delta += dir * MIN( (flIdealDist2 - flDist2), 100 );
-					//NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 255, 0, 0, true, .1);
-				}
-				/*
-				else if (flDist2 < flNearbyDist2)
-				{
-					dir = (estPos - m_vecSurfacePos[j] - vecVel2);
-					VectorNormalize( dir );
-					delta -= dir * 30;
-					NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 255, 0, 0, true, .1);
-				}
-				*/
-				// NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 255, 0, 0, true, .1);
-			}
-			if (!bFloat && flDist2 < flNearbyDist2 && ((m_vecSurfacePos[j].z <= m_vecSurfacePos[i].z) || (bSameArm && ((j % nArmLength) < (i % nArmLength)) && m_bFloat[j] ) ) )
-			{
-				//NDebugOverlay::Line(m_vecSurfacePos[j], m_vecSurfacePos[i], 0, 255, 0, true, .1);
-				bFloat = true;
-			}
+		//	if (!bSameArm && m_nTargetSlot[j] != 0)
+		//	{
+		//		if (flDist2 < flIdealDist2)
+		//		{
+		//			// repluse if they're too close, and they're not in the same group, and they're on an arm
+		//			dir = (estPos - estEffectorPos);
+		//			VectorNormalize( dir );
+		//			delta += dir * MIN( (flIdealDist2 - flDist2), 100 );
+		//			//NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 255, 0, 0, true, .1);
+		//		}
+		//		/*
+		//		else if (flDist2 < flNearbyDist2)
+		//		{
+		//			dir = (estPos - m_vecSurfacePos[j] - vecVel2);
+		//			VectorNormalize( dir );
+		//			delta -= dir * 30;
+		//			NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 255, 0, 0, true, .1);
+		//		}
+		//		*/
+		//		// NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 255, 0, 0, true, .1);
+		//	}
+		//	if (!bFloat && flDist2 < flNearbyDist2 && ((m_vecSurfacePos[j].z <= m_vecSurfacePos[i].z) || (bSameArm && ((j % nArmLength) < (i % nArmLength)) && m_bFloat[j] ) ) )
+		//	{
+		//		//NDebugOverlay::Line(m_vecSurfacePos[j], m_vecSurfacePos[i], 0, 255, 0, true, .1);
+		//		bFloat = true;
+		//	}
 	
-			node++;
-		}
+		//	node++;
+		//}
 
 		// figure out what to do with gravity
 		if (!bFloat /* && (i % nArmLength == 0) */)
@@ -1733,22 +1805,24 @@ void CNPC_BlobArmTest::RunAI( void )
 		// apply the force
 		m_pSpheres[i]->ApplyForceCenter( delta );
 
-		// NDebugOverlay::Box(m_vecSurfacePos[i], Vector( -2, -2, -2 ), Vector( 2, 2, 2 ), 0, 255, 0, 20, .1);
+		NDebugOverlay::Box(m_vecSurfacePos[i], Vector( -2, -2, -2 ), Vector( 2, 2, 2 ), 0, 255, 0, 20, .1);
 	}
 
 	m_pPhysTiler->endFrame();
+	
+	PhysTilerFactory::factory->returnTiler(m_pPhysTiler);
+	PhysParticleCacheFactory::factory->returnCache(pCache);
 
 	NetworkProp()->NetworkStateForceUpdate();
 }
-
-
 
 int CNPC_BlobArmTest::MoveTowardsGoal( void )
 {
 	int i;
 
 	// alternate between arm mode and walk mode
-	bool bDoArms = ((int)(gpGlobals->curtime / 17.0) % 2) == 1;
+	//bool bDoArms = ((int)(gpGlobals->curtime / 17.0) % 2) == 1;
+	bool bDoArms = ((int)(gpGlobals->curtime / 10.0) % 2) == 1;
 
 	if (bDoArms != m_bDoArms)
 	{
@@ -1789,7 +1863,7 @@ int CNPC_BlobArmTest::MoveTowardsGoal( void )
 
 		m_nArm[i] = (i / nArmLength);
 
-		// NDebugOverlay::Box(m_vecSurfacePos[i], Vector( -2, -2, -2 ), Vector( 2, 2, 2 ), m_bFloat[i] * 255, 255, m_bContact[i] * 255, 20, .1);
+		NDebugOverlay::Box(m_vecSurfacePos[i], Vector( -2, -2, -2 ), Vector( 2, 2, 2 ), m_bFloat[i] * 255, 255, m_bContact[i] * 255, 20, .1);
 		if (m_bFloat[i] || m_bContact[i] || fabs( vecVel.z ) < 1.0 )
 		{
 			int k = (i % nArmLength);
@@ -1835,12 +1909,12 @@ int CNPC_BlobArmTest::MoveTowardsGoal( void )
 					Vector vecTargetVel;
 					m_pSpheres[i-1]->GetVelocity( &vecTargetVel, NULL );
 					target = m_vecSurfacePos[i-1] + vecTargetVel * 0.1 + out * m_flRadius * (m_flSurfaceR[i-1] + m_flSurfaceR[i]);
-					// Msg("%d : %.1f : %.1f %.1f\n", i, (m_flSurfaceR[i-1] + m_flSurfaceR[i]), m_flSurfaceR[i-1], m_flSurfaceR[i] ) ;
+					Msg("%d : %.1f : %.1f %.1f\n", i, (m_flSurfaceR[i-1] + m_flSurfaceR[i]), m_flSurfaceR[i-1], m_flSurfaceR[i] ) ;
 				}
 
 				//target += Vector( 0, 0, m_flRadius ) * sin( j + gpGlobals->curtime * 3.0 + M_PI * (m_nTargetSlot[i] / (float)(nArmLength-1)) );
 				delta = target - estPos;
-				//NDebugOverlay::Line(m_vecSurfacePos[i], estPos + delta, 0, 255, 0, true, .1);
+				NDebugOverlay::Line(m_vecSurfacePos[i], estPos + delta, 0, 255, 0, true, .1);
 				//NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j] + out * flIdealDistance * (m_nTargetSlot[i]), 0, 255, 0, true, .1);
 				dist = VectorNormalize( delta );
 				if (dist < m_flRadius * m_flSurfaceR[i])
@@ -1861,7 +1935,7 @@ int CNPC_BlobArmTest::MoveTowardsGoal( void )
 					{
 						m_nOwnedSlot[j] = m_nTargetSlot[i];
 					}
-					//NDebugOverlay::Box(m_vecSurfacePos[i], Vector( -2, -2, -2 ), Vector( 2, 2, 2 ), 255, 0, 0, 20, .1);
+					NDebugOverlay::Box(m_vecSurfacePos[i], Vector( -2, -2, -2 ), Vector( 2, 2, 2 ), 255, 0, 0, 20, .1);
 				}
 
 				//NDebugOverlay::Line( m_vecSurfacePos[j], m_vecSurfacePos[j] + out * flIdealDistance * m_nOwnedSlot[j], 255, 0, 0, true, .1);
@@ -2030,8 +2104,9 @@ void CNPC_BlobDemoMonster::RunAI( void )
 		m_vecSurfacePos[i] = pos;
 	}
 
-#if 0
+#if 1
 	// alternate between arm mode and walk mode
+	//bool bDoArms = ((int)(gpGlobals->curtime / 17.0) % 2) == 1;
 	bool bDoArms = ((int)(gpGlobals->curtime / 17.0) % 2) == 1;
 
 	if (bDoArms != m_bDoArms)
@@ -2107,7 +2182,8 @@ void CNPC_BlobDemoMonster::RepulseNeighbors()
 		imp_particles_sa.pushAutoSize(PhysParticle());
 	}
 	
-	PhysTiler *m_pPhysTiler = new PhysTiler(sv_surface_nearby.GetFloat());
+	//PhysTiler *m_pPhysTiler = new PhysTiler(sv_surface_nearby.GetFloat());
+	PhysTiler* m_pPhysTiler = PhysTilerFactory::factory->getTiler();//new PhysTiler(sv_surface_nearby.GetFloat());
 
 	// centered and scaled?
 	m_pPhysTiler->beginFrame(Point3D(0.0f, 0.0f, 0.0f));
@@ -2134,9 +2210,9 @@ void CNPC_BlobDemoMonster::RepulseNeighbors()
 		}
 	}
 
-	m_pPhysTiler->processTiles();
-
-	PhysParticleCache* pCache = m_pPhysTiler->getParticleCache();
+	//m_pPhysTiler->processTiles();
+	
+	PhysParticleCache* pCache = PhysParticleCacheFactory::factory->getCache();//m_pPhysTiler->getParticleCache();
 
 	for (int k = 0; k < nParticles; k++)
 	{
@@ -2153,57 +2229,65 @@ void CNPC_BlobDemoMonster::RepulseNeighbors()
 		float flDist2;
 		Vector dir;
 
-		PhysParticleAndDist* node = pCache->get(b1);
+		//PhysParticle** ponters[1000];
+		//int empty = 0;
+		//PhysParticle* first = m_pPhysTiler->getNextParticleAndNeighbors(ponters, &empty);
+		//	
+		//Point3D cent = first->center;
+		//cent[0] += 1;
+		//int ll = 0;
 
-		while(node->particle != NULL)
-		{
-			PhysParticle* b2 = node->particle;
-			if (b2 == b1)
-			{
-				node++;
-				continue;
-			}
-			j = b2->temp1;
+		//PhysParticleAndDist* node = pCache->get(b1);
 
-			int bSameArm = (m_nArm[i] == m_nArm[j]) && (m_nArm[i] > -1);
+		//while(node->particle != NULL)
+		//{
+		//	PhysParticle* b2 = node->particle;
+		//	if (b2 == b1)
+		//	{
+		//		node++;
+		//		continue;
+		//	}
+		//	j = b2->temp1;
 
-			Vector estEffectorPos =  b2->center.AsVector() * m_flRadius;
-			flDist2 = (estPos - estEffectorPos).LengthSqr();
+		//	int bSameArm = (m_nArm[i] == m_nArm[j]) && (m_nArm[i] > -1);
 
-			flNearbyDist2 = (m_flSurfaceR[i] + m_flSurfaceR[j]) * 0.5 * flNearbyDistance;
-			flNearbyDist2 = flNearbyDist2 * flNearbyDist2;
+		//	Vector estEffectorPos =  b2->center.AsVector() * m_flRadius;
+		//	flDist2 = (estPos - estEffectorPos).LengthSqr();
 
-			// NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 0, 255, 0, true, .1);
+		//	flNearbyDist2 = (m_flSurfaceR[i] + m_flSurfaceR[j]) * 0.5 * flNearbyDistance;
+		//	flNearbyDist2 = flNearbyDist2 * flNearbyDist2;
 
-			if (!bSameArm && m_nTargetSlot[j] != 0)
-			{
-				if (flDist2 < flIdealDist2)
-				{
-					// repluse if they're too close, and they're not in the same group, and they're on an arm
-					dir = (estPos - estEffectorPos);
-					VectorNormalize( dir );
-					delta += dir * MIN( (flIdealDist2 - flDist2), 100 );
-					//NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 255, 0, 0, true, .1);
-				}
-				/*
-				else if (flDist2 < flNearbyDist2)
-				{
-					dir = (estPos - m_vecSurfacePos[j] - vecVel2);
-					VectorNormalize( dir );
-					delta -= dir * 30;
-					NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 255, 0, 0, true, .1);
-				}
-				*/
-				// NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 255, 0, 0, true, .1);
-			}
-			if (!bFloat && flDist2 < flNearbyDist2 && ((m_vecSurfacePos[j].z <= m_vecSurfacePos[i].z) || (bSameArm && j < i) && m_bFloat[j] ) )
-			{
-				//NDebugOverlay::Line(m_vecSurfacePos[j], m_vecSurfacePos[i], 0, 255, 0, true, .1);
-				bFloat = true;
-			}
+		//	//NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 0, 255, 0, true, .1);
+
+		//	if (!bSameArm && m_nTargetSlot[j] != 0)
+		//	{
+		//		if (flDist2 < flIdealDist2)
+		//		{
+		//			// repluse if they're too close, and they're not in the same group, and they're on an arm
+		//			dir = (estPos - estEffectorPos);
+		//			VectorNormalize( dir );
+		//			delta += dir * MIN( (flIdealDist2 - flDist2), 100 );
+		//			//NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 255, 0, 0, true, .1);
+		//		}
+		//		/*
+		//		else if (flDist2 < flNearbyDist2)
+		//		{
+		//			dir = (estPos - m_vecSurfacePos[j] - vecVel2);
+		//			VectorNormalize( dir );
+		//			delta -= dir * 30;
+		//			NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 255, 0, 0, true, .1);
+		//		}
+		//		*/
+		//		// NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j], 255, 0, 0, true, .1);
+		//	}
+		//	if (!bFloat && flDist2 < flNearbyDist2 && ((m_vecSurfacePos[j].z <= m_vecSurfacePos[i].z) || (bSameArm && j < i) && m_bFloat[j] ) )
+		//	{
+		//		//NDebugOverlay::Line(m_vecSurfacePos[j], m_vecSurfacePos[i], 0, 255, 0, true, .1);
+		//		bFloat = true;
+		//	}
 	
-			node++;
-		}
+		//	node++;
+		//}
 
 		// figure out what to do with gravity
 		if (!bFloat /* && (i % nArmLength == 0) */)
@@ -2248,6 +2332,7 @@ void CNPC_BlobDemoMonster::RepulseNeighbors()
 	}
 
 	m_pPhysTiler->endFrame();
+	PhysParticleCacheFactory::factory->returnCache(pCache);
 
 	NetworkProp()->NetworkStateForceUpdate();
 }
@@ -2318,7 +2403,7 @@ void CNPC_BlobDemoMonster::CreateArms( const Vector &vecForward  )
 	}
 	m_bDoArms = true;
 
-	// NDebugOverlay::HorzArrow( GetAbsOrigin(), GetAbsOrigin() + vecForward * 32, 8, 255, 255, 255, 255, true, 0.1 );
+	NDebugOverlay::HorzArrow( GetAbsOrigin(), GetAbsOrigin() + vecForward * 32, 8, 255, 255, 255, 255, true, 0.1 );
 	int nArmLength = 8;
 
 	float tension = sv_surface_tension.GetFloat(); // * (1 - sqrt( fabs( sin( gpGlobals->curtime * 0.3 ) ) ) );
@@ -2340,7 +2425,7 @@ void CNPC_BlobDemoMonster::CreateArms( const Vector &vecForward  )
 			m_nTargetSlot[ i ] = 0;
 		}
 
-		// NDebugOverlay::Box(m_vecSurfacePos[i], Vector( -2, -2, -2 ), Vector( 2, 2, 2 ), m_bFloat[i] * 255, 255, m_bContact[i] * 255, 20, .1);
+		NDebugOverlay::Box(m_vecSurfacePos[i], Vector( -2, -2, -2 ), Vector( 2, 2, 2 ), m_bFloat[i] * 255, 255, m_bContact[i] * 255, 20, .1);
 		if (m_bFloat[i] || m_bContact[i] || fabs( vecVel.z ) < 1.0 )
 		{
 			int k = (i % nArmLength);
@@ -2380,12 +2465,12 @@ void CNPC_BlobDemoMonster::CreateArms( const Vector &vecForward  )
 					Vector dir = out + 2 * vecForward * (n - j) / nArmLength;
 					VectorNormalize( dir );
 					target = m_vecSurfacePos[n] + vecTargetVel * 0.1f + dir * m_flRadius * (m_flSurfaceR[n] + m_flSurfaceR[i]);
-					// Msg("%d : %d : %.1f : %.1f %.1f\n", i, n, (m_flSurfaceR[j+n] + m_flSurfaceR[i]), m_flSurfaceR[j+n], m_flSurfaceR[i] ) ;
+					Msg("%d : %d : %.1f : %.1f %.1f\n", i, n, (m_flSurfaceR[j+n] + m_flSurfaceR[i]), m_flSurfaceR[j+n], m_flSurfaceR[i] ) ;
 				}
 
 				//target += Vector( 0, 0, m_flRadius ) * sin( j + gpGlobals->curtime * 3.0 + M_PI * (m_nTargetSlot[i] / (float)(nArmLength-1)) );
 				delta = target - estPos;
-				//NDebugOverlay::Line(m_vecSurfacePos[i], estPos + delta, 0, 255, 0, true, .1);
+				NDebugOverlay::Line(m_vecSurfacePos[i], estPos + delta, 0, 255, 0, true, .1);
 				//NDebugOverlay::Line(m_vecSurfacePos[i], m_vecSurfacePos[j] + out * flIdealDistance * (m_nTargetSlot[i]), 0, 255, 0, true, .1);
 				dist = VectorNormalize( delta );
 				if (dist < m_flRadius * m_flSurfaceR[i])

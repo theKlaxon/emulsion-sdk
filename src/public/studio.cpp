@@ -42,7 +42,7 @@ mstudioanimdesc_t &studiohdr_t::pAnimdesc( int i ) const
 // Purpose:
 //-----------------------------------------------------------------------------
 
-byte *mstudioanimdesc_t::pAnimBlock( int block, int index ) const
+byte *mstudioanimdesc_t::pAnimBlock( int block, int index, bool bPreloadIfMissing) const
 {
 	if (block == -1)
 	{
@@ -61,6 +61,16 @@ byte *mstudioanimdesc_t::pAnimBlock( int block, int index ) const
 
 	return (byte *)NULL;
 }
+
+//-----------------------------------------------------------------------------
+// Purpose: Indicates if the block has been preloaded already.
+//			Returns true if the block is in memory, or is asynchronously loading.
+//-----------------------------------------------------------------------------
+bool mstudioanimdesc_t::hasAnimBlockBeenPreloaded(int block) const
+{
+	return pStudiohdr()->hasAnimBlockBeenPreloaded(block);
+}
+
 
 //-----------------------------------------------------------------------------
 // Purpose:

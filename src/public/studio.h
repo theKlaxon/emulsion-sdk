@@ -27,7 +27,7 @@
 #include "generichash.h"
 #include "localflexcontroller.h"
 #include "utlsymbol.h"
-
+#include "utldict.h"
 
 #define STUDIO_ENABLE_PERF_COUNTERS
 
@@ -783,7 +783,8 @@ struct mstudioanimdesc_t
 
 	int					animblock;
 	int					animindex;	 // non-zero when anim data isn't in sections
-	byte *pAnimBlock( int block, int index ) const; // returns pointer to a specific anim block (local or external)
+	byte *pAnimBlock( int block, int index, bool bPreloadIfMissing = false) const; // returns pointer to a specific anim block (local or external)
+	bool hasAnimBlockBeenPreloaded(int block) const;
 	byte *pAnim( int *piFrame, float &flStall ) const; // returns pointer to data and new frame index
 	byte *pAnim( int *piFrame ) const; // returns pointer to data and new frame index
 
@@ -1416,7 +1417,7 @@ struct mstudiomesh_t
 
 	mstudio_meshvertexdata_t vertexdata;
 
-	int					unused[8]; // remove as appropriate
+	int					unused[6]; // remove as appropriate - was 8 in ASW
 
 	mstudiomesh_t(){}
 private:
@@ -1460,7 +1461,7 @@ struct mstudiomodel_t
 
 	mstudio_modelvertexdata_t vertexdata;
 
-	int					unused[8];		// remove as appropriate
+	int					unused[7];		// remove as appropriate - was 8 in ASW
 };
 
 inline bool mstudio_modelvertexdata_t::HasTangentData( void ) const 
@@ -1634,6 +1635,9 @@ struct studioloddata_t
 	IMaterial			**ppMaterials; /* will have studiohdr_t.numtextures elements allocated */
 	// hack - this needs to go away.
 	int					*pMaterialFlags; /* will have studiohdr_t.numtextures elements allocated */
+#ifndef _CERT
+	int					m_NumFaces;	/* Total face count for this LOD */
+#endif // !_CERT
 
 	// For decals on hardware morphing, we must actually do hardware skinning
 	// For this to work, we have to hope that the total # of bones used by
@@ -1974,8 +1978,8 @@ struct vertexStreamFileHeader_t
 	DECLARE_BYTESWAP_DATADESC();
 	int		id;								// MODEL_STREAM_FILE_ID
 	int		version;						// MODEL_STREAM_FILE_VERSION
-	long	checksum;						// same as studiohdr_t, ensures sync
-	long	flags;							// flags
+	int	checksum;						// same as studiohdr_t, ensures sync // was long in p2sdk
+	int	flags;							// flags								// was long in p2sdk
 	int		numVerts;						// number of vertices
 	int		uv2StreamStart;					// offset from base to uv2 stream
 	int		uv2ElementSize;					// size of each uv2 element
@@ -2013,7 +2017,7 @@ struct vertexFileHeader_t
 	DECLARE_BYTESWAP_DATADESC();
 	int		id;								// MODEL_VERTEX_FILE_ID
 	int		version;						// MODEL_VERTEX_FILE_VERSION
-	long	checksum;						// same as studiohdr_t, ensures sync
+	int	checksum;						// same as studiohdr_t, ensures sync // was long in asw
 	int		numLODs;						// num of valid lods
 	int		numLODVertexes[MAX_NUM_LODS];	// num verts for desired root lod
 	int		numFixups;						// num of vertexFileFixup_t
@@ -2189,7 +2193,7 @@ struct studiohdr2_t
 	int m_nBoneFlexDriverCount;
 	int m_nBoneFlexDriverIndex;
 	inline mstudioboneflexdriver_t *pBoneFlexDriver( int i ) const { Assert( i >= 0 && i < m_nBoneFlexDriverCount ); return (mstudioboneflexdriver_t *)(((byte *)this) + m_nBoneFlexDriverIndex) + i; }
-
+	
 	int reserved[56];
 };
 
@@ -2199,7 +2203,7 @@ struct studiohdr_t
 	int					id;
 	int					version;
 
-	long				checksum;		// this has to be the same in the phy and vtx files to load!
+	int				checksum;		// this has to be the same in the phy and vtx files to load! was long in ASW
 	
 	inline const char *	pszName( void ) const { if (studiohdr2index && pStudioHdr2()->pszName()) return pStudioHdr2()->pszName(); else return name; }
 	char				name[64];
@@ -2405,6 +2409,7 @@ struct studiohdr_t
 	inline mstudioanimblock_t *pAnimBlock( int i ) const { Assert( i > 0 && i < numanimblocks); return (mstudioanimblock_t *)(((byte *)this) + animblockindex) + i; };
 	mutable void		*animblockModel;
 	byte *				GetAnimBlock( int i ) const;
+	bool				hasAnimBlockBeenPreloaded(int i) const;
 
 	int					bonetablebynameindex;
 	inline const byte	*GetBoneTableSortedByName() const { return (byte *)this + bonetablebynameindex; }
@@ -2836,6 +2841,8 @@ public:
 		}
 		m_pActivityToSequence = CActivityToSequenceMapping::FindMapping( this );
 	}
+
+	//CUtlDict<int, int> m_namedSequence;
 
 #ifdef STUDIO_ENABLE_PERF_COUNTERS
 public:

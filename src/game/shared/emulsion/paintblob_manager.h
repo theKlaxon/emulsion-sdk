@@ -4,6 +4,8 @@
 #include "paint_defs.h"
 #else
 #include "paintblob_stream.h"
+#include "paint_sphere.h"
+
 extern CPaintBlobStream* g_pBouncePaintStream;
 extern CPaintBlobStream* g_pSpeedPaintStream;
 extern CPaintBlobStream* g_pErasePaintStream;
@@ -47,12 +49,16 @@ public:
 	CUtlVector<int>* GetRemovalQueue(int streamIndex);
 
 	// blob manufacturing!
-	void CreateBlob(Vector origin, Vector velocity, int batch);
+	void CreateBlob(Vector origin, Vector velocity, int batch, float radius = 1.0f, int count = 1);
 	void QueueBlobForRemoval(int particleIndex, int batch);
 	void RemoveQueuedBlobs();
 
 	virtual void FrameUpdatePreEntityThink();
 	virtual void FrameUpdatePostEntityThink();
+
+	void QueuePaintSphere(CPaintSphere* pSphere);
+	void PaintAllSpheres();
+	CUtlVector<CPaintSphere*> m_SphereQueue;
 
 #endif
 	

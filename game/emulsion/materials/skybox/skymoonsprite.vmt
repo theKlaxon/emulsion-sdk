@@ -1,0 +1,11 @@
+"sprite"
+{
+	"$spriteorientation" "vp_parallel"
+	"$spriteorigin"      "[ 0.50 0.50 ]"
+	"$basetexture"       "skybox/skymoon"
+	"$translucent"       "1"
+	"$nocull"            "1"
+	"$vertexcolor"       "1"
+	"$vertexalpha"       "1"
+	"$nofog"             "1"
+}

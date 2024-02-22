@@ -1,0 +1,4 @@
+VertexLitGeneric
+{
+$baseTexture "models\props_foliage/tree_trunk_fallen"
+}

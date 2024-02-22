@@ -1,0 +1,5 @@
+"unlitGeneric"
+{
+	"$baseTexture" "skybox/sky_hr_aztecrt"
+	"$nofog" 1
+}

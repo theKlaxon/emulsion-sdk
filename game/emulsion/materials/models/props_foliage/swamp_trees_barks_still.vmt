@@ -1,0 +1,5 @@
+VertexlitGeneric
+{
+$baseTexture "models\props_foliage\Swamp_Trees_Barks"
+"%keywords" l4d2
+}

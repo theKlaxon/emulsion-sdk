@@ -1673,6 +1673,7 @@ inline void AddRenderableToRenderList( CClientRenderablesList &renderList, IClie
 		pEntry->m_iWorldListInfoLeaf = iLeaf;
 		pEntry->m_nModelType = nModelType;
 		pEntry->m_TwoPass = bTwoPass;
+
 		pEntry->m_InstanceData.m_nAlpha = nAlphaModulation;
 		curCount++;
 	}
@@ -2506,7 +2507,7 @@ void CClientLeafSystem::AddRenderablesToRenderLists( const SetupRenderInfo_t &in
 		}
 
 		// FIXME: Remove call to GetFXBlend
-		bool bIsTwoPass = ( pInfo->m_nTranslucencyType == RENDERABLE_IS_TWO_PASS ) && ( pRLInfo[i].m_nAlpha == 255 );	// Two pass?
+		bool bIsTwoPass = (pInfo->m_nTranslucencyType == RENDERABLE_IS_TWO_PASS);// && (pRLInfo[i].m_nAlpha == 255);	// Two pass?
 
 		// Add to appropriate list if drawing translucent objects (shadow depth mapping will skip this)
 		if ( info.m_bDrawTranslucentObjects ) 
@@ -2520,7 +2521,7 @@ void CClientLeafSystem::AddRenderablesToRenderLists( const SetupRenderInfo_t &in
 		if ( bIsTwoPass )	// Also add to opaque list if it's a two-pass model... 
 		{
 			AddRenderableToRenderList( *info.m_pRenderList, pInfo->m_pRenderable, 
-				nWorldListLeafIndex, RENDER_GROUP_OPAQUE, pInfo->m_nModelType, 255, bIsTwoPass );
+				nWorldListLeafIndex, RENDER_GROUP_OPAQUE, pInfo->m_nModelType, pRLInfo[i].m_nAlpha, bIsTwoPass );
 		}
 	}
 

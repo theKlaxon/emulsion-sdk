@@ -1,4 +1,5 @@
 #include "cbase.h"
+#include "paintblob_manager.h"
 #include "tier0/vprof.h"
 
 #define DEFAULT_PLAYER_MODEL "models/player/chell/player.mdl"
@@ -43,7 +44,7 @@ void FinishClientPutInServer( CBasePlayer* pPlayer )
 	// Dying without a player model crashes the client
 	pPlayer->SetModel(DEFAULT_PLAYER_MODEL);
 	pPlayer->Spawn();
-	pPlayer->SetAbsOrigin(Vector(0, 0, 0));
+	//pPlayer->SetAbsOrigin(Vector(0, 0, 0));
 
 	// Security measure: remove any % characters
 	char sName[128];
@@ -55,6 +56,8 @@ void FinishClientPutInServer( CBasePlayer* pPlayer )
 	}
 
 	UTIL_ClientPrintAll( HUD_PRINTNOTIFY, "%s has joined the game\n", sName[0] != 0 ? sName : "<unconnected>" );
+	
+	PaintBlobManager()->PaintAllSpheres();
 }
 
 void ClientActive( edict_t* pEdict, bool bLoadGame )

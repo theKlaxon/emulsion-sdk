@@ -486,7 +486,7 @@ public:
 
 	// forwards mouse messages to the panel's parent
 	MESSAGE_FUNC( OnMouseFocusTicked, "OnMouseFocusTicked" );
-
+	
 	// message handlers that don't go through the message pump
 	virtual void PaintBackground();
 	virtual void Paint();

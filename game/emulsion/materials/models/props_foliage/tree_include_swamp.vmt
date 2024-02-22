@@ -1,0 +1,19 @@
+VertexlitGeneric
+{
+$vertexfog 1
+$treeSway 1 
+$treeSwayHeight 800 
+$treeSwayStartHeight "0.4" 
+$treeSwayRadius 200 
+$treeSwayStartRadius "0.25" 
+$treeSwaySpeed "0.2" 
+$treeSwayStrength 2 
+$treeSwayScrumbleSpeed "2.5" 
+$treeSwayScrumbleStrength ".2" 
+$treeSwayScrumbleFrequency 8 
+$treeSwayFalloffExp 1 
+$treeSwayScrumbleFalloffExp 16 
+$treeSwaySpeedHighWindMultiplier 6 
+$treeSwaySpeedLerpStart "2.0" 
+$treeSwaySpeedLerpEnd "6.0" 
+}

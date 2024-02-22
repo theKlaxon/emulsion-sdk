@@ -17,6 +17,7 @@
 #include "player_pickup.h"
 
 class CNPC_Surface;
+class CUseablePhysSphere;
 
 //-----------------------------------------------------------------------------
 //
@@ -41,7 +42,7 @@ public:
 	}
 
 	virtual void AddForces( 
-		IPhysicsObject **pObjects, 
+		IPhysicsObject **pObjects,
 		int nObjects, 
 		float flRadius,
 		float flStrength,
@@ -131,6 +132,7 @@ public:
 
 	Class_T		Classify( void );
 
+	//virtual void CallNPCThink(void) override;
 	virtual void VPhysicsCollision( int index, gamevcollisionevent_t *pEvent ) override;
 	virtual bool CreateVPhysics() override;
 	virtual bool CreateVPhysics( bool bFromRestore );
@@ -173,14 +175,16 @@ public:
 	CUtlVector< float > m_flSurfaceV;
 	CUtlVector< float > m_flSurfaceR;
 
-	//IPhysicsObject	*m_pSpheres[ MAX_SURFACE_ELEMENTS ];
-	CUseablePhysSphere* m_pSpheres[ MAX_SURFACE_ELEMENTS ];
+	IPhysicsObject	*m_pSpheres[ MAX_SURFACE_ELEMENTS ];
+	//CUseablePhysSphere* m_pSpheres[ MAX_SURFACE_ELEMENTS ];
 
 	// keep track of the sphere being in contact with a surface
 	bool m_bContact[ MAX_SURFACE_ELEMENTS ];
 
 	CNetworkVar( int, m_nActiveParticles );
 	CNetworkVar( float, m_flRadius );
+
+	int m_nPhysObjCount;
 
 public:
 	virtual void Simulate(IPhysicsMotionController* pController, IPhysicsObject* pObject, float deltaTime, Vector& linear, AngularImpulse& angular) { };

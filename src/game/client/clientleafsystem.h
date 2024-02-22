@@ -85,7 +85,7 @@ public:
 		IClientRenderable	*m_pRenderable;
 		unsigned short		m_iWorldListInfoLeaf; // NOTE: this indexes WorldListInfo_t's leaf list.
 		RenderableInstance_t m_InstanceData;
-		uint8				m_nModelType : 7;		// See RenderableModelType_t
+		uint8				m_nModelType : 6;		// See RenderableModelType_t
 		uint8				m_TwoPass : 1;
 	};
 

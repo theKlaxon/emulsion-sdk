@@ -1,0 +1,5 @@
+LightmappedGeneric
+{
+	"$basetexture"	"skybox\bh_skybox_treeline"
+	"$translucent" "1"
+}

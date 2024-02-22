@@ -1,0 +1,5 @@
+"unlitGeneric"
+{
+	"$baseTexture" "skybox/vietnamdn"
+	"$nofog" 1
+}

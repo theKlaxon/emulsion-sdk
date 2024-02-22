@@ -95,7 +95,7 @@ void CEmulsionPlayer::Spawn() {
 	enableNoclipToggle = true;
 	//
 	engine->ClientCommand(edict(), "bind n tog_noclip");
-	engine->ClientCommand(edict(), "give weapon_paintgun");
+	//engine->ClientCommand(edict(), "give weapon_paintgun");
 	//engine->ClientCommand(edict(), "give weapon_placement");
 	engine->ClientCommand(edict(), "bind mwheeldown paintgun_next");
 	engine->ClientCommand(edict(), "bind mwheelup paintgun_prev");
@@ -111,6 +111,9 @@ void CEmulsionPlayer::Spawn() {
 
 void CEmulsionPlayer::Activate() {
 	BaseClass::Activate();
+
+
+	//PaintBlobManager()->PaintAllSpheres();
 
 }
 
@@ -316,11 +319,52 @@ CBaseEntity* CEmulsionPlayer::GetStickParent() {
 
 void CEmulsionPlayer::PreThink() {
 	BaseClass::PreThink();
-
-	// do paint stuff here
-	//((CEmulsionGameMovement*)g_pGameMovement)->ProcessPowerUpdate();
 	
 	ProcessPowerUpdate();
+	ProcessCameraRot();
+
+}
+
+void CEmulsionPlayer::ProcessCameraRot() {
+
+	if (pl_stickcamerauselerp.GetBool()) {
+		m_vecCurLerpUp = Lerp<Vector>((gpGlobals->frametime * pl_stickcameralerpspeed.GetFloat()), m_vecCurLerpUp, -1 * m_vecGravity);
+		//if (m_vecGravity == g_RoofStickNormal)
+		//	GetPaintInput()->SetUseStickMouseFix(true);
+		//else
+		//	GetPaintInput()->SetUseStickMouseFix(false);
+	}
+
+	CEmulsionGameMovement* pMove = (CEmulsionGameMovement*)g_pGameMovement;
+
+	Vector initial = Vector(0, 0, 1);
+	Vector axOf = pl_stickcamerauselerp.GetBool() ? m_vecCurLerpUp : -1 * m_vecGravity;
+
+	Vector vecAxisOfRotation = CrossProduct(initial, axOf); // build around out new up vector
+	float flAngleOfRotation = RAD2DEG(acos(DotProduct(initial, axOf))); // build around out new up vector
+
+	// build rotation matrix for new eye angles
+	VMatrix eyerotmat;
+	MatrixBuildRotationAboutAxis(eyerotmat, vecAxisOfRotation, flAngleOfRotation);
+
+	// rotate the eyeAngles we already have by the new matrix
+	Vector vecForward, vecUp;
+	AngleVectors(EyeAngles(), &vecForward, nullptr, &vecUp);
+	VectorRotate(vecForward, eyerotmat.As3x4(), vecForward);
+	VectorRotate(vecUp, eyerotmat.As3x4(), vecUp);
+
+	// set the eyeAngles to our new result
+	VectorAngles(vecForward, vecUp, m_vecStickEyeAngles);
+
+	Vector vecRotOffset = GetViewOffset();
+	VectorRotate(vecRotOffset, eyerotmat.As3x4(), vecRotOffset);
+
+	// take the normal view offset and apply it to a new axis
+	float totalOffset = GetViewOffset().Length();
+	m_vecStickEyeOrigin = GetAbsOrigin() + ((pl_stickcamerauselerp.GetBool() ? m_vecCurLerpUp.Normalized() : -1 * m_vecGravity) * totalOffset);
+
+	VectorAdd(m_vecStickEyeAngles, m_Local.m_vecPunchAngle, m_vecStickEyeAngles);
+
 }
 
 static const float g_flStickTransitionTime = 10.0f;
@@ -351,21 +395,20 @@ void CEmulsionPlayer::ProcessPowerUpdate() {
 	case PORTAL_POWER:
 		if (m_tCurPaintInfo.type != PORTAL_POWER || (m_tNewInfo.plane.normal != m_tCurPaintInfo.plane.normal)) {
 			StickPlayer(m_tNewInfo);
-			pMove->PlayPaintEntrySound(m_tNewInfo.type);
 			m_nPaintPower = PORTAL_POWER;
 			m_tCurPaintInfo = m_tNewInfo;
 			pMove->m_tCurPaintInfo = m_tNewInfo;
 		}
 		break;
 	default:
-		if (m_tCurPaintInfo.type == PORTAL_POWER) {
+		if (m_tCurPaintInfo.type == PORTAL_POWER && m_tNewInfo.type != PORTAL_POWER) {
 			UnStickPlayer();
 			m_nPaintPower = NO_POWER;
 
 			m_tCurPaintInfo = m_tNewInfo;
 			pMove->m_tCurPaintInfo = m_tNewInfo;
 		}
-	//	pMove->DetermineExitSound(m_tNewInfo.type);
+		//pMove->DetermineExitSound(m_tNewInfo.type);
 	//	break;
 	}
 
@@ -397,15 +440,22 @@ void CEmulsionPlayer::BouncePlayer(cplane_t plane) {
 }
 
 void CEmulsionPlayer::StickPlayer(PaintInfo_t info) {
-	SetGravityDir(-1 * info.plane.normal);
-	pMove->SetGravityDir(-1 * info.plane.normal);
-	pMove->CalculateStickAngles();
+
+	if (m_tCurPaintInfo.plane.normal != info.plane.normal) {
+		SetGravityDir(-1 * info.plane.normal);
+		pMove->SetGravityDir(-1 * info.plane.normal);
+		pMove->CalculateStickAngles();
+
+		SetGroundEntity(NULL);
+
+		SetAbsOrigin(info.pos);
+		RotateBBox(info.plane.normal);
+	}
+	
+	//if (GetStickParent() != info.m_pEnt)
+	pMove->PlayPaintEntrySound(PORTAL_POWER);
 
 	SetStickParent(info.m_pEnt);
-	SetGroundEntity(NULL);
-
-	SetAbsOrigin(info.pos);
-	RotateBBox(info.plane.normal);
 }
 
 bool g_bStickPaintJumpRelease = false;
@@ -430,7 +480,7 @@ void CEmulsionPlayer::UnStickPlayer() {
 	SetGroundEntity(NULL);
 	m_bIsTouchingStickParent = false;
 	pMove->m_bIsTouchingStickParent = false;
-
+	pMove->PlayPaintExitSound(PORTAL_POWER);
 
 	RotateBBox(Vector(0, 0, 1));
 	SetMoveType(MOVETYPE_WALK);

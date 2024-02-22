@@ -36,15 +36,22 @@ public:
 	CBaseEntity*	GetStickParent();
 
 	virtual void	PreThink(void) override;
+	void			ProcessCameraRot();
 	void			ProcessPowerUpdate();
+	
 	void			BouncePlayer(cplane_t plane);
 	void			StickPlayer(PaintInfo_t info);
 	void			UnStickPlayer();
 	void			RotateBBox(Vector vecUp);
 
+	QAngle StickEyeAngles() { return m_vecStickEyeAngles; }
+	Vector StickEyeOrigin() { return m_vecStickEyeOrigin; }
+
 	Vector GetHalfHeight_Stick();
 	Vector GetForward_Stick();
 	
+	Vector StickGravity() { return m_vecGravity; }
+
 	friend class CEmulsionGameMovement;
 
 protected:
@@ -60,8 +67,10 @@ protected:
 	QAngle m_angInitialAngles;
 
 	Vector m_vecCurLerpUp;
+	QAngle m_vecStickEyeAngles;
+	Vector m_vecStickEyeOrigin;
 	//Vector m_vecGravity;
-	Vector m_vecEyeAxisRot;
+	//Vector m_vecEyeAxisRot;
 
 	float m_flEyeRotation;
 	bool m_bPlayUseDenySound;

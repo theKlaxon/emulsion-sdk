@@ -160,7 +160,7 @@ public:
 		m_pData = nullptr;
 	}
 
-private:
+//private:
 
 	int m_iCount;
 	unsigned int* m_pBrushes;

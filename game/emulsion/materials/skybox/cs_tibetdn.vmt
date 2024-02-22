@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "skybox/cs_tibetdn"
+	"$bumpMap" "skybox/cs_tibetdn_normal"
+	"$phong" "1"
+	"$phongBoost" "2"
+	"$phongExponent" "2"
+	"$phongTint" "[1 1 1]"
+	"$halfLambert" "0"
+	"$phongFresnelRanges" "[.4 .8 30]"
+	"$ambientOcclusion" "1"
+	"$diffuseExp" "1.5"
+}

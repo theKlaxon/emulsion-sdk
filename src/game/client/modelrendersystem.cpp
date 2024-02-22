@@ -1280,6 +1280,7 @@ void CModelRenderSystem::RenderModels( StudioModelArrayInfo2_t *pInfo, int nMode
 			}
 #endif
 		}
+
 		if ( IsX360() && r_fastzreject.GetBool() && ( nNonStencilModelTypeCount != nModelTypeCount ) )
 		{
 			// Render all models without stencil

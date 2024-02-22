@@ -662,7 +662,8 @@ protected:
 
 	virtual bool		CheckPVSCondition();
 
-private:
+protected:
+	friend class CNPC_Surface;
 	bool				CanThinkRebalance();
 	void				RebalanceThinks();
 

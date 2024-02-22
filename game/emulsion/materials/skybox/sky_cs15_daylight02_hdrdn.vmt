@@ -1,0 +1,9 @@
+"sky"
+{
+
+	"$hdrcompressedTexture" "skybox/sky_cs15_daylight02_hdrdn"
+	"$nofog" "1"
+	"$ignorez" "1"
+	"$color" "[.25 .25 .25]"
+
+}

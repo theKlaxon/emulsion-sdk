@@ -280,7 +280,7 @@ void ClientPutInServerOverride( ClientPutInServerOverrideFn fn )
 	g_pClientPutInServerOverride = fn;
 }
 
-ConVar ai_post_frame_navigation( "ai_post_frame_navigation", "0" );
+ConVar ai_post_frame_navigation( "ai_post_frame_navigation", "1" );
 class CPostFrameNavigationHook;
 extern CPostFrameNavigationHook *PostFrameNavigationSystem( void );
 
@@ -616,7 +616,7 @@ static bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 	}
 
 	// Parse the particle manifest file & register the effects within it
-//	ParseParticleEffects( false );
+	ParseParticleEffects( false );
 
 	InvalidateQueryCache();
 

@@ -1,0 +1,9 @@
+VertexlitGeneric
+{
+$baseTexture "models\props_foliage\swamp_branches"
+$translucent 1
+$nocull 1
+$model 1
+$FlashlightNoLambert 1
+"%keywords" l4d2
+}

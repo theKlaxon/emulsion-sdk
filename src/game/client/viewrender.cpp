@@ -4040,10 +4040,10 @@ static inline void DrawRenderable( IClientRenderable *pEnt, int flags, const Ren
 		Assert( view->GetCurrentlyDrawingEntity() == NULL );
 		view->SetCurrentlyDrawingEntity( pEnt->GetIClientUnknown()->GetBaseEntity() );
 
-		//bool bBlockNormalDraw = BlurTest( pEnt, flags, true, instance );
-		//if( !bBlockNormalDraw )
+		bool bBlockNormalDraw = BlurTest( pEnt, flags, true, instance );
+		if( !bBlockNormalDraw )
 			pEnt->DrawModel( flags, instance );
-		//BlurTest( pEnt, flags, false, instance );
+		BlurTest( pEnt, flags, false, instance );
 
 		view->SetCurrentlyDrawingEntity( NULL );
 
@@ -4056,10 +4056,10 @@ static inline void DrawRenderable( IClientRenderable *pEnt, int flags, const Ren
 		view->SetCurrentlyDrawingEntity( pEnt->GetIClientUnknown()->GetBaseEntity() );
 		if (bShadowDepth)
 			flags |= DF_SHADOW_DEPTH_MAP;
-		//bool bBlockNormalDraw = BlurTest( pEnt, flags, true, instance );
-		//if( !bBlockNormalDraw )
+		bool bBlockNormalDraw = BlurTest( pEnt, flags, true, instance );
+		if( !bBlockNormalDraw )
 			pEnt->DrawModel( flags, instance );
-		//BlurTest( pEnt, flags, false, instance );
+		BlurTest( pEnt, flags, false, instance );
 		view->SetCurrentlyDrawingEntity( NULL );
 	}
 }
@@ -4605,7 +4605,7 @@ static void UpdateNecessaryRenderTargets( int nRenderFlags )
 				UpdateRefractTexture(0, 0, rt->GetActualWidth(), rt->GetActualHeight());
 			}
 		}
-		else
+		else //
 		{
 			if ( nRenderFlags & ERENDERFLAGS_NEEDS_POWER_OF_TWO_FB )
 			{
@@ -5229,8 +5229,6 @@ void CShadowDepthView::Draw()
 	//pRenderContext.SafeRelease();
 	//pRenderContext.GetFrom(materials);
 
-	pRenderContext->PushRenderTargetAndViewport(m_pRenderTarget, m_pDepthTexture, 0, 0, 4096, 4096); // m_pDepthTexture->GetMappingWidth()
-
 	if( IsPC() )
 	{
 		render->Push3DView( pRenderContext, (*this), VIEW_CLEAR_DEPTH, m_pRenderTarget, GetFrustum(), m_pDepthTexture );
@@ -5240,6 +5238,8 @@ void CShadowDepthView::Draw()
 		//for the 360, the dummy render target has a separate depth buffer which we Resolve() from afterward
 		render->Push3DView( pRenderContext, (*this), VIEW_CLEAR_DEPTH, m_pRenderTarget, GetFrustum() );
 	}
+
+	pRenderContext->PushRenderTargetAndViewport(m_pRenderTarget, m_pDepthTexture, 0, 0, m_pDepthTexture->GetMappingWidth(), m_pDepthTexture->GetMappingWidth());
 
 	SetupCurrentView( origin, angles, VIEW_SHADOW_DEPTH_TEXTURE );
 

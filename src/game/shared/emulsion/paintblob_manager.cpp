@@ -158,8 +158,9 @@ CUtlVector<int>* CPaintBlobManager::GetRemovalQueue(int streamIndex) {
 	}
 }
 
-void CPaintBlobManager::CreateBlob(Vector origin, Vector velocity, int batch) {
-	GetStream(batch)->AddParticle(origin, velocity);
+void CPaintBlobManager::CreateBlob(Vector origin, Vector velocity, int batch, float radius, int count) {
+	for (int i = 0; i < count; i++)
+		GetStream(batch)->AddParticle(origin, velocity, radius);
 }
 
 void CPaintBlobManager::QueueBlobForRemoval(int particleIndex, int batch) {
@@ -210,6 +211,19 @@ void CPaintBlobManager::FrameUpdatePreEntityThink() {
 
 void CPaintBlobManager::FrameUpdatePostEntityThink() {
 	RemoveQueuedBlobs();
+}
+
+void CPaintBlobManager::QueuePaintSphere(CPaintSphere* pSphere) {
+	m_SphereQueue.AddToTail(pSphere);
+}
+
+void CPaintBlobManager::PaintAllSpheres() {
+
+	for (int i = 0; i < m_SphereQueue.Count(); i++) {
+		m_SphereQueue[i]->Paint();
+	}
+
+	m_SphereQueue.Purge();
 }
 
 #endif

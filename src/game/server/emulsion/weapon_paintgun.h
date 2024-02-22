@@ -14,6 +14,9 @@ public:
 
 	virtual	int	UpdateClientData(CBasePlayer* pPlayer);
 
+	virtual void Equip(CBaseCombatCharacter* pOwner);
+	virtual void Drop(const Vector& vecVelocity);
+
 private:
 
 	float m_flCurPaintDelay;

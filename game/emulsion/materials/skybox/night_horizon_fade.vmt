@@ -1,0 +1,7 @@
+unlitgeneric
+{
+	"$basetexture" "skybox/night_horizon_fade"
+	"$translucent" 1
+	"$color"       "[ .5 .5 .5 ]"
+	"$nofog"       1
+}

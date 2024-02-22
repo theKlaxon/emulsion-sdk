@@ -1,0 +1,5 @@
+UnlitGeneric
+{
+	"$basetexture"	"skybox\embassylf"
+	"$nofog" 1
+}

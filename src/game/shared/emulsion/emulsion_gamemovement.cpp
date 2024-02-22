@@ -1266,7 +1266,7 @@ bool CEmulsionGameMovement::CheckJumpButton() {
 
 	if (m_tCurPaintInfo.type == BOUNCE_POWER) {
 		//flMul = sqrt(2 * sv_gravity.GetFloat() * pl_bouncePaintFactor.GetFloat());
-		PlaySoundInternal("Player.JumpPowerUse");
+		//PlaySoundInternal("Player.JumpPowerUse");
 		BouncePlayer(m_tCurPaintInfo.plane);
 		goto J; // it works, stay mad. -Klaxon
 	}
@@ -1590,11 +1590,13 @@ void CEmulsionGameMovement::ProcessPowerUpdate() {
 		}
 		break;
 	case PORTAL_POWER: // handled by the player
+		//PlayPaintEntrySound(m_tNewInfo.type);
 		break;
 	default:
 		//if (m_tCurPaintInfo.type == PORTAL_POWER && g_flCurStickTransitionTime <= 0.0f)
 		//	pPlayer->UnStickPlayer();
-		DetermineExitSound(m_tNewInfo.type);
+		if(m_tCurPaintInfo.type != PORTAL_POWER)
+			DetermineExitSound(m_tNewInfo.type);
 		break;
 	}
 
@@ -1750,6 +1752,10 @@ void CEmulsionGameMovement::PlayPaintEntrySound(PaintPowerType type, bool force)
 		break;
 	case PORTAL_POWER:
 		entrySound = "Player.EnterStickPaint";
+
+		if (m_tCurPaintInfo.type == PORTAL_POWER)
+			return;
+
 		break;
 	}
 

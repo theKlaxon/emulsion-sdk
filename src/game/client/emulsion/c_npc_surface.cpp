@@ -342,34 +342,36 @@ static ConVar	sv_surface_tile("surface_tile", "1", 0, "If tiler is enabled, whet
 static ConVar	sv_surface_max_tiles( "surface_max_tiles", "-1", 0, "The maximum number of tiles to draw" );
 static ConVar	sv_surface_max_slices( "surface_max_slices", "-1", 0, "The maximum number of slices to draw" );
 
-static ConVar	sv_surface_calc_uv_and_tan( "surface_calc_uv_and_tan", "1", FCVAR_ARCHIVE, "Calculate UVs and Tangents" );
+static ConVar	sv_surface_calc_uv_and_tan( "surface_calc_uv_and_tan", "0", FCVAR_ARCHIVE, "Calculate UVs and Tangents" );
 static ConVar	sv_surface_calc_tan_only( "surface_calc_tan_only", "0", FCVAR_ARCHIVE, "Calculate Only Tangents" );
 static ConVar	sv_surface_calc_color( "surface_calc_color", "0", FCVAR_ARCHIVE, "Just interpolate colors" );
 static ConVar	sv_surface_calc_hifreq_color( "surface_calc_hifreq_color", "0", FCVAR_ARCHIVE, "Experimental hi-freq colors" );
 static ConVar	sv_surface_calc_tile_color("surface_calc_tile_color", "0", FCVAR_ARCHIVE, "Shows color of the tile" );
-static ConVar	sv_surface_calc_default( "sv_surface_calc_default", "0", FCVAR_ARCHIVE, "Default calc used by Alien Swarm particles (render_blobs)" );
+static ConVar	sv_surface_calc_default( "sv_surface_calc_default", "1", FCVAR_ARCHIVE, "Default calc used by Alien Swarm particles (render_blobs)" );
 
 extern ConVar	mat_wireframe;
 
 void C_NPC_Surface::GetRenderBounds( Vector& theMins, Vector& theMaxs )
 {
 	// BaseClass::GetRenderBounds( theMins, theMaxs );
-	if(sv_surface_testshape.GetBool())
+	//if(sv_surface_testshape.GetBool())
 	{
-		theMins.Init(-300.0f, 0.0f, 100.0f);
-		theMaxs.Init(0.0f, 100.0f, 200.0f);
+		//theMins.Init(-300.0f, 0.0f, 100.0f);
+		//theMaxs.Init(0.0f, 100.0f, 200.0f);
+		theMins.Init(-2048, -2048, -2048);
+		theMaxs.Init(2048, 2048, 2048);
 	}
-	else
-	{
-		theMins = m_vecSurfacePos[0];
-		theMaxs = m_vecSurfacePos[0];
-		float surfaceRadius = m_flRadius * 3.0f;
-		for (int i = 0; i < m_nActiveParticles; i++)
-		{
-			VectorMin( m_vecSurfacePos[i] - Vector( surfaceRadius, surfaceRadius, surfaceRadius ), theMins, theMins );
-			VectorMax( m_vecSurfacePos[i] + Vector( surfaceRadius, surfaceRadius, surfaceRadius ), theMaxs, theMaxs );
-		}
-	}
+	//else
+	//{
+	//	theMins = m_vecSurfacePos[0];
+	//	theMaxs = m_vecSurfacePos[0];
+	//	float surfaceRadius = m_flRadius * 3.0f;
+	//	for (int i = 0; i < m_nActiveParticles; i++)
+	//	{
+	//		VectorMin( m_vecSurfacePos[i] - Vector( surfaceRadius, surfaceRadius, surfaceRadius ), theMins, theMins );
+	//		VectorMax( m_vecSurfacePos[i] + Vector( surfaceRadius, surfaceRadius, surfaceRadius ), theMaxs, theMaxs );
+	//	}
+	//}
 	theMins -= GetRenderOrigin();
 	theMaxs -= GetRenderOrigin();
 
@@ -464,7 +466,8 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 		}
 	}
 
-	Vector fountainOrigin(-1980, -1792, 1);
+	//Vector fountainOrigin(-1980, -1792, 1);
+	Vector fountainOrigin(256, 256, 128);
 	if(sv_surface_fountain.GetBool())
 	{
 		modelrender->SetupLighting( fountainOrigin );
@@ -496,7 +499,7 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 		{
 			ImpParticleWithOneInterpolant* imp_particle = &imp_particles[i];
 			imp_particle->center = Point3D(m_vecSurfacePos[i].x, m_vecSurfacePos[i].y, m_vecSurfacePos[i].z);
-			//imp_particle->fieldRScaleSq = m_flSurfaceR[i];
+			imp_particle->fieldRScaleSq = m_flSurfaceR[i];
 			imp_particle->scale = 1.0f;// m_flSurfaceR[i];
 			imp_particle->interpolants1[3] = m_flSurfaceV[i];
 			n_particles++;
@@ -753,7 +756,7 @@ int C_NPC_Surface::DrawModel( int flags, const RenderableInstance_t& instance)
 				// interpolants3[0..2] and interpolants4[0..2] are the normal and
 				// binormal which are used to generate a u coordinate
 				imp_particle->interpolants2 = vec.unit();
-				imp_particle->interpolants4.set(0.0f, 0.0f, -1.0f);
+				imp_particle->interpolants4.set(0.0f, 0.0f, -1.0f);//
 				imp_particle->interpolants3 = imp_particle->interpolants2.crossProduct(imp_particle->interpolants4);
 				imp_particle->interpolants3.normalize();
 				imp_particle->interpolants4 = imp_particle->interpolants2.crossProduct(imp_particle->interpolants3);

@@ -249,7 +249,7 @@ struct MaterialLightingState_t
 	MaterialLightingState_t &operator=( const MaterialLightingState_t &src )
 	{
 		memcpy( this, &src, sizeof(MaterialLightingState_t) - MATERIAL_MAX_LIGHT_COUNT * sizeof(LightDesc_t) );
-		memcpy( m_pLocalLightDesc, &src.m_pLocalLightDesc, src.m_nLocalLightCount * sizeof(LightDesc_t) ); // original	
+		memcpy( m_pLocalLightDesc, &src.m_pLocalLightDesc, src.m_nLocalLightCount * sizeof(LightDesc_t) );
 		return *this;
 	}
 };
@@ -381,7 +381,8 @@ struct FlashlightState_t
 		m_bEnableShadows = false;						// Provide reasonable defaults for shadow depth mapping parameters
 		m_bDrawShadowFrustum = false;
 		m_flShadowMapResolution = 1024.0f;
-		m_flShadowFilterSize = 3.0f;
+		//m_flShadowFilterSize = 3.0f;
+		m_flShadowFilterSize = 0.2f;
 		m_flShadowSlopeScaleDepthBias = 16.0f;
 		m_flShadowDepthBias = 0.0005f;
 		m_flShadowJitterSeed = 0.0f;
@@ -540,8 +541,10 @@ enum RenderTargetSizeMode_t
 	RT_SIZE_DEFAULT=1,				// Don't play with the specified width and height other than making sure it fits in the framebuffer.
 	RT_SIZE_PICMIP=2,				// Apply picmip to the render target's width and height.
 	RT_SIZE_HDR=3,					// frame_buffer_width / 4
-	RT_SIZE_FULL_FRAME_BUFFER=4,	// Same size as frame buffer, or next lower power of 2 if we can't do that.
-	RT_SIZE_OFFSCREEN=5,			// Target of specified size, don't mess with dimensions
+	//RT_SIZE_FULL_FRAME_BUFFER=4,	// Same size as frame buffer, or next lower power of 2 if we can't do that.
+	RT_SIZE_FULL_FRAME_BUFFER=6,	// Same size as frame buffer, or next lower power of 2 if we can't do that.
+	//RT_SIZE_OFFSCREEN=5,			// Target of specified size, don't mess with dimensions
+	RT_SIZE_OFFSCREEN=10,			// Target of specified size, don't mess with dimensions
 	RT_SIZE_FULL_FRAME_BUFFER_ROUNDED_UP=6 // Same size as the frame buffer, rounded up if necessary for systems that can't do non-power of two textures.
 };
 

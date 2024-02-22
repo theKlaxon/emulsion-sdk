@@ -1,0 +1,10 @@
+VertexLitGeneric
+{
+$baseTexture "models\props_foliage/swamp_rock"
+$surfaceprop rock
+$basealphaenvmapmask 1
+$envmapcontrast 1
+$envmapsaturation 1
+$envmaptint "[ .3 .3 .3]"
+$envmap env_cubemap
+}

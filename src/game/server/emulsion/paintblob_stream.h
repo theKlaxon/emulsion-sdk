@@ -25,7 +25,7 @@ public:
 	virtual void Simulate(IPhysicsMotionController* pController, IPhysicsObject* pObject, float deltaTime, Vector& linear, AngularImpulse& angular) {}
 	virtual bool TestCollision(const Ray_t& ray, unsigned int fContentsMask, trace_t& tr) override;
 
-	void AddParticle(Vector center, Vector velocity);
+	void AddParticle(Vector center, Vector velocity, float radius = 1.0f);
 
 	Class_T Classify() { return CLASS_BARNACLE; }
 	int UpdateTransmitState() { return SetTransmitState(FL_EDICT_ALWAYS); }

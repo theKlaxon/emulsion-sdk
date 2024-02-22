@@ -1,0 +1,17 @@
+patch
+{
+include "materials/models/props_foliage/tree_include_swamp.vmt"
+insert
+{
+$baseTexture "models\props_foliage\Swamp_Trees_Branches01"
+$translucent 1
+
+
+
+$nocull 1
+$model 1
+$FlashlightNoLambert 1
+"%keywords" l4d2
+$treeSwayStartHeight "0.3"
+}
+}

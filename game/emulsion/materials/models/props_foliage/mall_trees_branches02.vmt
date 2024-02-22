@@ -1,0 +1,11 @@
+VertexlitGeneric
+{
+$baseTexture "models\props_foliage\Mall_trees_branches02"
+
+$AlphaTest 1
+$AlphaTestReference ".35"
+$nocull 1
+$model 1
+$FlashlightNoLambert 1
+"%keywords" l4d2
+}

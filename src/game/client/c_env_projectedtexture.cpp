@@ -57,14 +57,14 @@ C_EnvProjectedTexture *C_EnvProjectedTexture::Create( )
 //	strcpy( pEnt->m_SpotlightTextureName, "particle/rj" );
 	pEnt->m_bLightWorld = true;
 	pEnt->m_bLightOnlyTarget = false;
-	pEnt->m_bSimpleProjection = true;
+	pEnt->m_bSimpleProjection = false;
 	pEnt->m_nShadowQuality = 1;
 	pEnt->m_flLightFOV = 10.0f;
 	pEnt->m_LightColor.r = 255;
 	pEnt->m_LightColor.g = 255;
 	pEnt->m_LightColor.b = 255;
 	pEnt->m_LightColor.a = 255;
-	pEnt->m_bEnableShadows = false;
+	pEnt->m_bEnableShadows = true;
 	pEnt->m_flColorTransitionTime = 1.0f;
 	pEnt->m_bCameraSpace = false;
 	pEnt->SetAbsAngles( QAngle( 90, 0, 0 ) );

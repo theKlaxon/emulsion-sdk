@@ -7,7 +7,7 @@
 #ifndef __VMAINMENU_H__
 #define __VMAINMENU_H__
 
-#include "basemodui.h"
+#include "emulsion/gameui/basemodui.h"
 #include "VFlyoutMenu.h"
 
 namespace BaseModUI {

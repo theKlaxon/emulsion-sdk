@@ -18,7 +18,7 @@ const char* g_PaintSplatParticles[] = {
 	"paint_splat_erase_01",		// no power
 };
 
-ConVar paintblob_stream_radius("paintblob_stream_radius", "8", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
+ConVar paintblob_stream_radius("paintblob_stream_radius", "3", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
 ConVar paintblob_stream_max_blobs("paintblob_stream_max_blobs", "350", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
 
 LINK_ENTITY_TO_CLASS(env_paint_stream, CPaintBlobStream)
@@ -233,7 +233,7 @@ void CPaintBlobStream::PhysicsSimulate() {
 
 }
 
-void CPaintBlobStream::AddParticle(Vector center, Vector velocity) {
+void CPaintBlobStream::AddParticle(Vector center, Vector velocity, float radius) {
 
 	if (m_nActiveParticlesInternal >= paintblob_stream_max_blobs.GetInt())
 		return;
@@ -250,7 +250,7 @@ void CPaintBlobStream::AddParticle(Vector center, Vector velocity) {
 		i = m_nActiveParticlesInternal;
 	
 	m_vecSurfacePositions[i] = center;
-	m_vecRadii[i] = RandomFloat(0.4f, 1.0f);
+	m_vecRadii[i] = clamp(radius, 0.4f, 1.0f);//RandomFloat(0.4f, 1.0f);
 	m_vecParticles[i] = physenv->CreateSphereObject(m_vecRadii[i], surfaceIndex, m_vecSurfacePositions[i], GetAbsAngles(), &params, false);
 
 	if (m_vecParticles[i]) {
@@ -258,7 +258,7 @@ void CPaintBlobStream::AddParticle(Vector center, Vector velocity) {
 		PhysSetGameFlags(m_vecParticles[i], FVPHYSICS_NO_SELF_COLLISIONS | FVPHYSICS_MULTIOBJECT_ENTITY | FVPHYSICS_NO_IMPACT_DMG); // call collisionruleschanged if this changes dynamically
 		m_vecParticles[i]->SetGameIndex(i);
 
-		m_vecParticles[i]->SetMass(10.0f * m_vecRadii[i]); // 10.0f
+		m_vecParticles[i]->SetMass(/*10.0f * */m_vecRadii[i]); // 10.0f
 		m_vecParticles[i]->EnableGravity(true);
 		m_vecParticles[i]->EnableDrag(false);
 		
