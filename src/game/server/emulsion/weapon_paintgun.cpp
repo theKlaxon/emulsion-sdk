@@ -11,7 +11,7 @@
 ConVar bounce_paint_color("bounce_paint_color", "0 165 255 255", FCVAR_REPLICATED);
 ConVar speed_paint_color("speed_paint_color", "255 106 0 255", FCVAR_REPLICATED);
 ConVar portal_paint_color("portal_paint_color", "0 200 33 255", FCVAR_REPLICATED); // p2ce's green (i was allowed to use it) -Klax
-//ConVar portal_paint_color("portal_paint_color", "15 252 11 255", FCVAR_REPLICATED); // i like greemn -Klax
+//ConVar portal_paint_color("portal_paint_color", "d15 252 11 255", FCVAR_REPLICATED); // i like greemn -Klax
 //ConVar portal_paint_color("portal_paint_color", "140 0 255 255", FCVAR_REPLICATED); // using this for stick paint
 
 ConVar erase_color("erase_color", "0 0 0 255", FCVAR_REPLICATED);
@@ -33,7 +33,7 @@ ConCommand paintgun_prev("paintgun_prev", Paintgun_PrevPower);
 
 ConVar paintgun_rad("paintgun_rad", "64", FCVAR_REPLICATED);
 ConVar paintgun_strength("paintgun_strength", "5", FCVAR_REPLICATED);
-ConVar paintgun_timing("paintgun_timing", "0.015f", FCVAR_REPLICATED, "0.015 is the MINIMUM you should go.");
+ConVar paintgun_timing("paintgun_timing", "0.01f", FCVAR_REPLICATED, "0.015 is the MINIMUM you should go.");
 ConVar paintgun_cone("paintgun_cone", "15.0f", FCVAR_REPLICATED, "Paintblob streak cone in degrees");
 ConVar paintgun_fire_offset_z("paintgun_fire_offset_z", "-20.0f", FCVAR_REPLICATED);
 ConVar paintgun_fire_offset_x("paintgun_fire_offset_x", "60.5f", FCVAR_REPLICATED);
@@ -85,41 +85,60 @@ int GetStreamIndex(PaintPowerType type) {
 
 struct BlobPattern_t {
 
-	BlobPattern_t(int count, float* offsets, float velMod) {
-		m_nCount = count;
-
-		m_flOffsets = offsets;
+	BlobPattern_t(float velMod, Vector offsets, float radius, int count = 1) {
 		m_flVelMod = velMod;
+
+		m_vecOffsets = offsets;
+		m_flRadius = radius;
+		m_nCount = count;
 	}
 
-	int m_nCount;
-	float* m_flOffsets;
 	float m_flVelMod;
+	Vector m_vecOffsets;
+	float m_flRadius;
+	int m_nCount;
 };
 
 #define BLOB_PATTERN_COUNT 6
-float g_flOffsets0[3] = { 50, 0, 75 };
-float g_flOffsets1[2] = { 0, 40 };
-float g_flOffsets2[1] = { 10 };
-float g_flOffsets3[2] = { 5, 60 };
-float g_flOffsets4[3] = { 0, 50, 30 };
-float g_flOffsets5[2] = { 45, 0 };
+//float g_flOffsets0[3] = { 50, 0, 75 };
+//float g_flOffsets1[2] = { 0, 40 };
+//float g_flOffsets2[1] = { 10 };
+//float g_flOffsets3[2] = { 5, 60 };
+//float g_flOffsets4[3] = { 0, 50, 30 };
+//float g_flOffsets5[2] = { 45, 0 };
+
+Vector g_vecOffsets0 = Vector(0, 5, 0);
+Vector g_vecOffsets1 = Vector(3, 0, 2);
+Vector g_vecOffsets2 = Vector(0, 1, 3);
+Vector g_vecOffsets3 = Vector(2, 4, 3);
+Vector g_vecOffsets4 = Vector(0, 5, 1);
+Vector g_vecOffsets5 = Vector(1, 2, 2);
+
+//BlobPattern_t g_BlobPatterns[BLOB_PATTERN_COUNT] = {
+//	BlobPattern_t(1, g_flOffsets0, 0.5f),
+//	BlobPattern_t(2, g_flOffsets1, 0.4f),
+//	BlobPattern_t(2, g_flOffsets2, 0.6f),
+//	BlobPattern_t(1, g_flOffsets3, 0.8f),
+//	BlobPattern_t(2, g_flOffsets4, 0.6f),
+//	BlobPattern_t(1, g_flOffsets5, 0.3f)
+//};
 
 BlobPattern_t g_BlobPatterns[BLOB_PATTERN_COUNT] = {
-	BlobPattern_t(1, g_flOffsets0, 0.5f),
-	BlobPattern_t(2, g_flOffsets1, 0.4f),
-	BlobPattern_t(2, g_flOffsets2, 0.6f),
-	BlobPattern_t(1, g_flOffsets3, 0.8f),
-	BlobPattern_t(2, g_flOffsets4, 0.6f),
-	BlobPattern_t(1, g_flOffsets5, 0.3f)
+	BlobPattern_t(50, g_vecOffsets0, 0.5f, 1),
+	BlobPattern_t(-35, g_vecOffsets1, 0.4f, 2),
+	BlobPattern_t(100, g_vecOffsets2, 0.6f, 3),
+	BlobPattern_t(-75, g_vecOffsets3, 0.8f, 2),
+	BlobPattern_t(75, g_vecOffsets4, 0.6f, 1),
+	BlobPattern_t(-10, g_vecOffsets5, 0.3f, 3)
 };
+
 
 int g_nBlobCycle = 0;
 
 void CWeaponPaintgun::FirePaint(bool erase) {
 
-	if (gpGlobals->curtime < m_flCurPaintDelay)
-		return;
+	//if (gpGlobals->curtime < m_flCurPaintDelay)
+	//	return;
 
 	CEmulsionPlayer* pPlayer = ToEmulsionPlayer(UTIL_PlayerByIndex(1));
 	Vector halfHeightOrigin = pPlayer->GetHalfHeight_Stick();
@@ -135,18 +154,20 @@ void CWeaponPaintgun::FirePaint(bool erase) {
 		if (g_nBlobCycle >= BLOB_PATTERN_COUNT)
 			g_nBlobCycle = 0;
 
-		Vector blobVel = forward * (1100.0f);// +g_BlobPatterns[g_nBlobCycle].m_flVelMod);
+		Vector blobVel = forward * (1000.0f + g_BlobPatterns[g_nBlobCycle].m_flVelMod);
 		PaintPowerType type = erase ? NO_POWER : g_CurPaintgunPower;
+
+		Vector offset = eyePosition + (g_BlobPatterns[g_nBlobCycle].m_vecOffsets * (forward + right + up));
 
 		float xang, yang;
 
-		
+		PaintBlobManager()->CreateBlob(offset + (forward * paintgun_fire_offset_x.GetFloat()), blobVel, GetStreamIndex(type), g_BlobPatterns[g_nBlobCycle].m_flRadius);
 
 		for (int i = 0; i < g_BlobPatterns[g_nBlobCycle].m_nCount; i++) {
-			float offset = paintgun_fire_offset_x.GetFloat() + g_BlobPatterns[g_nBlobCycle].m_flOffsets[i];
-			
+			//float offset = paintgun_fire_offset_x.GetFloat() + g_BlobPatterns[g_nBlobCycle].m_flOffsets[i];
+			PaintBlobManager()->CreateBlob(offset + (forward * paintgun_fire_offset_x.GetFloat()), blobVel, GetStreamIndex(type), g_BlobPatterns[g_nBlobCycle].m_flRadius);
 
-			PaintBlobManager()->CreateBlob(eyePosition + (forward * offset), blobVel, GetStreamIndex(type), g_BlobPatterns[g_nBlobCycle].m_flVelMod);
+			//PaintBlobManager()->CreateBlob(eyePosition + (forward * offset), blobVel, GetStreamIndex(type), g_BlobPatterns[g_nBlobCycle].m_flVelMod);
 		}
 		
 		g_nBlobCycle++;
@@ -166,7 +187,7 @@ void CWeaponPaintgun::FirePaint(bool erase) {
 		}
 	}
 
-	m_flCurPaintDelay = gpGlobals->curtime + paintgun_timing.GetFloat();
+	//m_flCurPaintDelay = gpGlobals->curtime + paintgun_timing.GetFloat();
 }
 
 int CWeaponPaintgun::UpdateClientData(CBasePlayer* pPlayer) {

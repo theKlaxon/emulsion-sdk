@@ -95,7 +95,7 @@ void CEmulsionPlayer::Spawn() {
 	enableNoclipToggle = true;
 	//
 	engine->ClientCommand(edict(), "bind n tog_noclip");
-	//engine->ClientCommand(edict(), "give weapon_paintgun");
+	engine->ClientCommand(edict(), "give weapon_paintgun");
 	//engine->ClientCommand(edict(), "give weapon_placement");
 	engine->ClientCommand(edict(), "bind mwheeldown paintgun_next");
 	engine->ClientCommand(edict(), "bind mwheelup paintgun_prev");
@@ -284,6 +284,9 @@ void CEmulsionPlayer::PickupObject(CBaseEntity* pObject, bool bLimitMassAndSize)
 		return;
 
 	PlayerPickupObject(this, pObject);
+
+	pObject->SetSolid(SOLID_NONE);
+	pObject->SetSolidFlags(FSOLID_NOT_SOLID);
 }
 
 bool CEmulsionPlayer::IsHoldingEntity(CBaseEntity* pEnt)
@@ -422,22 +425,22 @@ extern ConVar pl_showBouncePowerNormal;
 
 extern bool m_bCancelNextExitSound;
 
-void CEmulsionPlayer::BouncePlayer(cplane_t plane) {
-
-	Vector modVel = (m_vecVelocity.Get().Normalized() * (-1 * m_vecGravity)) * (pl_bouncePaintWallFactor.GetFloat());
-	modVel = (modVel.x + modVel.y + modVel.z) < 0 ? modVel * -1 : modVel;
-
-	Vector result = (plane.normal * (pl_bouncePaintFactor.GetFloat() * sqrt(m_vecVelocity.Get().Length()))) + modVel;
-	SetAbsVelocity(GetAbsVelocity() + result);
-
-	m_bCancelNextExitSound = true;
-	pMove->PlaySoundInternal("Player.JumpPowerUse");
-
-	if (pl_showBouncePowerNormal.GetBool())
-		Msg("(%f, %f, %f)\n", result.x, result.y, result.z);
-
-	SetGroundEntity(NULL);
-}
+//void CEmulsionPlayer::BouncePlayer(cplane_t plane) {
+//
+//	Vector modVel = (m_vecVelocity.Get().Normalized() * (-1 * m_vecGravity)) * (pl_bouncePaintWallFactor.GetFloat());
+//	modVel = (modVel.x + modVel.y + modVel.z) < 0 ? modVel * -1 : modVel;
+//
+//	Vector result = (plane.normal * (pl_bouncePaintFactor.GetFloat() * sqrt(m_vecVelocity.Get().Length()))) + modVel;
+//	SetAbsVelocity(GetAbsVelocity() + result);
+//
+//	m_bCancelNextExitSound = true;
+//	pMove->PlaySoundInternal("Player.JumpPowerUse");
+//
+//	if (pl_showBouncePowerNormal.GetBool())
+//		Msg("(%f, %f, %f)\n", result.x, result.y, result.z);
+//
+//	SetGroundEntity(NULL);
+//}
 
 void CEmulsionPlayer::StickPlayer(PaintInfo_t info) {
 

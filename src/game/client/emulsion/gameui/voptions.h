@@ -7,6 +7,7 @@
 #ifndef __VOPTIONS_H__
 #define __VOPTIONS_H__
 
+#include "vgui/IScheme.h"
 #include "basemodui.h"
 
 namespace BaseModUI {
@@ -22,6 +23,7 @@ public:
 	~Options();
 
 	void OnCommand(const char *command);
+	virtual void ApplySchemeSettings(vgui::IScheme* pScheme);
 
 private:
 	BaseModHybridButton* m_BtnGame;

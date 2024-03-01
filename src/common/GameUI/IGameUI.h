@@ -106,6 +106,11 @@ public:
 	virtual bool IsInLevel() = 0;
 
 	virtual void RestoreTopLevelMenu() = 0;
+
+	// for gamepadUI
+	virtual void SendMainMenuCommand(const char* cmd) = 0;
+	virtual void SetupGamepadUIClientPanel() = 0;
+	virtual void SetMainMenuOverride(vgui::VPANEL panel) = 0;
 };
 
 #define GAMEUI_INTERFACE_VERSION "GameUI011"

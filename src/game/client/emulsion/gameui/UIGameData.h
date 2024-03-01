@@ -16,8 +16,12 @@ namespace BaseModUI
 		static CUIGameData* Get();
 		void ShutDown();
 
+		void RunFrame();
+
 		void OnGameUIPostInit();
 		void NeedConnectionProblemWaitScreen();
 		void ShowPasswordUI(char const*pchCurrentPW);
+
+		const char* GetPlayerName(XUID playerID, char const* szPlayerNameSpeculative);
 	};
 }

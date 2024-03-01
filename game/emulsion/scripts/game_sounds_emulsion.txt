@@ -1,0 +1,17 @@
+"Music.MainMenu"
+{
+	"channel"		"CHAN_MUSIC"
+	"soundlevel"	"SNDLVL_NONE"
+	"volume"		"1.0"
+
+	"wave"	"music/mainmenu/portal2_background05.wav"
+
+	"soundentry_version" "2"
+	"operator_stacks"
+	{
+		"update_stack"
+		{
+			"import_stack" 	"update_music_stereo"
+		}
+	}
+}

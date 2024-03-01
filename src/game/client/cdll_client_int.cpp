@@ -104,13 +104,14 @@
 #include "vscript/ivscript.h"
 #include "activitylist.h"
 #include "eventlist.h"
+
 #ifdef GAMEUI_UISYSTEM2_ENABLED
 #include "gameui.h"
 #endif
 #ifdef GAMEUI_EMBEDDED
 
 #if defined( SWARM_DLL ) || defined(EMULSION_DLL)
-#include "swarm/gameui/swarm/basemodpanel.h"
+#include "emulsion/gameui/basemodpanel.h"
 #else
 #error "GAMEUI_EMBEDDED"
 #endif
@@ -131,6 +132,10 @@
 #include "paintblob_manager.h"
 #include "dll_patch.h"
 #endif
+
+#if defined( GAMEPADUI )
+#include "../gamepadui/igamepadui.h"
+#endif // GAMEPADUI
 
 #ifdef INFESTED_PARTICLES
 #include "c_asw_generic_emitter.h"
@@ -191,6 +196,10 @@ IASW_Mission_Chooser *missionchooser = NULL;
 #if defined( REPLAY_ENABLED )
 IReplayHistoryManager *g_pReplayHistoryManager = NULL;
 #endif
+
+#if defined(GAMEPADUI)
+IGamepadUI* g_pGamepadUI = nullptr;
+#endif // GAMEPADUI
 
 IScriptManager *scriptmanager = NULL;
 
@@ -298,6 +307,24 @@ bool g_bLevelInitialized;
 bool g_bTextMode = false;
 
 static ConVar *g_pcv_ThreadMode = NULL;
+
+// GAMEPADUI TODO - put this somewhere better. (Madi)
+#if defined( GAMEPADUI )
+const bool IsSteamDeck()
+{
+	if (CommandLine()->FindParm("-gamepadui"))
+		return true;
+
+	if (CommandLine()->FindParm("-nogamepadui"))
+		return false;
+
+	const char* pszSteamDeckEnv = getenv("SteamDeck");
+	if (pszSteamDeckEnv && *pszSteamDeckEnv)
+		return atoi(pszSteamDeckEnv) != 0;
+
+	return false;
+}
+#endif
 
 // implements ACTIVE_SPLITSCREEN_PLAYER_GUARD (cdll_client_int.h)
 CSetActiveSplitScreenPlayerGuard::CSetActiveSplitScreenPlayerGuard( char const *pchContext, int nLine, int slot, int nOldSlot, bool bSetVguiScreenSize ) :
@@ -1311,6 +1338,50 @@ void CHLClient::PostInit()
 	COM_TimestampedLog( "IGameSystem::PostInitAllSystems - Start" );
 	IGameSystem::PostInitAllSystems();
 	COM_TimestampedLog( "IGameSystem::PostInitAllSystems - Finish" );
+
+
+#if defined(GAMEPADUI)
+	COM_TimestampedLog("IGamepadUI::Initialize - Start");
+	if (IsSteamDeck())
+	{
+		CSysModule* pGamepadUIModule = g_pFullFileSystem->LoadModule("gamepadui", "GAMEBIN", false);
+		if (pGamepadUIModule != nullptr)
+		{
+			GamepadUI_Log("Loaded gamepadui module.\n");
+
+			CreateInterfaceFn gamepaduiFactory = Sys_GetFactory(pGamepadUIModule);
+			if (gamepaduiFactory != nullptr)
+			{
+				g_pGamepadUI = (IGamepadUI*)gamepaduiFactory(GAMEPADUI_INTERFACE_VERSION, NULL);
+				if (g_pGamepadUI != nullptr)
+				{
+					GamepadUI_Log("Initializing IGamepadUI interface...\n");
+
+					factorylist_t factories;
+					FactoryList_Retrieve(factories);
+					g_pGamepadUI->Initialize(factories.appSystemFactory);
+				}
+				else
+				{
+					GamepadUI_Log("Unable to pull IGamepadUI interface.\n");
+				}
+			}
+			else
+			{
+				GamepadUI_Log("Unable to get gamepadui factory.\n");
+			}
+		}
+		else
+		{
+			GamepadUI_Log("Unable to load gamepadui module\n");
+		}
+	}
+	else {
+		extern void BaseModPanel_OpenFrontScreen();
+		BaseModPanel_OpenFrontScreen();
+	}
+	COM_TimestampedLog("IGamepadUI::Initialize - Finish");
+#endif // GAMEPADUI
 }
 
 //-----------------------------------------------------------------------------
@@ -1318,8 +1389,6 @@ void CHLClient::PostInit()
 //-----------------------------------------------------------------------------
 void CHLClient::Shutdown( void )
 {
-
-
 	ActivityList_Free();
 	EventList_Free();
 
@@ -1370,6 +1439,11 @@ void CHLClient::Shutdown( void )
 
 	IGameSystem::ShutdownAllSystems();
 
+#if defined(GAMEPADUI)
+	if (g_pGamepadUI != nullptr)
+		g_pGamepadUI->Shutdown();
+#endif // GAMEPADUI
+
 	for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
 	{
 		ACTIVE_SPLITSCREEN_PLAYER_GUARD_VGUI( hh );
@@ -1411,6 +1485,11 @@ int CHLClient::HudVidInit( void )
 	}
 
 	GetClientVoiceMgr()->VidInit();
+
+#if defined(GAMEPADUI)
+	if (g_pGamepadUI != nullptr)
+		g_pGamepadUI->VidInit();
+#endif // GAMEPADUI
 
 	return 1;
 }
@@ -1458,6 +1537,11 @@ void CHLClient::HudUpdate( bool bActive )
 	// I don't think this is necessary any longer, but I will leave it until
 	// I can check into this further.
 	C_BaseTempEntity::CheckDynamicTempEnts();
+
+#if defined(GAMEPADUI)
+	if (g_pGamepadUI != nullptr)
+		g_pGamepadUI->OnUpdate(frametime);
+#endif // GAMEPADUI
 }
 
 //-----------------------------------------------------------------------------
@@ -1928,6 +2012,11 @@ void CHLClient::LevelInitPreEntity( char const* pMapName )
 		CReplayRagdollRecorder::Instance().Init();
 	}
 #endif
+
+#if defined(GAMEPADUI)
+	if (g_pGamepadUI != nullptr)
+		g_pGamepadUI->OnLevelInitializePreEntity();
+#endif // GAMEPADUI
 }
 
 
@@ -1945,6 +2034,11 @@ void CHLClient::LevelInitPostEntity( )
 		ACTIVE_SPLITSCREEN_PLAYER_GUARD( hh );
 		GetCenterPrint()->Clear();
 	}
+
+#if defined(GAMEPADUI)
+	if (g_pGamepadUI != nullptr)
+		g_pGamepadUI->OnLevelInitializePostEntity();
+#endif // GAMEPADUI
 }
 
 //-----------------------------------------------------------------------------
@@ -2010,6 +2104,11 @@ void CHLClient::LevelShutdown( void )
 	{
 		StopAllRumbleEffects( hh );
 	}
+
+#if defined(GAMEPADUI)
+	if (g_pGamepadUI != nullptr)
+		g_pGamepadUI->OnLevelShutdown();
+#endif // GAMEPADUI
 
 	for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
 	{

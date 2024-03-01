@@ -4,8 +4,12 @@
 #include "discord-rpc/discord_register.h"
 #include "discord-rpc/discord_rpc.h"
 
+#include <string>
+
 static ConVar cl_discord_appid("cl_discord_appid", "675151519565217794", FCVAR_DEVELOPMENTONLY | FCVAR_CHEAT);
 static int64_t startTimestamp = time_t(0);
+
+const int64 discord_appid = 675151519565217794;
 
 static C_DiscRPC* g_pDiscord = new C_DiscRPC();
 C_DiscRPC::C_DiscRPCHandler* g_pDiscordHandlers;
@@ -43,7 +47,11 @@ void C_DiscRPC::Init() {
 
 	char appid[255];
 	sprintf(appid, "%d", engine->GetAppID());
-	Discord_Initialize(cl_discord_appid.GetString(), &handlers, 1, appid);
+
+	std::string discstrstr = std::to_string(discord_appid);
+	const char* discstr = discstrstr.c_str();
+
+	Discord_Initialize(discstr, &handlers, 1, appid);
 
 	if (!g_bTextMode)
 	{
@@ -53,7 +61,7 @@ void C_DiscRPC::Init() {
 		discordPresence.state = "In-Game";
 		discordPresence.details = "Main Menu";
 		discordPresence.startTimestamp = int64_t(0);// startTimestamp;
-		discordPresence.largeImageKey = "final";
+		discordPresence.largeImageKey = "emulsion_icon";
 		Discord_UpdatePresence(&discordPresence);
 	}
 }

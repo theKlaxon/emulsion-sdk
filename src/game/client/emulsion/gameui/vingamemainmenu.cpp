@@ -11,6 +11,7 @@
 #include "VFlyoutMenu.h"
 #include "VHybridButton.h"
 #include "EngineInterface.h"
+#include "gameconsole.h"
 
 #include "fmtstr.h"
 
@@ -86,7 +87,7 @@ static void LeaveGameOkCallback()
 	CBaseModPanel::GetSingleton().OpenFrontScreen();
 }
 
-void ShowPlayerList();
+//void ShowPlayerList();
 
 //=============================================================================
 void InGameMainMenu::OnCommand( const char *command )
@@ -123,11 +124,11 @@ void InGameMainMenu::OnCommand( const char *command )
 		CBaseModPanel::GetSingleton().OpenWindow(WT_INGAMEKICKPLAYERLIST, this, true );
 #endif
 	}
-	else if ( !Q_strcmp(command, "ChangeScenario") && !demo_ui_enable.GetString()[0] )
+	else if ( !Q_strcmp(command, "ChangeScenario") /*&& !demo_ui_enable.GetString()[0]*/ )
 	{
 		CBaseModPanel::GetSingleton().OpenWindow(WT_INGAMECHAPTERSELECT, this, true );
 	}
-	else if ( !Q_strcmp( command, "ChangeChapter" ) && !demo_ui_enable.GetString()[0] )
+	else if ( !Q_strcmp( command, "ChangeChapter" ) /*&& !demo_ui_enable.GetString()[0]*/ )
 	{
 		CBaseModPanel::GetSingleton().OpenWindow( WT_INGAMECHAPTERSELECT, this, true );
 	}
@@ -145,17 +146,17 @@ void InGameMainMenu::OnCommand( const char *command )
 		engine->ClientCmd("gameui_hide");
 		engine->ClientCmd("callvote ReturnToLobby;");
 	}
-	else if ( char const *szInviteType = StringAfterPrefix( command, "InviteUI_" ) )
-	{
-		if ( IsX360() )
-		{
-			CUIGameData::Get()->OpenInviteUI( szInviteType );
-		}
-		else
-		{
-			CUIGameData::Get()->ExecuteOverlayCommand( "LobbyInvite" );
-		}
-	}
+	//else if ( char const *szInviteType = StringAfterPrefix( command, "InviteUI_" ) )
+	//{
+	//	if ( IsX360() )
+	//	{
+	//		CUIGameData::Get()->OpenInviteUI( szInviteType );
+	//	}
+	//	else
+	//	{
+	//		CUIGameData::Get()->ExecuteOverlayCommand( "LobbyInvite" );
+	//	}
+	//}
 	else if ( !Q_strcmp( command, "StatsAndAchievements" ) )
 	{
 		if ( CheckAndDisplayErrorIfNotLoggedIn() )
@@ -180,37 +181,37 @@ void InGameMainMenu::OnCommand( const char *command )
 		m_ActiveControl->NavigateFrom( );
 		CBaseModPanel::GetSingleton().OpenWindow( WT_ACHIEVEMENTS, this, true );
 	}
-	else if ( char const *szLeaderboards = StringAfterPrefix( command, "Leaderboards_" ) )
-	{
-		if ( CheckAndDisplayErrorIfNotLoggedIn() ||
-			CUIGameData::Get()->CheckAndDisplayErrorIfOffline( this,
-			"#L4D360UI_MainMenu_SurvivalLeaderboards_Tip_Disabled" ) )
-			return;
+	//else if ( char const *szLeaderboards = StringAfterPrefix( command, "Leaderboards_" ) )
+	//{
+	//	if ( CheckAndDisplayErrorIfNotLoggedIn() ||
+	//		CUIGameData::Get()->CheckAndDisplayErrorIfOffline( this,
+	//		"#L4D360UI_MainMenu_SurvivalLeaderboards_Tip_Disabled" ) )
+	//		return;
 
-		KeyValues *pSettings = NULL;
-		if ( *szLeaderboards )
-		{
-			pSettings = KeyValues::FromString(
-				"settings",
-				" game { "
-					" mode = "
-				" } "
-				);
-			pSettings->SetString( "game/mode", szLeaderboards );
-		}
-		else
-		{
-			pSettings = g_pMatchFramework->GetMatchNetworkMsgController()->GetActiveServerGameDetails( NULL );
-		}
-		
-		if ( !pSettings )
-			return;
-		
-		KeyValues::AutoDelete autodelete( pSettings );
-		
-		m_ActiveControl->NavigateFrom( );
-		CBaseModPanel::GetSingleton().OpenWindow( WT_LEADERBOARD, this, true, pSettings );
-	}
+	//	KeyValues *pSettings = NULL;
+	//	if ( *szLeaderboards )
+	//	{
+	//		pSettings = KeyValues::FromString(
+	//			"settings",
+	//			" game { "
+	//				" mode = "
+	//			" } "
+	//			);
+	//		pSettings->SetString( "game/mode", szLeaderboards );
+	//	}
+	//	else
+	//	{
+	//		pSettings = g_pMatchFramework->GetMatchNetworkMsgController()->GetActiveServerGameDetails( NULL );
+	//	}
+	//	
+	//	if ( !pSettings )
+	//		return;
+	//	
+	//	KeyValues::AutoDelete autodelete( pSettings );
+	//	
+	//	m_ActiveControl->NavigateFrom( );
+	//	CBaseModPanel::GetSingleton().OpenWindow( WT_LEADERBOARD, this, true, pSettings );
+	//}
 	else if (!Q_strcmp(command, "AudioVideo"))
 	{
 		CBaseModPanel::GetSingleton().OpenWindow(WT_AUDIOVIDEO, this, true );
@@ -219,18 +220,18 @@ void InGameMainMenu::OnCommand( const char *command )
 	{
 		CBaseModPanel::GetSingleton().OpenWindow(WT_CONTROLLER, this, true );
 	}
-	else if (!Q_strcmp(command, "Storage"))
-	{
-#ifdef _X360
-		if ( XBX_GetUserIsGuest( iUserSlot ) )
-		{
-			CBaseModPanel::GetSingleton().PlayUISound( UISOUND_INVALID );
-			return;
-		}
-#endif
-		// Trigger storage device selector
-		CUIGameData::Get()->SelectStorageDevice( new CChangeStorageDevice( XBX_GetUserId( iUserSlot ) ) );
-	}
+//	else if (!Q_strcmp(command, "Storage"))
+//	{
+//#ifdef _X360
+//		if ( XBX_GetUserIsGuest( iUserSlot ) )
+//		{
+//			CBaseModPanel::GetSingleton().PlayUISound( UISOUND_INVALID );
+//			return;
+//		}
+//#endif
+//		// Trigger storage device selector
+//		CUIGameData::Get()->SelectStorageDevice( new CChangeStorageDevice( XBX_GetUserId( iUserSlot ) ) );
+//	}
 	else if (!Q_strcmp(command, "Audio"))
 	{
 		// audio options dialog, PC only
@@ -321,37 +322,37 @@ void InGameMainMenu::OnCommand( const char *command )
 		}
 #endif
 
-		if ( !Q_strcmp( command, "FlmVoteFlyout" ) )
-		{
-			if ( gpGlobals->maxClients <= 1 )
-			{
-				engine->ClientCmd("asw_restart_mission");
-			}
-			else
-			{
-				ShowPlayerList();
-			}
-			engine->ClientCmd("gameui_hide");
-			return;
-			/*
-			static ConVarRef mp_gamemode( "mp_gamemode" );
-			if ( mp_gamemode.IsValid() )
-			{
-				char const *szGameMode = mp_gamemode.GetString();
-				if ( char const *szNoTeamMode = StringAfterPrefix( szGameMode, "team" ) )
-					szGameMode = szNoTeamMode;
+		//if ( !Q_strcmp( command, "FlmVoteFlyout" ) )
+		//{
+		//	if ( gpGlobals->maxClients <= 1 )
+		//	{
+		//		engine->ClientCmd("asw_restart_mission");
+		//	}
+		//	else
+		//	{
+		//		ShowPlayerList();
+		//	}
+		//	engine->ClientCmd("gameui_hide");
+		//	return;
+		//	/*
+		//	static ConVarRef mp_gamemode( "mp_gamemode" );
+		//	if ( mp_gamemode.IsValid() )
+		//	{
+		//		char const *szGameMode = mp_gamemode.GetString();
+		//		if ( char const *szNoTeamMode = StringAfterPrefix( szGameMode, "team" ) )
+		//			szGameMode = szNoTeamMode;
 
-				if ( !Q_strcmp( szGameMode, "versus" ) || !Q_strcmp( szGameMode, "scavenge" ) )
-				{
-					pchCommand = "FlmVoteFlyoutVersus";
-				}
-				else if ( !Q_strcmp( szGameMode, "survival" ) )
-				{
-					pchCommand = "FlmVoteFlyoutSurvival";
-				}
-			}
-			*/
-		}
+		//		if ( !Q_strcmp( szGameMode, "versus" ) || !Q_strcmp( szGameMode, "scavenge" ) )
+		//		{
+		//			pchCommand = "FlmVoteFlyoutVersus";
+		//		}
+		//		else if ( !Q_strcmp( szGameMode, "survival" ) )
+		//		{
+		//			pchCommand = "FlmVoteFlyoutSurvival";
+		//		}
+		//	}
+		//	*/
+		//}
 
 		// does this command match a flyout menu?
 		BaseModUI::FlyoutMenu *flyout = dynamic_cast< FlyoutMenu* >( FindChildByName( pchCommand ) );
@@ -402,13 +403,13 @@ void InGameMainMenu::ApplySchemeSettings( vgui::IScheme *pScheme )
 {
 	BaseClass::ApplySchemeSettings( pScheme );
 
-	if ( demo_ui_enable.GetString()[0] )
+	//if ( demo_ui_enable.GetString()[0] )
+	//{
+	//	LoadControlSettings( CFmtStr( "Resource/UI/BaseModUI/InGameMainMenu_%s.res", demo_ui_enable.GetString() ) );
+	//}
+	//else
 	{
-		LoadControlSettings( CFmtStr( "Resource/UI/BaseModUI/InGameMainMenu_%s.res", demo_ui_enable.GetString() ) );
-	}
-	else
-	{
-		LoadControlSettings( "Resource/UI/BaseModUI/InGameMainMenu.res" );
+		LoadControlSettings( "Resource/UI/BaseModUI/emulsion_ingamemainmenu.res" );
 	}
 
 	SetPaintBackgroundEnabled( true );
@@ -420,7 +421,7 @@ void InGameMainMenu::ApplySchemeSettings( vgui::IScheme *pScheme )
 void InGameMainMenu::OnOpen()
 {
 	BaseClass::OnOpen();
-
+	
 	SetFooterState();
 }
 
@@ -455,7 +456,7 @@ void InGameMainMenu::OnThink()
 	}
 
 	SetControlEnabled( "BtnInviteFriends", bCanInvite );
-	SetControlEnabled( "BtnLeaderboard", CUIGameData::Get()->SignedInToLive() && !Q_stricmp( szGameMode, "survival" ) );
+	//SetControlEnabled( "BtnLeaderboard", CUIGameData::Get()->SignedInToLive() && !Q_stricmp( szGameMode, "survival" ) );
 
 	{
 		BaseModHybridButton *button = dynamic_cast< BaseModHybridButton* >( FindChildByName( "BtnOptions" ) );

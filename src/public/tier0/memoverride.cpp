@@ -1179,7 +1179,7 @@ typedef struct setloc_struct {
     LCID lcidLanguage;
     LCID lcidCountry;
     /* expand_locale static variables */
-#ifndef PLUGIN_DLL
+#if !defined (GAMEPADUI_DLL) && !defined(PLUGIN_DLL)
     LC_ID       _cacheid;
 #endif
 	UINT        _cachecp;

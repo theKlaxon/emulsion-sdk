@@ -4056,10 +4056,10 @@ static inline void DrawRenderable( IClientRenderable *pEnt, int flags, const Ren
 		view->SetCurrentlyDrawingEntity( pEnt->GetIClientUnknown()->GetBaseEntity() );
 		if (bShadowDepth)
 			flags |= DF_SHADOW_DEPTH_MAP;
-		bool bBlockNormalDraw = BlurTest( pEnt, flags, true, instance );
-		if( !bBlockNormalDraw )
+		//bool bBlockNormalDraw = BlurTest( pEnt, flags, true, instance );
+		//if( !bBlockNormalDraw )
 			pEnt->DrawModel( flags, instance );
-		BlurTest( pEnt, flags, false, instance );
+		//BlurTest( pEnt, flags, false, instance );
 		view->SetCurrentlyDrawingEntity( NULL );
 	}
 }

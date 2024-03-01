@@ -15,8 +15,17 @@
 #include "vgui_controls/PHandle.h"
 #include "convar.h"
 
+#ifdef CLIENT_DLL
+#include "cdll_client_int.h"
+#include "vgui/IPanel.h"
+#include "gameui/gamepadui_clientpanel.h"
+#endif
+
 class IGameClientExports;
 class CCommand;
+
+
+static bool g_bOverrideBaseModPanel = false;
 
 //-----------------------------------------------------------------------------
 // Purpose: Implementation of GameUI's exposed interface 
@@ -129,6 +138,21 @@ private:
 	char m_szPlatformDir[MAX_PATH];
 
 	vgui::DHANDLE<class CCDKeyEntryDialog> m_hCDKeyEntryDialog;
+
+	// gamepad ui
+public:
+	virtual void SendMainMenuCommand(const char* cmd) { engine->ExecuteClientCmd(cmd); }
+	virtual void SetupGamepadUIClientPanel();
+	virtual void DestroyGamepadUIClientPanel() { m_pGamepadUIPanel->DeletePanel(); }
+	virtual void SetMainMenuOverride(vgui::VPANEL panel) {
+		m_pGamepadUIPanel->SetParent(panel);
+		g_bOverrideBaseModPanel = panel != NULL ? true : false;
+	}
+	BaseModUI::CGamepadUI_ClientPanel* GetClientGamepadUI() { return m_pGamepadUIPanel; }
+	bool IsOverridingBaseModPanel() { return g_bOverrideBaseModPanel; }
+
+private:
+	BaseModUI::CGamepadUI_ClientPanel* m_pGamepadUIPanel;
 };
 
 // Purpose: singleton accessor

@@ -8,11 +8,12 @@
 #define __VMAINMENU_H__
 
 #include "basemodui.h"
-//#include "VFlyoutMenu.h"
+#include "vgui_controls/ImagePanel.h"
+#include "VFlyoutMenu.h"
 
 namespace BaseModUI {
 
-class MainMenu : public CBaseModFrame, public IBaseModFrameListener//, public FlyoutMenuListener
+class MainMenu : public CBaseModFrame, public IBaseModFrameListener, public FlyoutMenuListener
 {
 	DECLARE_CLASS_SIMPLE( MainMenu, CBaseModFrame );
 
@@ -20,9 +21,9 @@ public:
 	MainMenu(vgui::Panel *parent, const char *panelName);
 	~MainMenu();
 
-#ifdef _X360
-	void Activate();
-#endif //_X360
+//#ifdef _X360
+	//void Activate();
+//#endif //_X360
 
 	void UpdateVisibility();
 
@@ -32,6 +33,7 @@ public:
 	virtual void OnNotifyChildFocus( vgui::Panel* child );
 	virtual void OnFlyoutMenuClose( vgui::Panel* flyTo );
 	virtual void OnFlyoutMenuCancelled();
+	virtual void PerformLayout();
 
 protected:
 	virtual void ApplySchemeSettings(vgui::IScheme *pScheme);
@@ -58,7 +60,7 @@ private:
 		MMQJHT_QUICKSTART,
 	};
 	
-	int					m_iQuickJoinHelpText;
+	int	m_iQuickJoinHelpText;
 };
 
 }

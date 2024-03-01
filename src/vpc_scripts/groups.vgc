@@ -26,3 +26,8 @@ $Group "bones"
 {
 	"bonesetup"
 }
+
+$Group "gamepad"
+{
+	"gamepadui"
+}

@@ -7,7 +7,7 @@
 #include "VOptions.h"
 #include "VFooterPanel.h"
 #include "VHybridButton.h"
-
+#include "vgui/IScheme.h"
 #include "vgui_controls/Button.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -65,20 +65,30 @@ void Options::OnCommand(const char *command)
 		Msg("[GAMEUI] Handling options menu command %s from user%d ctrlr%d\n", command, iUserSlot, iController );
 	}
 
-	if(!Q_strcmp(command, "Game"))
+/*	if(!Q_strcmp(command, "Game"))
 	{
 		CBaseModPanel::GetSingleton().OpenWindow(WT_GAMEOPTIONS, this);
 	}
-	else if(!Q_strcmp(command, "AudioVideo"))
+	else */if(!Q_strcmp(command, "AudioVideo"))
 	{
 		CBaseModPanel::GetSingleton().OpenWindow(WT_AUDIOVIDEO, this);
 	}
-	else if(!Q_strcmp(command, "Controller"))
-	{
-		CBaseModPanel::GetSingleton().OpenWindow(WT_CONTROLLER, this);
-	}
-	else if(!Q_strcmp(command, "Storage"))
-	{
-		CUIGameData::Get()->SelectStorageDevice( new CChangeStorageDevice( iController ) );
-	}
+	//else if(!Q_strcmp(command, "Controller"))
+	//{
+	//	CBaseModPanel::GetSingleton().OpenWindow(WT_CONTROLLER, this);
+	//}
+	//else if(!Q_strcmp(command, "Storage"))
+	//{
+	//	CUIGameData::Get()->SelectStorageDevice( new CChangeStorageDevice( iController ) );
+	//}
+}
+
+//=============================================================================
+void Options::ApplySchemeSettings(IScheme* pScheme)
+{
+	BaseClass::ApplySchemeSettings(pScheme);
+
+	const char* pSettings = "Resource/UI/BaseModUI/emulsion_options.res";
+
+	LoadControlSettings(pSettings);
 }

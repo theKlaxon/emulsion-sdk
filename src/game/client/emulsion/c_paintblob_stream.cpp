@@ -6,13 +6,21 @@
 #include "Implicit/ImpTiler.h"
 #include "Implicit/SweepRenderer.h"
 
-ConVar paintblob_stream_radius("r_paintblob_stream_radius", "7", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
-ConVar paintblob_stream_max_blobs("r_paintblob_stream_max_blobs", "350", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
-ConVar paintblob_surface_max_tiles("r_paintblob_surface_max_tiles", "-1", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
+ConVar paintblob_stream_radius("r_paintblob_stream_radius", "6", FCVAR_REPLICATED);
+ConVar paintblob_stream_max_blobs("r_paintblob_stream_max_blobs", "350", FCVAR_REPLICATED);
+ConVar paintblob_surface_max_tiles("r_paintblob_surface_max_tiles", "-1", FCVAR_REPLICATED);
 
-ConVar paintblob_blr_cubewidth("r_paintblob_blr_cubewidth", "0.8", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
-ConVar paintblob_blr_render_radius("r_paintblob_blr_render_radius", "1.3", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
-ConVar paintblob_blr_cutoff_radius("r_paintblob_blr_cutoff_radius", "3.3", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
+ConVar paintblob_blr_cubewidth("r_paintblob_blr_cubewidth", "0.8", FCVAR_REPLICATED);
+ConVar paintblob_blr_render_radius("r_paintblob_blr_render_radius", "1.3", FCVAR_REPLICATED);
+ConVar paintblob_blr_cutoff_radius("r_paintblob_blr_cutoff_radius", "3.3", FCVAR_REPLICATED);
+
+// used to grab a cube with from a menu value
+ConVar paintblob_blr_menu_quality("r_paintblob_blr_menu_cubewidths", "0", FCVAR_REPLICATED);
+float g_flBlobCubeWidths[] = {
+	0.8f,
+	0.6f,
+	0.4f
+};
 
 // must match layout of PaintPowerType
 const char* g_PaintTypeMaterials[] = {
@@ -185,8 +193,11 @@ int C_PaintBlobStream::DrawModel(int flags, const RenderableInstance_t& instance
 		imp_particle->interpolants1[3] = m_vecSurfaceVs[i];
 		n_particles++;
 	}
+	
+	//SweepRenderer::setCubeWidth(paintblob_blr_cubewidth.GetFloat());
 
-	SweepRenderer::setCubeWidth(paintblob_blr_cubewidth.GetFloat());
+	float cube_width = g_flBlobCubeWidths[paintblob_blr_menu_quality.GetInt()];
+	SweepRenderer::setCubeWidth(cube_width);
 	SweepRenderer::setRenderR(paintblob_blr_render_radius.GetFloat());
 	SweepRenderer::setCutoffR(paintblob_blr_cutoff_radius.GetFloat());
 
@@ -206,6 +217,7 @@ int C_PaintBlobStream::DrawModel(int flags, const RenderableInstance_t& instance
 	pRenderContext->LoadIdentity();
 	pRenderContext->Translate(center.x, center.y, center.z);
 	pRenderContext->Scale(flRadius, flRadius, flRadius);
+	//pRenderContext->GetLocalCubemap();
 
 	tiler->beginFrame(Point3D(0.0f, 0.0f, 0.0f), (void*)&pRenderContext, 1);
 

@@ -86,6 +86,8 @@ src/game/server/Debug_p2asw/
 src/game/client/Release_p2asw/
 src/game/server/Release_p2asw/
 
+game/emulsion/maps/workshop/
+
 *.opendb
 *.db-shm
 game/emulsion/bin/client.pdb

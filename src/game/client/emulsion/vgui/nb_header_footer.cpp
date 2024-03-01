@@ -104,7 +104,7 @@ void CASW_Background_Movie::ClearCurrentMovie()
 int CASW_Background_Movie::SetTextureMaterial()
 {
 #ifdef ASW_BINK_MOVIES
-	if ( m_nBIKMaterial == BIKMATERIAL_INVALID )
+	if (m_nBIKMaterial == BIKMATERIAL_INVALID)
 		return -1;
 #else
 	if ( m_nAVIMaterial == AVIMATERIAL_INVALID )
@@ -126,57 +126,12 @@ int CASW_Background_Movie::SetTextureMaterial()
 
 void CASW_Background_Movie::Update()
 {
-	if ( engine->IsConnected() && ASWGameRules() )
-	{
-		int nGameState = ASWGameRules()->GetGameState();
-		if ( nGameState >= ASW_GS_DEBRIEF && ASWGameRules()->GetMissionSuccess() )
-		{
-			nGameState += 10;
-		}
-		if ( nGameState != m_nLastGameState && !( nGameState == ASW_GS_LAUNCHING || nGameState == ASW_GS_INGAME ) )
-		{
-			const char *pFilename = NULL;
-#ifdef ASW_BINK_MOVIES
-			if ( ASWGameRules()->GetGameState() >= ASW_GS_DEBRIEF )
-			{
-				if ( ASWGameRules()->GetMissionSuccess() )
-				{
-					pFilename = "media/SpaceFX.bik";
-				}
-				else
-				{
-					pFilename = "media/BG_Fail.bik";
-				}
-			}
-			else
-			{
-				int nChosenMovie = RandomInt( 0, 3 );
-				switch( nChosenMovie )
-				{
-					case 0: pFilename = "media/BGFX_01.bik"; break;
-					case 1: pFilename = "media/BGFX_02.bik"; break;
-					default:
-					case 2: pFilename = "media/BGFX_03.bik"; break;
-					case 3: pFilename = "media/BG_04_FX.bik"; break;
-				}
-			}
-#else
-			pFilename = "media/test.avi";
-#endif
-			if ( pFilename )
-			{
-				SetCurrentMovie( pFilename );
-			}
-		}
-		m_nLastGameState = nGameState;
-	}
-	else
 	{
 		int nGameState = 0;
 		if ( nGameState != m_nLastGameState )
 		{
 #ifdef ASW_BINK_MOVIES
-			SetCurrentMovie( "media/BG_02.bik" );
+			SetCurrentMovie( "media/sp_dem02_background.bik" );
 #else
 			SetCurrentMovie( "media/test.avi" );
 #endif

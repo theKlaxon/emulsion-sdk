@@ -69,6 +69,9 @@ inline UI_BASEMOD_PANEL_CLASS & GetUiBaseModPanelClass() { return UI_BASEMOD_PAN
 inline UI_BASEMOD_PANEL_CLASS & ConstructUiBaseModPanelClass() { return * new UI_BASEMOD_PANEL_CLASS(); }
 class IMatchExtSwarm *g_pMatchExtSwarm = NULL;
 
+void BaseModPanel_OpenFrontScreen() {
+	GetUiBaseModPanelClass().OpenFrontScreen();
+}
 
 #elif defined(SWARM_DLL)
 
@@ -245,8 +248,7 @@ void CGameUI::Initialize( CreateInterfaceFn factory )
 	factoryBasePanel.SetPaintEnabled( true );
 	factoryBasePanel.SetVisible( true );
 
-	factoryBasePanel.SetMouseInputEnabled( IsPC() );
-	// factoryBasePanel.SetKeyBoardInputEnabled( IsPC() );
+	factoryBasePanel.SetMouseInputEnabled( true );
 	factoryBasePanel.SetKeyBoardInputEnabled( true );
 
 	vgui::VPANEL rootpanel = enginevguifuncs->GetPanel( PANEL_GAMEUIDLL );
@@ -597,15 +599,20 @@ void CGameUI::OnGameUIActivated()
 
 	SetSavedThisMenuSession( false );
 
-	UI_BASEMOD_PANEL_CLASS &ui = GetUiBaseModPanelClass();
+	if (g_bOverrideBaseModPanel) {
+		GetClientGamepadUI()->OnGameUIActivated();
+		return; // skip the rest if we're using gamepadui
+	}
+
+	UI_BASEMOD_PANEL_CLASS& ui = GetUiBaseModPanelClass();
 	bool bNeedActivation = true;
-	if ( ui.IsVisible() )
+	if (ui.IsVisible())
 	{
 		// Already visible, maybe don't need activation
-		if ( !IsInLevel() && IsInBackgroundLevel() )
+		if (!IsInLevel() && IsInBackgroundLevel())
 			bNeedActivation = false;
 	}
-	if ( bNeedActivation )
+	if (bNeedActivation)
 	{
 		GetUiBaseModPanelClass().OnGameUIActivated();
 	}
@@ -622,7 +629,10 @@ void CGameUI::OnGameUIHidden()
 	// unpause the game when leaving the UI
 	engine->ClientCmd_Unrestricted( "unpause nomsg" );
 
-	GetUiBaseModPanelClass().OnGameUIHidden();
+	if (g_bOverrideBaseModPanel)
+		GetClientGamepadUI()->OnGameUIActivated();
+	else
+		GetUiBaseModPanelClass().OnGameUIHidden();
 
 	// Restore to default
 	if ( bWasActive )
@@ -1079,3 +1089,7 @@ void CGameUI::OnDemoTimeout()
 }
 #endif
 
+void CGameUI::SetupGamepadUIClientPanel() {
+	GetUiBaseModPanelClass().CloseAllWindows(); // ensure we're not drawing on top of another vgui menu
+	m_pGamepadUIPanel = new BaseModUI::CGamepadUI_ClientPanel();
+}

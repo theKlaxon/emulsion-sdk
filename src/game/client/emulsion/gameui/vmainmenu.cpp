@@ -6,9 +6,9 @@
 
 #include "VMainMenu.h"
 #include "EngineInterface.h"
-//#include "VFooterPanel.h"
+#include "VFooterPanel.h"
 #include "VHybridButton.h"
-//#include "VFlyoutMenu.h"
+#include "VFlyoutMenu.h"
 #include "vGenericConfirmation.h"
 //#include "VQuickJoin.h"
 #include "basemodpanel.h"
@@ -71,10 +71,14 @@ MainMenu::MainMenu( Panel *parent, const char *panelName ):
 {
 	SetProportional( true );
 	SetTitle( "", false );
+	SetTitleBarVisible(false);
+
 	SetMoveable( false );
 	SetSizeable( false );
 
+	//SetMouseInputEnabled(true);
 	SetLowerGarnishEnabled( true );
+	//SetPaintBackgroundEnabled(true);
 
 	AddFrameListener( this );
 
@@ -105,53 +109,8 @@ void MainMenu::OnCommand( const char *command )
 
 	if ( !Q_strcmp( command, "SoloPlay" ) )
 	{
-		if ( !asw_show_all_singleplayer_maps.GetBool() )
-		{
-			KeyValues *pSettings = KeyValues::FromString(
-			"settings",
-			" system { "
-			" network offline "
-			" } "
-			" game { "
-			" mode single_mission "
-			" campaign jacob "
-			" mission asi-jac1-landingbay_pract "
-			" } "
-			);
-			KeyValues::AutoDelete autodelete( pSettings );
-
-			// dont need difficullty for the puzzle game
-			//pSettings->SetString( "Game/difficulty", GameModeGetDefaultDifficulty( pSettings->GetString( "Game/mode" ) ) );
-
-			g_pMatchFramework->CreateSession( pSettings );
-
-			// Automatically start the credits session, no configuration required
-			if ( IMatchSession *pMatchSession = g_pMatchFramework->GetMatchSession() )
-			{
-				pMatchSession->Command( KeyValues::AutoDeleteInline( new KeyValues( "Start" ) ) );
-			}
-		}
-		else
-		{
-			KeyValues *pSettings = KeyValues::FromString(
-				"Settings",
-				" System { "
-				" network offline "
-				" } "
-				" Game { "
-				" mode campaign "
-				" campaign jacob "
-				" mission asi-jac1-landingbay_01 "
-				" } "
-				);
-			KeyValues::AutoDelete autodelete( pSettings );
-
-			// KLA: no, we dont.
-			// TCR: We need to respect the default difficulty
-			//pSettings->SetString( "Game/difficulty", GameModeGetDefaultDifficulty( pSettings->GetString( "Game/mode" ) ) );
-
-			g_pMatchFramework->CreateSession( pSettings );
-		}
+		engine->ExecuteClientCmd("map sp_dem01");
+		Close();
 	}
 //	else if ( !Q_strcmp( command, "DeveloperCommentary" ) )
 //	{
@@ -436,6 +395,10 @@ void MainMenu::OnCommand( const char *command )
 		// on PC, bring up the server browser and switch it to the LAN tab (tab #5)
 		engine->ClientCmd( "openserverbrowser" );
 	}
+	//else if (!Q_strcmp(command, "Options"))
+	//{
+	//	CBaseModPanel::GetSingleton().OpenWindow(WT_OPTIONS, this);
+	//}
 	//else if ( !Q_strcmp( command, "DemoConnect" ) )
 	//{
 	//	g_pMatchFramework->GetMatchTitle()->PrepareClientForConnect( NULL );
@@ -451,6 +414,7 @@ void MainMenu::OnCommand( const char *command )
 		const char *pchCommand = command;
 		if ( !Q_strcmp(command, "FlmOptionsFlyout") )
 		{
+			//command = "Options";
 #ifdef _X360
 			if ( XBX_GetPrimaryUserIsGuest() )
 			{
@@ -476,58 +440,58 @@ void MainMenu::OnCommand( const char *command )
 		}
 
 		// does this command match a flyout menu?
-		//BaseModUI::FlyoutMenu *flyout = dynamic_cast< FlyoutMenu* >( FindChildByName( pchCommand ) );
-		//if ( flyout )
-		//{
-		//	bOpeningFlyout = true;
+		BaseModUI::FlyoutMenu *flyout = dynamic_cast< FlyoutMenu* >( FindChildByName( pchCommand ) );
+		if ( flyout )
+		{
+			bOpeningFlyout = true;
 
-		//	// If so, enumerate the buttons on the menu and find the button that issues this command.
-		//	// (No other way to determine which button got pressed; no notion of "current" button on PC.)
-		//	for ( int iChild = 0; iChild < GetChildCount(); iChild++ )
-		//	{
-		//		bool bFound = false;
-		//		GameModes *pGameModes = dynamic_cast< GameModes *>( GetChild( iChild ) );
-		//		if ( pGameModes )
-		//		{
-		//			for ( int iGameMode = 0; iGameMode < pGameModes->GetNumGameInfos(); iGameMode++ )
-		//			{
-		//				BaseModHybridButton *pHybrid = pGameModes->GetHybridButton( iGameMode );
-		//				if ( pHybrid && pHybrid->GetCommand() && !Q_strcmp( pHybrid->GetCommand()->GetString( "command"), command ) )
-		//				{
-		//					pHybrid->NavigateFrom();
-		//					// open the menu next to the button that got clicked
-		//					flyout->OpenMenu( pHybrid );
-		//					flyout->SetListener( this );
-		//					bFound = true;
-		//					break;
-		//				}
-		//			}
-		//		}
+			// If so, enumerate the buttons on the menu and find the button that issues this command.
+			// (No other way to determine which button got pressed; no notion of "current" button on PC.)
+			for ( int iChild = 0; iChild < GetChildCount(); iChild++ )
+			{
+				bool bFound = false;
+				//GameModes *pGameModes = dynamic_cast< GameModes *>( GetChild( iChild ) );
+				//if ( pGameModes )
+				//{
+				//	for ( int iGameMode = 0; iGameMode < pGameModes->GetNumGameInfos(); iGameMode++ )
+				//	{
+				//		BaseModHybridButton *pHybrid = pGameModes->GetHybridButton( iGameMode );
+				//		if ( pHybrid && pHybrid->GetCommand() && !Q_strcmp( pHybrid->GetCommand()->GetString( "command"), command ) )
+				//		{
+				//			pHybrid->NavigateFrom();
+				//			// open the menu next to the button that got clicked
+				//			flyout->OpenMenu( pHybrid );
+				//			flyout->SetListener( this );
+				//			bFound = true;
+				//			break;
+				//		}
+				//	}
+				//}
 
-		//		if ( !bFound )
-		//		{
-		//			BaseModHybridButton *hybrid = dynamic_cast<BaseModHybridButton *>( GetChild( iChild ) );
-		//			if ( hybrid && hybrid->GetCommand() && !Q_strcmp( hybrid->GetCommand()->GetString( "command"), command ) )
-		//			{
-		//				hybrid->NavigateFrom();
-		//				// open the menu next to the button that got clicked
-		//				flyout->OpenMenu( hybrid );
-		//				flyout->SetListener( this );
-		//				break;
-		//			}
-		//		}
-		//	}
-		//}
-		//else
+				if ( !bFound )
+				{
+					BaseModHybridButton *hybrid = dynamic_cast<BaseModHybridButton *>( GetChild( iChild ) );
+					if ( hybrid && hybrid->GetCommand() && !Q_strcmp( hybrid->GetCommand()->GetString( "command"), command ) )
+					{
+						hybrid->NavigateFrom();
+						// open the menu next to the button that got clicked
+						flyout->OpenMenu( hybrid );
+						flyout->SetListener( this );
+						break;
+					}
+				}
+			}
+		}
+		else
 		{
 			BaseClass::OnCommand( command );
 		}
 	}
 
-	//if( !bOpeningFlyout )
-	//{
-	//	FlyoutMenu::CloseActiveMenu(); //due to unpredictability of mouse navigation over keyboard, we should just close any flyouts that may still be open anywhere.
-	//}
+	if( !bOpeningFlyout )
+	{
+		FlyoutMenu::CloseActiveMenu(); //due to unpredictability of mouse navigation over keyboard, we should just close any flyouts that may still be open anywhere.
+	}
 }
 
 //=============================================================================
@@ -637,15 +601,15 @@ void MainMenu::OnThink()
 	//	}
 	//}
 
-	//if ( IsPC() )
-	//{
-	//	FlyoutMenu *pFlyout = dynamic_cast< FlyoutMenu* >( FindChildByName( "FlmOptionsFlyout" ) );
-	//	if ( pFlyout )
-	//	{
-	//		const MaterialSystem_Config_t &config = materials->GetCurrentConfigForVideoCard();
-	//		pFlyout->SetControlEnabled( "BtnBrightness", !config.Windowed() );
-	//	}
-	//}
+	if ( IsPC() )
+	{
+		FlyoutMenu *pFlyout = dynamic_cast< FlyoutMenu* >( FindChildByName( "FlmOptionsFlyout" ) );
+		if ( pFlyout )
+		{
+			const MaterialSystem_Config_t &config = materials->GetCurrentConfigForVideoCard();
+			pFlyout->SetControlEnabled( "BtnBrightness", !config.Windowed() );
+		}
+	}
 
 	BaseClass::OnThink();
 }
@@ -679,6 +643,7 @@ void MainMenu::OnOpen()
 
 	BaseClass::OnOpen();
 
+	//SetMouseInputEnabled(true);
 	SetFooterState();
 }
 
@@ -689,13 +654,19 @@ void MainMenu::RunFrame()
 }
 
 //=============================================================================
-#ifdef _X360
-void MainMenu::Activate()
-{
-	BaseClass::Activate();
-	OnFlyoutMenuClose( NULL );
-}
-#endif
+////#ifdef _X360
+//void MainMenu::Activate()
+//{
+//	BaseClass::Activate();
+//	MoveToFront();
+//
+//	SetEnabled(true);
+//	SetKeyBoardInputEnabled(true);
+//	RequestFocus();
+//	SetMouseInputEnabled(true);
+//	OnFlyoutMenuClose( NULL );
+//}
+////#endif
 
 //=============================================================================
 void MainMenu::PaintBackground() 
@@ -704,21 +675,21 @@ void MainMenu::PaintBackground()
 
 void MainMenu::SetFooterState()
 {
-//	CBaseModFooterPanel *footer = BaseModUI::CBaseModPanel::GetSingleton().GetFooterPanel();
-//	if ( footer )
-//	{
-//		CBaseModFooterPanel::FooterButtons_t buttons = FB_ABUTTON;
-//#if defined( _X360 )
-//		if ( XBX_GetPrimaryUserIsGuest() == 0 )
-//		{
-//			buttons |= FB_XBUTTON;
-//		}
-//#endif
-//
-//		footer->SetButtons( buttons, FF_MAINMENU, false );
-//		footer->SetButtonText( FB_ABUTTON, "#L4D360UI_Select" );
-//		footer->SetButtonText( FB_XBUTTON, "#L4D360UI_MainMenu_SeeAll" );
-//	}
+	CBaseModFooterPanel *footer = BaseModUI::CBaseModPanel::GetSingleton().GetFooterPanel();
+	if ( footer )
+	{
+		CBaseModFooterPanel::FooterButtons_t buttons = FB_ABUTTON;
+#if defined( _X360 )
+		if ( XBX_GetPrimaryUserIsGuest() == 0 )
+		{
+			buttons |= FB_XBUTTON;
+		}
+#endif
+
+		footer->SetButtons( buttons, FF_MAINMENU, false );
+		footer->SetButtonText( FB_ABUTTON, "#L4D360UI_Select" );
+		footer->SetButtonText( FB_XBUTTON, "#L4D360UI_MainMenu_SeeAll" );
+	}
 }
 
 //=============================================================================
@@ -726,7 +697,7 @@ void MainMenu::ApplySchemeSettings( IScheme *pScheme )
 {
 	BaseClass::ApplySchemeSettings( pScheme );
 
-	const char *pSettings = "Resource/UI/BaseModUI/MainMenu.res";
+	const char *pSettings = "Resource/UI/BaseModUI/Emulsion_MainMenu.res";
 
 #if !defined( _X360 )
 	if ( !g_pMatchFramework->GetMatchSystem() )
@@ -739,7 +710,7 @@ void MainMenu::ApplySchemeSettings( IScheme *pScheme )
 	}
 	if ( !g_pMatchFramework->GetMatchSystem()->GetPlayerManager()->GetLocalPlayer( 0 ) )
 	{
-		pSettings = "Resource/UI/BaseModUI/MainMenuStub.res";
+		pSettings = "Resource/UI/BaseModUI/Emulsion_MainMenuStub.res";
 	}
 #endif
 
@@ -754,117 +725,39 @@ void MainMenu::ApplySchemeSettings( IScheme *pScheme )
 #endif
 	}
 
-#ifdef _X360
-	if ( !XBX_GetPrimaryUserIsGuest() )
+	if ( IsPC() )
 	{
-		wchar_t wszListText[ 128 ];
-		wchar_t wszPlayerName[ 128 ];
-
-		IPlayer *player1 = NULL;
-		if ( XBX_GetNumGameUsers() > 0 )
+		FlyoutMenu *pFlyout = dynamic_cast< FlyoutMenu* >( FindChildByName( "FlmOptionsFlyout" ) );
+		if ( pFlyout )
 		{
-			player1 = g_pMatchFramework->GetMatchSystem()->GetPlayerManager()->GetLocalPlayer( XBX_GetUserId( 0 ) );
-		}
+			bool bUsesCloud = false;
 
-		IPlayer *player2 = NULL;
-		if ( XBX_GetNumGameUsers() > 1 )
-		{
-			player2 = g_pMatchFramework->GetMatchSystem()->GetPlayerManager()->GetLocalPlayer( XBX_GetUserId( 1 ) );
-		}
-
-		if ( player1 )
-		{
-			Label *pLblPlayer1GamerTag = dynamic_cast< Label* >( FindChildByName( "LblPlayer1GamerTag" ) );
-			if ( pLblPlayer1GamerTag )
-			{
-				g_pVGuiLocalize->ConvertANSIToUnicode( player1->GetName(), wszPlayerName, sizeof( wszPlayerName ) );
-				g_pVGuiLocalize->ConstructString( wszListText, sizeof( wszListText ), g_pVGuiLocalize->Find( "#L4D360UI_MainMenu_LocalProfilePlayer1" ), 1, wszPlayerName );
-
-				pLblPlayer1GamerTag->SetVisible( true );
-				pLblPlayer1GamerTag->SetText( wszListText );
-			}
-		}
-
-		if ( player2 )
-		{
-			Label *pLblPlayer2GamerTag = dynamic_cast< Label* >( FindChildByName( "LblPlayer2GamerTag" ) );
-			if ( pLblPlayer2GamerTag )
-			{
-				g_pVGuiLocalize->ConvertANSIToUnicode( player2->GetName(), wszPlayerName, sizeof( wszPlayerName ) );
-				g_pVGuiLocalize->ConstructString( wszListText, sizeof( wszListText ), g_pVGuiLocalize->Find( "#L4D360UI_MainMenu_LocalProfilePlayer2" ), 1, wszPlayerName );
-
-				pLblPlayer2GamerTag->SetVisible( true );
-				pLblPlayer2GamerTag->SetText( wszListText );
-
-				// in split screen, have player2 gamer tag instead of enable, and disable
-				SetControlVisible( "LblPlayer2DisableIcon", true );
-				SetControlVisible( "LblPlayer2Disable", true );
-				SetControlVisible( "LblPlayer2Enable", false );
-			}
-		}
-		else
-		{
-			SetControlVisible( "LblPlayer2DisableIcon", false );
-			SetControlVisible( "LblPlayer2Disable", false );
-
-			// not in split screen, no player2 gamertag, instead have enable
-			SetControlVisible( "LblPlayer2GamerTag", false );
-			SetControlVisible( "LblPlayer2Enable", true );
-		}
-	}
+#ifdef IS_WINDOWS_PC
+			ISteamRemoteStorage *pRemoteStorage = SteamClient()?(ISteamRemoteStorage *)SteamClient()->GetISteamGenericInterface(
+				SteamAPI_GetHSteamUser(), SteamAPI_GetHSteamPipe(), STEAMREMOTESTORAGE_INTERFACE_VERSION ):NULL;
+#else
+			ISteamRemoteStorage *pRemoteStorage =  NULL; 
+			AssertMsg( false, "This branch run on a PC build without IS_WINDOWS_PC defined." );
 #endif
 
-//	if ( IsPC() )
-//	{
-//		FlyoutMenu *pFlyout = dynamic_cast< FlyoutMenu* >( FindChildByName( "FlmOptionsFlyout" ) );
-//		if ( pFlyout )
-//		{
-//			bool bUsesCloud = false;
-//
-//#ifdef IS_WINDOWS_PC
-//			ISteamRemoteStorage *pRemoteStorage = SteamClient()?(ISteamRemoteStorage *)SteamClient()->GetISteamGenericInterface(
-//				SteamAPI_GetHSteamUser(), SteamAPI_GetHSteamPipe(), STEAMREMOTESTORAGE_INTERFACE_VERSION ):NULL;
-//#else
-//			ISteamRemoteStorage *pRemoteStorage =  NULL; 
-//			AssertMsg( false, "This branch run on a PC build without IS_WINDOWS_PC defined." );
-//#endif
-//
-//			int32 availableBytes, totalBytes = 0;
-//			if ( pRemoteStorage && pRemoteStorage->GetQuota( &totalBytes, &availableBytes ) )
-//			{
-//				if ( totalBytes > 0 )
-//				{
-//					bUsesCloud = true;
-//				}
-//			}
-//
-//			pFlyout->SetControlEnabled( "BtnCloud", bUsesCloud );
-//		}
-//	}
+			//int32 availableBytes, totalBytes = 0;
+			//if ( pRemoteStorage && pRemoteStorage->GetQuota( &totalBytes, &availableBytes ) )
+			//{
+			//	if ( totalBytes > 0 )
+			//	{
+			//		bUsesCloud = true;
+			//	}
+			//}
+
+			//pFlyout->SetControlEnabled( "BtnCloud", bUsesCloud );
+		}
+	}
 
 	SetFooterState();
 
-	//if ( IsX360() )
-	//{		
-	//	GameModes *pGameModes =  dynamic_cast< GameModes* >( FindChildByName( "BtnGameModes" ) );	
-	//	if ( pGameModes )
-	//	{
-	//		char lastActive[MAX_PATH];
-	//		if ( pGameModes->GetLastActiveNameId( lastActive, sizeof( lastActive ) ) )
-	//		{
-	//			pGameModes->SetActive( lastActive, true );
-	//		}
-	//		else
-	//		{
-	//			pGameModes->SetActive( "BtnPlaySolo", true );
-	//		}
-	//		m_ActiveControl = pGameModes;
-	//	}
-	//}
-
 	if ( IsPC() )
 	{
-		vgui::Panel *firstPanel = FindChildByName( "BtnCoOp" );
+		vgui::Panel *firstPanel = FindChildByName( "BtnSoloPlay" );
 		if ( firstPanel )
 		{
 			if ( m_ActiveControl )
@@ -874,30 +767,15 @@ void MainMenu::ApplySchemeSettings( IScheme *pScheme )
 			firstPanel->NavigateTo();
 		}
 	}
+}
 
-#if defined( _X360 ) && defined( _DEMO )
-	SetControlVisible( "BtnExtras", !engine->IsDemoHostedFromShell() );
-	SetControlVisible( "BtnQuit", engine->IsDemoHostedFromShell() );
-#endif
-
-	// CERT CATCH ALL JUST IN CASE!
-#ifdef _X360
-	bool bAllUsersCorrectlySignedIn = ( XBX_GetNumGameUsers() > 0 );
-	for ( int k = 0; k < ( int ) XBX_GetNumGameUsers(); ++ k )
+void MainMenu::PerformLayout() {
+	BaseClass::PerformLayout();
+	BaseModUI::FlyoutMenu* flyout = dynamic_cast<FlyoutMenu*>(FindChildByName("FlmOptionsFlyout"));
+	if (flyout)
 	{
-		if ( !g_pMatchFramework->GetMatchSystem()->GetPlayerManager()->GetLocalPlayer( XBX_GetUserId( k ) ) )
-			bAllUsersCorrectlySignedIn = false;
+		flyout->SetListener(this);
 	}
-	if ( !bAllUsersCorrectlySignedIn )
-	{
-		Warning( "======= SIGNIN FAIL SIGNIN FAIL SIGNIN FAIL SIGNIN FAIL ==========\n" );
-		Assert( 0 );
-		CBaseModPanel::GetSingleton().CloseAllWindows( CBaseModPanel::CLOSE_POLICY_EVEN_MSGS );
-		CAttractScreen::SetAttractMode( CAttractScreen::ATTRACT_GAMESTART );
-		CBaseModPanel::GetSingleton().OpenWindow( WT_ATTRACTSCREEN, NULL, true );
-		Warning( "======= SIGNIN RESET SIGNIN RESET SIGNIN RESET SIGNIN RESET ==========\n" );
-	}
-#endif
 }
 
 const char *pDemoDisabledButtons[] = { "BtnVersus", "BtnSurvival", "BtnStatsAndAchievements", "BtnExtras" };
