@@ -312,6 +312,10 @@ static ConVar *g_pcv_ThreadMode = NULL;
 #if defined( GAMEPADUI )
 const bool IsSteamDeck()
 {
+#ifdef EMULSION_DLL
+	return true; // we always want gamepadui in emulsion
+#else
+
 	if (CommandLine()->FindParm("-gamepadui"))
 		return true;
 
@@ -323,6 +327,7 @@ const bool IsSteamDeck()
 		return atoi(pszSteamDeckEnv) != 0;
 
 	return false;
+#endif
 }
 #endif
 

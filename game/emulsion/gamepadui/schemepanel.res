@@ -43,6 +43,13 @@
 		"Achievements.Spacing"					"8"
 		"Achievements.Fade"						"48"
 
+		"Credits.Fade"							"48"
+		"Credits.OffsetX"						"210"
+		"Credits.OffsetY"						"120"
+		"Credits.Spacing"						"8"
+		"Credits.ScrollRate"					"20"
+		"Credits.StartScrollDelay"				"3"
+
 		"Saves.OffsetX"							"210"
 		"Saves.OffsetY"							"120"
 		"Saves.Spacing"							"8"

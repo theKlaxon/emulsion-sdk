@@ -24,6 +24,7 @@ enum CUBE_SKIN_WEIGHTED {
 class CPropDevCube : public CBaseAnimating {
 	DECLARE_CLASS(CPropDevCube, CBaseAnimating);
 	DECLARE_SERVERCLASS()
+	DECLARE_DATADESC()
 public:
 
 	CPropDevCube();
@@ -45,8 +46,22 @@ public:
 	virtual void StartTouch(CBaseEntity* pOther);
 	virtual void EndTouch(CBaseEntity* pOther);
 
+	virtual int	OnTakeDamage(const CTakeDamageInfo& info) override {
+		
+		if (info.GetDamage() > m_iHealth) {
+			Event_Killed(info);
+			return 1;
+		}
+			
+
+		return BaseClass::BaseClass::OnTakeDamage(info);
+	}
+	virtual void Event_Killed(const CTakeDamageInfo& info) override;
+	virtual bool PassesDamageFilter(const CTakeDamageInfo& info) override { return true; }
+
 protected:
 
 	CUBE_TYPE m_tType;
+	COutputEvent m_outFizzled;
 
 };

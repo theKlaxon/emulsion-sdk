@@ -1,4 +1,6 @@
 #include "cbase.h"
+#include "c_props.h"
+#include "c_breakableprop.h"
 #include "c_baseanimating.h"
 
 ConVar sv_portal2_pickup_hint_range("sv_portal2_pickup_hint_range", "350.0f", FCVAR_CHEAT | FCVAR_REPLICATED);

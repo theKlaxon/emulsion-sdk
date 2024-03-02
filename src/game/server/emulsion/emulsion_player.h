@@ -36,6 +36,8 @@ public:
 	CBaseEntity*	GetStickParent();
 
 	virtual void	PreThink(void) override;
+	void	Think(void);
+	virtual void	PostThink(void) override;
 	void			ProcessCameraRot();
 	void			ProcessPowerUpdate();
 	
@@ -43,6 +45,8 @@ public:
 	void			StickPlayer(PaintInfo_t info);
 	void			UnStickPlayer();
 	void			RotateBBox(Vector vecUp);
+
+	virtual CBaseEntity* FindUseEntity() override;
 
 	QAngle StickEyeAngles() { return m_vecStickEyeAngles; }
 	Vector StickEyeOrigin() { return m_vecStickEyeOrigin; }
@@ -53,7 +57,7 @@ public:
 	Vector StickGravity() { return m_vecGravity; }
 
 	friend class CEmulsionGameMovement;
-
+	friend class CGrabController;
 protected:
 	
 	CEmulsionGameMovement* pMove;
@@ -75,6 +79,9 @@ protected:
 	float m_flEyeRotation;
 	bool m_bPlayUseDenySound;
 	bool m_bIsTouchingStickParent;
+	bool m_bIsHoldingObject;
+
+	CGrabController* m_pGrabber;
 
 	CNetworkHandle(CBaseEntity, m_hStickParent);
 	CNetworkVar(bool, m_bPlayerPickedUpObject);

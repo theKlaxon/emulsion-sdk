@@ -1920,7 +1920,7 @@ PaintInfo_t CEmulsionGameMovement::CheckPaintedSurface() {
 		VectorMA(vecStart, reach, vecVel, vecEnd);
 
 	TracePlayerBBox(vecStart, vecEnd, PlayerSolidMask(), COLLISION_GROUP_PLAYER_MOVEMENT, tr);
-
+	
 	if (tr.m_pEnt && tr.m_pEnt->IsBSPModel())
 		engine->SphereTracePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, tr.plane.normal, pl_paintTraceRadius.GetFloat(), *m_pPowers);
 

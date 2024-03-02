@@ -6,6 +6,7 @@
 #include "vphysics/friction.h"
 #include "physics_saverestore.h"
 #include "physics_prop_ragdoll.h"
+#include "emulsion_player.h"
 
 //-----------------------------------------------------------------------------
 // Purpose: Computes a local matrix for the player clamped to valid carry ranges
@@ -182,16 +183,20 @@ static void ComputePlayerMatrix(CBasePlayer* pPlayer, matrix3x4_t& out)
 	if (!pPlayer)
 		return;
 
-	QAngle angles = pPlayer->EyeAngles();
-	Vector origin = pPlayer->EyePosition();
+	CEmulsionPlayer* pePlayer = ((CEmulsionPlayer*)pPlayer);
+
+	QAngle angles = pePlayer->LocalEyeAngles();// pPlayer->EyeAngles();
+	Vector origin = pePlayer->StickEyeOrigin();//EyePosition();
 
 	// 0-360 / -180-180
 	//angles.x = init ? 0 : AngleDistance( angles.x, 0 );
 	//angles.x = clamp( angles.x, -PLAYER_LOOK_PITCH_RANGE, PLAYER_LOOK_PITCH_RANGE );
 	angles.x = 0;
 
-	float feet = pPlayer->GetAbsOrigin().z + pPlayer->WorldAlignMins().z;
-	float eyes = origin.z;
+	float fakeZ = (pePlayer->GetAbsOrigin() * -pePlayer->StickGravity()).Length();
+
+	float feet = /*pPlayer->GetAbsOrigin().z*/fakeZ + (pPlayer->WorldAlignMins() * (-pePlayer->StickGravity())).Length();//pPlayer->WorldAlignMins().z;
+	float eyes = fakeZ;//origin.z;
 	float zoffset = 0;
 	// moving up (negative pitch is up)
 	if (angles.x < 0)
@@ -395,7 +400,7 @@ QAngle CGrabController::TransformAnglesToPlayerSpace(const QAngle& anglesIn, CBa
 	if (m_bIgnoreRelativePitch)
 	{
 		matrix3x4_t test;
-		QAngle angleTest = pPlayer->EyeAngles();
+		QAngle angleTest = ((CEmulsionPlayer*)pPlayer)->StickEyeAngles();//pPlayer->EyeAngles();
 		angleTest.x = 0;
 		AngleMatrix(angleTest, test);
 		return TransformAnglesToLocalSpace(anglesIn, test);
@@ -408,7 +413,7 @@ QAngle CGrabController::TransformAnglesFromPlayerSpace(const QAngle& anglesIn, C
 	if (m_bIgnoreRelativePitch)
 	{
 		matrix3x4_t test;
-		QAngle angleTest = pPlayer->EyeAngles();
+		QAngle angleTest = ((CEmulsionPlayer*)pPlayer)->StickEyeAngles(); //pPlayer->EyeAngles();
 		angleTest.x = 0;
 		AngleMatrix(angleTest, test);
 		return TransformAnglesToWorldSpace(anglesIn, test);
@@ -453,7 +458,9 @@ void CGrabController::AttachEntity(CBasePlayer* pPlayer, CBaseEntity* pEntity, I
 
 	pPhys->Wake();
 	PhysSetGameFlags(pPhys, FVPHYSICS_PLAYER_HELD);
+
 	SetTargetPosition(position, angles);
+
 	m_attachedEntity = pEntity;
 	IPhysicsObject* pList[VPHYSICS_MAX_OBJECT_LIST_COUNT];
 	int count = pEntity->VPhysicsGetObjectList(pList, ARRAYSIZE(pList));
@@ -464,6 +471,7 @@ void CGrabController::AttachEntity(CBasePlayer* pPlayer, CBaseEntity* pEntity, I
 	{
 		flFactor = 1.0f;
 	}
+
 	for (int i = 0; i < count; i++)
 	{
 		float mass = pList[i]->GetMass();
@@ -486,7 +494,7 @@ void CGrabController::AttachEntity(CBasePlayer* pPlayer, CBaseEntity* pEntity, I
 	m_errorTime = bIsMegaPhysCannon ? -1.5f : -1.0f; // 1 seconds until error starts accumulating
 	m_error = 0;
 	m_contactAmount = 0;
-
+	m_bIgnoreRelativePitch = true;
 	m_attachedAnglesPlayerSpace = TransformAnglesToPlayerSpace(angles, pPlayer);
 	if (m_angleAlignment != 0)
 	{
@@ -517,6 +525,11 @@ void CGrabController::AttachEntity(CBasePlayer* pPlayer, CBaseEntity* pEntity, I
 	}
 
 	m_bAllowObjectOverhead = IsObjectAllowedOverhead(pEntity);
+
+	pEntity->SetSolid(SOLID_NONE);
+	pEntity->SetSolidFlags(FSOLID_NOT_SOLID);
+	((CEmulsionPlayer*)pPlayer)->m_pGrabber = this;
+	((CEmulsionPlayer*)pPlayer)->m_bIsHoldingObject = true;
 }
 
 static void ClampPhysicsVelocity(IPhysicsObject* pPhys, float linearLimit, float angularLimit)
@@ -564,7 +577,12 @@ void CGrabController::DetachEntity(bool bClearVelocity)
 				ClampPhysicsVelocity(pPhys, pl_normspeed.GetFloat() * 1.5f, 2.0f * 360.0f);
 			}
 
+			CEmulsionPlayer* pPlayer = ((CEmulsionPlayer*)UTIL_GetLocalPlayer());
+			pPlayer->m_bIsHoldingObject = false;
 		}
+
+		pEntity->SetSolid(SOLID_VPHYSICS);
+		pEntity->RemoveSolidFlags(FSOLID_NOT_SOLID);
 	}
 
 	m_attachedEntity = NULL;
@@ -637,21 +655,19 @@ bool CGrabController::UpdateObject(CBasePlayer* pPlayer, float flError)
 	}
 
 	Vector forward, right, up;
-	QAngle playerAngles = pPlayer->EyeAngles();
+	QAngle playerAngles = ((CEmulsionPlayer*)pPlayer)->StickEyeAngles();//pPlayer->EyeAngles();
 	AngleVectors(playerAngles, &forward, &right, &up);
 
 	float pitch = AngleDistance(playerAngles.x, 0);
 
-	if (!m_bAllowObjectOverhead)
-	{
-		playerAngles.x = clamp(pitch, -75, 75);
-	}
-	else
-	{
-		playerAngles.x = clamp(pitch, -90, 75);
-	}
-
-
+	//if (!m_bAllowObjectOverhead)
+	//{
+	//	playerAngles.x = clamp(pitch, -75, 75);
+	//}
+	//else
+	//{
+	//	playerAngles.x = clamp(pitch, -90, 75);
+	//}
 
 	// Now clamp a sphere of object radius at end to the player's bbox
 	Vector radial = physcollision->CollideGetExtent(pPhys->GetCollide(), vec3_origin, pEntity->GetAbsAngles(), -forward);
@@ -664,7 +680,7 @@ bool CGrabController::UpdateObject(CBasePlayer* pPlayer, float flError)
 	// Add the prop's distance offset
 	distance += m_flDistanceOffset;
 
-	Vector start = pPlayer->Weapon_ShootPosition();
+	Vector start = ((CEmulsionPlayer*)pPlayer)->StickEyeOrigin();
 	Vector end = start + (forward * distance);
 
 	trace_t	tr;
@@ -684,7 +700,21 @@ bool CGrabController::UpdateObject(CBasePlayer* pPlayer, float flError)
 	Vector playerMins, playerMaxs, nearest;
 	pPlayer->CollisionProp()->WorldSpaceAABB(&playerMins, &playerMaxs);
 	Vector playerLine = pPlayer->CollisionProp()->WorldSpaceCenter();
-	CalcClosestPointOnLine(end, playerLine + Vector(0, 0, playerMins.z), playerLine + Vector(0, 0, playerMaxs.z), nearest, NULL);
+
+	int k = 0;
+	Vector stickgrav = ((CEmulsionPlayer*)pPlayer)->StickGravity();
+
+	//Msg("StickVec: (%f, %f, %f)\n", stickgrav.x, stickgrav.y, stickgrav.z);
+
+	if (stickgrav == Vector(0, 0, 1))
+		stickgrav *= -0.99;
+	else
+		stickgrav *= -1;
+
+	//Msg("GrabVec: (%f, %f, %f)\n", stickgrav.x, stickgrav.y, stickgrav.z);
+
+	//CalcClosestPointOnLine(end, playerLine + Vector(0, 0, playerMins.z), playerLine + Vector(0, 0, playerMaxs.z), nearest, NULL);
+	CalcClosestPointOnLine(end, playerLine + ( stickgrav * playerMins), playerLine + stickgrav * playerMins, nearest, NULL);
 
 	if (!m_bAllowObjectOverhead)
 	{

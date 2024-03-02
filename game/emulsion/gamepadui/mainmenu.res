@@ -40,6 +40,14 @@
 		"family"		"all"
 	}
 
+	"Credits"
+	{
+		"text"			"#GameUI_Credits_Button"
+		"command"		"cmd gamepadui_opencredits"
+		"priority"		"2"
+		"family"		"mainmenu"
+	}
+
 	"Quit"
 	{
 		"text"			"#GameUI_GameMenu_Quit"

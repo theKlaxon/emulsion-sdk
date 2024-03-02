@@ -28,6 +28,11 @@ public:
         return m_flScrollProgress;
     }
 
+    float GetLastScrolledValue()
+    {
+        return m_flScrollLastScrolledValue;
+    }
+
     float GetScrollTarget() const
     {
         return m_flScrollTarget;

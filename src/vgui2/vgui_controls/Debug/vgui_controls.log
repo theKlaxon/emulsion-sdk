@@ -6,219 +6,129 @@ cl : Command line warning D9002: ignoring unknown option '/Gw'
 cl : Command line warning D9002: ignoring unknown option '/Gw'
   AnimationController.cpp
 cl : Command line warning D9002: ignoring unknown option '/Gw'
+cl : Command line warning D9002: ignoring unknown option '/Gw'
   BitmapImagePanel.cpp
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+  BuildFactoryHelper.cpp
 cl : Command line warning D9002: ignoring unknown option '/Gw'
   BuildGroup.cpp
 cl : Command line warning D9002: ignoring unknown option '/Gw'
   BuildModeDialog.cpp
 cl : Command line warning D9002: ignoring unknown option '/Gw'
+cl : Command line warning D9002: ignoring unknown option '/Gw'
+cl : Command line warning D9002: ignoring unknown option '/Gw'
   Button.cpp
-cl : Command line warning D9002: ignoring unknown option '/Gw'
   CheckButton.cpp
-cl : Command line warning D9002: ignoring unknown option '/Gw'
   CheckButtonList.cpp
-cl : Command line warning D9002: ignoring unknown option '/Gw'
   CircularProgressBar.cpp
-cl : Command line warning D9002: ignoring unknown option '/Gw'
   ComboBox.cpp
-cl : Command line warning D9002: ignoring unknown option '/Gw'
+  consoledialog.cpp
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\button.cpp(607): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\button.cpp(609): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\button.cpp(629): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\button.cpp(631): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\button.cpp(896): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
   ControllerMap.cpp
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\button.cpp(607): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\button.cpp(609): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\button.cpp(629): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\button.cpp(631): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\button.cpp(896): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+  controls.cpp
   CvarToggleCheckButton.cpp
-e:\source\source-sdk-2011-r\src\public\localize\ilocalize.h(149): warning C4717: 'ILocalize::ConstructString' : recursive on all control paths, function will cause runtime stack overflow
   DirectorySelectDialog.cpp
   Divider.cpp
   EditablePanel.cpp
   ExpandButton.cpp
   FileOpenDialog.cpp
   FileOpenStateMachine.cpp
+  filesystem_helpers.cpp
   FocusNavGroup.cpp
   Frame.cpp
   GraphPanel.cpp
   HTML.cpp
+  Image.cpp
+  ImageList.cpp
   ImagePanel.cpp
   InputDialog.cpp
   KeyBindingHelpDialog.cpp
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\imagepanel.cpp(292): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\imagepanel.cpp(293): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\imagepanel.cpp(295): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\imagepanel.cpp(296): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\imagepanel.cpp(297): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
   KeyBoardEditorDialog.cpp
   KeyRepeat.cpp
   Label.cpp
   ListPanel.cpp
   ListViewPanel.cpp
   Menu.cpp
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(292): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(293): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(295): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(296): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(297): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
   MenuBar.cpp
   MenuButton.cpp
   MenuItem.cpp
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(72): warning C4005: 'INT8_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(291) : see previous definition of 'INT8_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(73): warning C4005: 'INT16_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(292) : see previous definition of 'INT16_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(74): warning C4005: 'INT32_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(293) : see previous definition of 'INT32_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(76): warning C4005: 'INT8_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(286) : see previous definition of 'INT8_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(77): warning C4005: 'INT16_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(287) : see previous definition of 'INT16_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(78): warning C4005: 'INT32_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(288) : see previous definition of 'INT32_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(79): warning C4005: 'UINT8_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(296) : see previous definition of 'UINT8_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(80): warning C4005: 'UINT16_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(297) : see previous definition of 'UINT16_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(81): warning C4005: 'UINT32_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(298) : see previous definition of 'UINT32_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(149): warning C4005: 'INT64_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(294) : see previous definition of 'INT64_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(150): warning C4005: 'INT64_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(289) : see previous definition of 'INT64_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(151): warning C4005: 'UINT64_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(299) : see previous definition of 'UINT64_MAX'
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\html.cpp(2010): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
   MessageBox.cpp
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\listpanel.cpp(609): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\listpanel.cpp(612): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
   MessageDialog.cpp
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\listpanel.cpp(609): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\listpanel.cpp(612): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
   Panel.cpp
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\html.cpp(2010): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
   PanelListPanel.cpp
+  patch.cpp
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
   PerforceFileExplorer.cpp
   PerforceFileList.cpp
+  perforcefilelistframe.cpp
   ProgressBar.cpp
   ProgressBox.cpp
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
   PropertyDialog.cpp
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(72): warning C4005: 'INT8_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(291) : see previous definition of 'INT8_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(73): warning C4005: 'INT16_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(292) : see previous definition of 'INT16_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(74): warning C4005: 'INT32_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(293) : see previous definition of 'INT32_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(76): warning C4005: 'INT8_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(286) : see previous definition of 'INT8_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(77): warning C4005: 'INT16_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(287) : see previous definition of 'INT16_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(78): warning C4005: 'INT32_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(288) : see previous definition of 'INT32_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(79): warning C4005: 'UINT8_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(296) : see previous definition of 'UINT8_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(80): warning C4005: 'UINT16_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(297) : see previous definition of 'UINT16_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(81): warning C4005: 'UINT32_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(298) : see previous definition of 'UINT32_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(149): warning C4005: 'INT64_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(294) : see previous definition of 'INT64_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(150): warning C4005: 'INT64_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(289) : see previous definition of 'INT64_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(151): warning C4005: 'UINT64_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(299) : see previous definition of 'UINT64_MAX'
   PropertyPage.cpp
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(72): warning C4005: 'INT8_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(291) : see previous definition of 'INT8_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(73): warning C4005: 'INT16_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(292) : see previous definition of 'INT16_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(74): warning C4005: 'INT32_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(293) : see previous definition of 'INT32_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(76): warning C4005: 'INT8_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(286) : see previous definition of 'INT8_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(77): warning C4005: 'INT16_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(287) : see previous definition of 'INT16_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(78): warning C4005: 'INT32_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(288) : see previous definition of 'INT32_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(79): warning C4005: 'UINT8_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(296) : see previous definition of 'UINT8_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(80): warning C4005: 'UINT16_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(297) : see previous definition of 'UINT16_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(81): warning C4005: 'UINT32_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(298) : see previous definition of 'UINT32_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(149): warning C4005: 'INT64_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(294) : see previous definition of 'INT64_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(150): warning C4005: 'INT64_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(289) : see previous definition of 'INT64_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(151): warning C4005: 'UINT64_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(299) : see previous definition of 'UINT64_MAX'
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
   PropertySheet.cpp
   QueryBox.cpp
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(1355): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(1363): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(3338): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
   RadioButton.cpp
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(4580): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(4582): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(4683): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(5281): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
   RichText.cpp
   RotatingProgressBar.cpp
-e:\source\source-sdk-2011-r\src\public\localize\ilocalize.h(149): warning C4717: 'ILocalize::ConstructString' : recursive on all control paths, function will cause runtime stack overflow
+  savedocumentquery.cpp
   ScalableImagePanel.cpp
+  ScrollableEditablePanel.cpp
   ScrollBar.cpp
   ScrollBarSlider.cpp
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\panel.cpp(1355): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\panel.cpp(1363): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\panel.cpp(3338): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\panel.cpp(4580): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\panel.cpp(4582): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\panel.cpp(4683): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\panel.cpp(5281): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\public\localize\ilocalize.h(149): warning C4717: 'ILocalize::ConstructString' : recursive on all control paths, function will cause runtime stack overflow
-  ScrollableEditablePanel.cpp
   SectionedListPanel.cpp
   Slider.cpp
   Splitter.cpp
+  subrectimage.cpp
   TextEntry.cpp
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
+  TextImage.cpp
   ToggleButton.cpp
-  ToolWindow.cpp
   Tooltip.cpp
+  ToolWindow.cpp
   TreeView.cpp
   TreeViewListControl.cpp
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
   URLLabel.cpp
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(72): warning C4005: 'INT8_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(291) : see previous definition of 'INT8_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(73): warning C4005: 'INT16_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(292) : see previous definition of 'INT16_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(74): warning C4005: 'INT32_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(293) : see previous definition of 'INT32_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(76): warning C4005: 'INT8_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(286) : see previous definition of 'INT8_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(77): warning C4005: 'INT16_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(287) : see previous definition of 'INT16_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(78): warning C4005: 'INT32_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(288) : see previous definition of 'INT32_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(79): warning C4005: 'UINT8_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(296) : see previous definition of 'UINT8_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(80): warning C4005: 'UINT16_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(297) : see previous definition of 'UINT16_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(81): warning C4005: 'UINT32_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(298) : see previous definition of 'UINT32_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(149): warning C4005: 'INT64_MIN' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(294) : see previous definition of 'INT64_MIN'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(150): warning C4005: 'INT64_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(289) : see previous definition of 'INT64_MAX'
-c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdint.h(151): warning C4005: 'UINT64_MAX' : macro redefinition
-          e:\source\source-sdk-2011-r\src\public\tier0\platform.h(299) : see previous definition of 'UINT64_MAX'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
+  vgui_key_translation.cpp
   WizardPanel.cpp
   WizardSubPanel.cpp
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
-e:\source\source-sdk-2011-r\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
-  consoledialog.cpp
-  perforcefilelistframe.cpp
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\richtext.cpp(2272): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\textentry.cpp(3742): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\textentry.cpp(3743): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\textentry.cpp(3745): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\textentry.cpp(3746): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\textentry.cpp(3747): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-  savedocumentquery.cpp
-e:\source\source-sdk-2011-r\src\vgui2\vgui_controls\treeview.cpp(672): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-  vgui_controls.vcxproj -> E:\Source\source-sdk-2011-r\src\vgui2\vgui_controls\..\..\lib\public\.\vgui_controls.lib
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\richtext.cpp(2272): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\textentry.cpp(3742): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\textentry.cpp(3743): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\textentry.cpp(3745): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\textentry.cpp(3746): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\textentry.cpp(3747): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\treeview.cpp(672): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+  vgui_controls.vcxproj -> D:\theKlaxon\emulsion-sdk\src\vgui2\vgui_controls\..\..\lib\public\.\vgui_controls.lib

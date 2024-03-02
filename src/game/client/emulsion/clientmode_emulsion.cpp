@@ -90,6 +90,8 @@ class SkeletonModeManager : public IVModeManager
 			GetClientMode()->LevelInit(newmap);
 		}
 		GetFullscreenClientMode()->LevelInit(newmap);
+
+		engine->ClientCmd("r_flashlightbrightness 2");
 	}
 	void LevelShutdown()
 	{

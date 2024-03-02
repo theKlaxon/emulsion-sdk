@@ -33,10 +33,15 @@ ConCommand paintgun_prev("paintgun_prev", Paintgun_PrevPower);
 
 ConVar paintgun_rad("paintgun_rad", "64", FCVAR_REPLICATED);
 ConVar paintgun_strength("paintgun_strength", "5", FCVAR_REPLICATED);
-ConVar paintgun_timing("paintgun_timing", "0.01f", FCVAR_REPLICATED, "0.015 is the MINIMUM you should go.");
+ConVar paintgun_timing("paintgun_timing", "0.00125f", FCVAR_REPLICATED, "0.015 is the MINIMUM you should go.");
 ConVar paintgun_cone("paintgun_cone", "15.0f", FCVAR_REPLICATED, "Paintblob streak cone in degrees");
 ConVar paintgun_fire_offset_z("paintgun_fire_offset_z", "-20.0f", FCVAR_REPLICATED);
 ConVar paintgun_fire_offset_x("paintgun_fire_offset_x", "60.5f", FCVAR_REPLICATED);
+
+// TODO: maybe make this stuff into it's own class, make an interface 
+// in case a multiplayer version needs to be used at any point
+static const float paintSwitchDelay = 0.15f;
+float curPaintSwitchTime = 0.0f;
 
 void SetPaintDisplayColour(PaintPowerType power) {
 	if (g_playerPaintgun == nullptr)
@@ -69,14 +74,24 @@ CWeaponPaintgun::CWeaponPaintgun() {
 	//g_playerPaintgun = this;
 }
 
+void CWeaponPaintgun::Spawn() {
+	BaseClass::Spawn();
+
+	g_playerPaintgun = this;
+	g_CurPaintgunPower = BOUNCE_POWER;
+	curPaintSwitchTime = 0.0f;
+}
+
 void CWeaponPaintgun::Equip(CBaseCombatCharacter* pOwner) {
 	BaseClass::Equip(pOwner);
 	g_playerPaintgun = this;
+	g_CurPaintgunPower = BOUNCE_POWER;
+	curPaintSwitchTime = 0.0f;
 }
 
 void CWeaponPaintgun::Drop(const Vector& vecVelocity) {
 	BaseClass::Drop(vecVelocity);
-	g_playerPaintgun = nullptr;
+	//g_playerPaintgun = nullptr;
 }
 
 int GetStreamIndex(PaintPowerType type) {
@@ -159,15 +174,10 @@ void CWeaponPaintgun::FirePaint(bool erase) {
 
 		Vector offset = eyePosition + (g_BlobPatterns[g_nBlobCycle].m_vecOffsets * (forward + right + up));
 
-		float xang, yang;
-
-		PaintBlobManager()->CreateBlob(offset + (forward * paintgun_fire_offset_x.GetFloat()), blobVel, GetStreamIndex(type), g_BlobPatterns[g_nBlobCycle].m_flRadius);
-
 		for (int i = 0; i < g_BlobPatterns[g_nBlobCycle].m_nCount; i++) {
-			//float offset = paintgun_fire_offset_x.GetFloat() + g_BlobPatterns[g_nBlobCycle].m_flOffsets[i];
-			PaintBlobManager()->CreateBlob(offset + (forward * paintgun_fire_offset_x.GetFloat()), blobVel, GetStreamIndex(type), g_BlobPatterns[g_nBlobCycle].m_flRadius);
-
-			//PaintBlobManager()->CreateBlob(eyePosition + (forward * offset), blobVel, GetStreamIndex(type), g_BlobPatterns[g_nBlobCycle].m_flVelMod);
+			float randfor = RandomFloat(0.0f, 25.0f);
+			float randri = RandomFloat(-10.0f, 10.0f);
+			PaintBlobManager()->CreateBlob(offset + ((forward * (randfor + paintgun_fire_offset_x.GetFloat()))) + (right * randri), blobVel, GetStreamIndex(type), g_BlobPatterns[g_nBlobCycle].m_flVelMod);
 		}
 		
 		g_nBlobCycle++;
@@ -195,11 +205,6 @@ int CWeaponPaintgun::UpdateClientData(CBasePlayer* pPlayer) {
 
 	return BaseClass::UpdateClientData(pPlayer);
 }
-
-// TODO: maybe make this stuff into it's own class, make an interface 
-// in case a multiplayer version needs to be used at any point
-static const float paintSwitchDelay = 0.15f;
-float curPaintSwitchTime = 0.0f;
 
 void Paintgun_NextPower() {
 

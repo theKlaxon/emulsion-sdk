@@ -2,5 +2,5 @@
 {
 	"$basetexture" "skybox/sky_csgo_night02bbk"
 	"$nofog"       1
-	"$ignorez"     1
+	//"$ignorez"     1
 }

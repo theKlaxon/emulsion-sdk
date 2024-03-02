@@ -41,7 +41,7 @@ void GamepadUIMainMenu::UpdateGradients()
 {
     const float flTime = GamepadUI::GetInstance().GetTime();
     GamepadUI::GetInstance().GetGradientHelper()->ResetTargets( flTime );
-    GamepadUI::GetInstance().GetGradientHelper()->SetTargetGradient( GradientSide::Left, { 1.0f, 0.666f }, flTime );
+    GamepadUI::GetInstance().GetGradientHelper()->SetTargetGradient( GradientSide::Left, { 1.0f, 0.65f }, flTime );
 }
 
 void GamepadUIMainMenu::LoadMenuButtons()

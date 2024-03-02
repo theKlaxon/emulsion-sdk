@@ -8,6 +8,7 @@ public:
 
 	CWeaponPaintgun();
 
+	virtual void Spawn();
 	void FirePaint(bool erase = false);
 	void PrimaryAttack() { FirePaint(); }
 	void SecondaryAttack() { FirePaint(true); }

@@ -140,12 +140,14 @@ void CPropTestChamberDoor::Think() {
 		if (IsSequenceFinished()) {
 			if (m_bOpened) {
 				m_outDoorFullyOpened.FireOutput(this, this);
-				//SetSequence(m_seqIdleOpen);
+				SetSequence(m_seqIdleOpen);
 			} else {
 				m_outDoorFullyClosed.FireOutput(this, this);
 				AreaPortalClose();
 
-				//SetSequence(m_seqIdleClose);
+				SetSequence(m_seqIdleClose);
+				ResetSequence(m_seqIdleClose);
+				SetPlaybackRate(1.0f);
 			}
 			
 			m_bChangingState = false;
@@ -194,7 +196,7 @@ void CPropTestChamberDoor::DoorLockOpen(inputdata_t& input) {
 }
 
 void CPropTestChamberDoor::DoorUnLock(inputdata_t& input) {
-
+	
 }
 
 //-----------------------------------------------------------------------------
