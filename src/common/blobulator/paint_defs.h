@@ -18,3 +18,10 @@ class CornerInfo;
 class IndexTriVertexBuffer;
 class ProjectingParticleCache;
 
+enum PaintBlobType_t {
+	BOUNCE_POWER = 0,
+	REFLECT_POWER,
+	SPEED_POWER,
+	PORTAL_POWER,
+	NO_POWER,
+};

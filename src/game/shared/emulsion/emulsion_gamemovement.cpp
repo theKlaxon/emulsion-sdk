@@ -59,7 +59,7 @@ ConVar pl_stickPaintMoveSpeed("pl_stickpaintmovespeed", "150", FCVAR_REPLICATED 
 
 // paint debugging
 ConVar pl_showPaintPower("pl_showpaintpower", "0", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
-ConVar pl_showBouncePowerNormal("pl_showbouncepowernormal", "1", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
+ConVar pl_showBouncePowerNormal("pl_showbouncepowernormal", "0", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
 ConVar pl_showStickPowerNormal("pl_showstickpowernormal", "0", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
 
 static CEmulsionGameMovement g_GameMovement;
