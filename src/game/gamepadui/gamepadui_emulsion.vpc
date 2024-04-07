@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-//	GAMEPADUI_EPISODIC.VPC
+//	GAMEPADUI_EMULSION.VPC
 //
 //	Project Script
 //-----------------------------------------------------------------------------
@@ -14,10 +14,20 @@ $Configuration
 {
 	$Compiler
 	{
-		$PreprocessorDefinitions			"$BASE;GAMEPADUI_GAME_EMULSION"
+		$PreprocessorDefinitions			"$BASE;GAMEPADUI_GAME_EMULSION;EMULSION_DLL"
 	}
 }
 
-$Project "GamepadUI (Episodic)"
+$Project "GamepadUI (Emulsion)"
 {
+	$Folder "Header Files"
+	{
+		$File "gamepadui_backgroundmovie.h"
+	}
+
+	$Folder "Source Files"
+	{
+		$File "gamepadui_backgroundmovie.cpp"
+	}
+
 }

@@ -55,6 +55,7 @@ config.cfg
 *.tmp
 *.vpc_crc
 *.filters
+
 # *.pdb
 *.sentinel
 *.db
@@ -85,6 +86,9 @@ src/game/client/Debug_p2asw/
 src/game/server/Debug_p2asw/
 src/game/client/Release_p2asw/
 src/game/server/Release_p2asw/
+
+src/game/gamepadui/Debug_emulsion/
+src/game/gamepadui/Release_emulsion/
 
 game/emulsion/maps/workshop/
 
