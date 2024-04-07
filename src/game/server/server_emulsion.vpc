@@ -46,7 +46,8 @@ $Project "Server (Emulsion)"
 			$File	"emulsion\emulsion_player.cpp"
 			$File	"emulsion\emulsion_playermove.cpp"
 			$File	"emulsion\weapon_paintgun.cpp"
-			
+			$File	"emulsion\weapon_placement.cpp"
+
 			$File	"emulsion\paintblob_stream.cpp"
 			$File	"emulsion\paintblob_stream.h"
 
@@ -59,6 +60,9 @@ $Project "Server (Emulsion)"
 			$File	"emulsion\prop_testchamber_door.cpp"
 			$File	"emulsion\npc_surface.h"
 			$File	"emulsion\npc_surface.cpp"
+
+			$File 	"emulsion\paint_sphere.cpp"
+			$File 	"emulsion\paint_sphere.h"
 		}
 	}
 }

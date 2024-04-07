@@ -31,14 +31,35 @@ $Project "Client (Emulsion)"
 		{		
 			$Folder "GameUI"
 			{
+				$Folder "vgui"
+				{
+					$File	"emulsion\vgui\nb_button.cpp" \
+							"emulsion\vgui\nb_button.h"	\
+							"emulsion\vgui\nb_header_footer.cpp" \
+							"emulsion\vgui\nb_header_footer.h" \
+							"emulsion\vgui\nb_horiz_list.cpp" \
+							"emulsion\vgui\nb_horiz_list.h"	\
+							"emulsion\vgui\nb_island.cpp" \
+							"emulsion\vgui\nb_island.h"
+				}
+
 				$File	"emulsion\gameui\basemodpanel.cpp" \
-						"emulsion\gameui\uigamedata.cpp" 
-						//"emulsion\gameui\vgenericconfirmation.cpp" \
-						//"emulsion\gameui\vgenericconfirmation.h" \
+						"emulsion\gameui\basemodframe.cpp" \
+						"emulsion\gameui\uigamedata.cpp" \
+						"emulsion\gameui\vgenericconfirmation.cpp" \
+						"emulsion\gameui\vgenericconfirmation.h" \
+						"emulsion\gameui\vdropdownmenu.cpp" \
+						"emulsion\gameui\vdropdownmenu.h" \
+						"emulsion\gameui\vflyoutmenu.cpp" \
+						"emulsion\gameui\vflyoutmenu.h" \
 						//"emulsion\gameui\vgenericwaitscreen.cpp" \
 						//"emulsion\gameui\vgenericwaitscreen.h" \
-						//"emulsion\gameui\vhybridbutton.cpp" \
-						//"emulsion\gameui\vhybridbutton.h" \
+						"emulsion\gameui\vhybridbutton.cpp" \
+						"emulsion\gameui\vhybridbutton.h" \
+						"emulsion\gameui\vslidercontrol.cpp" \
+						"emulsion\gameui\vslidercontrol.h" \
+						"emulsion\gameui\vfooterpanel.cpp" \
+						"emulsion\gameui\vfooterpanel.h" 
 						//"emulsion\gameui\vmainmenu.cpp" \
 						//"emulsion\gameui\vmainmenu.h"
 			}

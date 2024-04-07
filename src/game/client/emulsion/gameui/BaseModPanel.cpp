@@ -68,14 +68,14 @@
 //#include "vleaderboard.h"
 
 #include "VGenericConfirmation.h"
-#include "VMainMenu.h"
-#include "vingamemainmenu.h"
+//#include "VMainMenu.h"
+//#include "vingamemainmenu.h"
 #include "VFooterPanel.h"
-#include "vflyoutmenu.h"
+//#include "vflyoutmenu.h"
 #include "vgetlegacydata.h"
-#include "vloadingprogress.h"
-#include "voptions.h"
-#include "vvideo.h"
+//#include "vloadingprogress.h"
+//#include "voptions.h"
+//#include "vvideo.h"
 
 #include "gameconsole.h"
 #include "vgui/ISystem.h"
@@ -387,7 +387,7 @@ CBaseModFrame* CBaseModPanel::OpenWindow(const WINDOW_TYPE & wt, CBaseModFrame *
 			break;
 
 		case WT_INGAMEMAINMENU:
-			m_Frames[wt] = new InGameMainMenu(this, "InGameMainMenu");
+			//m_Frames[wt] = new InGameMainMenu(this, "InGameMainMenu");
 			break;
 
 		case WT_INGAMECHAPTERSELECT:
@@ -413,15 +413,15 @@ CBaseModFrame* CBaseModPanel::OpenWindow(const WINDOW_TYPE & wt, CBaseModFrame *
 			break;
 
 		case WT_LOADINGPROGRESSBKGND:
-			m_Frames[wt] = new LoadingProgress( this, "LoadingProgress", LoadingProgress::LWT_BKGNDSCREEN );
+			//m_Frames[wt] = new LoadingProgress( this, "LoadingProgress", LoadingProgress::LWT_BKGNDSCREEN );
 			break;
 
 		case WT_LOADINGPROGRESS:
-			m_Frames[wt] = new LoadingProgress( this, "LoadingProgress", LoadingProgress::LWT_LOADINGPLAQUE );
+			//m_Frames[wt] = new LoadingProgress( this, "LoadingProgress", LoadingProgress::LWT_LOADINGPLAQUE );
 			break;
 
 		case WT_MAINMENU:
-			m_Frames[wt] = new MainMenu(this, "MainMenu");
+			//m_Frames[wt] = new MainMenu(this, "MainMenu");
 			break;
 
 		case WT_MULTIPLAYER:
@@ -429,7 +429,7 @@ CBaseModFrame* CBaseModPanel::OpenWindow(const WINDOW_TYPE & wt, CBaseModFrame *
 			break;
 
 		case WT_OPTIONS:
-			m_Frames[wt] = new Options(this, "Options");
+			//m_Frames[wt] = new Options(this, "Options");
 			break;
 
 		case WT_SIGNINDIALOG:
@@ -461,7 +461,7 @@ CBaseModFrame* CBaseModPanel::OpenWindow(const WINDOW_TYPE & wt, CBaseModFrame *
 			break;
 
 		case WT_VIDEO:
-			m_Frames[wt] = new Video(this, "Video");
+			//m_Frames[wt] = new Video(this, "Video");
 			break;
 
 		case WT_STEAMCLOUDCONFIRM:
@@ -796,7 +796,7 @@ void CBaseModPanel::CloseAllWindows( int ePolicyFlags )
 	}
 
 	// make sure we also close any active flyout menus that might be hanging out.
-	FlyoutMenu::CloseActiveMenu();
+	//FlyoutMenu::CloseActiveMenu();
 
 	for (int i = 0; i < WT_WINDOW_COUNT; ++i)
 	{
@@ -1198,7 +1198,7 @@ void CBaseModPanel::OnLevelLoadingStarted( char const *levelName, bool bShowProg
 
 	return;
 
-	LoadingProgress *pLoadingProgress = static_cast<LoadingProgress*>( OpenWindow( WT_LOADINGPROGRESS, 0 ) );
+	//LoadingProgress *pLoadingProgress = static_cast<LoadingProgress*>( OpenWindow( WT_LOADINGPROGRESS, 0 ) );
 
 	KeyValues *pMissionInfo = NULL;
 	KeyValues *pChapterInfo = NULL;
@@ -1282,78 +1282,78 @@ void CBaseModPanel::OnLevelLoadingStarted( char const *levelName, bool bShowProg
 	// If we are transitioning maps from a real level then we don't want poster.
 	// We always want the poster when loading the first chapter of a campaign (vote for restart)
 	//
-	bShowPoster = true; //( !GameUI().IsInLevel() ||
+	bShowPoster = false;// true; //( !GameUI().IsInLevel() ||
 					//GameModeIsSingleChapter( chGameMode ) ||
 					//( pChapterInfo && pChapterInfo->GetInt( "chapter" ) == 1 ) ) &&
 		//pLoadingProgress->ShouldShowPosterForLevel( pMissionInfo, pChapterInfo );
 
-	LoadingProgress::LoadingType type;
-	if ( bShowPoster )
-	{
-		type = LoadingProgress::LT_POSTER;
+	//LoadingProgress::LoadingType type;
+	//if ( bShowPoster )
+	//{
+	//	type = LoadingProgress::LT_POSTER;
 
-		// These names match the order of the enum Avatar_t in imatchmaking.h
+	//	// These names match the order of the enum Avatar_t in imatchmaking.h
 
-		const char *pPlayerNames[NUM_LOADING_CHARACTERS] = { NULL, NULL, NULL, NULL };
-		const char *pAvatarNames[NUM_LOADING_CHARACTERS] = { "", "", "", "" };
+	//	const char *pPlayerNames[NUM_LOADING_CHARACTERS] = { NULL, NULL, NULL, NULL };
+	//	const char *pAvatarNames[NUM_LOADING_CHARACTERS] = { "", "", "", "" };
 
-		unsigned char botFlags = 0xFF;
+	//	unsigned char botFlags = 0xFF;
 
-		if ( IMatchSession *pSession = g_pMatchFramework->GetMatchSession() )
-		{
-			KeyValues *pSettings = pSession->GetSessionSettings();
-			if ( pSettings )
-				pSettings = pSettings->FindKey( "members" );
+	//	if ( IMatchSession *pSession = g_pMatchFramework->GetMatchSession() )
+	//	{
+	//		KeyValues *pSettings = pSession->GetSessionSettings();
+	//		if ( pSettings )
+	//			pSettings = pSettings->FindKey( "members" );
 
-			int numMachines = pSettings->GetInt( "numMachines", 0 );
-			for ( int iMachine = 0; iMachine < numMachines; ++ iMachine )
-			{
-				char chMachine[32];
-				sprintf( chMachine, "machine%d", iMachine );
-				KeyValues *pMachine = pSettings->FindKey( chMachine );
+	//		int numMachines = pSettings->GetInt( "numMachines", 0 );
+	//		for ( int iMachine = 0; iMachine < numMachines; ++ iMachine )
+	//		{
+	//			char chMachine[32];
+	//			sprintf( chMachine, "machine%d", iMachine );
+	//			KeyValues *pMachine = pSettings->FindKey( chMachine );
 
-				int numPlayers = pMachine->GetInt( "numPlayers", 0 );
-				for ( int iPlayer = 0; iPlayer < numPlayers; ++ iPlayer )
-				{
-					char chPlayer[32];
-					sprintf( chPlayer, "player%d", iPlayer );
-					KeyValues *pPlayer = pMachine->FindKey( chPlayer );
+	//			int numPlayers = pMachine->GetInt( "numPlayers", 0 );
+	//			for ( int iPlayer = 0; iPlayer < numPlayers; ++ iPlayer )
+	//			{
+	//				char chPlayer[32];
+	//				sprintf( chPlayer, "player%d", iPlayer );
+	//				KeyValues *pPlayer = pMachine->FindKey( chPlayer );
 
-					XUID xuidPlayer = pPlayer->GetUint64( "xuid", 0ull );
-					char const *szPlayerName = pPlayer->GetString( "name", "" );
-					szPlayerName = CUIGameData::Get()->GetPlayerName( xuidPlayer, szPlayerName );
-					char const *szAvatar = pPlayer->GetString( "game/avatar", "" );
+	//				XUID xuidPlayer = pPlayer->GetUint64( "xuid", 0ull );
+	//				char const *szPlayerName = pPlayer->GetString( "name", "" );
+	//				szPlayerName = CUIGameData::Get()->GetPlayerName( xuidPlayer, szPlayerName );
+	//				char const *szAvatar = pPlayer->GetString( "game/avatar", "" );
 
-					// Find the avatar
-					int iAvatar;
-					for ( iAvatar = 0; iAvatar < ARRAYSIZE( pAvatarNames ); ++ iAvatar )
-					{
-						if ( !Q_stricmp( pAvatarNames[iAvatar], szAvatar ) )
-							break;
-					}
-					if ( iAvatar < ARRAYSIZE( pPlayerNames ) )
-					{
-						pPlayerNames[ iAvatar ] = szPlayerName;
-						botFlags &= ~(1 << iAvatar);
-					}
-				}
-			}
-		}
-		pLoadingProgress->SetPosterData( pMissionInfo, pChapterInfo, pPlayerNames, botFlags, chGameMode );
-	}
-	else if ( GameUI().IsInLevel() && !GameUI().IsInBackgroundLevel() )
-	{
-		// Transitions between levels 
-		type = LoadingProgress::LT_TRANSITION;
-	}
-	else
-	{
-		// Loading the menu the first time
-		type = LoadingProgress::LT_MAINMENU;
-	}
+	//				// Find the avatar
+	//				int iAvatar;
+	//				for ( iAvatar = 0; iAvatar < ARRAYSIZE( pAvatarNames ); ++ iAvatar )
+	//				{
+	//					if ( !Q_stricmp( pAvatarNames[iAvatar], szAvatar ) )
+	//						break;
+	//				}
+	//				if ( iAvatar < ARRAYSIZE( pPlayerNames ) )
+	//				{
+	//					pPlayerNames[ iAvatar ] = szPlayerName;
+	//					botFlags &= ~(1 << iAvatar);
+	//				}
+	//			}
+	//		}
+	//	}
+	//	pLoadingProgress->SetPosterData( pMissionInfo, pChapterInfo, pPlayerNames, botFlags, chGameMode );
+	//}
+	//else if ( GameUI().IsInLevel() && !GameUI().IsInBackgroundLevel() )
+	//{
+	//	// Transitions between levels 
+	//	type = LoadingProgress::LT_TRANSITION;
+	//}
+	//else
+	//{
+	//	// Loading the menu the first time
+	//	type = LoadingProgress::LT_MAINMENU;
+	//}
 
-	pLoadingProgress->SetLoadingType( type );
-	pLoadingProgress->SetProgress( 0.0f );
+	//pLoadingProgress->SetLoadingType( type );
+	//pLoadingProgress->SetProgress( 0.0f );
 
 	m_LevelLoading = true;
 }
@@ -1366,21 +1366,21 @@ void CBaseModPanel::OnEngineLevelLoadingSession( KeyValues *pEvent )
 
 	// We must keep the default loading poster because it will be replaced by
 	// the real campaign loading poster shortly
-	float flProgress = 0.0f;
-	if ( LoadingProgress *pLoadingProgress = static_cast<LoadingProgress*>( GetWindow( WT_LOADINGPROGRESS ) ) )
-	{
-		flProgress = pLoadingProgress->GetProgress();
-		pLoadingProgress->Close();
-		m_Frames[ WT_LOADINGPROGRESS ] = NULL;
-	}
-	CloseAllWindows( CLOSE_POLICY_DEFAULT );
+	//float flProgress = 0.0f;
+	//if ( LoadingProgress *pLoadingProgress = static_cast<LoadingProgress*>( GetWindow( WT_LOADINGPROGRESS ) ) )
+	//{
+	//	flProgress = pLoadingProgress->GetProgress();
+	//	pLoadingProgress->Close();
+	//	m_Frames[ WT_LOADINGPROGRESS ] = NULL;
+	//}
+	//CloseAllWindows( CLOSE_POLICY_DEFAULT );
 
 	// Pop up a fake bkgnd poster
-	if ( LoadingProgress *pLoadingProgress = static_cast<LoadingProgress*>( OpenWindow( WT_LOADINGPROGRESSBKGND, NULL ) ) )
-	{
-		pLoadingProgress->SetLoadingType( LoadingProgress::LT_POSTER );
-		pLoadingProgress->SetProgress( flProgress );
-	}
+	//if ( LoadingProgress *pLoadingProgress = static_cast<LoadingProgress*>( OpenWindow( WT_LOADINGPROGRESSBKGND, NULL ) ) )
+	//{
+	//	pLoadingProgress->SetLoadingType( LoadingProgress::LT_POSTER );
+	//	pLoadingProgress->SetProgress( flProgress );
+	//}
 }
 
 //=============================================================================
@@ -1405,14 +1405,14 @@ void CBaseModPanel::OnLevelLoadingFinished( KeyValues *kvEvent )
 #endif
 
 	// TODO K: REENABLE
-	LoadingProgress *pLoadingProgress = static_cast<LoadingProgress*>( GetWindow( WT_LOADINGPROGRESS ) );
-	if ( pLoadingProgress )
-	{
-		pLoadingProgress->SetProgress( 1.0f );
+	//LoadingProgress *pLoadingProgress = static_cast<LoadingProgress*>( GetWindow( WT_LOADINGPROGRESS ) );
+	//if ( pLoadingProgress )
+	//{
+	//	pLoadingProgress->SetProgress( 1.0f );
 
-		// always close loading progress, this frees costly resources
-		pLoadingProgress->Close();
-	}
+	//	// always close loading progress, this frees costly resources
+	//	pLoadingProgress->Close();
+	//}
 
 	//m_LevelLoading = false;
 

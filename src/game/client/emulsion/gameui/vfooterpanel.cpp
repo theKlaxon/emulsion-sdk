@@ -4,6 +4,7 @@
 //
 //=====================================================================================//
 
+#include "cbase.h" // im just putting these in here cause vpc doenst like the "not using precompd headers" specification, and im too tired to deal with that properly. sorry.
 #include "VFooterPanel.h"
 #include "vgui/IPanel.h"
 #include "vgui_controls/ImagePanel.h"
