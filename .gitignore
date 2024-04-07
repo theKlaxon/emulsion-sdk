@@ -108,3 +108,6 @@ game/p2asw/bin/client.pdb
 game/p2asw/bin/client.dll
 game/p2asw/bin/server.dll
 game/p2asw/bin/server.pdb
+
+game/emulsion/bin/gamepadui.dll
+game/emulsion/bin/gamepadui.pdb
