@@ -62,6 +62,8 @@ config.cfg
 src/.vs/Game_Emulsion-2010/
 src/.vs/Game_Skeleton-2010/
 src/.vs/Game_Portal2-ASW-2010/
+src/.vs/GamepadUI-2010/
+src/.vs/GamepadUI-2013/
 
 game/emulsion/gameinfo.txt
 game/skeleton/gameinfo.txt
