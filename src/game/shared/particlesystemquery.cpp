@@ -61,105 +61,92 @@ typedef struct SProjectedTextureInfo
 class CParticleSystemQuery : public CBaseAppSystem< IParticleSystemQuery >
 {
 public:
-	virtual bool IsEditor() { return false; }
+	virtual bool IsEditor( ) { return false; }
 
 	// Inherited from IParticleSystemQuery
-	virtual void GetLightingAtPoint(const Vector& vecOrigin, Color& cTint);
-	virtual void TraceLine(const Vector& vecAbsStart,
-		const Vector& vecAbsEnd, unsigned int mask,
-		const IHandleEntity* ignore,
-		int collisionGroup, CBaseTrace* ptr);
+	virtual void GetLightingAtPoint( const Vector& vecOrigin, Color &cTint );
+	virtual void TraceLine( const Vector& vecAbsStart,
+							const Vector& vecAbsEnd, unsigned int mask, 
+							const IHandleEntity *ignore,
+							int collisionGroup, CBaseTrace *ptr );
 
-	virtual bool IsPointInSolid(const Vector& vecPos, const int nContentsMask) { return false; }
-
-	virtual bool MovePointInsideControllingObject(CParticleCollection* pParticles,
-		void* pObject,
-		Vector* pPnt);
-	virtual void GetRandomPointsOnControllingObjectHitBox(
-		CParticleCollection* pParticles,
-		int nControlPointNumber,
+	virtual bool MovePointInsideControllingObject( CParticleCollection *pParticles,
+												   void *pObject,
+												   Vector *pPnt );
+	virtual void GetRandomPointsOnControllingObjectHitBox( 
+		CParticleCollection *pParticles,
+		int nControlPointNumber, 
 		int nNumPtsOut,
 		float flBBoxScale,
 		int nNumTrysToGetAPointInsideTheModel,
-		Vector* pPntsOut,
-		Vector vecDirectionBias,
-		Vector* pHitBoxRelativeCoordOut = NULL,
-		int* pHitBoxIndexOut = NULL,
-		int nDesiredHitbox = -1,
-		const char* pszHitboxSetName = NULL);
+		Vector *pPntsOut,
+		Vector vecDirectionalBias,
+		Vector *pHitBoxRelativeCoordOut,
+		int *pHitBoxIndexOut,
+		int nDesiredHitbox
+		);
 
-	void GetClosestControllingObjectHitBox(
-		CParticleCollection* pParticles,
-		int nControlPointNumber,
-		int nNumPtsIn,
-		float flBBoxScale,
-		Vector* pPntsIn,
-		Vector* pHitBoxRelativeCoordOut,
-		int* pHitBoxIndexOut,
-		int nDesiredHitbox,
-		const char* pszHitboxSetName);
+	virtual int GetRayTraceEnvironmentFromName( const char *pszRtEnvName );
 
-	virtual int GetRayTraceEnvironmentFromName(const char* pszRtEnvName);
-
-	virtual int GetCollisionGroupFromName(const char* pszCollisionGroupName);
+	virtual int GetCollisionGroupFromName( const char *pszCollisionGroupName );
 
 
 	virtual int GetControllingObjectHitBoxInfo(
-		CParticleCollection* pParticles,
+		CParticleCollection *pParticles,
 		int nControlPointNumber,
 		int nBufSize,										// # of output slots available
-		ModelHitBoxInfo_t* pHitBoxOutputBuffer);
+		ModelHitBoxInfo_t *pHitBoxOutputBuffer );
 
-	virtual	bool IsPointInControllingObjectHitBox(
-		CParticleCollection* pParticles,
-		int nControlPointNumber, Vector vecPos, bool bBBoxOnly);
+	virtual	bool IsPointInControllingObjectHitBox( 
+		CParticleCollection *pParticles,
+		int nControlPointNumber, Vector vecPos, bool bBBoxOnly );
 
-	virtual	void CParticleSystemQuery::GetControllingObjectOBBox(
-		CParticleCollection* pParticles,
-		int nControlPointNumber, Vector vecMin, Vector vecMax);
-
+	virtual	void CParticleSystemQuery::GetControllingObjectOBBox( 
+		CParticleCollection *pParticles,
+		int nControlPointNumber, Vector vecMin, Vector vecMax );
+	
 	// Traces Four Rays against a defined RayTraceEnvironment
-	virtual void TraceAgainstRayTraceEnv(int envnumber, const FourRays& rays, fltx4 TMin, fltx4 TMax,
-		RayTracingResult* rslt_out, int32 skip_id) const;
+	virtual void TraceAgainstRayTraceEnv( int envnumber, const FourRays &rays, fltx4 TMin, fltx4 TMax,
+		RayTracingResult *rslt_out, int32 skip_id ) const ;
 
-	virtual Vector GetLocalPlayerPos(void);
-	virtual void GetLocalPlayerEyeVectors(Vector* pForward, Vector* pRight = NULL, Vector* pUp = NULL);
+	virtual Vector GetLocalPlayerPos( void );
+	virtual void GetLocalPlayerEyeVectors( Vector *pForward, Vector *pRight = NULL, Vector *pUp = NULL );
 
 	virtual Vector GetCurrentViewOrigin();
 
 	virtual int GetActivityCount();
-	virtual const char* GetActivityNameFromIndex(int nActivityIndex);
+	virtual const char *GetActivityNameFromIndex( int nActivityIndex );
 
-	virtual float GetPixelVisibility(int* pQueryHandle, const Vector& vecOrigin, float flScale);
-	virtual void SetUpLightingEnvironment(const Vector& pos);
+	virtual float GetPixelVisibility( int *pQueryHandle, const Vector &vecOrigin, float flScale );
+	virtual void SetUpLightingEnvironment( const Vector& pos );
 
-	virtual void PreSimulate();
+	virtual void PreSimulate( );
 
-	virtual void PostSimulate();
+	virtual void PostSimulate( );
 
-	virtual void DebugDrawLine(const Vector& origin, const Vector& target, int r, int g, int b, bool noDepthTest, float duration);
+	virtual void DebugDrawLine( const Vector &origin, const Vector &target, int r, int g, int b, bool noDepthTest, float duration );
 
-	virtual void BeginDrawModels(int nMaxNumToDraw, Vector const& vecCenterPosition, CParticleCollection* pParticles)
+	virtual void BeginDrawModels( int nMaxNumToDraw, Vector const &vecCenterPosition, CParticleCollection *pParticles )
 	{
 	}
 
-	virtual void DrawModel(void* pModel, const matrix3x4_t& DrawMatrix, CParticleCollection* pParticles, int nParticleNumber, int nBodyPart, int nSubModel,
-		int nSkin, int nAnimationSequence = 0, float flAnimationRate = 30.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f);
+	virtual void DrawModel( void *pModel, const matrix3x4_t &DrawMatrix, CParticleCollection *pParticles, int nParticleNumber, int nBodyPart, int nSubModel,
+							int nAnimationSequence = 0, float flAnimationRate = 30.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f );
 
 
-	virtual void FinishDrawModels(CParticleCollection* pParticles)
+	virtual void FinishDrawModels( CParticleCollection *pParticles )
 	{
 	}
 
-	virtual void* GetModel(char const* pMdlName);
+	virtual void *GetModel( char const *pMdlName );
 
-	virtual void UpdateProjectedTexture(const int nParticleID, IMaterial* pMaterial, Vector& vOrigin, float flRadius, float flRotation, float r, float g, float b, float a, void*& pUserVar);
+	virtual void UpdateProjectedTexture( const int nParticleID, IMaterial *pMaterial, Vector &vOrigin, float flRadius, float flRotation, float r, float g, float b, float a, void *&pUserVar );
 
 private:
 #if defined( CLIENT_DLL )
 
-	CTSQueue< TProjectedTextureInfo* > m_ProjectedInfoAdds;
-	CUtlVector< TProjectedTextureInfo* > m_ActiveProjectedInfos;
+	CTSQueue< TProjectedTextureInfo * > m_ProjectedInfoAdds;
+	CUtlVector< TProjectedTextureInfo * > m_ActiveProjectedInfos;
 
 #endif // #if defined( CLIENT_DLL )
 };
@@ -272,17 +259,17 @@ static float GetSurfaceCoord( float flRand, float flMinX, float flMaxX )
 
 
 void CParticleSystemQuery::GetRandomPointsOnControllingObjectHitBox( 
-	CParticleCollection* pParticles,
-	int nControlPointNumber,
+	CParticleCollection *pParticles,
+	int nControlPointNumber, 
 	int nNumPtsOut,
 	float flBBoxScale,
 	int nNumTrysToGetAPointInsideTheModel,
-	Vector* pPntsOut,
+	Vector *pPntsOut,
 	Vector vecDirectionalBias,
-	Vector* pHitBoxRelativeCoordOut,
-	int* pHitBoxIndexOut,
-	int nDesiredHitbox,
-	const char* pszHitboxSetName)
+	Vector *pHitBoxRelativeCoordOut,
+	int *pHitBoxIndexOut,
+	int nDesiredHitbox
+	)
 {
 
 	bool bSucesss = false;
@@ -491,130 +478,6 @@ void CParticleSystemQuery::GetRandomPointsOnControllingObjectHitBox(
 	}
 }
 
-void CParticleSystemQuery::GetClosestControllingObjectHitBox(
-	CParticleCollection* pParticles,
-	int nControlPointNumber,
-	int nNumPtsIn,
-	float flBBoxScale,
-	Vector* pPntsIn,
-	Vector* pHitBoxRelativeCoordOut,
-	int* pHitBoxIndexOut,
-	int nDesiredHitbox,
-	const char* pszHitboxSetName)
-{
-	bool bSucesss = false;
-
-#ifndef GAME_DLL
-
-	EHANDLE* phMoveParent = reinterpret_cast<EHANDLE*> (pParticles->ControlPoint(nControlPointNumber).m_pObject);
-	CBaseEntity* pMoveParent = NULL;
-	if (phMoveParent)
-	{
-		pMoveParent = *(phMoveParent);
-	}
-	if (pMoveParent)
-	{
-		float flRandMax = flBBoxScale;
-		float flRandMin = 1.0 - flBBoxScale;
-		Vector vecBasePos;
-		pParticles->GetControlPointAtTime(nControlPointNumber, pParticles->m_flCurTime, &vecBasePos);
-
-		s_BoneMutex.Lock();
-		C_BaseAnimating* pAnimating = pMoveParent->GetBaseAnimating();
-		if (pAnimating)
-		{
-
-			matrix3x4_t* hitboxbones[MAXSTUDIOBONES];
-
-			if (pAnimating->HitboxToWorldTransforms(hitboxbones))
-			{
-
-				studiohdr_t* pStudioHdr = modelinfo->GetStudiomodel(pAnimating->GetModel());
-
-				if (pStudioHdr)
-				{
-					// Try to get the desired set first, otherwise use their current set
-					int nEffectsHitboxSet = FindHitboxSetByName(pAnimating->GetModelPtr(), pszHitboxSetName);
-					mstudiohitboxset_t* set = pStudioHdr->pHitboxSet(nEffectsHitboxSet != -1 ? nEffectsHitboxSet : pAnimating->GetHitboxSet());
-
-					if (set)
-					{
-						bSucesss = true;
-
-						Vector vecWorldPosition;
-						float u = 0, v = 0, w = 0;
-						int nHitbox = 0;
-
-						int nHitboxMin = 0;
-						int nHitboxMax = set->numhitboxes - 1;
-						if (nDesiredHitbox >= 0)
-						{
-							nHitboxMin = MIN(set->numhitboxes - 1, nDesiredHitbox);
-							nHitboxMax = MIN(set->numhitboxes - 1, nDesiredHitbox);
-						}
-
-						for (int i = 0; i < nNumPtsIn; i++)
-						{
-							float flBestPointGoodness = FLT_MAX;
-							Vector vecCurrentPoint = *(pPntsIn++);
-							for (int j = nHitboxMin; j < nHitboxMax; j++)
-							{
-								int nTryHitbox = j;
-								mstudiobbox_t* pBox = set->pHitbox(nTryHitbox);
-
-								float flTryU = pParticles->RandomFloat(flRandMin, flRandMax);
-								float flTryV = pParticles->RandomFloat(flRandMin, flRandMax);
-								float flTryW = pParticles->RandomFloat(flRandMin, flRandMax);
-
-								Vector vecLocalPosition;
-								vecLocalPosition.x = GetSurfaceCoord(flTryU, pBox->bbmin.x * pAnimating->GetModelScale(), pBox->bbmax.x * pAnimating->GetModelScale());
-								vecLocalPosition.y = GetSurfaceCoord(flTryV, pBox->bbmin.y * pAnimating->GetModelScale(), pBox->bbmax.y * pAnimating->GetModelScale());
-								vecLocalPosition.z = GetSurfaceCoord(flTryW, pBox->bbmin.z * pAnimating->GetModelScale(), pBox->bbmax.z * pAnimating->GetModelScale());
-
-								Vector vecTryWorldPosition;
-
-								VectorTransform(vecLocalPosition, *hitboxbones[pBox->bone], vecTryWorldPosition);
-
-
-								Vector vecBoxDistance;
-								VectorTransform(((pBox->bbmin + pBox->bbmax) / 2), *hitboxbones[pBox->bone], vecBoxDistance);
-								vecBoxDistance -= vecCurrentPoint;
-								float flPointGoodness = vecBoxDistance.Length();
-
-								if (flPointGoodness < flBestPointGoodness)
-								{
-									u = flTryU;
-									v = flTryV;
-									w = flTryW;
-									nHitbox = nTryHitbox;
-									flBestPointGoodness = flPointGoodness;
-								}
-							}
-							if (pHitBoxRelativeCoordOut)
-								(pHitBoxRelativeCoordOut++)->Init(u, v, w);
-							if (pHitBoxIndexOut)
-								*(pHitBoxIndexOut++) = nHitbox;
-						}
-					}
-				}
-			}
-		}
-		s_BoneMutex.Unlock();
-	}
-#endif
-	if (!bSucesss)
-	{
-		// don't have a model or am in editor or something - fill return with control point
-		for (int i = 0; i < nNumPtsIn; i++)
-		{
-			if (pHitBoxIndexOut)
-				pHitBoxIndexOut[i] = 0;
-
-			if (pHitBoxRelativeCoordOut)
-				pHitBoxRelativeCoordOut[i].Init();
-		}
-	}
-}
 
 int CParticleSystemQuery::GetControllingObjectHitBoxInfo(
 	CParticleCollection *pParticles,
@@ -991,8 +854,8 @@ static void SetBodygroup( studiohdr_t *pstudiohdr, int &body, int iGroup, int iV
 #endif
 
 // callback to draw models given abstract ptr
-void CParticleSystemQuery::DrawModel(void* pModel, const matrix3x4_t& DrawMatrix, CParticleCollection* pParticles, int nParticleNumber, int nBodyPart, int nSubModel,
-	int nSkin, int nAnimationSequence, float flAnimationRate, float r, float g, float b, float a)
+void CParticleSystemQuery::DrawModel( void *pModel, const matrix3x4_t &DrawMatrix, CParticleCollection *pParticles, int nParticleNumber, int nBodyPart, int nSubModel,
+									  int nAnimationSequence, float flAnimationRate, float r, float g, float b, float a )
 {
 #ifdef CLIENT_DLL
 	model_t *pMDL = ( model_t * ) pModel;

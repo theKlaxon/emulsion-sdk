@@ -29,14 +29,11 @@ class IMatRenderContext;
 #include "tier1/utlstringmap.h"
 #include "tier1/utlmap.h"
 #include "trace.h"
-#include "materialsystem/imesh.h"
 #include "tier1/utlsoacontainer.h"
 #include "raytrace.h"
 #if defined( CLIENT_DLL )
 #include "c_pixel_visibility.h"
 #endif
-
-typedef fltx4 bi32x4;
 
 //-----------------------------------------------------------------------------
 // Forward declarations
@@ -127,12 +124,11 @@ DEFPARTICLE_ATTRIBUTE( HITBOX_RELATIVE_XYZ, 15, ATTRDATATYPE_4V );
 DEFPARTICLE_ATTRIBUTE( ALPHA2, 16, ATTRDATATYPE_FLOAT );
 
 // particle trace caching fields
-DEFPARTICLE_ATTRIBUTE(SCRATCH_VEC, 17, ATTRDATATYPE_4V);		//scratch field used for storing arbitraty vec data	
-DEFPARTICLE_ATTRIBUTE(SCRATCH_FLOAT, 18, ATTRDATATYPE_4V);	//scratch field used for storing arbitraty float data		
-DEFPARTICLE_ATTRIBUTE(UNUSED, 19, ATTRDATATYPE_FLOAT);
-DEFPARTICLE_ATTRIBUTE(PITCH, 20, ATTRDATATYPE_4V);
+DEFPARTICLE_ATTRIBUTE( TRACE_P0, 17, ATTRDATATYPE_4V );			// start pnt of trace
+DEFPARTICLE_ATTRIBUTE( TRACE_P1, 18, ATTRDATATYPE_4V );			// end pnt of trace
+DEFPARTICLE_ATTRIBUTE( TRACE_HIT_T, 19, ATTRDATATYPE_FLOAT );	// 0..1 if hit
+DEFPARTICLE_ATTRIBUTE( TRACE_HIT_NORMAL, 20, ATTRDATATYPE_4V );	// 0 0 0 if no hit
 
-// Shifted these down by 1, undo to remove pitch
 DEFPARTICLE_ATTRIBUTE( NORMAL, 21, ATTRDATATYPE_4V );			// 0 0 0 if none
 
 DEFPARTICLE_ATTRIBUTE( GLOW_RGB, 22, ATTRDATATYPE_4V );			// glow color
@@ -140,7 +136,8 @@ DEFPARTICLE_ATTRIBUTE( GLOW_ALPHA, 23, ATTRDATATYPE_FLOAT );	// glow alpha
 
 #define MAX_PARTICLE_CONTROL_POINTS 64
 
-#define ATTRIBUTES_WHICH_ARE_VEC3S_MASK ( PARTICLE_ATTRIBUTE_SCRATCH_VEC_MASK | PARTICLE_ATTRIBUTE_XYZ_MASK | \
+#define ATTRIBUTES_WHICH_ARE_VEC3S_MASK ( PARTICLE_ATTRIBUTE_TRACE_P0_MASK | PARTICLE_ATTRIBUTE_TRACE_P1_MASK | \
+										  PARTICLE_ATTRIBUTE_TRACE_HIT_NORMAL_MASK | PARTICLE_ATTRIBUTE_XYZ_MASK | \
                                           PARTICLE_ATTRIBUTE_PREV_XYZ_MASK | PARTICLE_ATTRIBUTE_TINT_RGB_MASK | \
                                           PARTICLE_ATTRIBUTE_HITBOX_RELATIVE_XYZ_MASK  | PARTICLE_ATTRIBUTE_NORMAL_MASK | \
 	                                      PARTICLE_ATTRIBUTE_GLOW_RGB_MASK )
@@ -322,8 +319,6 @@ public:
 							int collisionGroup,
 							CBaseTrace *ptr ) = 0;
 
-	virtual bool IsPointInSolid(const Vector& vecPos, const int nContentsMask) = 0;
-
 	// given a possible spawn point, tries to movie it to be on or in the source object. returns
 	// true if it succeeded
 	virtual bool MovePointInsideControllingObject( CParticleCollection *pParticles,
@@ -352,35 +347,23 @@ public:
 	}
 	
 	virtual void GetRandomPointsOnControllingObjectHitBox( 
-		CParticleCollection* pParticles,
-		int nControlPointNumber,
+		CParticleCollection *pParticles,
+		int nControlPointNumber, 
 		int nNumPtsOut,
 		float flBBoxScale,
 		int nNumTrysToGetAPointInsideTheModel,
-		Vector* pPntsOut,
+		Vector *pPntsOut,
 		Vector vecDirectionBias,
-		Vector* pHitBoxRelativeCoordOut = NULL,
-		int* pHitBoxIndexOut = NULL,
-		int nDesiredHitbox = -1,
-		const char* pszHitboxSetName = NULL) = 0;
+		Vector *pHitBoxRelativeCoordOut = NULL,
+		int *pHitBoxIndexOut = NULL, 
+		int nDesiredHitbox = -1 ) = 0;
 
-	virtual void GetClosestControllingObjectHitBox(
-		CParticleCollection* pParticles,
-		int nControlPointNumber,
-		int nNumPtsIn,
-		float flBBoxScale,
-		Vector* pPntsIn,
-		Vector* pHitBoxRelativeCoordOut = NULL,
-		int* pHitBoxIndexOut = NULL,
-		int nDesiredHitbox = -1,
-		const char* pszHitboxSetName = NULL) = 0;
 
 	virtual int GetControllingObjectHitBoxInfo(
-		CParticleCollection* pParticles,
+		CParticleCollection *pParticles,
 		int nControlPointNumber,
 		int nBufSize,										// # of output slots available
-		ModelHitBoxInfo_t* pHitBoxOutputBuffer,
-		const char* pszHitboxSetName)
+		ModelHitBoxInfo_t *pHitBoxOutputBuffer )
 	{
 		// returns number of hit boxes output
 		return 0;
@@ -435,8 +418,8 @@ public:
 
 	virtual void *GetModel( char const *pMdlName ) { return NULL; }
 
-	virtual void DrawModel(void* pModel, const matrix3x4_t& DrawMatrix, CParticleCollection* pParticles, int nParticleNumber, int nBodyPart, int nSubModel,
-		int nSkin, int nAnimationSequence = 0, float flAnimationRate = 30.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f) = 0;
+	virtual void DrawModel( void *pModel, const matrix3x4_t &DrawMatrix, CParticleCollection *pParticles, int nParticleNumber, int nBodyPart, int nSubModel,
+							int nAnimationSequence = 0, float flAnimationRate = 30.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f ) = 0;
 
 	virtual void BeginDrawModels( int nNumModels, Vector const &vecCenter, CParticleCollection *pParticles ) {}
 
@@ -464,7 +447,6 @@ public:
 
 	// Initialize the particle system
 	bool Init( IParticleSystemQuery *pQuery, bool bAllowPrecache );
-	void Shutdown();
 
 	// methods to add builtin operators. If you don't call these at startup, you won't be able to sim or draw. These are done separately from Init, so that
 	// the server can omit the code needed for rendering/simulation, if desired.
@@ -519,13 +501,13 @@ public:
 
 	// Particle sheet management
 	void ShouldLoadSheets( bool bLoadSheets );
-	CSheet *FindOrLoadSheet( CParticleSystemDefinition *pDef , bool bTryReloading = false );
+	CSheet *FindOrLoadSheet( CParticleSystemDefinition *pDef );
 	void FlushAllSheets( void );
 
 	// Render cache used to render opaque particle collections
 	void ResetRenderCache( void );
 	void AddToRenderCache( CParticleCollection *pParticles );
-	void DrawRenderCache(IMatRenderContext* pRenderContext, bool bShadowDepth);
+	void DrawRenderCache( bool bShadowDepth );
 
 	IParticleSystemQuery *Query( void ) { return m_pQuery; }
 
@@ -857,8 +839,8 @@ public:
 	}
 
 	// a renderer overrides this
-	virtual void Render(IMatRenderContext* pRenderContext,
-		CParticleCollection* pParticles, const Vector4D& vecDiffuseModulation, void* pContext, int nViewRecursionDepth) const
+	virtual void Render( IMatRenderContext *pRenderContext, 
+						 CParticleCollection *pParticles, const Vector4D &vecDiffuseModulation, void *pContext ) const
 	{
 	}
 
@@ -1064,10 +1046,10 @@ public:
 
 protected:
 	// utility function for initting a scalar attribute to a random range in an sse fashion
-	void InitScalarAttributeRandomRangeExpBlock(int nAttributeId, float fMinValue, float fMaxValue, float fExp,
-		CParticleCollection* pParticles, int nStartBlock, int nBlockCount, bool bRandomlyInvert = false) const;
-	void AddScalarAttributeRandomRangeExpBlock(int nAttributeId, float fMinValue, float fMaxValue, float fExp,
-		CParticleCollection* pParticles, int nStartBlock, int nBlockCount, bool bRandomlyInvert = false) const;
+	void InitScalarAttributeRandomRangeExpBlock( int nAttributeId, float fMinValue, float fMaxValue, float fExp,
+		CParticleCollection *pParticles, int nStartBlock, int nBlockCount ) const;
+	void AddScalarAttributeRandomRangeBlock( int nAttributeId, float fMinValue, float fMaxValue, float fExp,
+		CParticleCollection *pParticles, int nStartBlock, int nBlockCount, bool bRandomlyInvert ) const;
 
 	void InitScalarAttributeRandomRangeExpScalar( int nAttributeId, float fMinValue, float fMaxValue, float fExp,
 												  CParticleCollection *pParticles, int nStartParticle, int nParticleCount ) const;
@@ -1678,60 +1660,6 @@ struct CParticleAttributeAddressTable
 	void CopyParticleAttributes( int nSrcIndex, int nDestIndex ) const;
 };
 
-#define MAX_CACHED_PARTICLE_BATCHES 8
-class CCachedParticleBatches
-{
-public:
-	uint32 m_nLastValidParticleCacheFrame;
-	int m_nCachedRenderListCount;
-	ICachedPerFrameMeshData* m_pCachedBatches[MAX_CACHED_PARTICLE_BATCHES];
-
-	CCachedParticleBatches() : m_nLastValidParticleCacheFrame((uint32)-1), m_nCachedRenderListCount(0)
-	{
-		Q_memset(m_pCachedBatches, 0, sizeof(ICachedPerFrameMeshData*) * MAX_CACHED_PARTICLE_BATCHES);
-	}
-	~CCachedParticleBatches()
-	{
-		ClearBatches();
-	}
-
-	FORCEINLINE void ClearBatches()
-	{
-		m_nCachedRenderListCount = 0;
-		for (int i = 0; i < MAX_CACHED_PARTICLE_BATCHES; ++i)
-		{
-			if (m_pCachedBatches[i])
-				m_pCachedBatches[i]->Free();
-			m_pCachedBatches[i] = NULL;
-		}
-	}
-
-	FORCEINLINE void SetCachedBatch(int nBatch, ICachedPerFrameMeshData* pBatch)
-	{
-		if (nBatch >= MAX_CACHED_PARTICLE_BATCHES)
-			return;
-
-		m_pCachedBatches[nBatch] = pBatch;
-	}
-
-	ICachedPerFrameMeshData* GetCachedBatch(int nBatch)
-	{
-		if (nBatch >= MAX_CACHED_PARTICLE_BATCHES)
-			return NULL;
-
-		return m_pCachedBatches[nBatch];
-	}
-
-	FORCEINLINE void SetCachedRenderListCount(int nParticleCount)
-	{
-		m_nCachedRenderListCount = nParticleCount;
-	}
-
-	FORCEINLINE int GetCachedRenderListCount()
-	{
-		return m_nCachedRenderListCount;
-	}
-};
 
 class CParticleCollection
 {
@@ -1788,7 +1716,7 @@ public:
 	void SkipToTime( float t );
 
 	// the camera objetc may be compared for equality against control point objects
-	void Render(int nViewRecursionLevel, IMatRenderContext* pRenderContext, const Vector4D& vecDiffuseModulation, bool bTranslucentOnly = false, void* pCameraObject = NULL);
+	void Render( IMatRenderContext *pRenderContext, const Vector4D &vecDiffuseModulation, bool bTranslucentOnly = false, void *pCameraObject = NULL );
 
 	bool IsValid( void ) const { return m_pDef != NULL; }
 
@@ -1914,7 +1842,7 @@ public:
 	void InitializeNewParticles( int nFirstParticle, int nParticleCount, uint32 nInittedMask, bool bApplyingParentKillList = false );
 	
 	// update hit boxes for control point if not updated yet for this sim step
-	void UpdateHitBoxInfo( int nControlPointNumber, const char* pszHitboxSetName );
+	void UpdateHitBoxInfo( int nControlPointNumber );
 
 	// Used by particle system definitions to manage particle collection lists
 	void UnlinkFromDefList( );
@@ -1938,9 +1866,6 @@ public:
 			( ! m_bFrozen ) );
 	}
 
-	void ResetParticleCache();
-	CCachedParticleBatches* GetCachedParticleBatches();
-
 	// render helpers
 	int GenerateCulledSortedIndexList( ParticleRenderData_t *pOut, Vector vecCamera, Vector vecFwd, CParticleVisibilityData *pVisibilityData, bool bSorted );
 	int GenerateSortedIndexList( ParticleRenderData_t *pOut, Vector vecCameraPos, CParticleVisibilityData *pVisibilityData, bool bSorted );
@@ -1948,7 +1873,7 @@ public:
 	CParticleCollection *GetNextCollectionUsingSameDef() { return m_pNextDef; }
 
 	CUtlReference< CSheet > m_Sheet;
-	bool m_bTriedLoadingSheet;
+
 
 
 protected:
@@ -2169,7 +2094,6 @@ private:
 	void LoanKillListTo( CParticleCollection *pBorrower ) const;
 	bool HasAttachedKillList( void ) const;
 
-	CCachedParticleBatches* m_pCachedParticleBatches;
 
 	// For debugging
 	CParticleOperatorInstance *m_pRenderOp;
@@ -2955,21 +2879,21 @@ struct ParticleChildrenInfo_t
 class CParticleSystemDefinition
 {
 	DECLARE_DMXELEMENT_UNPACK();
-	DECLARE_REFERENCED_CLASS(CParticleSystemDefinition);
+	DECLARE_REFERENCED_CLASS( CParticleSystemDefinition );
 
-
+	
 public:
-	CParticleSystemDefinition(void);
-	~CParticleSystemDefinition(void);
+	CParticleSystemDefinition( void );
+	~CParticleSystemDefinition( void );
 
 	// Serialization, unserialization
-	void Read(CDmxElement* pElement);
-	CDmxElement* Write();
+	void Read( CDmxElement *pElement );
+	CDmxElement *Write();
 
-	const char* MaterialName() const;
-	IMaterial* GetMaterial();
-	const char* GetName() const;
-	const DmObjectId_t& GetId() const;
+	const char *MaterialName() const;
+	IMaterial *GetMaterial();
+	const char *GetName() const;
+    const DmObjectId_t& GetId() const;
 
 	// Does the particle system use the power of two frame buffer texture (refraction?)
 	bool UsesPowerOfTwoFrameBufferTexture();
@@ -2988,41 +2912,39 @@ public:
 
 	bool IsScreenSpaceEffect() const;
 
-	void SetDrawThroughLeafSystem(bool bDraw) { m_bDrawThroughLeafSystem = bDraw; }
-	bool IsDrawnThroughLeafSystem(void) const { return m_bDrawThroughLeafSystem; }
+	void SetDrawThroughLeafSystem( bool bDraw ) { m_bDrawThroughLeafSystem = bDraw; }
+	bool IsDrawnThroughLeafSystem( void ) const { return m_bDrawThroughLeafSystem; }
 
 	// Used to iterate over all particle collections using the same def
-	CParticleCollection* FirstCollection();
+	CParticleCollection *FirstCollection();
 
 	// What's the effective cull size + fill cost?
 	// Used for early retirement
 	float GetCullRadius() const;
 	float GetCullFillCost() const;
 	int GetCullControlPoint() const;
-	const char* GetCullReplacementDefinition() const;
-
-	int GetMaxRecursionDepth() const;
+	const char *GetCullReplacementDefinition() const;
 
 	// Retirement
-	bool HasRetirementBeenChecked(int nFrame) const;
-	void MarkRetirementCheck(int nFrame);
+	bool HasRetirementBeenChecked( int nFrame ) const;
+	void MarkRetirementCheck( int nFrame );
 
 	bool HasFallback() const;
-	CParticleSystemDefinition* GetFallbackReplacementDefinition() const;
+	CParticleSystemDefinition *GetFallbackReplacementDefinition() const;
 
 	int GetMinCPULevel() const;
 	int GetMinGPULevel() const;
 
 	// Control point read
-	void MarkReadsControlPoint(int nPoint);
-	bool ReadsControlPoint(int nPoint) const;
-	bool IsNonPositionalControlPoint(int nPoint) const;
+	void MarkReadsControlPoint( int nPoint );
+	bool ReadsControlPoint( int nPoint ) const;
+	bool IsNonPositionalControlPoint( int nPoint ) const;
 
 	float GetMaxTailLength() const;
-	void  SetMaxTailLength(float flMaxTailLength);
+	void  SetMaxTailLength( float flMaxTailLength );
 	// Sheet symbols (used to avoid string->symbol conversions when effects are created)
 	void InvalidateSheetSymbol();
-	void CacheSheetSymbol(CUtlSymbol sheetSymbol);
+	void CacheSheetSymbol( CUtlSymbol sheetSymbol );
 	bool IsSheetSymbolCached() const;
 	CUtlSymbol GetSheetSymbol() const;
 
@@ -3030,20 +2952,20 @@ public:
 private:
 	void Precache();
 	void Uncache();
-	bool IsPrecached() const;
+	bool IsPrecached();
 
 	void UnlinkAllCollections();
 
-	void SetupContextData();
-	void ParseChildren(CDmxElement* pElement);
-	void ParseOperators(const char* pszName, ParticleFunctionType_t nFunctionType,
-		CDmxElement* pElement, CUtlVector<CParticleOperatorInstance*>& out_list);
-	void WriteChildren(CDmxElement* pElement);
-	void WriteOperators(CDmxElement* pElement, const char* pOpKeyName,
-		const CUtlVector<CParticleOperatorInstance*>& inList);
-	CUtlVector<CParticleOperatorInstance*>* GetOperatorList(ParticleFunctionType_t type);
-	CParticleOperatorInstance* FindOperatorById(ParticleFunctionType_t type, const DmObjectId_t& id);
-	CParticleOperatorInstance* FindOperatorByName(const char* pOperatorName); // SLOW!
+	void SetupContextData( );
+	void ParseChildren( CDmxElement *pElement );
+	void ParseOperators( const char *pszName, ParticleFunctionType_t nFunctionType,
+		CDmxElement *pElement, CUtlVector<CParticleOperatorInstance *> &out_list );
+	void WriteChildren( CDmxElement *pElement );
+	void WriteOperators( CDmxElement *pElement, const char *pOpKeyName,
+		const CUtlVector<CParticleOperatorInstance *> &inList );
+	CUtlVector<CParticleOperatorInstance *> *GetOperatorList( ParticleFunctionType_t type );
+	CParticleOperatorInstance *FindOperatorById( ParticleFunctionType_t type, const DmObjectId_t &id );
+	CParticleOperatorInstance *FindOperatorByName( const char *pOperatorName ); // SLOW!
 
 private:
 	int m_nInitialParticles;
@@ -3055,20 +2977,19 @@ private:
 	uint64 m_nControlPointNonPositionalMask;
 	Vector m_BoundingBoxMin;
 	Vector m_BoundingBoxMax;
-	CUtlString m_MaterialName;
+	char m_pszMaterialName[MAX_PATH];
 	CMaterialReference m_Material;
 	Vector4D m_vecMaterialModulation;
-	CParticleCollection* m_pFirstCollection;
-	CUtlString m_CullReplacementName;
+	CParticleCollection *m_pFirstCollection;
+	char m_pszCullReplacementName[128];
 	float m_flCullRadius;
 	float m_flCullFillCost;
 	int m_nCullControlPoint;
 	int m_nRetireCheckFrame;
-	int m_nMaxRecursionDepth;
 	float m_flMaxTailLength;
 
 	// Fallbacks for exceeding maximum number of the same type of system at once.
-	CUtlString m_FallbackReplacementName;
+	char m_pszFallbackReplacementName[128];
 	int m_nFallbackMaxCount;
 	int m_nFallbackCurrentCount;
 	CUtlReference< CParticleSystemDefinition > m_pFallback;
@@ -3094,14 +3015,12 @@ private:
 	int m_nMinGPULevel;						// particle system to be allowed to spawn
 
 
-
 	// Is the particle system rendered on the viewmodel?
+	CUtlSymbol m_SheetSymbol;
 	bool m_bViewModelEffect;
 	bool m_bScreenSpaceEffect;
 	bool m_bDrawThroughLeafSystem;
 	bool m_bSheetSymbolCached;
-
-	CUtlSymbol m_SheetSymbol;
 
 	size_t m_nContextDataSize;
 	DmObjectId_t m_Id;
@@ -3126,12 +3045,12 @@ public:
 
 	CUtlString m_Name;
 
-	CUtlVector<CParticleOperatorInstance*> m_Operators;
-	CUtlVector<CParticleOperatorInstance*> m_Renderers;
-	CUtlVector<CParticleOperatorInstance*> m_Initializers;
-	CUtlVector<CParticleOperatorInstance*> m_Emitters;
-	CUtlVector<CParticleOperatorInstance*> m_ForceGenerators;
-	CUtlVector<CParticleOperatorInstance*> m_Constraints;
+	CUtlVector<CParticleOperatorInstance *> m_Operators;
+	CUtlVector<CParticleOperatorInstance *> m_Renderers;
+	CUtlVector<CParticleOperatorInstance *> m_Initializers;
+	CUtlVector<CParticleOperatorInstance *> m_Emitters;
+	CUtlVector<CParticleOperatorInstance *> m_ForceGenerators;
+	CUtlVector<CParticleOperatorInstance *> m_Constraints;
 	CUtlVector<ParticleChildrenInfo_t> m_Children;
 
 	CUtlVector<size_t> m_nOperatorsCtxOffsets;
@@ -3170,9 +3089,9 @@ public:
 //-----------------------------------------------------------------------------
 // Inline methods
 //-----------------------------------------------------------------------------
-inline CParticleSystemDefinition::CParticleSystemDefinition(void)
+inline CParticleSystemDefinition::CParticleSystemDefinition( void )
 {
-	m_vecMaterialModulation.Init(1.0f, 1.0f, 1.0f, 1.0f);
+	m_vecMaterialModulation.Init( 1.0f, 1.0f, 1.0f, 1.0f );
 	m_SheetSymbol = UTL_INVAL_SYMBOL;
 	m_bSheetSymbolCached = false;
 	m_nControlPointReadMask = 0;
@@ -3200,15 +3119,14 @@ inline CParticleSystemDefinition::CParticleSystemDefinition(void)
 	m_flCullRadius = 0.0f;
 	m_flCullFillCost = 1.0f;
 	m_nRetireCheckFrame = 0;
-	m_nMaxRecursionDepth = 8;
 	m_nFallbackCurrentCount = 0;
-	m_bDrawThroughLeafSystem = true;
+	m_bDrawThroughLeafSystem = true; 
 	m_flMaxTailLength = 0.0f;
 	m_flMinimumTimeStep = 0;
 	m_nPerParticleOutlineMaterialVarToken = 0;
 }
 
-inline CParticleSystemDefinition::~CParticleSystemDefinition(void)
+inline CParticleSystemDefinition::~CParticleSystemDefinition( void )
 {
 	UnlinkAllCollections();
 	m_Operators.PurgeAndDeleteElements();
@@ -3220,13 +3138,13 @@ inline CParticleSystemDefinition::~CParticleSystemDefinition(void)
 }
 
 // Used to iterate over all particle collections using the same def
-inline CParticleCollection* CParticleSystemDefinition::FirstCollection()
-{
-	return m_pFirstCollection;
+inline CParticleCollection *CParticleSystemDefinition::FirstCollection()
+{ 
+	return m_pFirstCollection; 
 }
 
-inline float CParticleSystemDefinition::GetCullRadius() const
-{
+inline float CParticleSystemDefinition::GetCullRadius() const 
+{ 
 	return m_flCullRadius;
 }
 
@@ -3235,9 +3153,9 @@ inline float CParticleSystemDefinition::GetCullFillCost() const
 	return m_flCullFillCost;
 }
 
-inline const char* CParticleSystemDefinition::GetCullReplacementDefinition() const
+inline const char *CParticleSystemDefinition::GetCullReplacementDefinition() const
 {
-	return m_CullReplacementName;
+	return m_pszCullReplacementName;
 }
 
 inline int CParticleSystemDefinition::GetCullControlPoint() const
@@ -3245,14 +3163,9 @@ inline int CParticleSystemDefinition::GetCullControlPoint() const
 	return m_nCullControlPoint;
 }
 
-inline int CParticleSystemDefinition::GetMaxRecursionDepth() const
-{
-	return m_nMaxRecursionDepth;
-}
-
 inline bool CParticleSystemDefinition::HasFallback() const
 {
-	return (m_nFallbackMaxCount > 0);
+	return ( m_nFallbackMaxCount > 0 );
 }
 
 inline int CParticleSystemDefinition::GetMinCPULevel() const
@@ -3265,28 +3178,28 @@ inline int CParticleSystemDefinition::GetMinGPULevel() const
 	return m_nMinGPULevel;
 }
 
-inline void CParticleSystemDefinition::MarkReadsControlPoint(int nPoint)
-{
-	m_nControlPointReadMask |= (1ULL << nPoint);
+inline void CParticleSystemDefinition::MarkReadsControlPoint( int nPoint ) 
+{ 
+	m_nControlPointReadMask |= ( 1ULL << nPoint );
 }
 
-inline bool CParticleSystemDefinition::IsNonPositionalControlPoint(int nPoint) const
+inline bool CParticleSystemDefinition::IsNonPositionalControlPoint( int nPoint ) const
 {
-	return (m_nControlPointNonPositionalMask & (1ULL << nPoint)) != 0;
+	return ( m_nControlPointNonPositionalMask & ( 1ULL << nPoint ) ) != 0;
 }
 
-inline bool CParticleSystemDefinition::ReadsControlPoint(int nPoint) const
-{
-	return (m_nControlPointReadMask & (1ULL << nPoint)) != 0;
+inline bool CParticleSystemDefinition::ReadsControlPoint( int nPoint ) const 
+{ 
+	return ( m_nControlPointReadMask & ( 1ULL << nPoint ) ) != 0;
 }
 
 // Retirement
-inline bool CParticleSystemDefinition::HasRetirementBeenChecked(int nFrame) const
+inline bool CParticleSystemDefinition::HasRetirementBeenChecked( int nFrame ) const
 {
 	return m_nRetireCheckFrame == nFrame;
 }
 
-inline void CParticleSystemDefinition::MarkRetirementCheck(int nFrame)
+inline void CParticleSystemDefinition::MarkRetirementCheck( int nFrame )
 {
 	m_nRetireCheckFrame = nFrame;
 }
@@ -3312,14 +3225,14 @@ inline float CParticleSystemDefinition::GetMaxTailLength() const
 	return m_flMaxTailLength;
 }
 
-inline void CParticleSystemDefinition::SetMaxTailLength(float flMaxTailLength)
+inline void CParticleSystemDefinition::SetMaxTailLength( float flMaxTailLength )
 {
 	m_flMaxTailLength = flMaxTailLength;
 }
 
-inline const char* CParticleSystemDefinition::MaterialName() const
+inline const char *CParticleSystemDefinition::MaterialName() const
 {
-	return m_MaterialName;
+	return m_pszMaterialName;
 }
 
 inline const DmObjectId_t& CParticleSystemDefinition::GetId() const

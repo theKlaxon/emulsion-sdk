@@ -1461,7 +1461,7 @@ struct mstudiomodel_t
 
 	mstudio_modelvertexdata_t vertexdata;
 
-	int					unused[7];		// remove as appropriate - was 8 in ASW
+	int					unused[8];		// remove as appropriate - was 8 in ASW // note: reverted back to asw's 8
 };
 
 inline bool mstudio_modelvertexdata_t::HasTangentData( void ) const 
