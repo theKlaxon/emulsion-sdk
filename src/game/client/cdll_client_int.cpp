@@ -32,6 +32,7 @@
 #include "view_shared.h"
 #include "env_wind_shared.h"
 #include "detailobjectsystem.h"
+#include "clienteffectprecachesystem.h"
 #include "soundEnvelope.h"
 #include "soundinfo.h"
 #include "c_basetempentity.h"
@@ -1022,6 +1023,7 @@ bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 	IGameSystem::Add( ClientLeafSystem() );
 	IGameSystem::Add( DetailObjectSystem() );
 	IGameSystem::Add( ViewportClientSystem() );
+	IGameSystem::Add( ClientEffectPrecacheSystem() );
 	IGameSystem::Add( g_pClientShadowMgr );
 	IGameSystem::Add( g_pColorCorrectionMgr );
 #ifdef GAMEUI_UISYSTEM2_ENABLED
