@@ -63,6 +63,8 @@ $Project "Server (Emulsion)"
 
 			$File 	"emulsion\paint_sphere.cpp"
 			$File 	"emulsion\paint_sphere.h"
+
+			$File 	"physgun.cpp"
 		}
 	}
 }
