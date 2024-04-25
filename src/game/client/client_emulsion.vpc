@@ -97,6 +97,8 @@ $Project "Client (Emulsion)"
 			$File	"emulsion\emulsion_rootpanel.cpp"
 			$File	"emulsion\c_prop_devcube.cpp"
 			$File	"emulsion\c_npc_surface.cpp"
+			
+			$File	"hl2\c_weapon_gravitygun.cpp"
 		}
 	}
 
