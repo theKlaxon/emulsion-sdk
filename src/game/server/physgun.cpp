@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//========= Copyright Â© 1996-2005, Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -369,7 +369,7 @@ IMotionEvent::simresult_e CGravControllerPoint::Simulate( IPhysicsMotionControll
 				float angleDiff = angleDest - angleSrc;
 				angleDiff = RAD2DEG(angleDiff);
 				axis += m_targetAlignNormal * angleDiff;
-				//world = m_targetPosition;// + rotDest * (1-ratio);
+				world = m_targetPosition;// + rotDest * (1-ratio);
 //				NDebugOverlay::Line( worldRotCenter, worldRotCenter-m_targetAlignNormal*50, 255, 0, 0, false, 0.1 );
 //				NDebugOverlay::Line( worldRotCenter, worldRotCenter+tangent*50, 0, 255, 0, false, 0.1 );
 //				NDebugOverlay::Line( worldRotCenter, worldRotCenter+binormal*50, 0, 0, 255, false, 0.1 );
@@ -841,6 +841,8 @@ void CWeaponGravityGun::EffectUpdate( void )
 	{
 		m_gravCallback.ClearAutoAlign();
 	}
+
+	NetworkStateChanged();
 }
 
 void CWeaponGravityGun::SoundCreate( void )
@@ -1213,7 +1215,6 @@ void CWeaponGravityGun::DetachObject( void )
 void CWeaponGravityGun::AttachObject( CBaseEntity *pObject, const Vector& start, const Vector &end, float distance )
 {
 	m_hObject = pObject;
-	m_useDown = false;
 	IPhysicsObject *pPhysics = pObject ? (pObject->VPhysicsGetObject()) : NULL;
 	if ( pPhysics && pObject->GetMoveType() == MOVETYPE_VPHYSICS )
 	{
@@ -1422,6 +1423,7 @@ bool CWeaponGravityGun::Reload( void )
 	return false;
 }
 
+#if 0
 #define NUM_COLLISION_TESTS 2500
 void CC_CollisionTest( const CCommand &args )
 {
@@ -1521,3 +1523,4 @@ void CC_CollisionTest( const CCommand &args )
 #endif
 }
 static ConCommand collision_test("collision_test", CC_CollisionTest, "Tests collision system", FCVAR_CHEAT );
+#endif
