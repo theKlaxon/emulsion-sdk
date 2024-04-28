@@ -141,7 +141,8 @@ public:
 	bool SaveToFile( IBaseFileSystem *filesystem, const char *resourceName, const char *pathID = NULL);
 
 	// Read from a buffer...  Note that the buffer must be null terminated
-	bool LoadFromBuffer( char const *resourceName, const char *pBuffer, IBaseFileSystem* pFileSystem = NULL, const char *pPathID = NULL );
+	bool LoadFromBuffer( char const *resourceName, const char *pBuffer, IBaseFileSystem* pFileSystem = NULL, const char *pPathID = NULL, GetSymbolProc_t pfnEvaluateSymbolProc = NULL);
+
 
 	// Read from a utlbuffer...
 	bool LoadFromBuffer( char const *resourceName, CUtlBuffer &buf, IBaseFileSystem* pFileSystem = NULL, const char *pPathID = NULL );
@@ -226,7 +227,7 @@ public:
 	// in the one we're chained to.
 	void ChainKeyValue( KeyValues* pChain );
 	
-	void RecursiveSaveToFile( CUtlBuffer& buf, int indentLevel, bool sortKeys = false, bool bAllowEmptyString = false );
+	void RecursiveSaveToFile( CUtlBuffer& buf, int indentLevel );
 
 	bool WriteAsBinary( CUtlBuffer &buffer );
 	bool ReadAsBinary( CUtlBuffer &buffer, int nStackDepth = 0 );
