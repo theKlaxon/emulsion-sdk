@@ -27,6 +27,7 @@
 #include "particles_internal.h"
 #include "ivrenderview.h"
 #include "materialsystem/imaterialsystem.h"
+#include "../game/shared/emulsion/proxy_filesystem.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"

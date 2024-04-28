@@ -1518,20 +1518,21 @@ void CBaseModPanel::OnEvent( KeyValues *pEvent )
 			// We have created a session
 			CloseAllWindows();
 
+			// TODO: add this back to KeyValues and reenable this code for proper multiplayer stuff!!!!!!
 			// Special case when we are creating a public session after empty search
-			if ( !Q_stricmp( pSettings->GetString( "options/createreason" ), "searchempty" ) &&
-				 !Q_stricmp( pSettings->GetString( "system/access" ), "public" ) )
-			{
-				// We are creating a public lobby after our search turned out empty
-				char const *szWaitScreenText = "#Matchmaking_NoResultsCreating";
+			//if ( !Q_stricmp( pSettings->GetString( "options/createreason" ), "searchempty" ) &&
+			//	 !Q_stricmp( pSettings->GetString( "system/access" ), "public" ) )
+			//{
+			//	// We are creating a public lobby after our search turned out empty
+			//	char const *szWaitScreenText = "#Matchmaking_NoResultsCreating";
 
-				//CUIGameData::Get()->OpenWaitScreen( szWaitScreenText, ui_lobby_noresults_create_msg_time.GetFloat() );
-				//CUIGameData::Get()->CloseWaitScreen( NULL, NULL );
+			//	//CUIGameData::Get()->OpenWaitScreen( szWaitScreenText, ui_lobby_noresults_create_msg_time.GetFloat() );
+			//	//CUIGameData::Get()->CloseWaitScreen( NULL, NULL );
 
-				// Delete the "createreason" key from the session settings
-				pSession->UpdateSessionSettings( KeyValues::AutoDeleteInline( KeyValues::FromString( "delete",
-					" delete { options { createreason delete } } " ) ) );
-			}
+			//	// Delete the "createreason" key from the session settings
+			//	pSession->UpdateSessionSettings( KeyValues::AutoDeleteInline( KeyValues::FromString( "delete",
+			//		" delete { options { createreason delete } } " ) ) );
+			//}
 
 			CBaseModFrame *pLobbyWindow = OpenWindow( wtGameLobby, NULL, true, pSettings ); // derive from session
 			if ( CBaseModFrame *pWaitScreen = GetWindow( WT_GENERICWAITSCREEN ) )

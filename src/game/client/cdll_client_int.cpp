@@ -1176,6 +1176,9 @@ void nothing() {
 
 }
 
+#include "..\game\shared\emulsion\proxy_filesystem.h"
+IFileSysPrx* filesystemProxy;
+
 int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGlobals )
 {
 
@@ -1253,6 +1256,8 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 	if ( (missionchooser = (IASW_Mission_Chooser *)appSystemFactory(ASW_MISSION_CHOOSER_VERSION, NULL)) == NULL )
 		return false;
 #endif
+
+	filesystemProxy = (IFileSysPrx*)filesystem;
 
 	if ( !CommandLine()->CheckParm( "-noscripting") )
 	{
