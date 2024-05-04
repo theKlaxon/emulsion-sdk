@@ -4,6 +4,8 @@
 // =================================================
 #include "cbase.h"
 #include "basecombatweapon.h"
+#include "prop_placeable.h"
+#include "scroll_controller.h"
 
 #define EX_PROP_MDL "models/props/metal_box.mdl"
 
@@ -13,26 +15,8 @@ struct PlacementData_t {
 
 };
 
-// this is just an example, so if used in the furture then this code should only 
-// be use as a base class. ex. ents like prop_weighted_cube would be placeable props
-class CPropPlaceable : public CBaseAnimating {
-	DECLARE_CLASS(CPropPlaceable, CBaseAnimating)
-public:
-
-	void Spawn();
-	void Precache();
-
-	bool SuggestOrigin(Vector origin, cplane_t plane);
-	bool IsPlaceable() { return m_bIsPlaceable && m_bIsGhost; }
-	void SetGhost(bool isGhost);
-
-private:
-
-	bool m_bIsGhost; // controls wheteher or not this ent is in placement mode
-	bool m_bIsPlaceable; 
-	float m_flNormalGravity;
-
-};
+void Placement_ScaleUp();
+void Placement_ScaleDn();
 
 LINK_ENTITY_TO_CLASS(prop_placeable, CPropPlaceable)
 
@@ -41,14 +25,16 @@ void CPropPlaceable::Spawn() {
 	Precache();
 
 	SetModel(EX_PROP_MDL);
-	SetAbsOrigin(vec3_origin);
-	SetSolid(SOLID_VPHYSICS);
-	VPhysicsInitNormal(SOLID_VPHYSICS, 0, false);
+	//SetAbsOrigin(vec3_origin);
+	//SetSolid(SOLID_VPHYSICS);
+	SetSolid(SOLID_BBOX);
+	//VPhysicsInitNormal(SOLID_VPHYSICS, 0, false);
+	SetMoveType(MOVETYPE_VPHYSICS);
 
 	SetCollisionGroup(COLLISION_GROUP_PLAYER_HELD);
 
+	//m_flNormalGravity = GetGravity();
 	SetGhost(true); // this is only starting true since this is purely example code.
-	m_flNormalGravity = GetGravity();
 
 	m_bIsPlaceable = false;
 }
@@ -68,8 +54,8 @@ const Vector dirs[6] = {
 
 bool CPropPlaceable::SuggestOrigin(Vector origin, cplane_t plane) {
 	
-	Vector maxs = ScriptGetBoundingMaxs();
-	float brad = maxs[maxs.LargestComponent()];// *GetModelScale();
+	Vector maxs = ScriptGetBoundingMaxs() * GetModelScale();
+	float brad = maxs[maxs.LargestComponent()];
 
 	Vector audited = origin;
 	audited += plane.normal * brad;
@@ -99,27 +85,83 @@ void CPropPlaceable::SetGhost(bool bIsGhost) {
 	m_bIsGhost = bIsGhost;
 
 	if (bIsGhost) {
-		SetGravity(0);
+		//VPhysicsGetObject()->EnableGravity(false);
 		SetSolid(SOLID_NONE);
 		return;
-	} 
+	}
 
-	SetGravity(m_flNormalGravity);
-	SetSolid(SOLID_VPHYSICS);
+	SetSolid(SOLID_BBOX);
+	//AddSolidFlags(FSOLID_CUSTOMBOXTEST);
+	
+	//m_Collision.SetCollisionBounds(ScriptGetBoundingMins() * GetModelScale(), ScriptGetBoundingMaxs() * GetModelScale());
+
+	//VPhysicsGetObject()->EnableGravity(true);
+	//VPhysicsGetObject()->SetPosition(GetAbsOrigin(), GetAbsAngles(), true);
+	//VPhysicsGetObject()->Wake();
 }
+
+#include "collisionutils.h"
+
+//bool CPropPlaceable::TestCollision(const Ray_t& ray, unsigned int fContentsMask, trace_t& tr)
+//{
+//	Vector scriptmins = ScriptGetBoundingMins();
+//	Vector scriptmaxs = ScriptGetBoundingMaxs();
+//
+//	// FIXME: This isn't a valid test, Jay needs to make it real
+//	Vector vecMin = (scriptmins);// *GetModelScale());// -(ray.m_Extents / GetModelScale());
+//	Vector vecMax = (scriptmaxs);// *GetModelScale());// +(ray.m_Extents / GetModelScale());
+//
+//	trace_t boxtrace;
+//
+//	tr.fraction = 1.0;
+//
+//	if (IntersectRayWithBox(GetAbsOrigin() - ray.m_Start, -ray.m_Delta, vecMin, vecMax, 0.0, &boxtrace))
+//	{
+//		if (boxtrace.fraction < tr.fraction)
+//		{
+//			tr = boxtrace;
+//			tr.startpos = ray.m_Start;
+//			tr.endpos = ray.m_Start + tr.fraction * ray.m_Delta;
+//		}
+//	}
+//
+//	if (tr.fraction < 1.0)
+//	{
+//		tr.contents = CONTENTS_SOLID;
+//		tr.m_pEnt = this;
+//		tr.hitbox = 0;
+//		tr.hitgroup = HITGROUP_GENERIC;
+//		tr.physicsbone = 0;
+//	}
+//
+//	return true;
+//}
+
 
 class CWeaponPlacement : public CBaseCombatWeapon {
 	DECLARE_CLASS(CWeaponPlacement, CBaseCombatWeapon)
 public:
 
-	void Spawn();
+	virtual void Spawn();
 	void Precache();
 
 	void PrimaryAttack() { PlaceObject(); }
 	void SecondaryAttack() { m_pCurObject->SetModelScale(2.0f); }
 	
+	virtual void Equip(CBaseCombatCharacter* pOwner);
+	virtual void Drop(const Vector& vecVelocity);
+
+	void ScaleObject(float flPace);
+	const float CurObjectScale() {
+		if (!m_pCurObject)
+			return 0.0f;
+
+		return m_pCurObject->GetModelScale();
+	}
+
 private:
 
+	void Not_PlacementThink();
 	void PlacementThink();
 	void PlaceObject();
 
@@ -129,22 +171,28 @@ private:
 
 LINK_ENTITY_TO_CLASS(weapon_placement, CWeaponPlacement)
 
-void CWeaponPlacement::Spawn() {
-	
-	Precache();
+float tempalpha;
 
-	// setup the think
-	SetThink(&CWeaponPlacement::PlacementThink);
-	SetNextThink(gpGlobals->curtime + 0.0001f);
+ConVar sv_placement_scale_place("sv_placement_scale_pace", "0.1f");
+CWeaponPlacement* g_pPlayerPlacement = nullptr;
+
+void CWeaponPlacement::Spawn() {
+	BaseClass::Spawn();
+	Precache();
 
 	// for the example code only
 	m_pCurObject = (CPropPlaceable*)CreateEntityByName("prop_placeable");
 	m_pCurObject->Spawn();
-	m_pCurObject->SetGhost(1); // ensure we have a ghost
+	tempalpha = m_pCurObject->GetRenderAlpha();
 }
 
 void CWeaponPlacement::Precache() {
+	BaseClass::Precache();
+}
 
+void CWeaponPlacement::Not_PlacementThink() {
+
+	SetNextThink(gpGlobals->curtime + 0.0001f);
 }
 
 void CWeaponPlacement::PlacementThink() {
@@ -160,14 +208,11 @@ void CWeaponPlacement::PlacementThink() {
 
 	if (tr.DidHitWorld() && m_pCurObject)
 		if (m_pCurObject->SuggestOrigin(tr.endpos, tr.plane)) {
-			m_pCurObject->SetRenderAlpha(125);
-			m_pCurObject->SetGhost(0);
+			m_pCurObject->SetRenderAlpha(tempalpha * 0.5f);
+			
 		}
 		else {
-			m_pCurObject->SetRenderAlpha(0);
-			m_pCurObject->SetGhost(1);
-
-			m_pCurObject->SetAbsOrigin(vec3_origin);
+			m_pCurObject->SetRenderAlpha(tempalpha * 0.2f);
 		}
 
 	SetNextThink(gpGlobals->curtime + 0.0001f);
@@ -175,10 +220,73 @@ void CWeaponPlacement::PlacementThink() {
 
 void CWeaponPlacement::PlaceObject() {
 
-	if (!m_pCurObject && m_pCurObject->IsPlaceable())
+	if (!m_pCurObject || !m_pCurObject->IsPlaceable())
 		return;
 
 	m_pCurObject->SetRenderAlpha(255);
 	m_pCurObject->SetGhost(0);
 
+	SetThink(&CWeaponPlacement::Not_PlacementThink);
+
+}
+
+void CWeaponPlacement::Equip(CBaseCombatCharacter* pOwner) {
+	BaseClass::Equip(pOwner);
+
+	g_sScroller.SetUp(Placement_ScaleDn);
+	g_sScroller.SetDn(Placement_ScaleUp);
+
+	g_pPlayerPlacement = this;
+
+	// setup the think
+	SetThink(&CWeaponPlacement::PlacementThink);
+	SetNextThink(gpGlobals->curtime + 0.0001f);
+}
+
+void CWeaponPlacement::Drop(const Vector& vecVelocity) {
+	BaseClass::Drop(vecVelocity);
+	g_sScroller.ClearBinds();
+	g_pPlayerPlacement = nullptr;
+}
+
+void CWeaponPlacement::ScaleObject(float flPace) {
+
+	m_pCurObject->SetModelScale(m_pCurObject->GetModelScale() + flPace);
+	//m_pCurObject->VPhysicsGetObject()->SetSphereRadius(m_pCurObject->VPhysicsGetObject()->GetSphereRadius() * m_pCurObject->GetModelScale());
+
+}
+
+float g_flCurScaleDelay = 0.0f;
+
+void Placement_DoScale(bool dn) {
+
+	float mod = 1.0f;
+
+	if (dn)
+		mod = -1.0f;
+
+	float scaleamt = mod * sv_placement_scale_place.GetFloat() * 10.0f;
+
+	if (g_pPlayerPlacement->CurObjectScale() < 2.0f)
+		scaleamt = mod * sv_placement_scale_place.GetFloat() * 2.0f;
+
+	g_pPlayerPlacement->ScaleObject(scaleamt);
+	g_flCurScaleDelay = gpGlobals->curtime + sv_placement_scale_place.GetFloat();
+
+}
+
+void Placement_ScaleDn() {
+
+	if (g_flCurScaleDelay > gpGlobals->curtime || g_pPlayerPlacement->CurObjectScale() < 0.25f)
+		return;
+
+	Placement_DoScale(1);
+}
+
+void Placement_ScaleUp() {
+
+	if (g_flCurScaleDelay > gpGlobals->curtime || g_pPlayerPlacement->CurObjectScale() > 7.0f)
+		return;
+
+	Placement_DoScale(0);
 }

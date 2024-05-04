@@ -1465,11 +1465,12 @@ private:
 
 	char							m_iName[MAX_PATH];
 
-
-
 public:
 	// Object model index
 	short							m_nModelIndex;
+
+	CNetworkVar(float, m_flModelScale); // moved here from baseanimating for f-stop
+
 private:
 	unsigned char					m_nRenderFX;
 	unsigned char 					m_nRenderMode;

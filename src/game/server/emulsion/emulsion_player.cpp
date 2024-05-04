@@ -102,8 +102,11 @@ void CEmulsionPlayer::Spawn() {
 	//engine->ClientCommand(edict(), "give weapon_placement");
 
 	// TODO: no.
-	engine->ClientCommand(edict(), "bind mwheeldown paintgun_next");
-	engine->ClientCommand(edict(), "bind mwheelup paintgun_prev");
+	//engine->ClientCommand(edict(), "bind mwheeldown paintgun_next");
+	//engine->ClientCommand(edict(), "bind mwheelup paintgun_prev");
+
+	engine->ClientCommand(edict(), "bind mwheeldown scfn_up");
+	engine->ClientCommand(edict(), "bind mwheelup scfn_dn");
 
 	m_hStickParent = NULL;
 	m_angInitialAngles = GetAbsAngles();

@@ -6,6 +6,7 @@
 #include "emulsion_player.h"
 #include "..\public\game\shared\portal2\paint_enum.h"
 #include "paintblob_manager.h"
+#include "scroll_controller.h"
 
 // -- paint colours
 ConVar bounce_paint_color("bounce_paint_color", "0 165 255 255", FCVAR_REPLICATED);
@@ -28,8 +29,8 @@ void Paintgun_PrevPower();
 CWeaponPaintgun* g_playerPaintgun = nullptr;
 PaintPowerType g_CurPaintgunPower = BOUNCE_POWER;
 
-ConCommand paintgun_next("paintgun_next", Paintgun_NextPower);
-ConCommand paintgun_prev("paintgun_prev", Paintgun_PrevPower);
+//ConCommand paintgun_next("paintgun_next", Paintgun_NextPower);
+//ConCommand paintgun_prev("paintgun_prev", Paintgun_PrevPower);
 
 ConVar paintgun_rad("paintgun_rad", "64", FCVAR_REPLICATED);
 ConVar paintgun_strength("paintgun_strength", "5", FCVAR_REPLICATED);
@@ -87,11 +88,16 @@ void CWeaponPaintgun::Equip(CBaseCombatCharacter* pOwner) {
 	g_playerPaintgun = this;
 	g_CurPaintgunPower = BOUNCE_POWER;
 	curPaintSwitchTime = 0.0f;
+
+	g_sScroller.SetUp(Paintgun_NextPower);
+	g_sScroller.SetDn(Paintgun_PrevPower);
 }
 
 void CWeaponPaintgun::Drop(const Vector& vecVelocity) {
 	BaseClass::Drop(vecVelocity);
 	//g_playerPaintgun = nullptr;
+
+	g_sScroller.ClearBinds();
 }
 
 int GetStreamIndex(PaintPowerType type) {

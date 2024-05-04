@@ -21,7 +21,7 @@
 //-----------------------------------------------------------------------------
 struct BeamTrail_t;
 class IMaterial;
-
+extern class IMatRenderContASW;
 
 //-----------------------------------------------------------------------------
 // CBeamSegDraw is a simple interface to beam rendering.
@@ -115,7 +115,10 @@ class CBeamSegDraw
 public:
 	CBeamSegDraw() : m_pRenderContext( NULL ) {}
 	// Pass null for pMaterial if you have already set the material you want.
-	void			Start( IMatRenderContext *pRenderContext, int nSegs, IMaterial *pMaterial=0, CMeshBuilder *pMeshBuilder = NULL, int nMeshVertCount = 0 );
+	void			Start( IMatRenderContASW *pRenderContext, int nSegs, IMaterial *pMaterial=0, CMeshBuilder *pMeshBuilder = NULL, int nMeshVertCount = 0 );
+
+	// for normal game code compat, defined in proxy_imatrendercontext.cpp
+	void			Start(IMatRenderContext* pRenderContext, int nSegs, IMaterial* pMaterial = 0, CMeshBuilder* pMeshBuilder = NULL, int nMeshVertCount = 0);
 
 	void			ComputeRenderInfo( BeamSegRenderInfo_t *pRenderInfo, const Vector &vecCameraPos, int nSegCount, const BeamSeg_t *pSegs );
 	virtual void	NextSeg( BeamSeg_t *pSeg );
@@ -135,7 +138,7 @@ protected:
 	int				m_nSegsDrawn;
 
 	Vector			m_vNormalLast;
-	IMatRenderContext *m_pRenderContext;
+	IMatRenderContASW *m_pRenderContext;
 
 	Vector			m_vecCameraPos;
 };

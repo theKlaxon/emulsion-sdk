@@ -380,7 +380,7 @@ public:
 	CNetworkVar( int, m_nHitboxSet );
 
 	// For making things thin during barnacle swallowing, e.g.
-	CNetworkVar( float, m_flModelScale );
+	//CNetworkVar( float, m_flModelScale );
 
 	// was pev->framerate
 	CNetworkVar( float, m_flPlaybackRate );

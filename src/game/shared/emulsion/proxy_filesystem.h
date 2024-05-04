@@ -377,4 +377,4 @@ public:
 
 };
 
-extern IFileSysPrx* filesystemProxy;
+extern IFileSysPrx* g_pFullFileSysPrx;

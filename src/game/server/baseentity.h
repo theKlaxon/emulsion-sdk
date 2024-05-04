@@ -763,6 +763,8 @@ public:
 	CNetworkVar( float, m_flSimulationTime );
 	CNetworkVar( float, m_flCreateTime );
 
+	CNetworkVar(float, m_flModelScale); // moved here from baseanimating for f-stop
+
 	int				m_nLastThinkTick;
 
 #if !defined( NO_ENTITY_PREDICTION ) && defined( USE_PREDICTABLEID )

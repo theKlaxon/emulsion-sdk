@@ -8,7 +8,7 @@ WeaponData
 	"playermodel"			"models/weapons/w_portalgun.mdl"
 	"anim_prefix"			"portalgun"
 	"bucket"			"0"
-	"bucket_position"		"2"
+	"bucket_position"		"4"
 
 	"clip_size"			"1"
 	"primary_ammo"			"None"

@@ -578,7 +578,7 @@ private:
 	// Mouth lipsync/envelope following values
 	CMouthInfo						m_mouth;
 
-	CNetworkVar( float, m_flModelScale );
+	//CNetworkVar( float, m_flModelScale );
 	
 	int								m_nRestoreSequence;
 
