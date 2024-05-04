@@ -346,7 +346,8 @@ public:
 	virtual ICallQueue* GetCallQueue() { return m_pRenderContext->GetCallQueue(); }
 
 	// Returns the world-space camera position
-	virtual void GetWorldSpaceCameraPosition(Vector* pCameraPos) { m_pRenderContext->GetWorldSpaceCameraPosition(pCameraPos); }
+	virtual void GetWorldSpaceCameraPosition(Vector* pCameraPos) { 
+		m_pRenderContext->GetWorldSpaceCameraPosition(pCameraPos); }
 	virtual void GetWorldSpaceCameraVectors(Vector* pVecForward, Vector* pVecRight, Vector* pVecUp) { m_pRenderContext->GetWorldSpaceCameraVectors(pVecForward, pVecRight, pVecUp); }
 
 	// Set a linear vector color scale for all 3D rendering.
@@ -451,8 +452,10 @@ protected:
 
 };
 
+static IMatRenderContASW pContASW;
+
 void CBeamSegDraw::Start(IMatRenderContext* pRenderContext, int nSegs, IMaterial* pMaterial, CMeshBuilder* pMeshBuilder, int nMeshVertCount) {
-	IMatRenderContASW pContASW;
+	
 	pContASW.SetProtectedContext(pRenderContext);
 	Start(&pContASW, nSegs, pMaterial, pMeshBuilder, nMeshVertCount);
 }

@@ -633,6 +633,7 @@ CServerGameDLL g_ServerGameDLL;
 EXPOSE_SINGLE_INTERFACE_GLOBALVAR(CServerGameDLL, IServerGameDLL, INTERFACEVERSION_SERVERGAMEDLL, g_ServerGameDLL);
 
 #include "../game/shared/emulsion/proxy_filesystem.h"
+
 IFileSysPrx* g_pFullFileSysPrx = nullptr;
 
 bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory, 
