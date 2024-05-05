@@ -171,6 +171,8 @@ $Project
 		$File	"$SRCDIR\game\shared\ai_speechconcept.h"
 		$File	"$SRCDIR\common\blackbox_helper.cpp"
 		$File	"$SRCDIR\common\blackbox_helper.h"
+		$File	"$SRCDIR\cl_dll\beamdraw_legacy.cpp"
+		$File	"$SRCDIR\cl_dll\beamdraw_legacy.h"
 		$File	"c_baselesson.cpp"
 		$File	"c_baselesson.h"
 		$File	"c_basetoggle.cpp"
