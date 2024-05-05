@@ -11,6 +11,59 @@ extern IFileSystem* filesystem;
 //-----------------------------------------------------------------------------
 abstract_class IFileSysPrx : public IAppSystem, public IBaseFileSystem
 {
+public: // appsystem overrides
+
+	virtual bool Connect(CreateInterfaceFn factory) { return filesystem->Connect(factory); }
+	virtual void Disconnect() { filesystem->Disconnect(); }
+
+	// Here's where systems can access other interfaces implemented by this object
+	// Returns NULL if it doesn't implement the requested interface
+	virtual void* QueryInterface(const char* pInterfaceName) { return filesystem->QueryInterface(pInterfaceName); }
+
+	// Init, shutdown
+	virtual InitReturnVal_t Init() { return filesystem->Init(); }
+	virtual void Shutdown() { filesystem->Shutdown(); }
+
+	// Returns all dependent libraries
+	virtual const AppSystemInfo_t* GetDependencies() { return filesystem->GetDependencies(); }
+
+	// Returns the tier
+	virtual AppSystemTier_t GetTier() { return filesystem->GetTier(); }
+
+	// Reconnect to a particular interface
+	virtual void Reconnect(CreateInterfaceFn factory, const char* pInterfaceName) { filesystem->Reconnect(factory, pInterfaceName); }
+
+public: // IBaseFileSystem overrides
+
+	virtual int				Read(void* pOutput, int size, FileHandle_t file) { return filesystem->Read(pOutput, size, file); }
+	virtual int				Write(void const* pInput, int size, FileHandle_t file) { return filesystem->Write(pInput, size, file); }
+
+	// if pathID is NULL, all paths will be searched for the file
+	virtual FileHandle_t	Open(const char* pFileName, const char* pOptions, const char* pathID = 0) { return filesystem->Open(pFileName, pOptions, pathID); }
+	virtual void			Close(FileHandle_t file) { filesystem->Close(file); }
+
+
+	virtual void			Seek(FileHandle_t file, int pos, FileSystemSeek_t seekType) { filesystem->Seek(file, pos, seekType); }
+	virtual unsigned int	Tell(FileHandle_t file) { return filesystem->Tell(file); }
+	virtual unsigned int	Size(FileHandle_t file) { return filesystem->Size(file); }
+	virtual unsigned int	Size(const char* pFileName, const char* pPathID = 0) { return filesystem->Size(pFileName, pPathID); }
+
+	virtual void			Flush(FileHandle_t file) { filesystem->Flush(file); }
+	virtual bool			Precache(const char* pFileName, const char* pPathID = 0) { return filesystem->Precache(pFileName, pPathID); }
+
+	virtual bool			FileExists(const char* pFileName, const char* pPathID = 0) { return filesystem->FileExists(pFileName, pPathID); }
+	virtual bool			IsFileWritable(char const* pFileName, const char* pPathID = 0) { return filesystem->IsFileWritable(pFileName, pPathID); }
+	virtual bool			SetFileWritable(char const* pFileName, bool writable, const char* pPathID = 0) { return filesystem->SetFileWritable(pFileName, writable, pPathID); }
+
+	virtual long			GetFileTime(const char* pFileName, const char* pPathID = 0) { return filesystem->GetFileTime(pFileName, pPathID); }
+
+	//--------------------------------------------------------
+	// Reads/writes files to utlbuffers. Use this for optimal read performance when doing open/read/close
+	//--------------------------------------------------------
+	virtual bool			ReadFile(const char* pFileName, const char* pPath, CUtlBuffer& buf, int nMaxBytes = 0, int nStartingByte = 0, FSAllocFunc_t pfnAlloc = NULL) { return filesystem->ReadFile(pFileName, pPath, buf, nMaxBytes, nStartingByte, pfnAlloc); }
+	virtual bool			WriteFile(const char* pFileName, const char* pPath, CUtlBuffer& buf) { return filesystem->WriteFile(pFileName, pPath, buf); }
+	virtual bool			UnzipFile(const char* pFileName, const char* pPath, const char* pDestination) { return filesystem->UnzipFile(pFileName, pPath, pDestination); }
+
 public:
 	//--------------------------------------------------------
 	// Steam operations
@@ -173,7 +226,7 @@ public:
 	virtual FSAsyncStatus_t	AsyncAbort(FSAsyncControl_t hControl) { return filesystem->AsyncAbort(hControl); }
 	virtual FSAsyncStatus_t	AsyncStatus(FSAsyncControl_t hControl) { return filesystem->AsyncStatus(hControl); }
 	// set a new priority for a file already in the queue
-	virtual FSAsyncStatus_t	AsyncSetPriority(FSAsyncControl_t hControl, int newPriority) { filesystem->AsyncSetPriority(hControl, newPriority); }
+	virtual FSAsyncStatus_t	AsyncSetPriority(FSAsyncControl_t hControl, int newPriority) { return filesystem->AsyncSetPriority(hControl, newPriority); }
 	virtual void			AsyncAddRef(FSAsyncControl_t hControl) { filesystem->AsyncAddRef(hControl); }
 	virtual void			AsyncRelease(FSAsyncControl_t hControl) { filesystem->AsyncRelease(hControl); }
 

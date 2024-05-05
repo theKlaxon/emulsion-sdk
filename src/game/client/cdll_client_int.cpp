@@ -1177,7 +1177,6 @@ void nothing() {
 }
 
 #include "..\game\shared\emulsion\proxy_filesystem.h"
-IFileSysPrx* g_pFullFileSysPrx;
 
 int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGlobals )
 {
@@ -1257,7 +1256,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 		return false;
 #endif
 
-	g_pFullFileSysPrx = (IFileSysPrx*)filesystem;
+	//g_pFullFileSysPrx = (IFileSysPrx*)filesystem;
 
 	if ( !CommandLine()->CheckParm( "-noscripting") )
 	{

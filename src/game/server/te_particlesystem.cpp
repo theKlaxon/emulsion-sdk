@@ -16,10 +16,9 @@
 
 IMPLEMENT_SERVERCLASS_ST(CTEParticleSystem, DT_TEParticleSystem)
 
-	SendPropVector(SENDINFO(m_vecOrigin), 0, SPROP_COORD)
-	//SendPropFloat( SENDINFO_VECTORELEM(m_vecOrigin, 0), -1, SPROP_COORD),
-	//SendPropFloat( SENDINFO_VECTORELEM(m_vecOrigin, 1), -1, SPROP_COORD),
-	//SendPropFloat( SENDINFO_VECTORELEM(m_vecOrigin, 2), -1, SPROP_COORD),
+	SendPropFloat( SENDINFO_VECTORELEM(m_vecOrigin, 0), -1, SPROP_COORD),
+	SendPropFloat( SENDINFO_VECTORELEM(m_vecOrigin, 1), -1, SPROP_COORD),
+	SendPropFloat( SENDINFO_VECTORELEM(m_vecOrigin, 2), -1, SPROP_COORD),
 
 END_SEND_TABLE()
 

@@ -633,8 +633,9 @@ CServerGameDLL g_ServerGameDLL;
 EXPOSE_SINGLE_INTERFACE_GLOBALVAR(CServerGameDLL, IServerGameDLL, INTERFACEVERSION_SERVERGAMEDLL, g_ServerGameDLL);
 
 #include "../game/shared/emulsion/proxy_filesystem.h"
+#include "../game/shared/emulsion/proxy_imaterialsystem.h"
 
-IFileSysPrx* g_pFullFileSysPrx = nullptr;
+//IFileSysPrx* g_pFullFileSysPrx = nullptr;
 
 bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory, 
 		CreateInterfaceFn physicsFactory, CreateInterfaceFn fileSystemFactory, 
@@ -710,7 +711,8 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory,
 		scriptmanager = (IScriptManager *)appSystemFactory( VSCRIPT_INTERFACE_VERSION, NULL );
 	}
 
-	g_pFullFileSysPrx = (IFileSysPrx*)filesystem;
+	//g_pMaterialSysASW = &g_matsysasw;
+	//g_pFullFileSysPrx = (IFileSysPrx*)filesystem;
 
 #ifdef SERVER_USES_VGUI
 	// If not running dedicated, grab the engine vgui interface

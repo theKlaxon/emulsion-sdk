@@ -12,7 +12,7 @@
 ConVar bounce_paint_color("bounce_paint_color", "0 165 255 255", FCVAR_REPLICATED);
 ConVar speed_paint_color("speed_paint_color", "255 106 0 255", FCVAR_REPLICATED);
 ConVar portal_paint_color("portal_paint_color", "0 200 33 255", FCVAR_REPLICATED); // p2ce's green (i was allowed to use it) -Klax
-//ConVar portal_paint_color("portal_paint_color", "d15 252 11 255", FCVAR_REPLICATED); // i like greemn -Klax
+//ConVar portal_paint_color("portal_paint_color", "15 252 11 255", FCVAR_REPLICATED); // i like greemn -Klax
 //ConVar portal_paint_color("portal_paint_color", "140 0 255 255", FCVAR_REPLICATED); // using this for stick paint
 
 ConVar erase_color("erase_color", "0 0 0 255", FCVAR_REPLICATED);

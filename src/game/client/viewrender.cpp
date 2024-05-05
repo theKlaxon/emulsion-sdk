@@ -4379,7 +4379,7 @@ void CRendering3dView::DrawOpaqueRenderables( bool bShadowDepth )
 	//
 	RopeManager()->DrawRenderCache( bShadowDepth );
 	CMatRenderContextPtr pRenderContext(materials);
-	g_pParticleSystemMgr->DrawRenderCache( pRenderContext, bShadowDepth );
+	g_pParticleSystemMgr->DrawRenderCache( /*pRenderContext, */bShadowDepth );
 }
 
 
