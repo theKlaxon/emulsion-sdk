@@ -325,7 +325,7 @@ public:
 	//--------------------------------------------------------
 	virtual bool		GetOptimalIOConstraints(FileHandle_t hFile, unsigned* pOffsetAlign, unsigned* pSizeAlign, unsigned* pBufferAlign) { return filesystem->GetOptimalIOConstraints(hFile, pOffsetAlign, pSizeAlign, pBufferAlign); }
 	inline unsigned		GetOptimalReadSize(FileHandle_t hFile, unsigned nLogicalSize) { return filesystem->GetOptimalReadSize(hFile, nLogicalSize); }
-	virtual void* AllocOptimalReadBuffer(FileHandle_t hFile, unsigned nSize = 0, unsigned nOffset = 0) { return AllocOptimalReadBuffer(hFile, nSize, nOffset); }
+	virtual void* AllocOptimalReadBuffer(FileHandle_t hFile, unsigned nSize = 0, unsigned nOffset = 0) { return filesystem->AllocOptimalReadBuffer(hFile, nSize, nOffset); }
 	virtual void		FreeOptimalReadBuffer(void* a) { filesystem->FreeOptimalReadBuffer(a); }
 
 	//--------------------------------------------------------
