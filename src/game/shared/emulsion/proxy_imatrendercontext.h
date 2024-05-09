@@ -1,8 +1,14 @@
 #pragma once
 #include "materialsystem/imaterialsystem.h"
+#include "tier1/refcount.h"
 
 class IMatRenderContASW {
 public:
+	//IRefCounted Interface
+	virtual int					AddRef() {return m_pRenderContext->AddRef();}
+	virtual int					Release() {return m_pRenderContext->Release();}
+
+
 	virtual void				BeginRender() { m_pRenderContext->BeginRender(); }
 	virtual void				EndRender() { m_pRenderContext->EndRender(); }
 
