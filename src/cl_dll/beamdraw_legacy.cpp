@@ -53,12 +53,12 @@ void CBeamSegDraw::Start(IMatRenderContext* pRenderContext, int nSegs, IMaterial
 		m_nMeshVertCount = 0;
 
 #ifdef CLIENT_DLL
-		if ( ShouldDrawInWireFrameMode() || r_DrawBeams.GetInt() == 2 )
-		{
-			if ( !g_pBeamWireframeMaterial )
-				g_pBeamWireframeMaterial = materials->FindMaterial("shadertest/wireframevertexcolor", TEXTURE_GROUP_OTHER);
-			pMaterial = g_pBeamWireframeMaterial;
-		}
+		//if ( ShouldDrawInWireFrameMode() || r_DrawBeams.GetInt() == 2 )
+		//{
+		//	if ( !g_pBeamWireframeMaterial )
+		//		g_pBeamWireframeMaterial = materials->FindMaterial("shadertest/wireframevertexcolor", TEXTURE_GROUP_OTHER);
+		//	pMaterial = g_pBeamWireframeMaterial;
+		//}
 #endif
 
 		//IMesh *pMesh = materials->GetDynamicMesh( true, NULL, NULL, pMaterial );
@@ -85,14 +85,14 @@ void CBeamSegDraw::Start(IMatRenderContASW* pRenderContext, int nSegs, IMaterial
 		//m_pMeshBuilder = NULL;
 		m_nMeshVertCount = 0;
 
-#ifdef CLIENT_DLL
-		if (ShouldDrawInWireFrameMode() || r_DrawBeams.GetInt() == 2)
-		{
-			if (!g_pBeamWireframeMaterial)
-				g_pBeamWireframeMaterial = materials->FindMaterial("shadertest/wireframevertexcolor", TEXTURE_GROUP_OTHER);
-			pMaterial = g_pBeamWireframeMaterial;
-		}
-#endif
+//#ifdef CLIENT_DLL
+//		if (ShouldDrawInWireFrameMode() || r_DrawBeams.GetInt() == 2)
+//		{
+//			if (!g_pBeamWireframeMaterial)
+//				g_pBeamWireframeMaterial = materials->FindMaterial("shadertest/wireframevertexcolor", TEXTURE_GROUP_OTHER);
+//			pMaterial = g_pBeamWireframeMaterial;
+//		}
+//#endif
 
 		//IMesh *pMesh = materials->GetDynamicMesh( true, NULL, NULL, pMaterial );
 		m_pMesh = pRenderContext->GetDynamicMesh(true, NULL, NULL, pMaterial);

@@ -1006,7 +1006,7 @@ public:
 	virtual bool				IsStereoSupported() = 0;
 	virtual bool				IsStereoActiveThisFrame() const = 0;
 
-	virtual void				NVStereoUpdate() = 0;
+	virtual void				NVStereoUpdat12e() = 0;
 	virtual void				ClearBuffers( bool bClearColor, bool bClearDepth, bool bClearStencil = false ) = 0;
 
 	// -----------------------------------------------------------
