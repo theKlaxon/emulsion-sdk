@@ -3739,8 +3739,8 @@ void TextEntry::ApplySettings( KeyValues *inResourceData )
 	_font = scheme()->GetIScheme( GetScheme() )->GetFont( inResourceData->GetString( "font", "Default" ), IsProportional() );
 	SetFont( _font );
 
-	SetTextHidden((bool)inResourceData->GetInt("textHidden", 0));
-	SetEditable((bool)inResourceData->GetInt("editable", 1));
+	SetTextHidden(inResourceData->GetInt("textHidden", 0));
+	SetEditable(inResourceData->GetInt("editable", 1));
 	SetMaximumCharCount(inResourceData->GetInt("maxchars", -1));
 	SetAllowNumericInputOnly(inResourceData->GetInt("NumericInputOnly", 0));
 	SetAllowNonAsciiCharacters(inResourceData->GetInt("unicode", 0));

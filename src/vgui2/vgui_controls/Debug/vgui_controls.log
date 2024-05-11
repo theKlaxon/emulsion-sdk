@@ -1,82 +1,92 @@
-﻿cl : Command line warning D9002: ignoring unknown option '/Gw'
-cl : Command line warning D9002: ignoring unknown option '/Gw'
+﻿  Running VPC CRC Check - vgui_controls.vpc
+cl : Command line warning D9002: ignoring unknown option '/ignore:4800;/ignore:4481'
+cl : Command line warning D9002: ignoring unknown option '/ignore:4800;/ignore:4481'
   AnalogBar.cpp
-cl : Command line warning D9002: ignoring unknown option '/Gw'
+cl : Command line warning D9002: ignoring unknown option '/ignore:4800;/ignore:4481'
   AnimatingImagePanel.cpp
-cl : Command line warning D9002: ignoring unknown option '/Gw'
+cl : Command line warning D9002: ignoring unknown option '/ignore:4800;/ignore:4481'
   AnimationController.cpp
-cl : Command line warning D9002: ignoring unknown option '/Gw'
+cl : Command line warning D9002: ignoring unknown option '/ignore:4800;/ignore:4481'
   BitmapImagePanel.cpp
-cl : Command line warning D9002: ignoring unknown option '/Gw'
+cl : Command line warning D9002: ignoring unknown option '/ignore:4800;/ignore:4481'
+  BuildFactoryHelper.cpp
+cl : Command line warning D9002: ignoring unknown option '/ignore:4800;/ignore:4481'
   BuildGroup.cpp
-cl : Command line warning D9002: ignoring unknown option '/Gw'
+cl : Command line warning D9002: ignoring unknown option '/ignore:4800;/ignore:4481'
   BuildModeDialog.cpp
-cl : Command line warning D9002: ignoring unknown option '/Gw'
+cl : Command line warning D9002: ignoring unknown option '/ignore:4800;/ignore:4481'
   Button.cpp
-cl : Command line warning D9002: ignoring unknown option '/Gw'
-cl : Command line warning D9002: ignoring unknown option '/Gw'
+cl : Command line warning D9002: ignoring unknown option '/ignore:4800;/ignore:4481'
   CheckButton.cpp
-cl : Command line warning D9002: ignoring unknown option '/Gw'
-cl : Command line warning D9002: ignoring unknown option '/Gw'
+cl : Command line warning D9002: ignoring unknown option '/ignore:4800;/ignore:4481'
   CheckButtonList.cpp
+cl : Command line warning D9002: ignoring unknown option '/ignore:4800;/ignore:4481'
+cl : Command line warning D9002: ignoring unknown option '/ignore:4800;/ignore:4481'
   CircularProgressBar.cpp
   ComboBox.cpp
-cl : Command line warning D9002: ignoring unknown option '/Gw'
-  ControllerMap.cpp
+  consoledialog.cpp
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\button.cpp(607): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\button.cpp(609): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\button.cpp(629): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\button.cpp(631): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\button.cpp(896): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+  ControllerMap.cpp
+  controls.cpp
   CvarToggleCheckButton.cpp
   DirectorySelectDialog.cpp
+  Divider.cpp
   EditablePanel.cpp
   ExpandButton.cpp
   FileOpenDialog.cpp
   FileOpenStateMachine.cpp
+  filesystem_helpers.cpp
   FocusNavGroup.cpp
   Frame.cpp
+  GraphPanel.cpp
   HTML.cpp
+  Image.cpp
+  ImageList.cpp
   ImagePanel.cpp
   InputDialog.cpp
   KeyBindingHelpDialog.cpp
-d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(292): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(293): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(295): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(296): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(297): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
   KeyBoardEditorDialog.cpp
   KeyRepeat.cpp
   Label.cpp
   ListPanel.cpp
   ListViewPanel.cpp
   Menu.cpp
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(292): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(293): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(295): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(296): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\imagepanel.cpp(297): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
   MenuBar.cpp
   MenuButton.cpp
   MenuItem.cpp
-d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
-d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
-d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
   MessageBox.cpp
-  MessageDialog.cpp
-d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\html.cpp(2010): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-  Panel.cpp
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\listpanel.cpp(609): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\listpanel.cpp(612): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-  PanelListPanel.cpp
-  PerforceFileExplorer.cpp
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
+  MessageDialog.cpp
+  Panel.cpp
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\html.cpp(2010): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+  PanelListPanel.cpp
+  PerforceFileExplorer.cpp
   PerforceFileList.cpp
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
+  perforcefilelistframe.cpp
   ProgressBar.cpp
   ProgressBox.cpp
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
+d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
   PropertyDialog.cpp
   PropertyPage.cpp
   PropertySheet.cpp
-d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
-d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
-d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
   QueryBox.cpp
   RadioButton.cpp
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(1355): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
@@ -88,38 +98,37 @@ d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(4683): warning C4800
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\panel.cpp(5281): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
   RichText.cpp
   RotatingProgressBar.cpp
+  savedocumentquery.cpp
   ScalableImagePanel.cpp
+  ScrollableEditablePanel.cpp
   ScrollBar.cpp
   ScrollBarSlider.cpp
-  ScrollableEditablePanel.cpp
   SectionedListPanel.cpp
   Slider.cpp
   Splitter.cpp
+  subrectimage.cpp
   TextEntry.cpp
   TextImage.cpp
-  ToggleButton.cpp
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
-  ToolWindow.cpp
+  ToggleButton.cpp
   Tooltip.cpp
+  ToolWindow.cpp
   TreeView.cpp
   TreeViewListControl.cpp
   URLLabel.cpp
-  WizardPanel.cpp
-  WizardSubPanel.cpp
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(302): warning C4481: nonstandard extension used: override specifier 'override'
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(303): warning C4481: nonstandard extension used: override specifier 'override'
 d:\theklaxon\emulsion-sdk\src\public\vgui_controls\sectionedlistpanel.h(304): warning C4481: nonstandard extension used: override specifier 'override'
-  consoledialog.cpp
+  vgui_key_translation.cpp
+  WizardPanel.cpp
+  WizardSubPanel.cpp
+d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\richtext.cpp(2272): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\textentry.cpp(3742): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\textentry.cpp(3743): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\textentry.cpp(3745): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\textentry.cpp(3746): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\textentry.cpp(3747): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\richtext.cpp(2272): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-  patch.cpp
-  perforcefilelistframe.cpp
-  savedocumentquery.cpp
 d:\theklaxon\emulsion-sdk\src\vgui2\vgui_controls\treeview.cpp(672): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
   vgui_controls.vcxproj -> D:\theKlaxon\emulsion-sdk\src\vgui2\vgui_controls\..\..\lib\public\.\vgui_controls.lib

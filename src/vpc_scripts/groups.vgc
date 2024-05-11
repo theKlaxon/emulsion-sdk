@@ -17,14 +17,8 @@ $Group "everything"
 {
 	"client"
 	"server"
+	"tier1"
 	"vgui_controls"
-	"particles"
-	"videocfg"
-}
-
-$Group "bones"
-{
-	"bonesetup"
 }
 
 $Group "gamepad"

@@ -16,6 +16,12 @@ $Configuration
 	$Compiler
 	{
 		$AdditionalIncludeDirectories	"$BASE;$SRCDIR\thirdparty;$SRCDIR\thirdparty\cef;$GENERATED_PROTO_DIR"
+		$PreprocessorDefinitions		"$BASE;OVERRIDE=override;"
+		$AdditionalOptions					"$BASE /ignore:4800;/ignore:4481"
+		$TreatWarningsAsErrors "No (WX-)"
+
+		// Optimization, always keep this off for vgui_controls. otherwise stuff get weird in-game.  -Klaxon
+		$Optimization						"Disabled (/Od)"
 	}
 }
 

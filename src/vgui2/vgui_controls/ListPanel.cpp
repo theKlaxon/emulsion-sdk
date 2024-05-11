@@ -606,7 +606,7 @@ void ListPanel::AddColumnHeader(int index, const char *columnName, const char *c
 	column.m_pHeader = pButton;
 	column.m_iMinWidth = minWidth;
 	column.m_iMaxWidth = maxWidth;
-	column.m_bResizesWithWindow = columnFlags & COLUMN_RESIZEWITHWINDOW;
+	column.m_bResizesWithWindow = (columnFlags & COLUMN_RESIZEWITHWINDOW);
 	column.m_bTypeIsText = !(columnFlags & COLUMN_IMAGE);
 	column.m_bHidden = false;
 	column.m_bUnhidable = (columnFlags & COLUMN_UNHIDABLE);

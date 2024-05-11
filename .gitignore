@@ -61,9 +61,11 @@ config.cfg
 *.db
 src/.vs/Game_Emulsion-2010/
 src/.vs/Game_Skeleton-2010/
-src/.vs/Game_Portal2-ASW-2010/
 src/.vs/GamepadUI-2010/
 src/.vs/GamepadUI-2013/
+src/.vs/Everything-2010/
+src/.vs/Game_TF2-2010/
+src/vgui2/vgui_controls/.vs/
 
 game/emulsion/gameinfo.txt
 game/skeleton/gameinfo.txt
@@ -91,6 +93,12 @@ src/game/server/Release_p2asw/
 
 src/game/gamepadui/Debug_emulsion/
 src/game/gamepadui/Release_emulsion/
+
+src/vgui2/vgui_controls/Debug/
+src/vgui2/vgui_controls/Release/
+
+src/tier1/Debug/
+src/tier1/Release/
 
 game/emulsion/maps/workshop/
 
