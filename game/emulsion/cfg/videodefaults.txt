@@ -14,8 +14,6 @@
 	"setting.cpu_level"		"2"
 	"setting.videoconfig_version"		"1"
 	"setting.mem_level"		"2"
-	"setting.gpu_mem_level"		"2"
-	"setting.mat_triplebuffered"		"1"
 	"setting.defaultres"		"1920"
 	"setting.defaultresheight"		"1080"
 	"setting.mat_grain_scale_override"		"1"

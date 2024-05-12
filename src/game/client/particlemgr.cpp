@@ -975,7 +975,7 @@ bool CParticleMgr::Init(unsigned long count, IMaterialSystem *pMaterials)
 
 	// Initialize the particle system
 	bool bPrecacheParticles = IsPC() && !engine->IsCreatingXboxReslist();
-	g_pParticleSystemMgr->Init( g_pParticleSystemQuery, bPrecacheParticles );
+	g_pParticleSystemMgr->Init2( g_pParticleSystemQuery, bPrecacheParticles );
 	// tell particle mgr to add the default simulation + rendering ops
 	g_pParticleSystemMgr->AddBuiltinSimulationOperators();
 	g_pParticleSystemMgr->AddBuiltinRenderingOperators();

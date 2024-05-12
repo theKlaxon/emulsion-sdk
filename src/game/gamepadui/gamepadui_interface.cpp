@@ -3,6 +3,7 @@
 #include "gamepadui_mainmenu.h"
 
 #include "vgui/ILocalize.h"
+#include "interfaces/interfaces.h"
 
 #ifdef BINK_VIDEO
 #include "avi\ibik.h"
@@ -35,6 +36,7 @@ static CDllDemandLoader s_GameUI( "GameUI" );
 EXPOSE_SINGLE_INTERFACE_GLOBALVAR( GamepadUI, IGamepadUI, GAMEPADUI_INTERFACE_VERSION, GamepadUI::GetInstance() );
 
 GamepadUI *GamepadUI::s_pGamepadUI = NULL;
+IFileSystem* filesystem = g_pFullFileSystem;
 
 GamepadUI& GamepadUI::GetInstance()
 {

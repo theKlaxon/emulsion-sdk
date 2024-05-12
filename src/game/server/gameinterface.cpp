@@ -781,7 +781,7 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory,
 	COM_TimestampedLog( "g_pParticleSystemMgr->Init" );
 	// Initialize the particle system
 	bool bPrecacheParticles = IsPC() && !engine->IsCreatingXboxReslist();
-	if ( !g_pParticleSystemMgr->Init( g_pParticleSystemQuery, bPrecacheParticles ) )
+	if ( !g_pParticleSystemMgr->Init2( g_pParticleSystemQuery, bPrecacheParticles ) )
 	{
 		return false;
 	}

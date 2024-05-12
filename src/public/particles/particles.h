@@ -438,6 +438,20 @@ public:
 //-----------------------------------------------------------------------------
 typedef int ParticleSystemHandle_t;
 
+#include "proxy_imaterialsystem.h"
+
+// this is defined by symbols in the particles lib, this just allows access to said symbols
+// since not all of this stuff was in the src/public header :/ (just like the blobulator RE) -Klaxon
+class CParticleSystemDictionary {
+public:
+
+	CParticleSystemDictionary();
+
+	char filler[92];
+};
+
+static bool bInitted = false;
+
 class CParticleSystemMgr
 {
 public:
@@ -447,6 +461,36 @@ public:
 
 	// Initialize the particle system
 	bool Init( IParticleSystemQuery *pQuery, bool bAllowPrecache );
+	bool Init2(IParticleSystemQuery* pQuery, bool bAllowPrecache) {
+
+		if (bInitted)
+			return true;
+
+		if (pQuery == nullptr)
+			return false;
+
+		KeyValues* pKVar3;
+		CParticleSystemDictionary* pThis00 = new CParticleSystemDictionary;
+
+		m_pParticleSystemDictionary = pThis00;
+		
+		m_pQuery = pQuery;
+		m_bAllowPrecache = bAllowPrecache;
+		
+		if (g_pMaterialSysASW != nullptr) {
+			pKVar3 = new KeyValues("DepthWrite");
+			pKVar3->SetInt("$no_fullbright", 1);
+			pKVar3->SetInt("$model", 0);
+			pKVar3->SetInt("$alphatest", 1);
+
+			m_pShadowDepthMaterial = g_pMaterialSysASW->CreateMaterial("__particlesDepthWrite", pKVar3);
+			bInitted = true;
+		}
+
+		SeedRandSIMD(0xbc614e);
+		
+		return true;
+	}
 
 	// methods to add builtin operators. If you don't call these at startup, you won't be able to sim or draw. These are done separately from Init, so that
 	// the server can omit the code needed for rendering/simulation, if desired.

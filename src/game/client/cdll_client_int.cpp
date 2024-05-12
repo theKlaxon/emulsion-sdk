@@ -308,7 +308,9 @@ bool g_bTextMode = false;
 
 static ConVar *g_pcv_ThreadMode = NULL;
 
-// GAMEPADUI TODO - put this somewhere better. (Madi)
+// GAMEPADUI TODO - put this somewhere better. (Madi) 
+//
+// Nah lol, i'll keep it here. (Klax)
 #if defined( GAMEPADUI )
 const bool IsSteamDeck()
 {

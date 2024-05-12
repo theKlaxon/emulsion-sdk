@@ -1,2 +1,2 @@
-START portal2.exe -game emulsion -noassert
+START portal2.exe -game emulsion -noassert -profile
 pause 
