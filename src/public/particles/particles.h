@@ -477,6 +477,8 @@ public:
 		m_pQuery = pQuery;
 		m_bAllowPrecache = bAllowPrecache;
 		
+		COM_TimestampedLog("CParticleSystemMgr->Init2 Start");
+
 		if (g_pMaterialSysASW != nullptr) {
 			pKVar3 = new KeyValues("DepthWrite");
 			pKVar3->SetInt("$no_fullbright", 1);
