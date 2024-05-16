@@ -68,6 +68,7 @@ void ParseParticleEffects( bool bLoadSheets )
 	int nCount = files.Count();
 	for ( int i = 0; i < nCount; ++i )
 	{
+		COM_TimestampedLog("g_pParticleSystemMgr->ReadParticleConfigFile");
 		g_pParticleSystemMgr->ReadParticleConfigFile( files[i], false, false );
 	}
 

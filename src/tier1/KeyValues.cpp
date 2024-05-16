@@ -643,14 +643,23 @@ bool KeyValues::LoadFromFile( IBaseFileSystem *filesystem, const char *resourceN
 	s_LastFileLoadingFrom = (char*)resourceName;
 
 	// load file into a null-terminated buffer
-	int fileSize = filesystem->Size( f );
-	unsigned bufSize = ((IFileSystem *)filesystem)->GetOptimalReadSize( f, fileSize + 2 );
+	//int fileSize = filesystem->Size( f );
+	//unsigned bufSize = ((IFileSystem *)filesystem)->GetOptimalReadSize( f, fileSize + 2 );
 
-	char *buffer = (char*)((IFileSystem *)filesystem)->AllocOptimalReadBuffer( f, bufSize );
-	Assert( buffer );
-	
+	//char *buffer = (char*)((IFileSystem *)filesystem)->AllocOptimalReadBuffer( f, bufSize );
+	//Assert( buffer );
+	//
+	//// read into local buffer
+	//bool bRetOK = ( ((IFileSystem *)filesystem)->ReadEx( buffer, bufSize, fileSize, f ) != 0 );
+	int fileSize = g_pFullFileSystem->Size(f);
+	unsigned bufSize = g_pFullFileSystem->GetOptimalReadSize(f, fileSize + 2);
+
+	char* buffer = (char*)g_pFullFileSystem->AllocOptimalReadBuffer(f, bufSize);
+	Assert(buffer);
+
 	// read into local buffer
-	bool bRetOK = ( ((IFileSystem *)filesystem)->ReadEx( buffer, bufSize, fileSize, f ) != 0 );
+	bool bRetOK = (g_pFullFileSystem->ReadEx(buffer, bufSize, fileSize, f) != 0);
+
 
 	filesystem->Close( f );	// close file after reading
 
@@ -658,10 +667,12 @@ bool KeyValues::LoadFromFile( IBaseFileSystem *filesystem, const char *resourceN
 	{
 		buffer[fileSize] = 0; // null terminate file as EOF
 		buffer[fileSize+1] = 0; // double NULL terminating in case this is a unicode file
-		bRetOK = LoadFromBuffer( resourceName, buffer, filesystem );
+		bRetOK = LoadFromBuffer( resourceName, buffer, g_pFullFileSystem);
+		//bRetOK = LoadFromBuffer( resourceName, buffer, filesystem );
 	}
 
-	((IFileSystem *)filesystem)->FreeOptimalReadBuffer( buffer );
+	//((IFileSystem *)filesystem)->FreeOptimalReadBuffer( buffer );
+	g_pFullFileSystem->FreeOptimalReadBuffer( buffer );
 
 	return bRetOK;
 }
