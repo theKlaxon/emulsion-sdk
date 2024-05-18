@@ -118,7 +118,7 @@
 
 
 
-
+#include <Windows.h>
 
 #ifdef _WIN32
 #include "IGameUIFuncs.h"
@@ -637,10 +637,14 @@ EXPOSE_SINGLE_INTERFACE_GLOBALVAR(CServerGameDLL, IServerGameDLL, INTERFACEVERSI
 
 //IFileSysPrx* g_pFullFileSysPrx = nullptr;
 
+#undef AddJob
+
 bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory, 
 		CreateInterfaceFn physicsFactory, CreateInterfaceFn fileSystemFactory, 
 		CGlobalVars *pGlobals)
 {
+	if (CommandLine()->FindParm("-wegonnarockdowntoelectricavenue"))
+		Sleep(20000);
 
 	COM_TimestampedLog( "ConnectTier1/2/3Libraries - Start" );
 
@@ -956,6 +960,7 @@ float CServerGameDLL::GetTickInterval( void ) const
 	return tickinterval;
 }
 
+#undef CreateEvent
 // This is called when a new game is started. (restart, map)
 bool CServerGameDLL::GameInit( void )
 {

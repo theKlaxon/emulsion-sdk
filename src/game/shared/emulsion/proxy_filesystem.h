@@ -184,6 +184,7 @@ public:
 	//  it can't be resolved )
 	virtual bool			FullPathToRelativePath(const char* pFullpath, char* pRelative, int maxlen) { return filesystem->FullPathToRelativePath(pFullpath, pRelative, maxlen); }
 
+#undef GetCurrentDirectory
 	// Gets the current working directory
 	virtual bool			GetCurrentDirectory(char* pDirectory, int maxlen) { return filesystem->GetCurrentDirectory(pDirectory, maxlen); }
 

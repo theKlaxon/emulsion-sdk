@@ -1198,7 +1198,8 @@ void BuildGroup::ApplySettings( KeyValues *resourceData )
 		if ( !bFound )
 		{
 			// the key was not found in the registered list, check to see if we should create it
-			if ( keyName /*controlKeys->GetInt("AlwaysCreate", false)*/ )
+			//if ( keyName /*controlKeys->GetInt("AlwaysCreate", false)*/ )
+			if ( controlKeys->GetInt("AlwaysCreate", false) )
 			{
 				// create the control even though it wasn't registered
 				NewControl( controlKeys );

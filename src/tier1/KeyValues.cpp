@@ -35,9 +35,9 @@
 static const char * s_LastFileLoadingFrom = "unknown"; // just needed for error messages
 
 // Statics for the growable string table
-int (*KeyValues::s_pfGetSymbolForString)( const char *name, bool bCreate ) = &KeyValues::GetSymbolForStringClassic;
-const char *(*KeyValues::s_pfGetStringForSymbol)( int symbol ) = &KeyValues::GetStringForSymbolClassic;
-CKeyValuesGrowableStringTable *KeyValues::s_pGrowableStringTable = NULL;
+int (*kvutls::kvutldat::s_pfGetSymbolForString)( const char *name, bool bCreate ) = &kvutls::GetSymbolForStringClassic;
+const char *(*kvutls::kvutldat::s_pfGetStringForSymbol)( int symbol ) = &kvutls::GetStringForSymbolClassic;
+CKeyValuesGrowableStringTable * kvutls::kvutldat::s_pGrowableStringTable = NULL;
 
 #define KEYVALUES_TOKEN_SIZE	4096
 static char s_pTokenBuf[KEYVALUES_TOKEN_SIZE];
@@ -97,11 +97,11 @@ public:
 			{
 				if ( i < m_errorIndex )
 				{
-					Warning( "%s, ", KeyValues::CallGetStringForSymbol(m_errorStack[i]) );
+					Warning( "%s, ", kvutls::CallGetStringForSymbol(m_errorStack[i]) );
 				}
 				else
 				{
-					Warning( "(*%s*), ", KeyValues::CallGetStringForSymbol(m_errorStack[i]) );
+					Warning( "(*%s*), ", kvutls::CallGetStringForSymbol(m_errorStack[i]) );
 				}
 			}
 		}
@@ -313,21 +313,21 @@ void KeyValues::SetUseGrowableStringTable( bool bUseGrowableTable )
 {
 	if ( bUseGrowableTable )
 	{
-		s_pfGetStringForSymbol = &(KeyValues::GetStringForSymbolGrowable);
-		s_pfGetSymbolForString = &(KeyValues::GetSymbolForStringGrowable);
+		kvutls::kvutldat::s_pfGetStringForSymbol = &(kvutls::GetStringForSymbolGrowable);
+		kvutls::kvutldat::s_pfGetSymbolForString = &(kvutls::GetSymbolForStringGrowable);
 
-		if ( NULL == s_pGrowableStringTable )
+		if ( NULL == kvutls::kvutldat::s_pGrowableStringTable )
 		{
-			s_pGrowableStringTable = new CKeyValuesGrowableStringTable;
+			kvutls::kvutldat::s_pGrowableStringTable = new CKeyValuesGrowableStringTable;
 		}
 	}
 	else
 	{
-		s_pfGetStringForSymbol = &(KeyValues::GetStringForSymbolClassic);
-		s_pfGetSymbolForString = &(KeyValues::GetSymbolForStringClassic);
+		kvutls::kvutldat::s_pfGetStringForSymbol = &(kvutls::GetStringForSymbolClassic);
+		kvutls::kvutldat::s_pfGetSymbolForString = &(kvutls::GetSymbolForStringClassic);
 
-		delete s_pGrowableStringTable;
-		s_pGrowableStringTable = NULL;
+		delete kvutls::kvutldat::s_pGrowableStringTable;
+		kvutls::kvutldat::s_pGrowableStringTable = NULL;
 	}
 }
 
@@ -335,24 +335,24 @@ void KeyValues::SetUseGrowableStringTable( bool bUseGrowableTable )
 // Purpose: Bodys of the function pointers used for interacting with the key
 //	name string table
 //-----------------------------------------------------------------------------
-int KeyValues::GetSymbolForStringClassic( const char *name, bool bCreate )
+int kvutls::GetSymbolForStringClassic( const char *name, bool bCreate )
 {
 	return KeyValuesSystem()->GetSymbolForString( name, bCreate );
 }
 
-const char *KeyValues::GetStringForSymbolClassic( int symbol )
+const char * kvutls::GetStringForSymbolClassic( int symbol )
 {
 	return KeyValuesSystem()->GetStringForSymbol( symbol );
 }
 
-int KeyValues::GetSymbolForStringGrowable( const char *name, bool bCreate )
+int kvutls::GetSymbolForStringGrowable( const char *name, bool bCreate )
 {
-	return s_pGrowableStringTable->GetSymbolForString( name, bCreate );
+	return kvutldat::s_pGrowableStringTable->GetSymbolForString( name, bCreate );
 }
 
-const char *KeyValues::GetStringForSymbolGrowable( int symbol )
+const char * kvutls::GetStringForSymbolGrowable( int symbol )
 {
-	return s_pGrowableStringTable->GetStringForSymbol( symbol );
+	return kvutldat::s_pGrowableStringTable->GetStringForSymbol( symbol );
 }
 
 
@@ -515,7 +515,7 @@ void KeyValues::ChainKeyValue( KeyValues* pChain )
 //-----------------------------------------------------------------------------
 const char *KeyValues::GetName( void ) const
 {
-	return s_pfGetStringForSymbol( m_iKeyName );
+	return kvutls::kvutldat::s_pfGetStringForSymbol( m_iKeyName );
 }
 
 //-----------------------------------------------------------------------------
@@ -942,7 +942,7 @@ KeyValues *KeyValues::FindKey(const char *keyName, bool bCreate)
 	}
 
 	// lookup the symbol for the search string
-	HKeySymbol iSearchStr = s_pfGetSymbolForString( searchStr, bCreate );
+	HKeySymbol iSearchStr = kvutls::kvutldat::s_pfGetSymbolForString( searchStr, bCreate );
 
 	if ( iSearchStr == INVALID_KEY_SYMBOL )
 	{
@@ -1652,7 +1652,7 @@ void KeyValues::SetFloat( const char *keyName, float value )
 
 void KeyValues::SetName( const char * setName )
 {
-	m_iKeyName = s_pfGetSymbolForString( setName, true );
+	m_iKeyName = kvutls::kvutldat::s_pfGetSymbolForString( setName, true );
 }
 
 //-----------------------------------------------------------------------------

@@ -350,26 +350,53 @@ private:
 	KeyValues *m_pSub;	// pointer to Start of a new sub key list
 	KeyValues *m_pChain;// Search here if it's not in our list
 
-private:
+//private:
+//	// Statics to implement the optional growable string table
+//	// Function pointers that will determine which mode we are in
+//	static int (*s_pfGetSymbolForString)( const char *name, bool bCreate );
+//	static const char *(*s_pfGetStringForSymbol)( int symbol );
+//	static CKeyValuesGrowableStringTable *s_pGrowableStringTable;
+//
+//public:
+//	// Functions that invoke the default behavior
+//	static int GetSymbolForStringClassic( const char *name, bool bCreate = true );
+//	static const char *GetStringForSymbolClassic( int symbol );
+//	
+//	// Functions that use the growable string table
+//	static int GetSymbolForStringGrowable( const char *name, bool bCreate = true );
+//	static const char *GetStringForSymbolGrowable( int symbol );
+//
+//	// Functions to get external access to whichever of the above functions we're going to call.
+//	static int CallGetSymbolForString( const char *name, bool bCreate = true ) { return s_pfGetSymbolForString( name, bCreate ); }
+//	static const char *CallGetStringForSymbol( int symbol ) { return s_pfGetStringForSymbol( symbol ); }
+};
+
+// moved this here since 2013's kv structure isn't entirely compatible with this in there.
+// still want this for the error / warning stuff it helps with tho.
+namespace kvutls {
+
 	// Statics to implement the optional growable string table
 	// Function pointers that will determine which mode we are in
-	static int (*s_pfGetSymbolForString)( const char *name, bool bCreate );
-	static const char *(*s_pfGetStringForSymbol)( int symbol );
-	static CKeyValuesGrowableStringTable *s_pGrowableStringTable;
+	class kvutldat {
+	public:
+		static int (*s_pfGetSymbolForString)(const char* name, bool bCreate);
+		static const char* (*s_pfGetStringForSymbol)(int symbol);
+		static CKeyValuesGrowableStringTable* s_pGrowableStringTable;
+	};
 
-public:
 	// Functions that invoke the default behavior
-	static int GetSymbolForStringClassic( const char *name, bool bCreate = true );
-	static const char *GetStringForSymbolClassic( int symbol );
-	
+	static int GetSymbolForStringClassic(const char* name, bool bCreate = true);
+	static const char* GetStringForSymbolClassic(int symbol);
+
 	// Functions that use the growable string table
-	static int GetSymbolForStringGrowable( const char *name, bool bCreate = true );
-	static const char *GetStringForSymbolGrowable( int symbol );
+	static int GetSymbolForStringGrowable(const char* name, bool bCreate = true);
+	static const char* GetStringForSymbolGrowable(int symbol);
+
 
 	// Functions to get external access to whichever of the above functions we're going to call.
-	static int CallGetSymbolForString( const char *name, bool bCreate = true ) { return s_pfGetSymbolForString( name, bCreate ); }
-	static const char *CallGetStringForSymbol( int symbol ) { return s_pfGetStringForSymbol( symbol ); }
-};
+	static int CallGetSymbolForString(const char* name, bool bCreate = true) { return kvutldat::s_pfGetSymbolForString(name, bCreate); }
+	static const char* CallGetStringForSymbol(int symbol) { return kvutldat::s_pfGetStringForSymbol(symbol); }
+}
 
 typedef KeyValues::AutoDelete KeyValuesAD;
 
