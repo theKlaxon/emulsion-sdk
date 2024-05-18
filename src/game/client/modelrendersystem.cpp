@@ -42,7 +42,13 @@ class CModelRenderSystem : public CAutoGameSystem, public IModelRenderSystem
 	// Methods of IModelRenderSystem
 public:
 	virtual void DrawModels( ModelRenderSystemData_t *pEntities, int nCount, ModelRenderMode_t renderMode );
-	virtual void DrawBrushModels(ModelRenderSystemData_t* pEntities, int nCount, ModelRenderMode_t renderMode);// { DrawModels(pEntities, nCount, renderMode); } // p2sdk
+
+	virtual void DrawBrushModels(ModelRenderSystemData_t* pEntities, int nCount, ModelRenderMode_t renderMode) {
+	
+		Msg("cl_brushfastpath IS NOT SUPPORTED in Emulsion-SDK.\n Please turn if off.\n Thanks! -Klaxon\n");
+
+	} // p2sdk
+
 	virtual void ComputeTranslucentRenderData( ModelRenderSystemData_t *pModels, int nCount, TranslucentInstanceRenderData_t *pRenderData, TranslucentTempData_t *pTempData );
 	virtual void CleanupTranslucentTempData( TranslucentTempData_t *pTempData );
 	virtual IMaterial *GetFastPathColorMaterial() { return m_DebugMaterial; }
@@ -112,16 +118,6 @@ private:
 		int m_nTotalModelCount;
 	};
 
-	// new p2 (as of 2014.....)
-	struct BrushModelList_t
-	{
-		ModelRenderSystemData_t mEntry;
-		uint32 m_ParentDepth : 31;
-		uint32 m_bWantsStencil : 1;
-
-		BrushArrayInstanceData_t* m_pInstanceData;
-	};
-
 private:
 	int BucketModelsByMDL( ModelListByType_t *pModelList, ModelListNode_t *pModelListNodes, ModelRenderSystemData_t *pEntities, int nCount, ModelRenderMode_t renderMode, int *pModelsRenderingStencilCountOut );
 	bool AddModelToLists( int &nModelTypeCount, ModelListByType_t *pModelList, int &nModelNodeCount, ModelListNode_t *pModelListNodes, int nDataIndex, ModelRenderSystemData_t &data, ModelRenderMode_t renderMode );
@@ -152,11 +148,6 @@ private:
 	int ComputeParentDepth( C_BaseEntity *pEnt );
 	static bool DependencySortLessFunc( const ModelListByType_t &left, const ModelListByType_t &right );
 	static bool StencilSortLessFunc( const ModelListByType_t &left, const ModelListByType_t &right );
-
-	// Methods related to fastpath brush model rendering
-	void AddBrushModelToList(int nInitialListIndex, ModelRenderSystemData_t& data, ModelRenderMode_t renderMode,
-		BrushArrayInstanceData_t& instance, matrix3x4a_t& brushToWorld);
-	void SetupPerInstanceColorModulation(int nCount, ModelRenderSystemData_t* pModels, BrushArrayInstanceData_t* pInstanceData, ModelRenderMode_t renderMode);
 
 	CMemoryStack m_BoneToWorld;
 	CTextureReference m_DefaultCubemap;
@@ -287,7 +278,7 @@ bool CModelRenderSystem::AddModelToLists( int &nModelTypeCount, ModelListByType_
 			break;
 	}
 
-	if ( j == nModelTypeCount && pModel )
+	if ( j == nModelTypeCount )
 	{
 		// Bail if we're rendering into shadow depth map and this model doesn't cast shadows
 		// NOTE: if m_pModelRenderable is NULL, it's a dependent bone setup so we need to keep it
@@ -298,35 +289,30 @@ bool CModelRenderSystem::AddModelToLists( int &nModelTypeCount, ModelListByType_
 		}
 
 		MDLHandle_t hMDL = modelinfo->GetCacheHandle( pModel );
+		studiohwdata_t *pHardwareData = g_pMDLCache->GetHardwareData( hMDL );
 
-		if (hMDL != MDLHANDLE_INVALID) {
-			studiohwdata_t* pHardwareData = g_pMDLCache->GetHardwareData(hMDL);
-
-			// This can occur if there was an error loading the model; for instance
-			// if the vtx and mdl are out of sync.
-			if (!pHardwareData || !pHardwareData->m_pLODs)
-			{
-				AssertMsg(0, UTIL_VarArgs("%s failed to load and is causing EVIL in the model render system!!", pStudioHdr->name));
-				return bRetVal;
-			}
-
-			ModelListByType_t& list = pModelList[nModelTypeCount];
-			list.m_pModel = pModel;
-			list.m_nLightingModel = nLightingModel;
-			list.m_bWantsStencil = bWantsStencil;
-			list.m_pStudioHdr = pStudioHdr;
-			list.m_pHardwareData = pHardwareData;
-			list.m_nFlashlightCount = 0;
-			list.m_pFlashlights = NULL;
-			list.m_nCount = 0;
-			list.m_pFirstNode = 0;
-			list.m_pRenderModels = 0;
-			list.m_nParentDepth = 0;
-			list.m_pNextLightingModel = NULL;
-			j = nModelTypeCount++;
+		// This can occur if there was an error loading the model; for instance
+		// if the vtx and mdl are out of sync.
+		if ( !pHardwareData || !pHardwareData->m_pLODs )
+		{
+			AssertMsg( 0, UTIL_VarArgs( "%s failed to load and is causing EVIL in the model render system!!", pStudioHdr->name ) );
+			return bRetVal;
 		}
-
-
+				  
+		ModelListByType_t &list = pModelList[ nModelTypeCount ]; 
+		list.m_pModel = pModel;
+		list.m_nLightingModel = nLightingModel;
+		list.m_bWantsStencil = bWantsStencil;
+		list.m_pStudioHdr = pStudioHdr;
+		list.m_pHardwareData = pHardwareData;
+		list.m_nFlashlightCount = 0;
+		list.m_pFlashlights = NULL;
+		list.m_nCount = 0;
+		list.m_pFirstNode = 0;
+		list.m_pRenderModels = 0;
+		list.m_nParentDepth = 0;
+		list.m_pNextLightingModel = NULL;
+		j = nModelTypeCount++;
 	}
 
 	C_BaseEntity *pEntity = data.m_pRenderable->GetIClientUnknown()->GetBaseEntity();
@@ -664,7 +650,8 @@ void CModelRenderSystem::SetupBones( int nModelTypeCount, ModelListByType_t *pMo
 			// convert bone to world transformations into pose to world transformations
 			for (int k = 0; k < nBoneCount; k++)
 			{
-				const mstudiobone_t *pCurBone = list.m_pStudioHdr->pBone( k );
+				//mstudiobone_t *pCurBone = list.m_pStudioHdr->pBone( k );
+				const mstudiobone_t *pCurBone = list.m_pStudioHdr->pBone( k ); // p2 change
 				MatrixCopy( pCurBone->poseToBone, pPoseToBone[k] );
 			}
 		}
@@ -1007,8 +994,6 @@ int CModelRenderSystem::SetupStaticPropLighting( LightingList_t &lightingList, D
 	ITexture **ppEnvCubemap = (ITexture**)stackalloc( nTotalModels * sizeof(ITexture*) );
 
 	CMatRenderData< MaterialLightingState_t > rdLightingState( m_pRenderContext, 2 * nTotalModels );
-	Plat_FastMemset(rdLightingState.Base(), 0, sizeof(MaterialLightingState_t) * 2 * nTotalModels);
-
 	MaterialLightingState_t *pLightingState = rdLightingState.Base();
 	MaterialLightingState_t *pDecalLightingState = &rdLightingState[ nTotalModels ];
 	modelrender->ComputeStaticLightingState( nTotalModels, pLightingQuery, pLightingState, pDecalLightingState, ppColorMeshInfo, ppEnvCubemap, pColorMeshHandle );
@@ -1280,7 +1265,6 @@ void CModelRenderSystem::RenderModels( StudioModelArrayInfo2_t *pInfo, int nMode
 			}
 #endif
 		}
-
 		if ( IsX360() && r_fastzreject.GetBool() && ( nNonStencilModelTypeCount != nModelTypeCount ) )
 		{
 			// Render all models without stencil
@@ -1560,121 +1544,6 @@ void CModelRenderSystem::DrawModels( ModelRenderSystemData_t *pEntities, int nCo
 	m_pRenderContext = NULL;
 }
 
-//-----------------------------------------------------------------------------
-//
-// Brush model rendering system starts here
-//
-//-----------------------------------------------------------------------------
-
-
-//-----------------------------------------------------------------------------
-// Adds a model to the list of brush models to render
-//-----------------------------------------------------------------------------
-void CModelRenderSystem::AddBrushModelToList(int nInitialListIndex, ModelRenderSystemData_t& data,
-	ModelRenderMode_t renderMode, BrushArrayInstanceData_t& instance, matrix3x4a_t& brushToWorld)
-{
-	const model_t* pModel = data.m_pRenderable->GetModel();
-	Assert(modelinfo->GetModelType(pModel) == mod_brush);
-
-	brushToWorld = data.m_pRenderable->RenderableToWorldTransform();
-	instance.m_pBrushToWorld = &brushToWorld;
-	instance.m_pBrushModel = pModel;
-	instance.m_pStencilState = NULL;
-
-	uint bWantsStencil = 0;
-	if (data.m_pModelRenderable)
-	{
-		if (renderMode == MODEL_RENDER_MODE_NORMAL)
-		{
-			// I considered making a MODEL_DATA_STENCIL_ENABLE renderdata type that would only return a bool
-			// if stencil was enabled, but it turns out most of the work for MODEL_DATA_STENCIL is computing
-			// that bool, so pulling this out into a separate piece didn't turn out to be a perf win.
-			ShaderStencilState_t tempStencil;
-			bWantsStencil = data.m_pModelRenderable->GetRenderData(&tempStencil, MODEL_DATA_STENCIL) ? 1 : 0;
-			if (bWantsStencil)
-			{
-				CMatRenderData< ShaderStencilState_t > rdStencil(m_pRenderContext, 1);
-				memcpy(&rdStencil[0], &tempStencil, sizeof(tempStencil));
-				instance.m_pStencilState = &rdStencil[0];
-
-				// Not working yet...
-				Assert(0);
-			}
-		}
-	}
-	else
-	{
-		ExecuteOnce(DevWarning("data.m_pModelRenderable is NULL for %s\n", modelinfo->GetModelName(pModel)));
-	}
-}
-
-void CModelRenderSystem::SetupPerInstanceColorModulation(int nCount, ModelRenderSystemData_t* pModels, BrushArrayInstanceData_t* pInstanceData, ModelRenderMode_t renderMode)
-{
-	if (renderMode != MODEL_RENDER_MODE_NORMAL)
-		return;
-
-	Vector vecColorModulation;
-	for (int i = 0; i < nCount; ++i)
-	{
-		IClientRenderable* pRenderable = pModels[i].m_pRenderable;
-		pRenderable->GetColorModulation(pInstanceData[i].m_DiffuseModulation.AsVector3D().Base());
-		pInstanceData[i].m_DiffuseModulation.w = pModels[i].m_InstanceData.m_nAlpha * (1.0f / 255.0f);
-	}
-}
-
-
-//-----------------------------------------------------------------------------
-// Draw brush models - csgo
-//-----------------------------------------------------------------------------
-void CModelRenderSystem::DrawBrushModels(ModelRenderSystemData_t* pEntities, int nCount, ModelRenderMode_t renderMode) {
-	if (nCount == 0 || cl_skipfastpath.GetInt())
-		return;
-
-	VPROF_BUDGET("CModelRenderSystem::DrawBrushModels", VPROF_BUDGETGROUP_BRUSH_FAST_PATH_RENDERING);
-
-	// While doing this, we need materialsystem to keep around its temp allocations
-	// which we use for bone matrices + flexes
-	CMatRenderContextPtr matRenderContext(g_pMaterialSystem);
-	m_pRenderContext = matRenderContext;
-
-	PIXEVENT(m_pRenderContext, "CModelRenderSystem::DrawBrushModels (FASTPATH)");
-
-	CMatRenderDataReference rdLock(m_pRenderContext);
-
-	CMatRenderData< BrushArrayInstanceData_t > rdInstances(m_pRenderContext, nCount);
-	CMatRenderData< matrix3x4a_t > rdMatrices(m_pRenderContext, nCount);
-
-	for (int i = 0; i < nCount; ++i)
-	{
-		AddBrushModelToList(i, pEntities[i], renderMode, rdInstances[i], rdMatrices[i]);
-	}
-
-	SetupPerInstanceColorModulation(nCount, pEntities, rdInstances.Base(), renderMode);
-
-	// Two pass is telling it to only do the opaque portion of the brush model
-	int nFlags = STUDIO_RENDER | STUDIO_TWOPASS;
-	switch (renderMode)
-	{
-	case MODEL_RENDER_MODE_NORMAL:
-		break;
-
-	case MODEL_RENDER_MODE_SHADOW_DEPTH:
-		nFlags |= STUDIO_SHADOWDEPTHTEXTURE;
-		break;
-
-	case MODEL_RENDER_MODE_RTT_SHADOWS:
-		nFlags |= STUDIO_SHADOWTEXTURE;
-		break;
-	};
-
-	render->DrawBrushModelArray(m_pRenderContext, nCount, rdInstances.Base(), nFlags);
-
-	rdLock.Release();
-
-	//	RenderDebugOverlays( nModelTypeCount, pModelList, renderMode );
-
-	m_pRenderContext = NULL;
-}
 
 //-----------------------------------------------------------------------------
 // Computes per-instance data for fast path rendering
