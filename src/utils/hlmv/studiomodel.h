@@ -296,7 +296,7 @@ public:
 	mstudioseqdesc_t				&GetSeqDesc( int seq );
 private:
 	mstudioanimdesc_t				&GetAnimDesc( int anim );
-	mstudioanim_t					*GetAnim( int anim );
+	mstudio_rle_anim_t				*GetAnim( int anim );
 
 	void							Transform( Vector const &in1, mstudioboneweight_t const *pboneweight, Vector &out1 );
 	void							Rotate( Vector const &in1, mstudioboneweight_t const *pboneweight, Vector &out1 );
@@ -395,6 +395,9 @@ public:
 	void					IncrementFramecounter( void ) { m_iFramecounter++; };
 private:
 	int						m_iFramecounter;
+
+public:
+	matrix3x4a_t* m_pDaWorldBone;
 };
 
 

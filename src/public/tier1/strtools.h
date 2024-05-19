@@ -11,7 +11,7 @@
 
 #include <ctype.h>
 #include "tier0/basetypes.h"
-#include "annotations.h"
+#include "tier0/annotations.h"
 
 #ifdef _WIN32
 #pragma once

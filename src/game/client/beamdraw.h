@@ -157,7 +157,7 @@ void DrawBeamFollow( const model_t* spritemodel, BeamTrail_t* pHead, int frame, 
 					int flags, float width, float amplitude, float freq, float* color, float flHDRColorScale = 1.0f );
 
 void DrawBeamQuadratic( const Vector &start, const Vector &control, const Vector &end, float width, const Vector &color, float scrollOffset, float flHDRColorScale = 1.0f );
-class CEngineSprite *Draw_SetSpriteTexture( const model_t *pSpriteModel, int frame, int rendermode );
+class CEngineSprite* Draw_SetSpriteTexture(const model_t* pSpriteModel, int frame, int rendermode);
 
 //-----------------------------------------------------------------------------
 // Assumes the material has already been bound

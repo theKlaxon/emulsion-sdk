@@ -46,16 +46,16 @@ float LocalTextureToLinear( int c )
 
 void StudioModel::RunFlexRules(  )
 {
-	int i;
+	LocalFlexController_t i;
 
 	CStudioHdr *pStudioHdr = GetStudioHdr();
 
 	float src[MAXSTUDIOFLEXCTRL*4];
 
-	for (i = 0; i < pStudioHdr->numflexcontrollers(); i++)
+	for (i = DUMMY_FLEX_CONTROLLER; i < pStudioHdr->numflexcontrollers(); i++)
 	{
 		mstudioflexcontroller_t *pflex = pStudioHdr->pFlexcontroller( i );
-		int j = pStudioHdr->pFlexcontroller( i )->link;
+		int j = pStudioHdr->pFlexcontroller( i )->localToGlobal; // localToGlobal replaces ->link
 		// remap m_flexweights to full dynamic range, global flexcontroller indexes
 		src[j] = m_flexweight[i] * (pflex->max - pflex->min) + pflex->min; 
 	}
@@ -124,8 +124,8 @@ int StudioModel::FlexVerts( mstudiomesh_t *pmesh )
 					VectorCopy( *vertData->Position(n), g_flexedverts[n] );
 					VectorCopy( *vertData->Normal(n), g_flexednorms[n] );
 				}
-				VectorMA( g_flexedverts[n], w, pvanim[j].GetDeltaFixed(), g_flexedverts[n] );
-				VectorMA( g_flexednorms[n], w, pvanim[j].GetNDeltaFixed(), g_flexednorms[n] );
+				VectorMA( g_flexedverts[n], w, pvanim[j].GetDeltaFixed(1.0f), g_flexedverts[n] );
+				VectorMA( g_flexednorms[n], w, pvanim[j].GetNDeltaFixed(1.0f), g_flexednorms[n] ); // TODO: check the scales on these 2 funcs
 			}
 			else
 			{

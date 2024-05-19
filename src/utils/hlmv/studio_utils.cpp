@@ -206,7 +206,7 @@ bool StudioModel::LoadModel( const char *pModelName )
 	// Copy over all of the surface props; we may change them...
 	for ( i = 0; i < pStudioHdr->numbones(); ++i )
 	{
-		mstudiobone_t* pBone = pStudioHdr->pBone(i);
+		const mstudiobone_t* pBone = pStudioHdr->pBone(i);
 
 		CUtlSymbol prop( pBone->pszSurfaceProp() );
 		m_SurfaceProps.AddToTail( prop );
@@ -487,13 +487,14 @@ int StudioModel::LookupFlexController( char *szName )
 	if (!pStudioHdr)
 		return false;
 
-	for (int iFlex = 0; iFlex < pStudioHdr->numflexcontrollers(); iFlex++)
+	for (LocalFlexController_t iFlex = DUMMY_FLEX_CONTROLLER; iFlex < pStudioHdr->numflexcontrollers(); iFlex++)
 	{
 		if (stricmp( szName, pStudioHdr->pFlexcontroller( iFlex )->pszName() ) == 0)
 		{
 			return iFlex;
 		}
 	}
+	
 	return -1;
 }
 
@@ -511,7 +512,7 @@ void StudioModel::SetFlexController( int iFlex, float flValue )
 
 	if (iFlex >= 0 && iFlex < pStudioHdr->numflexcontrollers())
 	{
-		mstudioflexcontroller_t *pflex = pStudioHdr->pFlexcontroller(iFlex);
+		mstudioflexcontroller_t *pflex = pStudioHdr->pFlexcontroller((LocalFlexController_t)iFlex);
 
 		if (pflex->min != pflex->max)
 		{
@@ -548,7 +549,7 @@ float StudioModel::GetFlexController( int iFlex )
 
 	if (iFlex >= 0 && iFlex < pStudioHdr->numflexcontrollers())
 	{
-		mstudioflexcontroller_t *pflex = pStudioHdr->pFlexcontroller(iFlex);
+		const mstudioflexcontroller_t *pflex = pStudioHdr->pFlexcontroller((LocalFlexController_t)iFlex);
 
 		float flValue = m_flexweight[iFlex];
 
@@ -1051,12 +1052,13 @@ void StudioModel::scaleBones (float scale)
 	if (!pStudioHdr)
 		return;
 
-	mstudiobone_t *pbones = pStudioHdr->pBone( 0 );
-	for (int i = 0; i < pStudioHdr->numbones(); i++)
-	{
-		pbones[i].pos *= scale;
-		pbones[i].posscale *= scale;
-	}	
+	// TODO: make this not do nothing (find a workaround for the const stuff)
+	//mstudiobone_t* pbones = pStudioHdr->pBone(0);
+	//for (int i = 0; i < pStudioHdr->numbones(); i++)
+	//{
+	//	pbones[i].pos *= scale;
+	//	pbones[i].posscale *= scale;
+	//}	
 }
 
 int	StudioModel::Physics_GetBoneCount( void )
@@ -1129,7 +1131,7 @@ char *StudioModel::Physics_DumpQC( void )
 	return m_pPhysics->DumpQC();
 }
 
-const mstudio_modelvertexdata_t *mstudiomodel_t::GetVertexData()
+const mstudio_modelvertexdata_t *mstudiomodel_t::GetVertexData(void* pModelData)
 {
 	Assert( g_pActiveModel );
 

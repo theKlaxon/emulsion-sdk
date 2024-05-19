@@ -16,8 +16,7 @@
 #endif
 #include <mx/mx.h>
 #include "mxLineEdit2.h"
-#include "vector.h"
-
+#include "tier1/utlvector.h"
 
 class ControlPanel;
 

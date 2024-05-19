@@ -15,7 +15,8 @@
 #include <stdarg.h>
 
 #include <windows.h> // for OutputDebugString. . has to be a better way!
-
+#include "bone_setup.h"
+#include "bone_accessor.h"
 
 #include "ViewerSettings.h"
 #include "StudioModel.h"
@@ -333,7 +334,7 @@ void StudioModel::OverrideBones( bool *override )
 
 		if ( boneIndex >= 0 )
 		{
-			matrix3x4_t *parentMatrix = &basematrix;
+			const matrix3x4_t *parentMatrix = &basematrix;
 			override[boneIndex] = true;
 			int parentBone = -1;
 			if ( pmesh->m_constraint.parentIndex >= 0 )
@@ -342,7 +343,7 @@ void StudioModel::OverrideBones( bool *override )
 			}
 			if ( parentBone >= 0 )
 			{
-				parentMatrix = g_pStudioRender->GetBoneToWorld( parentBone );
+				parentMatrix = &m_pStudioHdr->pBone(parentBone)->poseToBone;// g_pStudioRender->GetBoneToWorld(parentBone);
 			}
 
 			if ( m_physPreviewBone == i )
@@ -362,7 +363,10 @@ void StudioModel::OverrideBones( bool *override )
 				MatrixCopy( pmesh->m_matrix, bonematrix );
 			}
 
-			ConcatTransforms(*parentMatrix, bonematrix, *g_pStudioRender->GetBoneToWorld( boneIndex ));
+			mstudiobone_t* pCurBone = ((mstudiobone_t*)((void*)m_pStudioHdr->pBone(boneIndex)));
+			ConcatTransforms(*parentMatrix, bonematrix, pCurBone->poseToBone);
+			// *g_pStudioRender->GetBoneToWorld(boneIndex));
+			
 		}
 	}
 }
@@ -399,14 +403,14 @@ void StudioModel::SetUpBones( bool mergeBones )
 
 	static Vector		pos[MAXSTUDIOBONES];
 	matrix3x4_t			bonematrix;
-	static Quaternion	q[MAXSTUDIOBONES];
+	static QuaternionAligned	q[MAXSTUDIOBONES];
 	bool				override[MAXSTUDIOBONES];
 
 	static matrix3x4_t	boneCache[MAXSTUDIOBONES];
 
 	// For blended transitions
 	static Vector		pos2[MAXSTUDIOBONES];
-	static Quaternion	q2[MAXSTUDIOBONES];
+	static QuaternionAligned	q2[MAXSTUDIOBONES];
 
 	CStudioHdr *pStudioHdr = GetStudioHdr();
 	mstudioseqdesc_t	&seqdesc = pStudioHdr->pSeqdesc( m_sequence );
@@ -421,9 +425,12 @@ void StudioModel::SetUpBones( bool mergeBones )
 		pIK = &m_ik;
 	}
 
-	InitPose(  pStudioHdr, pos, q );
-	
-	AccumulatePose( pStudioHdr, pIK, pos, q, m_sequence, m_cycle, m_poseparameter, BoneMask( ), 1.0, GetRealtimeTime() );
+	IBoneSetup bonesetup(pStudioHdr, BoneMask(), m_poseparameter);
+	bonesetup.InitPose(pos, q);
+	bonesetup.AccumulatePose(pos, q, m_sequence, m_cycle, 1.0, GetRealtimeTime(), pIK);
+
+	//InitPose(  pStudioHdr, pos, q );
+	//AccumulatePose( pStudioHdr, pIK, pos, q, m_sequence, m_cycle, m_poseparameter, BoneMask( ), 1.0, GetRealtimeTime() );
 
 	if ( g_viewerSettings.blendSequenceChanges &&
 		m_sequencetime < m_blendtime && 
@@ -440,7 +447,8 @@ void StudioModel::SetUpBones( bool mergeBones )
 		float s = 1.0 - ( m_sequencetime / m_blendtime );
 		s = 3 * s * s - 2 * s * s * s;
 
-		AccumulatePose( pStudioHdr, NULL, pos, q, m_prevsequence, m_prevcycle, m_poseparameter, BoneMask( ), s, GetRealtimeTime() );
+		bonesetup.AccumulatePose(pos, q, m_prevsequence, m_prevcycle, s, GetRealtimeTime(), NULL);
+		//AccumulatePose( pStudioHdr, NULL, pos, q, m_prevsequence, m_prevcycle, m_poseparameter, BoneMask( ), s, GetRealtimeTime() );
 		// Con_DPrintf("%d %f : %d %f : %f\n", pev->sequence, f, pev->prevsequence, pev->prevframe, s );
 	}
 	else
@@ -463,7 +471,8 @@ void StudioModel::SetUpBones( bool mergeBones )
 		{
 			if (m_Layer[i].m_priority == j && m_Layer[i].m_weight > 0)
 			{
-				AccumulatePose( pStudioHdr, pIK, pos, q, m_Layer[i].m_sequence, m_Layer[i].m_cycle, m_poseparameter, BoneMask( ), m_Layer[i].m_weight, GetRealtimeTime() );
+				bonesetup.AccumulatePose(pos, q, m_Layer[i].m_sequence, m_Layer[i].m_cycle, m_Layer[i].m_weight, GetRealtimeTime(), pIK);
+				//AccumulatePose( pStudioHdr, pIK, pos, q, m_Layer[i].m_sequence, m_Layer[i].m_cycle, m_poseparameter, BoneMask( ), m_Layer[i].m_weight, GetRealtimeTime() );
 			}
 		}
 	}
@@ -478,9 +487,11 @@ void StudioModel::SetUpBones( bool mergeBones )
 	CIKContext auto_ik;
 	auto_ik.Init( pStudioHdr, a1, p1, 0.0, 0, BoneMask( ) );
 
-	CalcAutoplaySequences( pStudioHdr, &auto_ik, pos, q, m_poseparameter, BoneMask( ), GetAutoPlayTime() );
-
-	CalcBoneAdj( pStudioHdr, pos, q, m_controller, BoneMask( ) );
+	bonesetup.CalcAutoplaySequences(pos, q, GetAutoPlayTime(), &auto_ik);
+	bonesetup.CalcBoneAdj(pos, q, m_controller);
+	
+	//CalcAutoplaySequences( pStudioHdr, &auto_ik, pos, q, m_poseparameter, BoneMask( ), GetAutoPlayTime() );
+	//CalcBoneAdj( pStudioHdr, pos, q, m_controller, BoneMask( ) );
 
 	CBoneBitList boneComputed;
 	if (pIK)
@@ -494,7 +505,9 @@ void StudioModel::SetUpBones( bool mergeBones )
 		VectorRotate( deltaPos, g_viewtransform, tmp );
 		deltaPos = tmp;
 
-		pIK->UpdateTargets( pos, q, g_pStudioRender->GetBoneToWorld(0), boneComputed );
+		matrix3x4a_t* bonemat = (matrix3x4a_t*)(&((mstudiobone_t*)((void*)m_pStudioHdr->pBone(0)))->poseToBone);
+		pIK->UpdateTargets(pos, q, bonemat, boneComputed);
+		//pIK->UpdateTargets( pos, q, g_pStudioRender->GetBoneToWorld(0), boneComputed );
 
 		// FIXME: check number of slots?
 		for (int i = 0; i < pIK->m_target.Count(); i++)
@@ -631,7 +644,7 @@ void StudioModel::SetUpBones( bool mergeBones )
 			}
 			if (j < g_pCacheHdr->numbones())
 			{
-				MatrixCopy( boneCache[j], *g_pStudioRender->GetBoneToWorld( i ) );
+				MatrixCopy( boneCache[j], m_pBOne );
 			}
 		}
 	}

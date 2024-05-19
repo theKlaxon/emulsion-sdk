@@ -34,8 +34,8 @@
 #include "ControlPanel.h"
 #include "StudioModel.h"
 #include "FileAssociation.h"
-#include "vstdlib/strtools.h"
-#include "vstdlib/icommandline.h"
+#include "tier1/strtools.h"
+#include "tier0/icommandline.h"
 #include "filesystem.h"
 #include "ifilesystemopendialog.h"
 #include "appframework/appframework.h"
@@ -1035,7 +1035,8 @@ void CHLModelViewerApp::PostShutdown()
 int CHLModelViewerApp::Main()
 {
 	g_pMaterialSystem->ModInit();
-	g_pSoundEmitterBase->ModInit();
+	//g_pSoundEmitterBase->ModInit();
+	g_pSoundEmitterBase->Init();
 
 	g_pDataCache->SetSize( 64 * 1024 * 1024 );
  	g_pMaterialSystem->ModInit();

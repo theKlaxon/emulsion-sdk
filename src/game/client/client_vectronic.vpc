@@ -1,0 +1,110 @@
+//-----------------------------------------------------------------------------
+//	CLIENT_VECTRONIC.VPC
+//
+//	Project Script
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR		"..\.."
+$Macro GAMENAME 	"vectronic"
+
+$Include "$SRCDIR\game\client\client_base.vpc"
+
+$Configuration
+{
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"$BASE;.\swarm;.\hl2;.\emulsion;.\vectronic;.\swarm\vgui;$SRCDIR\game\shared\swarm;$SRCDIR\game\shared\vectronic;$SRCDIR\game\shared\emulsion;.\gameui;$SRCDIR\game\client\swarm\gameui;..\statemachine;"
+		$PreprocessorDefinitions		"$BASE;EMULSION_DLL;SWARM_DLL;VECTRONIC_DLL;GAMEUI_EMBEDDED;GAMEUI_EXPORTS;SPLITSCREEN_STUBS"
+	}
+}
+
+$Project "Client (Vectronic)"
+{
+	$Folder	"Link Libraries"
+	{
+		$Lib	"$LIBPUBLIC\discord-rpc"
+	}
+
+	$Folder "Source Files"
+	{
+		$Folder	"Vectronic"
+		{		
+			$Folder "GameUI"
+			{
+				$Folder "vgui"
+				{
+					$File	"emulsion\vgui\nb_button.cpp" \
+							"emulsion\vgui\nb_button.h"	\
+							"emulsion\vgui\nb_header_footer.cpp" \
+							"emulsion\vgui\nb_header_footer.h" \
+							"emulsion\vgui\nb_horiz_list.cpp" \
+							"emulsion\vgui\nb_horiz_list.h"	\
+							"emulsion\vgui\nb_island.cpp" \
+							"emulsion\vgui\nb_island.h"
+				}
+
+				$File	"emulsion\gameui\basemodpanel.cpp" \
+						"emulsion\gameui\basemodframe.cpp" \
+						"emulsion\gameui\uigamedata.cpp" \
+						"emulsion\gameui\vgenericconfirmation.cpp" \
+						"emulsion\gameui\vgenericconfirmation.h" \
+						"emulsion\gameui\vdropdownmenu.cpp" \
+						"emulsion\gameui\vdropdownmenu.h" \
+						"emulsion\gameui\vflyoutmenu.cpp" \
+						"emulsion\gameui\vflyoutmenu.h" \
+						//"emulsion\gameui\vgenericwaitscreen.cpp" \
+						//"emulsion\gameui\vgenericwaitscreen.h" \
+						"emulsion\gameui\vhybridbutton.cpp" \
+						"emulsion\gameui\vhybridbutton.h" \
+						"emulsion\gameui\vslidercontrol.cpp" \
+						"emulsion\gameui\vslidercontrol.h" \
+						"emulsion\gameui\vfooterpanel.cpp" \
+						"emulsion\gameui\vfooterpanel.h" 
+						//"emulsion\gameui\vmainmenu.cpp" \
+						//"emulsion\gameui\vmainmenu.h"
+			}
+			
+			$Folder "Shared"
+			{
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_gamemovement.cpp"
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_gamerules.cpp"
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_shareddefs.h"
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_usermessages.cpp"
+				$File	"$SRCDIR\game\shared\emulsion\emulsion_parsers.cpp"
+				$File	"$SRCDIR\game\shared\emulsion\paintblob_manager.cpp"
+				$File	"$SRCDIR\game\shared\emulsion\paintblob_manager.h"
+				$File	"$SRCDIR\game\shared\emulsion\proxy_filesystem.h"
+				$File	"$SRCDIR\game\shared\emulsion\proxy_imaterialsystem.cpp"
+				$File	"$SRCDIR\game\shared\emulsion\proxy_imatrendercontext.h"
+				$File 	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
+			}
+
+			$File	"emulsion\c_emulsion_player.h"
+			$File	"emulsion\c_emulsion_player.cpp"
+			$File	"emulsion\c_emulsion_lesson.cpp"
+			$File	"emulsion\c_weapon_paintgun.cpp"
+			$File	"emulsion\c_discord.cpp"
+			$File	"emulsion\c_discord.h"
+
+			$File	"emulsion\dll_patch.cpp"
+			$File	"emulsion\dll_offset.cpp"
+			$File	"emulsion\c_paintblob_stream.cpp"
+			$File	"emulsion\c_paintblob_stream.h"
+			
+			$File	"emulsion\clientmode_emulsion.h"
+			$File	"emulsion\clientmode_emulsion.cpp"
+			$File	"emulsion\emulsion_fx.cpp"
+			$File	"emulsion\emulsion_in_main.cpp"
+			$File	"emulsion\emulsion_in_main.h"
+			$File	"emulsion\emulsion_prediction.cpp"
+			$File	"emulsion\emulsion_rootpanel.cpp"
+			$File	"emulsion\c_prop_devcube.cpp"
+			$File	"emulsion\c_npc_surface.cpp"
+		}
+	}
+
+	$Folder	"Link Libraries"
+	{
+		$Lib "$LIBPUBLIC\vpklib"
+	}
+}

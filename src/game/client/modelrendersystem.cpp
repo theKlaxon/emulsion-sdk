@@ -278,7 +278,7 @@ bool CModelRenderSystem::AddModelToLists( int &nModelTypeCount, ModelListByType_
 			break;
 	}
 
-	if ( j == nModelTypeCount )
+	if ( j == nModelTypeCount && pModel )
 	{
 		// Bail if we're rendering into shadow depth map and this model doesn't cast shadows
 		// NOTE: if m_pModelRenderable is NULL, it's a dependent bone setup so we need to keep it
@@ -289,30 +289,33 @@ bool CModelRenderSystem::AddModelToLists( int &nModelTypeCount, ModelListByType_
 		}
 
 		MDLHandle_t hMDL = modelinfo->GetCacheHandle( pModel );
-		studiohwdata_t *pHardwareData = g_pMDLCache->GetHardwareData( hMDL );
+		if (hMDL != MDLHANDLE_INVALID) {
+		
+			studiohwdata_t* pHardwareData = g_pMDLCache->GetHardwareData(hMDL);
 
-		// This can occur if there was an error loading the model; for instance
-		// if the vtx and mdl are out of sync.
-		if ( !pHardwareData || !pHardwareData->m_pLODs )
-		{
-			AssertMsg( 0, UTIL_VarArgs( "%s failed to load and is causing EVIL in the model render system!!", pStudioHdr->name ) );
-			return bRetVal;
+			// This can occur if there was an error loading the model; for instance
+			// if the vtx and mdl are out of sync.
+			if (!pHardwareData || !pHardwareData->m_pLODs)
+			{
+				AssertMsg(0, UTIL_VarArgs("%s failed to load and is causing EVIL in the model render system!!", pStudioHdr->name));
+				return bRetVal;
+			}
+
+			ModelListByType_t& list = pModelList[nModelTypeCount];
+			list.m_pModel = pModel;
+			list.m_nLightingModel = nLightingModel;
+			list.m_bWantsStencil = bWantsStencil;
+			list.m_pStudioHdr = pStudioHdr;
+			list.m_pHardwareData = pHardwareData;
+			list.m_nFlashlightCount = 0;
+			list.m_pFlashlights = NULL;
+			list.m_nCount = 0;
+			list.m_pFirstNode = 0;
+			list.m_pRenderModels = 0;
+			list.m_nParentDepth = 0;
+			list.m_pNextLightingModel = NULL;
+			j = nModelTypeCount++;
 		}
-				  
-		ModelListByType_t &list = pModelList[ nModelTypeCount ]; 
-		list.m_pModel = pModel;
-		list.m_nLightingModel = nLightingModel;
-		list.m_bWantsStencil = bWantsStencil;
-		list.m_pStudioHdr = pStudioHdr;
-		list.m_pHardwareData = pHardwareData;
-		list.m_nFlashlightCount = 0;
-		list.m_pFlashlights = NULL;
-		list.m_nCount = 0;
-		list.m_pFirstNode = 0;
-		list.m_pRenderModels = 0;
-		list.m_nParentDepth = 0;
-		list.m_pNextLightingModel = NULL;
-		j = nModelTypeCount++;
 	}
 
 	C_BaseEntity *pEntity = data.m_pRenderable->GetIClientUnknown()->GetBaseEntity();

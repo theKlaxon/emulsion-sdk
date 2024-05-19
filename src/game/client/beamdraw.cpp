@@ -44,7 +44,7 @@ CEngineSprite *Draw_SetSpriteTexture( const model_t *pSpriteModel, int frame, in
 		return NULL;
 	
 	CMatRenderContextPtr pRenderContext( materials );
-	if ( ShouldDrawInWireFrameMode() || r_DrawBeams.GetInt() == 2 )
+	if ( /*ShouldDrawInWireFrameMode() ||*/ r_DrawBeams.GetInt() == 2 )
 	{
 		if ( !g_pBeamWireframeMaterial )
 			g_pBeamWireframeMaterial = materials->FindMaterial( "debug/debugwireframevertexcolor", TEXTURE_GROUP_OTHER );
@@ -329,7 +329,7 @@ void DrawSegs( int noise_divisions, float *prgNoise, const model_t* spritemodel,
 	// Specify all the segments.
 	CMatRenderContextPtr pRenderContext( g_pMaterialSystem );
 	CBeamSegDraw segDraw;
-	segDraw.Start( pRenderContext, segments, NULL );
+	segDraw.Start( pRenderContext, segments, pMaterial );
 
 	for ( i = 0; i < segments; i++ )
 	{

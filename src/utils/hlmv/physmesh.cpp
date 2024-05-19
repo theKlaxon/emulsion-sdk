@@ -18,14 +18,15 @@
 #include "filesystem.h"
 #include "vphysics/constraints.h"
 #include "phyfile.h"
-#include "physdll.h"
+//#include "physdll.h"
 #include "physmesh.h"
-#include "mathlib.h"
+#include "mathlib/mathlib.h"
 #include <stddef.h>
 #include "utlvector.h"
 #include "commonmacros.h"
 #include "studiomodel.h"
-#include "vstdlib/strtools.h"
+//#include "vstdlib/strtools.h"
+#include "tier1/strtools.h"
 #include "bone_setup.h"
 #include "fmtstr.h"
 #include "vcollide_parse.h"
@@ -376,7 +377,7 @@ public:
 	CTextBuffer( void ) {}
 	~CTextBuffer( void ) {}
 
-	inline int GetSize( void ) { return m_buffer.Size(); }
+	inline int GetSize( void ) { return m_buffer.Count(); }
 	inline char *GetData( void ) { return m_buffer.Base(); }
 	
 	void WriteText( const char *pText )

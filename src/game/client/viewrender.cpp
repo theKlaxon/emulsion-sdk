@@ -4536,7 +4536,7 @@ static void UpdateNecessaryRenderTargets( int nRenderFlags )
 //-----------------------------------------------------------------------------
 // Renders all translucent world, entities, and detail objects in a particular set of leaves
 //-----------------------------------------------------------------------------
-ConVar cl_tlucfastpath( "cl_tlucfastpath", "1" );
+ConVar cl_tlucfastpath( "cl_tlucfastpath", "0" ); // TODO: find the issue with this in the fastpath rendering
 extern ConVar cl_colorfastpath;
 
 void CRendering3dView::DrawTranslucentRenderables( bool bInSkybox, bool bShadowDepth )

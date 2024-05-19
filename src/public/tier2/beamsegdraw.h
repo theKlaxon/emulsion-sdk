@@ -119,7 +119,7 @@ public:
 
 	// for normal game code compat, defined in proxy_imatrendercontext.cpp
 	void			Start(IMatRenderContext* pRenderContext, int nSegs, IMaterial* pMaterial = 0, CMeshBuilder* pMeshBuilder = NULL, int nMeshVertCount = 0);
-	void			Start(IMatRenderContASW* pRenderContext, int nSegs, IMaterial* pMaterial = 0, CMeshBuilder* pMeshBuilder = NULL, int nMeshVertCount = 0);
+	//void			Start(IMatRenderContASW* pRenderContext, int nSegs, IMaterial* pMaterial = 0, CMeshBuilder* pMeshBuilder = NULL, int nMeshVertCount = 0);
 
 	void			ComputeRenderInfo( BeamSegRenderInfo_t *pRenderInfo, const Vector &vecCameraPos, int nSegCount, const BeamSeg_t *pSegs );
 	virtual void	NextSeg( BeamSeg_t *pSeg );
@@ -129,7 +129,8 @@ protected:
 	void			SpecifySeg( const Vector &vecCameraPos, const Vector &vNextPos );
 	void			ComputeNormal( const Vector &vecCameraPos, const Vector &vStartPos, const Vector &vNextPos, Vector *pNormal );
 	static void		LoadSIMDData( FourVectors *pV4StartPos, FourVectors *pV4EndPos, FourVectors *pV4HalfWidth, int nSegCount, const BeamSeg_t *pSegs );
-	IMesh	*m_pMesh;
+	//IMesh	*m_pMesh;
+	CMeshBuilder*	m_pMeshBuilder;
 	int				m_nMeshVertCount;
 
 	CMeshBuilder	m_Mesh;
@@ -141,6 +142,8 @@ protected:
 	Vector			m_vNormalLast;
 	IMatRenderContext *m_pRenderContext;
 	//IMatRenderContASW *m_pRenderContext;
+
+	IMesh* m_pMesh;
 
 	Vector			m_vecCameraPos;
 };
