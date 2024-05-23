@@ -1,0 +1,22 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/props_frames/framingedge01"
+	//$envmap env_cubemap
+	$envmapmask "models/props_frames/framingedge01_ref"
+
+$reflectivity "[ 0.6 0.6 0.6 ]" 
+$envmap "metal/black_wall_envmap_002a"
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$normalmapalphaenvmapmask 1
+$envmaplightscale .5
+$envmapcontrast .5
+$envmapsaturation 0.2
+$envmaptint 0.3 0.3 0.3
+
+
+
+	"$surfaceprop" "metalvent"
+}

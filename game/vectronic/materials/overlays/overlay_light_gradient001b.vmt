@@ -1,0 +1,7 @@
+"LightmappedGeneric"
+{
+	"$translucent" 1
+	"$basetexture" "overlays/overlay_light_gradient001b"
+	"$decal" 1
+	"%keywords" "vectronic"
+}

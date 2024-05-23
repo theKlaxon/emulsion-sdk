@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	$basetexture "models/props/laser_tech_glass"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[.20 .30 .35]"
+	"$translucent" 1
+	"$alphaenvmapmask" 1
+
+	"$model" 1
+}

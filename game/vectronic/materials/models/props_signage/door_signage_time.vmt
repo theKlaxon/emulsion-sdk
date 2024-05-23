@@ -1,0 +1,10 @@
+"vertexlitgeneric"
+{
+	"$basetexture" "models/props_signage/door_signage_time"
+	//"$bumpmap" "models/props_signage/door_signage_normal"
+	"$bumpmap" "models/normal_shared"
+	"$surfaceprop" metal
+	"$selfillum" 1
+	"$phongboost" 1
+	"$phongfresnelranges" "[5 1 2]"
+}

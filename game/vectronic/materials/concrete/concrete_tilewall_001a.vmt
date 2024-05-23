@@ -1,0 +1,32 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "concrete/concrete_tilewall_001a"
+	"$surfaceprop" "concrete"
+	"%keywords" "vectronic"
+
+	"LightmappedGeneric_HDR_DX9"
+	{
+		"$bumpmap" "concrete/concrete_tilewall_001a_height-ssbump"
+		"$ssbump" "1"
+
+	}
+
+	"LightmappedGeneric_DX9"
+	{
+		"$bumpmap" "concrete/concrete_tilewall_001a_height-ssbump"
+		"$ssbump" "1"
+
+	}
+
+	"LightmappedGeneric_DX8"
+	{
+		"$bumpmap" "concrete/concrete_tilewall_001a_normal"
+		"$nodiffusebumplighting" 1
+	}
+
+	"LightmappedGeneric_NoBump_DX8"
+	{
+		"$basetexture" "concrete/concrete_tilewall_001a"
+		"$basealphaenvmapmask" 1
+	}
+}

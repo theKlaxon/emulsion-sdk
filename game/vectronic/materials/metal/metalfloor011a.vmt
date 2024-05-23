@@ -1,0 +1,13 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "Metal/metalfloor011a"
+	"$bumpmap" "metal/metalfloor011a_normal"
+	"$surfaceprop" "metal"
+	"$envmap" "env_cubemap"
+	"$envmapcontrast" "1"
+	"$envmapsaturation" "1"
+	"$envmaptint" "[ .4 .4 .4 ]"
+	"%keywords" "vectronic"
+
+	"$normalmapalphaenvmapmask" "1"
+}

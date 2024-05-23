@@ -1,0 +1,24 @@
+//"LightmappedGeneric"
+"UnlitGeneric"
+{
+	"$baseTexture" "overlays/indicator_lights/indicator_lights_strip"
+	"$nodecal"	"1"
+	"$translucent" "1"
+	"%keywords" "vectronic"
+  	"$decal" 1
+	"Proxies"
+	{
+		"TextureScroll"
+		{
+			"texturescrollvar" "$baseTextureTransform"
+			"texturescrollrate" 1.2
+			"texturescrollangle" 180.00
+		}
+ 		 "ToggleTexture"
+  		 {
+  		 	 "toggleTextureVar" "$baseTexture"
+    			"toggleTextureFrameNumVar" "$frame"
+    			"toggleTextureShouldWrap" "0"
+ 		  } 
+	}
+}

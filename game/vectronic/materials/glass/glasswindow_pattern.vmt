@@ -1,0 +1,11 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "glass/glasswindow_pattern"
+	"$surfaceprop" "glass"
+	"%keywords" "vectronic"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[.20 .30 .35]"
+	"%noportal" 1 // <- We use this to tell the balls not to bounce off of it.
+	"$additive" "1"
+	"$translucent" 1
+}

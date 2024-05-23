@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/props/boxshoot_frame"
+	"$bumpmap" "models/props/boxshoot_frame_normal"
+	"$phong" 1
+	"$phongboost" 1
+	"$phongfresnelranges" "[1 .7 .3]"
+	"$envmaptint" "[ .1 .1 .1 ]"
+	"$envmapconstrast" "1"
+
+	"$basetexturetransform" "center .15 .15 scale 4 4 rotate 45 translate 0 0"
+
+	"$model" 1
+} 

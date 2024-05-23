@@ -6,6 +6,7 @@
 
 #include "cbase.h"
 #include "vectronic_gamerules.h"
+#include "vectronic_shareddefs.h"
 #include "vectronic_vecall_system.h"
 #include "vectronic_player.h"
 #include "weapon_vecgun.h"

@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/props/piston_base"
+//	"$surfaceprop" metal
+//	"$bumpmap" "models\normal_shared"
+//	"$phong" "1"
+//	"$phongexponenttexture" "models\props\puzzlebox_exponent"
+	
+//	"$phongboost" "1"	
+//	"$phongfresnelranges"	"[.5 .75 .5]"
+
+	"$model" 1
+} 

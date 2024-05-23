@@ -471,10 +471,10 @@ protected:
 	int						m_flPhysics;
 public:
 	float					m_flFOVTime;		// starting time of the FOV zoom
-private:
+//private:
 	float					m_flWaterJumpTime;  // used to be called teleport_time
 	float					m_flSwimSoundTime;
-protected:
+//protected:
 	float					m_flStepSoundTime;
 	float					m_surfaceFriction;
 private:
@@ -634,7 +634,9 @@ private:
 	friend class CPortalGameMovement;
 	friend class CASW_MarineGameMovement;
 	friend class CPaintGameMovement;
+
 	friend class CEmulsionGameMovement;
+	friend class CVectronicGameMovement;
 	
 	// Accessors for gamemovement
 	float GetStepSize( void ) const { return m_Local.m_flStepSize; }

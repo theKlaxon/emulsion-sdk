@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/props/door_01_frame"
+	"$bumpmap" "models/props/door_01_frame_normal"
+	"$phong" 1
+	"$phongboost" 1
+	"$phongfresnelranges" "[1 .7 .3]"
+	"$envmaptint" "[ .1 .1 .1 ]"
+	"$envmapconstrast" "1"
+} 

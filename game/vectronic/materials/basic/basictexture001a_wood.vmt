@@ -1,0 +1,7 @@
+"LightMappedGeneric"
+{
+	"$basetexture" "basic/basictexture001a_wood"	
+	"$surfaceprop" "wood"
+	"%keywords" "dev, wood"
+
+}

@@ -1,0 +1,21 @@
+LightMappedGeneric
+{
+$basetexture "metal/metal_tilewall_002a"
+$bumpmap "metal/metal_tilewall_002a_normal"
+//$bumpmap "metal/metal_tilewall_002a_height-ssbump"
+//$ssbump "1"
+$reflectivity "[ 0.6 0.6 0.6 ]" 
+$envmap "metal/black_wall_envmap_002a"
+hdr
+{
+$envmap "metal/black_wall_envmap_002a_hdr"
+}
+$envmaplightscale 0.8
+
+$normalmapalphaenvmapmask 1
+$envmapcontrast 1.0
+$envmapsaturation 0.2
+$envmaptint 0.5 0.4 0.4
+"%noportal" 1
+"%keywords" "vectronic"
+}

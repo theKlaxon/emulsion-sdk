@@ -61,6 +61,7 @@ config.cfg
 *.db
 src/.vs/Game_Emulsion-2010/
 src/.vs/Game_Skeleton-2010/
+src/.vs/Game_Vectronic-2010/
 src/.vs/GamepadUI-2010/
 src/.vs/GamepadUI-2013/
 src/.vs/Everything-2010/
@@ -68,8 +69,8 @@ src/.vs/Game_TF2-2010/
 src/vgui2/vgui_controls/.vs/
 
 game/emulsion/gameinfo.txt
+game/vectronic/gameinfo.txt
 game/skeleton/gameinfo.txt
-game/p2asw/gameinfo.txt
 
 src/game/client/Debug_swarm/
 src/game/server/Debug_swarm/
@@ -86,10 +87,10 @@ src/game/server/Debug_skeleton/
 src/game/client/Release_skeleton/
 src/game/server/Release_skeleton/
 
-src/game/client/Debug_p2asw/
-src/game/server/Debug_p2asw/
-src/game/client/Release_p2asw/
-src/game/server/Release_p2asw/
+src/game/client/Debug_vectronic/
+src/game/server/Debug_vectronic/
+src/game/client/Release_vectronic/
+src/game/server/Release_vectronic/
 
 src/game/gamepadui/Debug_emulsion/
 src/game/gamepadui/Release_emulsion/
@@ -114,10 +115,13 @@ game/skeleton/bin/client.dll
 game/skeleton/bin/server.dll
 game/skeleton/bin/server.pdb
 
-game/p2asw/bin/client.pdb
-game/p2asw/bin/client.dll
-game/p2asw/bin/server.dll
-game/p2asw/bin/server.pdb
+game/vectronic/bin/client.pdb
+game/vectronic/bin/client.dll
+game/vectronic/bin/server.dll
+game/vectronic/bin/server.pdb
 
 game/emulsion/bin/gamepadui.dll
 game/emulsion/bin/gamepadui.pdb
+
+game/vectronic/bin/gamepadui.dll
+game/vectronic/bin/gamepadui.pdb

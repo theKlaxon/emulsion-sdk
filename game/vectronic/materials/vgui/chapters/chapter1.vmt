@@ -1,0 +1,9 @@
+//"LightmappedGeneric"
+"UnlitGeneric"
+{
+	//"$baseTexture" "vgui/chapters/chapter1"
+	"$baseTexture" "vgui/bonusmaps/icon_bonus_map_default"
+	"$vertexalpha" 1
+	"$gammaColorRead" "1"
+	"$linearWrite" "1"
+}

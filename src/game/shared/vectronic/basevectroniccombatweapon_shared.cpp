@@ -708,7 +708,7 @@ void CBaseVectronicCombatWeapon::DrawCrosshair()
 		return;
 
 	CBasePlayer *pFakePlayer = GetPlayerOwner();
-	CVectronicPlayer *pPlayer = To_VectronicPlayer(pFakePlayer);
+	CVectronicPlayer *pPlayer = static_cast<C_VectronicPlayer*>(pFakePlayer);//To_VectronicPlayer(pFakePlayer);
 
 	if (pPlayer->PlayerHasObject())
 	{

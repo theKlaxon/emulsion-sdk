@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/props/laser_tech_off"
+	"$bumpmap" "models/normal_shared"
+	"$surfaceprop" metal
+	"$selfillum" 1
+	"$phong" 1
+	"$phongboost" 1
+	"$phongfresnelranges" "[5 1 2]"
+
+	"$model" 1
+}

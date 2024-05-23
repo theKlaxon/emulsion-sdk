@@ -2621,15 +2621,18 @@ bool CGameMovement::CheckJumpButton( void )
 	MoveHelper()->PlayerSetAnimation( PLAYER_JUMP );
 
 	float flGroundFactor = 1.0f;
-	if (player->m_pSurfaceData)
-	{
-		flGroundFactor = player->m_pSurfaceData->game.jumpFactor; 
-	}
+	//if (player->m_pSurfaceData)
+	//{
+	//	flGroundFactor = player->m_pSurfaceData->game.jumpFactor; 
+	//}
 
 	float flMul;
 	if ( g_bMovementOptimizations )
 	{
-#if defined(EMULSION_DLL)
+#if defined(VECTRONIC_DLL)
+		Assert(sv_gravity.GetFloat() == 800.0f);
+		flMul = 160.0f;	// approx. 21 units.
+#elif defined(EMULSION_DLL)
 		Assert(sv_gravity.GetFloat() == 600.0f);
 		flMul = 220.0f;	
 #elif defined(HL2_DLL) || defined(HL2_CLIENT_DLL)
@@ -2665,7 +2668,7 @@ bool CGameMovement::CheckJumpButton( void )
 	}
 
 	// Add a little forward velocity based on your current forward velocity - if you are not sprinting.
-//#if defined( HL2_DLL ) || defined( HL2_CLIENT_DLL )
+#if defined( HL2_DLL ) || defined( HL2_CLIENT_DLL )
 
 	bool bAllowBunnyHopperSpeedBoost = ( gpGlobals->maxClients == 1 );
 
@@ -2697,7 +2700,7 @@ bool CGameMovement::CheckJumpButton( void )
 		// Add it on
 		VectorAdd( (vecForward*flSpeedAddition), mv->m_vecVelocity, mv->m_vecVelocity );
 	}
-//#endif
+#endif
 
 	FinishGravity();
 

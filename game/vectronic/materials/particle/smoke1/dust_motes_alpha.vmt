@@ -1,0 +1,8 @@
+SpriteCard
+{
+$basetexture "particle/smoke1/smoke1"
+$maxsize .0035
+$minsize .001
+
+
+}

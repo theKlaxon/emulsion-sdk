@@ -1763,11 +1763,11 @@ public:
 	void SkipToTime( float t );
 
 	// the camera objetc may be compared for equality against control point objects
-	void Render(IMatRenderContext* pRenderContext, const Vector4D& vecDiffuseModulation, bool bTranslucentOnly = false, void* pCameraObject = NULL) {
+	void Render(IMatRenderContext* pRenderContext, const Vector4D& vecDiffuseModulation, bool bTranslucentOnly = false, void* pCameraObject = NULL);/* {
 		pContASW.SetProtectedContext(pRenderContext);
 		Render(&pContASW, vecDiffuseModulation, bTranslucentOnly, pCameraObject);
 	}
-	void Render( IMatRenderContASW *pRenderContext, const Vector4D &vecDiffuseModulation, bool bTranslucentOnly = false, void *pCameraObject = NULL );
+	void Render( IMatRenderContASW *pRenderContext, const Vector4D &vecDiffuseModulation, bool bTranslucentOnly = false, void *pCameraObject = NULL );*/
 
 	bool IsValid( void ) const { return m_pDef != NULL; }
 

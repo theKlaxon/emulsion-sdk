@@ -1,0 +1,8 @@
+VertexLitGeneric
+{
+$basetexture "models\props_gameplay\GreyMetal"
+$surfaceprop metal
+$envmap env_cubemap
+$basealphaenvmapmask .5
+$envmaptint "[ .25 .25 .25]"
+}

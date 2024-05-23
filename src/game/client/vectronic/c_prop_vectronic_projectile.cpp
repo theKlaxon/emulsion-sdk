@@ -19,6 +19,7 @@
 #include "view_scene.h"
 #include "beamdraw.h"
 #include "vectronic_gamerules.h"
+#include "vectronic_shareddefs.h"
 #include "particles_new.h"
 
 // memdbgon must be the last include file in a .cpp file!!!

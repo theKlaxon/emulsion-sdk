@@ -893,7 +893,7 @@ public:
 		}
 
 		// handle as a script sound entry
-		if (ep.m_hSoundScriptHandle == -1)
+		if (ep.m_pSoundName && ep.m_hSoundScriptHandle == -1)
 		{
 			ep.m_hSoundScriptHandle = soundemitterbase->HashSoundName(ep.m_pSoundName);
 		}

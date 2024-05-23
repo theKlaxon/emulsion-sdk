@@ -1,0 +1,7 @@
+"LightMappedGeneric"
+{
+	"$basetexture" "basic/basictexture001a_rock"	
+	"$surfaceprop" "rock"
+	"%keywords" "dev, rock"
+
+}

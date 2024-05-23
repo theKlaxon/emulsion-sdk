@@ -1,0 +1,17 @@
+"LightmappedGeneric"
+{
+	"$basetexture"	"models/props/boxshoot_frame"
+	"$bumpmap" 	"models/props/boxshoot_frame_normal"
+	"$ssbump" "1"
+	"%keywords" "vectronic"
+
+	// NOTE: Even though env_cubemap is here, it will turned off for DX6
+	// because $multipass 1 isn't defined
+	//"$envmap" "env_cubemap"
+	//"$envmaptint" "[ .03 .03 .03 ]"
+	//"$envmapcontrast" 0.5
+	//"$envmapsaturation" 1
+
+	"$basetexturetransform" "center .15 .15 scale 4 4 rotate 45 translate 0 0"
+
+}

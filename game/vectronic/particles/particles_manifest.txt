@@ -1,0 +1,39 @@
+particles_manifest
+{
+
+	"file"		"particles/antlion_blood.pcf"
+	"file"		"particles/asw_precipitation.pcf"
+	"file"		"particles/blood_impact.pcf"
+	"file"		"particles/burning_fx.pcf"
+	"file"		"particles/default.pcf"
+	"file"		"!particles/error.pcf"
+	"file"		"particles/fire_01.pcf"
+	"file"		"particles/rain_fx.pcf"
+	"file"		"particles/rain_storm_fx.pcf"
+	"file"		"particles/rocket_fx.pcf"
+	"file"		"particles/smoke_fx.pcf"
+	"file"		"particles/steam_fx.pcf"
+	"file"		"particles/steamworks.pcf"
+	"file"		"particles/tracer_fx.pcf"
+	"file"		"particles/vortigaunt_fx.pcf"
+	"file"		"particles/water_impact.pcf"
+	"file"		"particles/water_fx.pcf"
+
+	//Vectronic
+	"file"		"particles/ball_projectile.pcf"
+	"file"		"particles/ball_dispenser.pcf"
+	"file"		"particles/dispensers.pcf"
+	"file"		"particles/ball_cleansers.pcf"
+	"file"		"particles/environment.pcf"
+	"file"		"particles/vecbox.pcf"
+	"file"		"particles/vecgun.pcf"
+	"file"		"particles/laser_efx.pcf"
+	"file"		"particles/tubes.pcf"
+
+	//"file"		"particles/example.pcf"
+
+	//require cleaning
+	"file"		"particles/weapon_fx_hl2.pcf"
+	"file"		"particles/impact_fx.pcf"
+
+}

@@ -1,0 +1,8 @@
+"UnlitGeneric"
+{
+	"$basetexture" "Lights/White004"
+	"$surfaceprop" "glass"
+	"%noportal" 1
+	"$nodecal" 1
+	"%keywords" "vectronic"
+}

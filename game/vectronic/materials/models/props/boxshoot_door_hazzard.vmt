@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/props/boxshoot_door_hazzard"
+	"$surfaceprop" metal
+
+	"$bumpmap" "models\normal_shared"
+	"$phong" "1"
+	"$phongexponenttexture" "models\props\puzzlebox_exponent"
+	
+	"$phongboost" "2"	
+	"$phongfresnelranges"	"[1 1.5 1]"
+
+	"$model" 1	
+} 
+

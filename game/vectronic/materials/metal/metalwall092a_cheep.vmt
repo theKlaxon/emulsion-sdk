@@ -1,0 +1,8 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "Metal/metalwall092a"
+	"%keywords" "vectronic"
+	"$surfaceprop" "metal"
+	"%noportal" 1
+}
+

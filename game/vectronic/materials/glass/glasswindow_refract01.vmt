@@ -1,0 +1,23 @@
+"Refract"
+{
+ 	"$model" 1
+	"$refractamount" ".025"
+ 	"$bluramount" "1"
+	"$REFRACTTINT" "{250 250 250}"
+	"$scale" "[1 1]"
+	"$dudvmap" "glass/glass_normal"
+	"$normalmap" "glass/glass_normal"
+	"$surfaceprop" "glass"
+
+	"$envmap" "env_cubemap"
+	"$envmapcontrast" "1"
+	"$envmapsaturation" "[1 1 1]"
+	"$envmaptint" "[.71 .79 .85]"
+	"%keywords" "vectronic"
+	"%noportal" 1 // <- We use this to tell the balls not to bounce off of it.
+
+	"<dx90"
+	{
+		"$fallbackmaterial" "glass/refract01_dx8"
+	}
+}

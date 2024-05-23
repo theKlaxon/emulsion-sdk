@@ -894,7 +894,7 @@ void CVectronicPlayer::OnDamagedByExplosion( const CTakeDamageInfo &info )
 	BaseClass::OnDamagedByExplosion( info );
 }
 
-#ifndef SWARM_DLL
+//#ifndef SWARM_DLL
 void CVectronicPlayer::FirePlayerProxyOutput( const char *pszOutputName, variant_t variant, CBaseEntity *pActivator, CBaseEntity *pCaller )
 {
 	if ( GetPlayerProxy() == NULL )
@@ -902,7 +902,7 @@ void CVectronicPlayer::FirePlayerProxyOutput( const char *pszOutputName, variant
 
 	GetPlayerProxy()->FireNamedOutput( pszOutputName, variant, pActivator, pCaller );
 }
-#endif
+//#endif
 
 void CVectronicPlayer::Event_Killed( const CTakeDamageInfo &info )
 {

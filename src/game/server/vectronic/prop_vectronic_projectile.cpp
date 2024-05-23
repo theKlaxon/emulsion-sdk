@@ -956,11 +956,11 @@ void CPropParticleBall::WhizSoundThink()
 					ep.m_nChannel = CHAN_STATIC;
 					if ( hl2_episodic.GetBool() )
 					{
-			//			ep.m_pSoundName = "NPC_CombineBall_Episodic.WhizFlyby";
+						ep.m_pSoundName = "NPC_CombineBall_Episodic.WhizFlyby";
 					}
 					else
 					{
-			//			ep.m_pSoundName = "NPC_CombineBall.WhizFlyby";
+						ep.m_pSoundName = "NPC_CombineBall.WhizFlyby";
 					}
 					ep.m_flVolume = 1.0f;
 					ep.m_SoundLevel = SNDLVL_NORM;

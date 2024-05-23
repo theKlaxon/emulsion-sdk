@@ -6,9 +6,9 @@
 		"Logo.OffsetY.MainMenu"					"300" // 290
 		"Logo.OffsetY.InGame"					"340"
 
-		"Logo.Image"							"gamepadui/emulsion_logo"
-		"Logo.ExtraWidth"						"64"
-		"Logo.ExtraHeight"						"96"
+		"Logo.Image"							"gamepadui/vectronic_logo"
+		"Logo.ExtraWidth"						"0"
+		"Logo.ExtraHeight"						"0"
 
 		"Background.Movie"						"media/sp_dem02_background.bik"
 	
@@ -64,11 +64,11 @@
 		"Button.Background.Pressed"				"255 255 255 255"
 
 		"Button.Background.LeftBorder.Out"			"0 0 0 255"
-		"Button.Background.LeftBorder.Over"			"40 240 36 255" // 61 189 237 255 - blue
+		"Button.Background.LeftBorder.Over"			"136 191 227 255" // 61 189 237 255 - blue
 		"Button.Background.LeftBorder.Pressed"		"255 255 255 255"
 
 		"Button.Text.Out"						"227 224 224 255"
-		"Button.Text.Over"						"40 240 36 255" // was blue
+		"Button.Text.Over"						"136 191 227 255" // was blue
 		"Button.Text.Pressed"					"0 0 0 255"
 
 		"Button.Description.Out"				"0 0 0 0"

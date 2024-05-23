@@ -1,0 +1,208 @@
+// rHetorical and SHARED player sounds
+
+
+// We have this quiet because it's more realistic to not play a pickup sound.
+// Having the physics sound is enough. 
+"Player.Use"
+{
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.0"
+	"soundlevel"  "SNDLVL_75dB"
+
+	"wave"	"common/null.wav" 
+}
+
+// This however must stay.
+"Player.UseDeny"
+{
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.4"
+	"soundlevel"  "SNDLVL_75dB"
+
+	"wave"	"common/wpn_denyselect.wav"
+}
+
+"Player.FallWoosh"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"0.9"
+	"soundlevel"		"SNDLVL_75dB"
+	"pitch"			"140"
+	"wave"			"player/fall_whoosh.wav"
+}
+
+"Player.FallWoosh2"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"1.00"
+	"soundlevel"		"SNDLVL_85dB"
+	"pitch"			"100"
+	//"wave"			"player/fall_whoosh2.wav"
+	"wave"			"player/windgust.wav"
+}
+
+"Player.HeartbeatLoop"
+{
+	"channel"		"CHAN_STATIC"
+	"soundlevel"		"SNDLVL_90dB"
+	"wave"			"player/HeartbeatLoop.wav"
+}
+
+"Player.Death"
+{
+	"channel"	"CHAN_VOICE"
+	"volume"	"0.8"
+	"pitch"		"75"
+	"soundlevel"  "SNDLVL_75dB"
+	//"wave"		"physics/vecbox/vecbox_hit_ghost.wav"
+	"wave"	"player/gears.wav"
+}
+
+"Player.PlasmaDamage"
+{
+	"channel"	"CHAN_BODY"
+	"volume"	"0.5"
+	"soundlevel"  "SNDLVL_75dB"
+
+	"wave"	"player/general/flesh_burn.wav"
+}
+
+"Player.SonicDamage"
+{
+	"channel"	"CHAN_BODY"
+	"volume"	"0.7"
+	"soundlevel"  "SNDLVL_75dB"
+
+	"rndwave"
+	{
+		"wave"	"player/pain5.wav"
+		"wave"	"player/pain6.wav"
+		"wave"	"player/pain7.wav"
+	}
+}
+
+"Player.DrownStart"
+{
+	"channel"	"CHAN_VOICE"
+	"volume"	"1.0"
+	"soundlevel"  "SNDLVL_75dB"
+	"pitch"		"90,110"
+
+
+	"rndwave"
+	{
+		"wave"	"player/drown1.wav"
+		"wave"	"player/drown2.wav"
+		"wave"	"player/drown3.wav"
+	}
+
+}
+
+"Player.Swim"
+{
+	"channel"	"CHAN_STATIC"
+	"volume"	"0.5"
+	"pitch"		"PITCH_NORM"
+	"soundlevel"	"SNDLVL_NORM"
+
+	"rndwave"
+	{
+		"wave"		"player/footsteps/wade5.wav"
+		"wave"		"player/footsteps/wade6.wav"
+		"wave"		"player/footsteps/wade7.wav"
+		"wave"		"player/footsteps/wade8.wav"
+	}
+}
+
+"Player.FallDamage" // We take no fall damage, replace with landing gear.
+{
+	"channel"	"CHAN_AUTO"
+	//"volume"	"0.75"
+	"volume"	"0.50"
+	"pitch"		"90,110"
+	"soundlevel"	"SNDLVL_NORM"
+
+	"rndwave"
+	{
+		"wave"		"player/futureshoes1.wav"
+		"wave"		"player/futureshoes2.wav"
+	}
+}
+
+"Player.FallGib"
+{
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.75"
+	"pitch"		"90,110"
+	"soundlevel"	"SNDLVL_NORM"
+
+	"rndwave"
+	{
+		"wave"		"physics/body/body_medium_break2.wav"
+	}
+}
+
+"Player.DrownContinue"
+{
+	"channel"	"CHAN_VOICE"
+	"volume"	"1.0"
+	"soundlevel"  "SNDLVL_75dB"
+	"pitch"		"90,110"
+
+	"rndwave"
+	{
+		"wave"	"player/drown1.wav"
+		"wave"	"player/drown2.wav"
+		"wave"	"player/drown3.wav"
+	}
+}
+
+"Player.Wade"
+{
+	"channel"	"CHAN_BODY"
+	"volume"	"0.25"
+	"soundlevel"  "SNDLVL_75dB"
+
+	"rndwave"
+	{
+		"wave"	"player/footsteps/wade5.wav"
+		"wave"	"player/footsteps/wade6.wav"
+		"wave"	"player/footsteps/wade7.wav"
+		"wave"	"player/footsteps/wade8.wav"
+	}
+}
+
+"Player.AmbientUnderWater"
+{
+	"channel"	"CHAN_STATIC"
+	"volume"	"0.22"
+	"soundlevel"  "SNDLVL_75dB"
+
+	"wave"	"ambient/water/underwater.wav"
+}
+
+"Player.UseTrain"
+{
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.8"
+	"soundlevel"  "SNDLVL_75dB"
+
+	"wave"	"plats/train_use1.wav"
+}
+
+"Player.UseDeny"
+{
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.4"
+	"soundlevel"  "SNDLVL_75dB"
+
+	"wave"	"common/wpn_select.wav"
+}
+
+"Player.PickupWeapon"
+{
+	"channel"	"CHAN_VOICE"
+	"volume"	"0.8"
+	"soundlevel"  "SNDLVL_75dB"
+	"wave"	"player/startmission1.wav"
+}

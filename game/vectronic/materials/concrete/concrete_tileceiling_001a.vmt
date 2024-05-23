@@ -1,0 +1,9 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "concrete/concrete_tileceiling_001a"
+	"$bumpmap" "concrete/concrete_tilewall_003a_height-ssbump"
+	"$ssbump" "1"
+	"$surfaceprop" "concrete"
+	"%keywords" "vectronic"
+}
+

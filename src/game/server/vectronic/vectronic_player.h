@@ -121,10 +121,10 @@ public:
 	
 	CLogicPlayerProxy	*GetPlayerProxy( void );
 
-#ifndef SWARM_DLL
+//#ifndef SWARM_DLL
 	void FirePlayerProxyOutput( const char *pszOutputName, variant_t variant, CBaseEntity *pActivator, CBaseEntity *pCaller );
 	EHANDLE			m_hPlayerProxy;	// Handle to a player proxy entity for quicker reference
-#endif
+//#endif
 
 	// Use + Pickup
 	virtual void PlayerUse( void );

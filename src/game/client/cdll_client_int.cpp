@@ -127,11 +127,14 @@
 #include "c_rumble.h"
 #include "viewpostprocess.h"
 
-#ifdef EMULSION_DLL
+#if defined (EMULSION_DLL)
 #include "c_discord.h"
-#include "paintblob_manager.h"
 #include "dll_patch.h"
+
+#if !defined (VECTRONIC_DLL)
+#include "paintblob_manager.h"
 #endif
+#endif 
 
 #if defined( GAMEPADUI )
 #include "../gamepadui/igamepadui.h"
@@ -1037,7 +1040,7 @@ bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 	IGameSystem::Add( GetPredictionCopyTester() );
 #endif
 
-#if defined(EMULSION_DLL)
+#if defined(EMULSION_DLL) && !defined(VECTRONIC_DLL)
 	IGameSystem::Add(PaintBlobManager_System());
 #endif
 

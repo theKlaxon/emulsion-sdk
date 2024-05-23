@@ -1,0 +1,9 @@
+"UnlitGeneric"
+{
+	"$translucent"	1
+	"$basetexture" "vgui/hud/hud_glow_left"
+	"$vertexcolor" 1
+	"$no_fullbright" 1
+	"$ignorez" 1
+}
+

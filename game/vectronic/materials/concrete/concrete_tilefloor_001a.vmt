@@ -1,0 +1,39 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "concrete/concrete_tilefloor_001a"
+	"$surfaceprop" "concrete"
+	"%keywords" "vectronic"
+
+	"LightmappedGeneric_HDR_DX9"
+	{
+		"$bumpmap" "concrete/concrete_tilefloor_001a_normal"
+		"$envmap" "env_cubemap"
+		"$envmapsaturation" 1
+		"$envmapcontrast" 1
+		"$envmaptint" "[ .11 .11 .11 ]"
+		"$normalmapalphaenvmapmask" 1
+
+	}
+
+	"LightmappedGeneric_DX9"
+	{
+		"$bumpmap" "concrete/concrete_tilefloor_001a_normal"
+		"$envmap" "env_cubemap"
+		"$envmapsaturation" 1
+		"$envmapcontrast" 1
+		"$envmaptint" "[ .11 .11 .11 ]"
+		"$normalmapalphaenvmapmask" 1
+
+	}
+
+	"LightmappedGeneric_DX8"
+	{
+		"$bumpmap" "concrete/concrete_tilefloor_001a_normal"
+	}
+
+	"LightmappedGeneric_NoBump_DX8"
+	{
+		"$basetexture" "concrete/concrete_tilefloor_001a"
+		"$basealphaenvmapmask" 1
+	}
+}

@@ -1,0 +1,10 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "glass/glass_lightstrip_cover"
+	"$surfaceprop" "glass"
+	"%keywords" "vectronic"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[.20 .30 .35]"
+	//"$additive" "1"
+	"$translucent" 1
+}

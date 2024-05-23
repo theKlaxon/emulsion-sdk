@@ -66,40 +66,60 @@ $Project "Client (Vectronic)"
 			
 			$Folder "Shared"
 			{
-				$File	"$SRCDIR\game\shared\emulsion\emulsion_gamemovement.cpp"
-				$File	"$SRCDIR\game\shared\emulsion\emulsion_gamerules.cpp"
-				$File	"$SRCDIR\game\shared\emulsion\emulsion_shareddefs.h"
-				$File	"$SRCDIR\game\shared\emulsion\emulsion_usermessages.cpp"
-				$File	"$SRCDIR\game\shared\emulsion\emulsion_parsers.cpp"
-				$File	"$SRCDIR\game\shared\emulsion\paintblob_manager.cpp"
-				$File	"$SRCDIR\game\shared\emulsion\paintblob_manager.h"
+				$Folder	Weapons
+				{
+					$File	"$SRCDIR\game\shared\vectronic\basevectroniccombatweapon_shared.cpp"
+					$File	"$SRCDIR\game\shared\vectronic\basevectroniccombatweapon_shared.h"
+				}
+
+				$File	"$SRCDIR\game\shared\vectronic\vectronic_gamemovement.cpp"
+				$File	"$SRCDIR\game\shared\vectronic\vectronic_gamerules.h"
+				$File	"$SRCDIR\game\shared\vectronic\vectronic_gamerules.cpp"
+				$File	"$SRCDIR\game\shared\vectronic\vectronic_shareddefs.h"
+				$File	"$SRCDIR\game\shared\vectronic\my_shareddefs.h"
+				$File	"$SRCDIR\game\shared\vectronic\vectronic_usermessages.cpp"
+				$File	"$SRCDIR\game\shared\vectronic\vectronic_weapon_parse.h"
+				$File	"$SRCDIR\game\shared\vectronic\vectronic_weapon_parse.cpp"
+				
 				$File	"$SRCDIR\game\shared\emulsion\proxy_filesystem.h"
 				$File	"$SRCDIR\game\shared\emulsion\proxy_imaterialsystem.cpp"
 				$File	"$SRCDIR\game\shared\emulsion\proxy_imatrendercontext.h"
-				$File 	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
+				$File	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
+				$File	"$SRCDIR\game\shared\predicted_viewmodel.h"
 			}
 
-			$File	"emulsion\c_emulsion_player.h"
-			$File	"emulsion\c_emulsion_player.cpp"
-			$File	"emulsion\c_emulsion_lesson.cpp"
-			$File	"emulsion\c_weapon_paintgun.cpp"
 			$File	"emulsion\c_discord.cpp"
 			$File	"emulsion\c_discord.h"
-
 			$File	"emulsion\dll_patch.cpp"
 			$File	"emulsion\dll_offset.cpp"
-			$File	"emulsion\c_paintblob_stream.cpp"
-			$File	"emulsion\c_paintblob_stream.h"
-			
-			$File	"emulsion\clientmode_emulsion.h"
-			$File	"emulsion\clientmode_emulsion.cpp"
-			$File	"emulsion\emulsion_fx.cpp"
-			$File	"emulsion\emulsion_in_main.cpp"
-			$File	"emulsion\emulsion_in_main.h"
-			$File	"emulsion\emulsion_prediction.cpp"
-			$File	"emulsion\emulsion_rootpanel.cpp"
-			$File	"emulsion\c_prop_devcube.cpp"
-			$File	"emulsion\c_npc_surface.cpp"
+
+			$File	"vectronic\noshare\clientmode_vectronic.h"
+			$File	"vectronic\noshare\clientmode_vectronic.cpp"
+			$File	"vectronic\c_weapon__stubs_vectronic.cpp"			
+			$File	"vectronic\vectronic_fx.cpp"
+			$File	"vectronic\vectronic_in_main.cpp"
+			$File	"vectronic\vectronic_prediction.cpp"
+			$File	"vectronic\c_vectronic_lesson.cpp"
+
+			$Folder "HUD"
+			{
+				$File	"vectronic\hud_vectronic_quickinfo.cpp"
+				$File	"vectronic\hud_vectronic_quickinfo.h"
+				$File	"vectronic\hud_ball_icons.cpp"
+				$File	"vectronic\hud_damageindicator.cpp"
+				$File	"vectronic\hud_weaponselection.cpp"
+			}
+
+			$File	"vectronic\c_weapon_vecgun.cpp"
+			$File	"vectronic\c_weapon_vecgun.h"
+			$File	"vectronic\c_prop_vectronic_projectile.cpp"
+			$File	"vectronic\c_prop_vectronic_projectile.h"
+			$File	"vectronic\c_prop_vecbox.cpp"
+			$File	"vectronic\c_prop_vecbox.h"
+			$File	"vectronic\c_vectronic_player.h"
+			$File	"vectronic\c_vectronic_player.cpp"
+			$File	"vectronic\vectronic_rootpanel.cpp"
+			$File	"c_baseglowanimating.cpp"
 		}
 	}
 

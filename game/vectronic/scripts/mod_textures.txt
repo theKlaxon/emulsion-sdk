@@ -1,0 +1,158 @@
+"sprites/640_hud"
+{
+	TextureData
+	{
+		"vectronic_crosshair"
+		{
+			"file"		"vgui/hud/vecgun_crosshair"
+			"x"		"0"
+			"y"		"0"
+			"width"		"64"
+			"height"	"64"
+		}
+
+		"vectronic_crosshair_left_empty"
+		{
+			"file"		"vgui/hud/crosshair_left_empty"
+			"x"		"0"
+			"y"		"0"
+			"width"		"32"
+			"height"	"64"
+		}
+
+		"vectronic_crosshair_left_empty_small"
+		{
+			"file"		"vgui/hud/crosshair_left_empty_small"
+			"x"		"0"
+			"y"		"0"
+			"width"		"32"
+			"height"	"64"
+		}
+
+
+		"vectronic_crosshair_left_full"
+		{
+			"file"		"vgui/hud/crosshair_left_full"
+			"x"		"0"
+			"y"		"0"
+			"width"		"32"
+			"height"	"64"
+		}
+
+		"vectronic_crosshair_left_full_small"
+		{
+			"file"		"vgui/hud/crosshair_left_full_small"
+			"x"		"0"
+			"y"		"0"
+			"width"		"32"
+			"height"	"64"
+		}
+
+
+
+		"vectronic_crosshair_right_empty"
+		{
+			"file"		"vgui/hud/crosshair_right_empty"
+			"x"		"0"
+			"y"		"0"
+			"width"		"32"
+			"height"	"64"
+		}
+
+		"vectronic_crosshair_right_empty_small"
+		{
+			"file"		"vgui/hud/crosshair_right_empty_small"
+			"x"		"0"
+			"y"		"0"
+			"width"		"32"
+			"height"	"64"
+		}
+
+		"vectronic_crosshair_right_full"
+		{
+			"file"		"vgui/hud/crosshair_right_full"
+			"x"		"0"
+			"y"		"0"
+			"width"		"32"
+			"height"	"64"
+		}
+
+		"vectronic_crosshair_right_full_small"
+		{
+			"file"		"vgui/hud/crosshair_right_full_small"
+			"x"		"0"
+			"y"		"0"
+			"width"		"32"
+			"height"	"64"
+		}
+
+		"hud_glow_left"
+		{
+			"file"		"vgui/hud/hud_glow_left"
+			"x"		"0"
+			"y"		"0"
+			"width"		"512"
+			"height"	"512"
+		}
+
+		"hud_glow_right"
+		{
+			"file"		"vgui/hud/hud_glow_right"
+			"x"		"0"
+			"y"		"0"
+			"width"		"512"
+			"height"	"512"
+		}
+
+		"BallIcon"
+		{
+			"font"		"WeaponBallIcons"
+			"character"	"."
+		}
+
+		"whiteAdditive"
+		{
+				"file"		"vgui/white_additive"
+				"x"			"0"
+				"y"			"0"
+				"width"		"1"
+				"height"	"1"
+		}
+
+		"pain_up"
+		{
+				"file"		"sprites/640_pain_up"
+				"x"			"0"
+				"y"			"0"
+				"width"		"128"
+				"height"	"48"
+		}
+
+		"pain_down"
+		{
+				"file"		"sprites/640_pain_down"
+				"x"			"0"
+				"y"			"0"
+				"width"		"128"
+				"height"	"48"
+		}
+
+		"pain_left"
+		{
+				"file"		"sprites/640_pain_left"
+				"x"			"0"
+				"y"			"0"
+				"width"		"48"
+				"height"	"128"
+		}
+
+		"pain_right"
+		{
+				"file"		"sprites/640_pain_right"
+				"x"			"0"
+				"y"			"0"
+				"width"		"48"
+				"height"	"128"
+		}
+	}
+}

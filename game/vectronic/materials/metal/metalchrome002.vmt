@@ -1,0 +1,10 @@
+"LightMappedGeneric"
+{
+	"$basetexture"	"Metal/metalchrome002"
+	"$envmap" "env_cubemap"
+	"$basealphaenvmapmask" 1
+	"$surfaceprop" "metal"
+	"$envmaptint" "[ .25 .25 .25]"
+               "%noportal" 1
+	"%keywords" "vectronic"
+}

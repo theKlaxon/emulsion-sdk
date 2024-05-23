@@ -1,6 +1,7 @@
 #include "cbase.h"
 #include "singleplay_gamerules.h"
 #include "vectronic_gamerules.h"
+#include "vectronic_shareddefs.h"
 #include "ammodef.h"
 
 #ifdef GAME_DLL

@@ -1162,7 +1162,9 @@ protected:
 	friend class CPortalGameMovement;
 	friend class CASW_MarineGameMovement;
 	friend class CPaintGameMovement;
+
 	friend class CEmulsionGameMovement;
+	friend class CVectronicGameMovement;
 	
 	// Accessors for gamemovement
 	bool IsDucked( void ) const { return m_Local.m_bDucked; }

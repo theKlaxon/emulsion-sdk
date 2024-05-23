@@ -1,0 +1,8 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "models/props_frames/framingedge01"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models/props_frames/framingedge01_ref"
+	"$surfaceprop" "metalvent"
+	"%keywords" "vectronic"
+}

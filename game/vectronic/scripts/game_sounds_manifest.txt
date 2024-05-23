@@ -1,0 +1,25 @@
+game_sounds_manifest
+{
+	"precache_file"		"scripts/game_sounds.txt"
+	"precache_file"		"scripts/game_sounds_ambient_generic.txt"
+	"precache_file"		"scripts/game_sounds_buttons.txt"
+	"precache_file"		"scripts/game_sounds_doors.txt"
+	"precache_file"		"scripts/game_sounds_physics.txt"
+	"precache_file"		"scripts/game_sounds_player.txt"
+	"precache_file"		"scripts/game_sounds_player_hl2.txt"
+	"precache_file"		"scripts/game_sounds_ui.txt"
+	"precache_file"		"scripts/game_sounds_weather.txt"
+	"precache_file"		"scripts/game_sounds_world.txt"
+
+	// Weapon sounds
+	"precache_file"		"scripts/game_sounds_weapons.txt"
+
+	//Music Tracks
+	"precache_file"		"scripts/level_sounds_music.txt"
+
+	// Vectronic
+	"precache_file"		"scripts/game_sounds_vectronic.txt"
+	"precache_file"		"scripts/game_sounds_weapons_vectronic.txt"
+
+	"precache_file"		"scripts/game_sounds_world_hl2.txt"
+}

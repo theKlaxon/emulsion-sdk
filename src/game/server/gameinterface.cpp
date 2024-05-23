@@ -112,7 +112,7 @@
 #include "asw_gamerules.h"
 #endif
 
-#ifdef EMULSION_DLL
+#if defined( EMULSION_DLL ) && !defined( VECTRONIC_DLL )
 #include "paintblob_manager.h"
 #endif
 
@@ -597,7 +597,7 @@ static bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 	}
 #endif // SERVER_USES_VGUI
 
-#if defined(EMULSION_DLL)
+#if defined(EMULSION_DLL) && !defined( VECTRONIC_DLL )
 	IGameSystem::Add(PaintBlobManager_System());
 #endif
 

@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	//"$basetexture" "dev/reflectivity_20b"
+	"$basetexture" "models/props/boxshoot_frame"
+	"$bumpmap" "models/props/boxshoot_frame_normal"
+	"$phong" 1
+	"$phongboost" 1
+	"$phongfresnelranges" "[1 .7 .3]"
+	"$envmaptint" "[ .1 .1 .1 ]"
+	"$envmapconstrast" "1"
+} 

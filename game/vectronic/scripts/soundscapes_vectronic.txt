@@ -1,0 +1,201 @@
+
+// Chamber locks
+"Vectronic.Chamberlock"
+{
+	"dsp"	"1"
+	"dsp_volume" "1.0"
+
+	"playlooping"
+	{
+		//"volume"	"0.30"
+		"Volume"	"1.00"
+		//"wave"		"ambient/levels/citadel/citadel_drone_loop1.wav"
+		"wave"		"ambient/atmosphere/chamber_drone_lp_04.wav"
+		"pitch"		"45"
+	}
+
+	"playrandom"
+	{
+		"volume"	"0.60"
+		"time"		"2,8"
+		"pitch"		"90,110"
+		"rndwave"
+		{
+			"wave"	"ambient/tones/tone04.wav"
+			"wave"	"ambient/tones/tone06.wav"
+		}
+	}
+	
+}
+
+// Big Wide areas
+"Vectronic.OpenSpace"
+{
+	"dsp"	"1"
+
+	"playlooping"
+	{
+		//"volume"	"0.30"
+		"Volume"	"1.0"
+		//"wave"		"ambient/levels/citadel/citadel_drone_loop2.wav"
+		"wave"		"ambient/atmosphere/chamber_drone_lp_05.wav"
+		"pitch"		"50"
+	}
+
+
+	"playrandom"
+	{
+		"pitch"		"70,90"
+		"volume"	"0.60"
+		"time"		"3,9"
+		"rndwave"
+		{
+			"wave"	"ambient/atmosphere/chamber_blips_10.wav"
+			"wave"	"ambient/atmosphere/chamber_blips_11.wav"
+			"wave"	"ambient/atmosphere/chamber_blips_12.wav"
+			"wave"	"ambient/atmosphere/chamber_blips_13.wav" 
+			"wave"	"ambient/atmosphere/chamber_blips_14.wav" 
+		}
+	}
+
+	"playrandom"
+	{
+		"pitch"		"90,110"
+		"volume"	"0.1"
+		"time"		"4,12"
+		"rndwave"
+		{
+			"wave"	"ambient/machines/air_release.wav"
+			"wave"	"ambient/machines/dispenser_regen.wav"
+			"wave"	"ambient/machines/machine_turn.wav"
+		}
+	}
+}
+
+// Smaller narrower ones. More bassy.
+"Vectronic.TightSpace"
+{
+	"dsp"	"1"
+	//"dsp_volume" "1.0"
+
+	"playlooping"
+	{
+		//"volume"	"0.35"
+		"Volume"	"1.0"
+		//"wave"		"ambient/levels/citadel/citadel_drone_loop3.wav"
+		"wave"		"ambient/atmosphere/chamber_drone_lp_06.wav"
+		"pitch"		"50"
+	}
+
+	"playrandom"
+	{
+		"pitch"		"70,90"
+		"volume"	"0.50"
+		"time"		"3,9"
+		"rndwave"
+		{
+			"wave"	"ambient/atmosphere/chamber_blips_10.wav"
+			"wave"	"ambient/atmosphere/chamber_blips_11.wav"
+			"wave"	"ambient/atmosphere/chamber_blips_12.wav"
+			"wave"	"ambient/atmosphere/chamber_blips_13.wav" 
+			"wave"	"ambient/atmosphere/chamber_blips_14.wav" 
+			"wave"	"ambient/tones/tone04.wav"
+		}
+	}
+
+	"playrandom"
+	{
+		"pitch"		"10,40"
+		"volume"	"0.60"
+		"time"		"2,8"
+		"rndwave"
+		{
+			"wave"	"ambient/tones/tone01.wav"
+			"wave"	"ambient/tones/tone02.wav"
+			"wave"	"ambient/tones/tone03.wav"
+			"wave"	"ambient/tones/tone05.wav"
+		}
+	}
+
+
+}
+
+// Near Cleansers
+"vectronic.Cleanser"
+{
+	"dsp"	"1"
+	"dsp_volume" "1.0"
+
+	"playlooping"
+	{
+		//"volume"	"0.55"
+		"Volume"	"1.0"
+		//"wave"		"ambient/levels/citadel/citadel_drone_loop4.wav"
+		"wave"		"ambient/atmosphere/chamber_drone_lp_01.wav"
+		"pitch"		"50"
+	}
+
+	"playrandom"
+	{
+		"pitch"		"45,70"
+		"volume"	"0.1"
+		"time"		"4,12"
+		"rndwave"
+		{
+			"wave"	"ambient/machines/air_release.wav"
+			"wave"	"ambient/machines/dispenser_regen.wav"
+			"wave"	"ambient/machines/machine_turn.wav"
+		}
+	}
+}
+
+"Vectronic.BTS"
+{
+	"dsp"	"1"
+	"dsp_volume" "1.0"
+
+	"playlooping"
+	{
+		"Volume"	"0.80"
+		"wave"		"ambient/tones/industrial3_loop.wav"
+		"pitch"		"45"
+	}
+
+	"playrandom"
+	{
+		"time"		"2,7"
+		"volume"	"0.15,0.28"
+		"pitch"		"95,105"
+		"position"	"random"
+		"soundlevel" "SNDLVL_140dB"
+
+		"rndwave"
+		{
+					"wave"  "ambient/materials/rustypipes1.wav"
+					"wave"  "ambient/materials/rustypipes2.wav"
+					"wave"  "ambient/materials/rustypipes3.wav"
+		}
+	}
+	
+}
+
+"Vectronic.Goo"
+{
+	"dsp"	"1"
+
+	"playlooping"
+	{
+		"volume"	"0.65"
+		"wave"		"ambient/atmosphere/ambience6.wav"
+		"pitch"		"100"
+		"attenuation"	"0"
+	}
+
+	"playlooping"
+	{
+		"volume"	"0.25"
+		"wave"		"ambient/levels/canals/toxic_slime_loop1.wav"
+		"pitch"		"100"
+		"attenuation"	"0"
+	}
+}

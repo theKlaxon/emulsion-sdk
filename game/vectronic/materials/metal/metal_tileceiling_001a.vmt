@@ -1,0 +1,18 @@
+"LightmappedGeneric"
+{
+	"$basetexture" "metal/metal_tileceiling_001a"
+	"$surfaceprop" "metal"
+	"%keywords" "vectronic"
+	"%noportal" 1
+
+	"$envmap" "env_cubemap"
+	"$normalmapalphaenvmapmask" 1
+	"$envmapcontrast" 1
+	"$envmapsaturation" 1
+	"$envmaptint" "[0.25 0.2 0.2]"
+	"$bumpmap" "concrete/concrete_tilewall_003a_height-ssbump"
+	"$ssbump" "1"
+
+	"$reflectivity" "[ 0.6 0.6 0.6 ]" //this is a artificial radiosity boost
+
+}

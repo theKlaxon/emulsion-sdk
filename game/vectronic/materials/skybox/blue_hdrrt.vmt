@@ -1,0 +1,8 @@
+UnlitGeneric
+{
+	"$hdrcompressedTexture" "skybox\blue_hdrrt"	
+	"$nofog" "1"
+	"$ignorez" "1"
+	"$basetexture" "skybox\blue_hdrrt"
+}
+

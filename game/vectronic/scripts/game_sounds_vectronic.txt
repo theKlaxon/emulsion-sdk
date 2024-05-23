@@ -1,0 +1,557 @@
+// 8-2-13: Put in A-Z order. -reep
+
+// Beep
+"Vectronic.Beep1"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"1.0"
+	"pitch"			"100"
+
+	"soundlevel"		"SNDLVL_NORM"
+
+	"wave"			"ambient/machines/beep1.wav"
+}
+
+// Blower
+"Vectronic.Blower_idle"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"1.0"
+	"pitch"			"100"
+
+	"soundlevel"	"SNDLVL_NORM"
+
+	"wave"			"ambient/machines/blower_loop1.wav"
+}
+
+"Vectronic.Blower_fast_idle"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"1.0"
+	"pitch"			"200" //160
+
+	"soundlevel"	"SNDLVL_NORM"
+
+	"wave"			"ambient/machines/blower_loop1.wav"
+}
+
+"Vectronic.Blower_stop"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"1.0"
+	"soundlevel"	"SNDLVL_80dB"
+
+	//"wave"		"common/null.wav"
+	"wave"		"ambient/machines/blower_stop.wav"
+}
+
+// Box Sounds
+
+"VecBox.StepLeft"
+{
+	"soundlevel"		"SNDLVL_75dB"
+	"volume"		"1.0"
+	"pitch"			"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"		"physics\vecbox\physics_cube_sm_01.wav"
+		"wave"		"physics\vecbox\physics_cube_sm_02.wav"
+		"wave"		"physics\vecbox\physics_cube_sm_03.wav"
+		"wave"		"physics\vecbox\physics_cube_sm_04.wav"
+	}
+}
+
+"VecBox.StepRight"
+{
+	"soundlevel"		"SNDLVL_75dB"
+	"volume"		"1.0"
+	"pitch"			"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"		"physics\vecbox\physics_cube_sm_01.wav"
+		"wave"		"physics\vecbox\physics_cube_sm_02.wav"
+		"wave"		"physics\vecbox\physics_cube_sm_03.wav"
+		"wave"		"physics\vecbox\physics_cube_sm_04.wav"
+	}
+}
+
+"VecBox.BulletImpact"
+{
+	"soundlevel"		"SNDLVL_75dB"
+	"volume"		"0.7"
+	"pitch"			"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"	"physics/metal/metal_box_impact_bullet1.wav"
+		"wave"	"physics/metal/metal_box_impact_bullet2.wav"
+		"wave"	"physics/metal/metal_box_impact_bullet3.wav"
+	}
+}
+
+"VecBox.ImpactSoft"
+{
+	"channel"		"CHAN_AUTO"
+	"soundlevel"		"SNDLVL_NORM"
+	"volume"		".85"
+	"pitch"			"95,105"
+	"rndwave"
+	{
+		"wave"		")physics\vecbox\physics_cube_sm_01.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_02.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_03.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_04.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_05.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_06.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_07.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_08.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_09.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_10.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_11.wav"
+	
+	}
+}
+
+
+"VecBox.ImpactHard"
+{
+	"channel"		"CHAN_AUTO"
+	"soundlevel"		"SNDLVL_NORM"
+	"volume"		"1.0"
+	"pitch"			"95,100"
+	"rndwave"
+	{
+		"wave"		")physics\vecbox\physics_cube_sm_12.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_13.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_14.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_15.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_16.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_17.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_18.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_19.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_20.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_21.wav"
+		"wave"		")physics\vecbox\physics_cube_sm_22.wav"
+	
+	}
+}
+
+"VecBoxGhost.ImpactSoft"
+{
+	"channel"		"CHAN_AUTO"
+	"soundlevel"		"SNDLVL_NORM"
+	"volume"		".85"
+	"wave"			"physics\vecbox\vecbox_hit_ghost.wav"
+}
+
+
+"VecBoxGhost.ImpactHard"
+{
+	"channel"		"CHAN_AUTO"
+	"soundlevel"		"SNDLVL_NORM"
+	"volume"		"1.0"
+	"wave"			"physics\vecbox\vecbox_hit_ghost.wav"
+}
+
+"VecBox.ScrapeRough"
+{
+	"soundlevel"	"SNDLVL_70dB"
+	"volume"		"0.2" //"0.5"
+	"pitch"		"96,104"
+	"wave"		"physics/vecbox/physics_cube_scrape_01.wav"
+}
+
+"VecBox.ScrapeSmooth"
+{
+	"soundlevel"		"SNDLVL_70dB"
+	"volume"		"0.2" //"0.5"
+	"pitch"		"96,104"
+	"wave"		"physics/vecbox/physics_cube_scrape_01.wav"
+}
+
+"VecBox.Break"
+{
+	"soundlevel"		"SNDLVL_85dB"
+	"volume"		"0.8"
+	"pitch"		"98,100"
+	"rndwave"
+	{
+		"wave"	"physics/metal/metal_box_break1.wav"
+		"wave"	"physics/metal/metal_box_break2.wav"
+	}
+}
+
+"VecBox.Strain"
+{
+	"soundlevel"		"SNDLVL_85dB"
+	"volume"		"0.6"
+	"pitch"		"98,100"
+	"rndwave"
+	{
+		"wave"	"physics/metal/metal_box_strain1.wav"
+		"wave"	"physics/metal/metal_box_strain2.wav"
+		"wave"	"physics/metal/metal_box_strain3.wav"
+		"wave"	"physics/metal/metal_box_strain4.wav"
+	}
+}
+
+"VecBox.Activate"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"0.8"
+	"soundlevel"  		"SNDLVL_75dB"
+	"wave"			"ambient/machines/box_activated.wav"  
+}
+
+"VecBox.Deactivate"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"0.8"
+	"soundlevel"  		"SNDLVL_75dB"
+	"wave"			"ambient/machines/box_deactivated.wav"  
+}
+
+"VecBox.ClearShield"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"0.5"
+	"soundlevel"  		"SNDLVL_75dB"
+	"wave"			"ambient/tones/tone05.wav"  
+}
+
+//Buttons
+
+"Vectronic.ButtonDown"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"0.7"
+	"soundlevel"  		"SNDLVL_75dB"
+	"pitch"			"100" 
+	"wave"			"doors/door3open.wav" 	
+ 
+}
+
+"Vectronic.ButtonUp"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"0.7"
+	"soundlevel"  		"SNDLVL_75dB"
+	"wave"			"doors/door3close.wav"
+}
+
+"Vectronic.ButtonAir"		//???
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"0.5"
+	"soundlevel"  		"SNDLVL_75dB"
+	"pitch"			"80"
+	"wave"			"ambient/machines/air_release.wav"   
+}
+
+
+// Conveyor
+
+"Vectronic.Conveyor_StepLeft"
+{
+	"soundlevel"		"SNDLVL_75dB"
+	"volume"		"0.3"
+	"pitch"			"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"	"player/footsteps/conveyor_step_01.wav"
+		"wave"	"player/footsteps/conveyor_step_03.wav"
+		"wave"	"player/footsteps/conveyor_step_05.wav"
+		"wave"	"player/footsteps/conveyor_step_07.wav"
+		"wave"	"player/footsteps/conveyor_step_09.wav"
+		"wave"	"player/footsteps/conveyor_step_11.wav"
+
+	}
+}
+
+"Vectronic.Conveyor_StepRight"
+{
+	"soundlevel"		"SNDLVL_75dB"
+	"volume"		"0.3"
+	"pitch"			"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"	"player/footsteps/conveyor_step_02.wav"
+		"wave"	"player/footsteps/conveyor_step_04.wav"
+		"wave"	"player/footsteps/conveyor_step_06.wav"
+		"wave"	"player/footsteps/conveyor_step_08.wav"
+		"wave"	"player/footsteps/conveyor_step_10.wav"
+		"wave"	"player/footsteps/conveyor_step_12.wav"
+	}
+}
+
+"Vectronic.Conveyor_BulletImpact"
+{
+	"soundlevel"		"SNDLVL_75dB"
+	"volume"		"0.7"
+	"pitch"			"PITCH_NORM"
+	"rndwave"
+	{
+		"wave"	"player/footsteps/conveyor_step_02.wav"
+		"wave"	"player/footsteps/conveyor_step_04.wav"
+	}
+}
+
+"Vectronic.Conveyor_startup"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"1.0"
+	"soundlevel"  		"SNDLVL_75dB"
+	"pitch"			"150"
+	"wave"			"ambient/machines/conveyor_startup.wav"  
+}
+
+"Vectronic.Conveyor_idle"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"1.0"
+	"soundlevel"  		"SNDLVL_75dB"
+	"pitch"			"75"
+	"wave"			"ambient/machines/conveyor_idle.wav"  
+}
+
+"Vectronic.Conveyor_shutdown"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"1.0"
+	"soundlevel"  		"SNDLVL_75dB"
+	"pitch"			"150"
+	"wave"			"ambient/machines/conveyor_shutdown.wav"  
+}
+
+
+// Dispenser
+
+"Vectronic.Dispenser_loop"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"0.45"
+	"soundlevel"  		"SNDLVL_75dB"
+	"pitch"			"100"
+	"wave"			"ambient/machines/dispenser_loop.wav"
+}
+
+"Vectronic.Dispenser_Start"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"1.0"
+	//"pitch"			"150" //200
+
+	"soundlevel"		"SNDLVL_70DB"
+
+	//"wave"			"weapons/vecgun/energy_sing_explosion2.wav"
+	"wave"				"ambient/machines/dispenser_regen.wav"
+}
+
+//Doors
+
+"Vectronic.DoorChime"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.8"
+	"soundlevel"		"SNDLVL_75dB"
+	"wave"			"ambient\alarms\vectronic_door_chime.wav" 
+}
+
+"Vectronic.Boxshoot_DoorOpen"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"1.0"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/door1open.wav" 
+}
+
+"Vectronic.Boxshoot_DoorClose"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"1.0"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/door1close.wav" 
+}
+
+// ASW
+"Vectronic.Door1Open"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.8"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/door1open.wav" 
+}
+
+"Vectronic.Door1Close"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.8"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/door1close.wav" 
+}
+
+"Vectronic.Door1StopClose"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.8"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/door1stopclose.wav" 
+}
+
+"Vectronic.Door2Open"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.8"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/door2open.wav" 
+}
+
+"Vectronic.Door2Close"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.8"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/door2close.wav" 
+}
+
+"Vectronic.Door2StopClose"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.8"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/door2stopclose.wav" 
+}
+
+"Vectronic.Door3Open"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.8"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/door3open.wav" 
+}
+
+"Vectronic.Door3Close"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.8"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/door3close.wav" 
+}
+
+"Vectronic.Door3StopClose"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.8"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/door3stopclose.wav" 
+}
+
+"Vectronic.ChamberDoorOpen"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.5"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/door2open.wav" 
+}
+
+"Vectronic.ChamberDoorClose"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.5"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/bulkheadstop.wav" 
+}
+
+"Vectronic.BulkheadMoving"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.8"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/bulkheadstartandloop.wav" 
+}
+
+"Vectronic.BulkheadStop"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.8"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/bulkheadstop.wav" 
+}
+// End ASW
+
+"Vectronic.Door"
+{
+	"channel"		"CHAN_BODY"
+	"volume"		"0.8"
+	"pitch"			"75"
+	"soundlevel"	"SNDLVL_75dB"
+	"wave"	"doors/door4move.wav" 
+}
+
+// Misc
+
+"Vectronic.TickTock"
+{
+	"channel"	"CHAN_STATIC"
+	"volume"	"0.8"
+	"soundlevel"  "SNDLVL_75dB"
+	"wave"	"ambient/machines/ticktock1.wav"
+}
+
+"Vectronic.TickTock_Loop"
+{
+	"channel"	"CHAN_STATIC"
+	"volume"	"0.8"
+	"soundlevel"  "SNDLVL_75dB"
+	"wave"	"ambient/machines/ticktock1_loop.wav"
+}
+
+"Vectronic.SwitchDown"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"0.7"
+	"soundlevel"  		"SNDLVL_75dB"
+	"pitch"			"90" //70
+	"wave"			"buttons/button3.wav" 
+}
+
+"Vectronic.SwitchUp"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"0.9"
+	"soundlevel"  		"SNDLVL_75dB"
+	"pitch"			"80" //60
+	"wave"			"buttons/button10.wav"
+}
+
+"Vectronic.SwitchLocked"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"0.7"
+	"soundlevel"  		"SNDLVL_75dB"
+	"pitch"			"90"
+	"wave"			"ambient/machines/timeout.wav" 
+}
+
+
+// Laser
+"Vectronic.LaserLoop"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"0.100000"
+	"pitch"			"100"
+
+	"soundlevel"		"SNDLVL_100dB"
+
+	"wave"			"ambient/machines/zapper_loop1.wav"
+}
+
+"Vectronic.CatcherHit"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"0.050"
+	"soundlevel"  		"SNDLVL_75dB"
+	//"pitch"		"200"
+	//"pitch"			"100"
+	"wave"			"ambient/machines/electric_loop.wav"
+	//"wave"			"ambient/machines/force_field_loop1.wav"
+}

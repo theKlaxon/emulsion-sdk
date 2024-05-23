@@ -1,0 +1,17 @@
+
+VertexLitGeneric
+{
+$baseTexture "models/props/railings/straight_cap_128.vtf"
+$blendtintbybasealpha 1
+$bumpmap "dev/flat_normal"
+
+$phong 1
+$phongboost 2
+$phongexponent 50
+
+$phongfresnelranges "[1 3 10]"
+
+
+
+
+}
