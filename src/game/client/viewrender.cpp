@@ -4041,7 +4041,7 @@ static inline void DrawRenderable( IClientRenderable *pEnt, int flags, const Ren
 		bool bBlockNormalDraw = BlurTest( pEnt, flags, true, instance );
 		if( !bBlockNormalDraw )
 			pEnt->DrawModel( flags, instance );
-		BlurTest( pEnt, flags, false, instance );
+		//BlurTest( pEnt, flags, false, instance );
 		view->SetCurrentlyDrawingEntity( NULL );
 	}
 }
