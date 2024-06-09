@@ -81,7 +81,6 @@ public:
 	virtual void BindVertexTexture( VertexTextureSampler_t vtSampler, ITexture *pTexture, int nFrameVar = 0 ) = 0;
 };
 
-
 //-----------------------------------------------------------------------------
 // The Shader plug-in DLL interface version
 //-----------------------------------------------------------------------------

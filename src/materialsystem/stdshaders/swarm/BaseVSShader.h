@@ -25,6 +25,7 @@
 //-----------------------------------------------------------------------------
 #define BEGIN_VS_SHADER_FLAGS(_name, _help, _flags)	__BEGIN_SHADER_INTERNAL( CBaseVSShader, _name, _help, _flags )
 #define BEGIN_VS_SHADER(_name,_help)	__BEGIN_SHADER_INTERNAL( CBaseVSShader, _name, _help, 0 )
+#define BEGIN_BASE_SHADER(_name, _help) __BEGIN_SHADER_INTERNAL( CBaseShader, _name, _help, 0)
 
 
 // useful parameter initialization macro
@@ -201,7 +202,8 @@ FORCEINLINE char * GetFlashlightTextureFilename()
 	}
 }
 
-extern ConVar r_flashlightbrightness;
+// bad for independant >:(
+//extern ConVar r_flashlightbrightness;
 
 FORCEINLINE void SetFlashLightColorFromState( FlashlightState_t const &state, IShaderDynamicAPI *pShaderAPI, bool bSinglePassFlashlight, int nPSRegister=28, bool bFlashlightNoLambert=false )
 {
@@ -214,8 +216,8 @@ FORCEINLINE void SetFlashLightColorFromState( FlashlightState_t const &state, IS
 	//if ( flToneMapScale < 1.0f )
 	//	flToneMapScale = 1.0f;
 	//float flFlashlightScale = 1.0f / flToneMapScale;
-
-	float flFlashlightScale = r_flashlightbrightness.GetFloat();
+	ConVarRef r_flashlightbright("r_flashlightbrightness");
+	float flFlashlightScale = r_flashlightbright.GetFloat();
 
 	if ( !g_pHardwareConfig->GetHDREnabled() )
 	{

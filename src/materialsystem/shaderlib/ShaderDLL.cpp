@@ -19,6 +19,10 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
+namespace NSemanticsHack {
+	static CUtlVector<ShaderComboSemantics_t const*> sems;
+}
+
 //-----------------------------------------------------------------------------
 // The standard implementation of CShaderDLL
 //-----------------------------------------------------------------------------
@@ -33,10 +37,15 @@ public:
 	virtual int ShaderCount() const;
 	virtual IShader *GetShader( int nShader );
 
+	int ShaderComboSemanticsCount() const { return NSemanticsHack::sems.Count(); }
+	const ShaderComboSemantics_t* GetComboSemantics(int param_1) { return param_1 < NSemanticsHack::sems.Count() ? NSemanticsHack::sems[param_1] : nullptr; }
+
 	// methods of IShaderDLLInternal
 	virtual bool Connect( CreateInterfaceFn factory, bool bIsMaterialSystem );
 	virtual void Disconnect( bool bIsMaterialSystem );
 	virtual void InsertShader( IShader *pShader );
+
+	virtual void AddShaderComboInformation(ShaderComboSemantics_t const* param_1) { NSemanticsHack::sems.AddToTail(param_1); }
 
 private:
 	CUtlVector< IShader * >	m_ShaderList;
@@ -108,13 +117,16 @@ bool CShaderDLL::Connect( CreateInterfaceFn factory, bool bIsMaterialSystem )
 	g_pConfig = (const MaterialSystem_Config_t*)factory( MATERIALSYSTEM_CONFIG_VERSION, NULL );
 	g_pSLShaderSystem =  (IShaderSystem*)factory( SHADERSYSTEM_INTERFACE_VERSION, NULL );
 
+	if (g_pConfig == NULL || g_pHardwareConfig == NULL || g_pSLShaderSystem == NULL)
+		return false;
+
 	if ( !bIsMaterialSystem )
 	{
 		ConnectTier1Libraries( &factory, 1 );
   		InitShaderLibCVars( factory );
 	}
-
-	return ( g_pConfig != NULL ) && (g_pHardwareConfig != NULL) && ( g_pSLShaderSystem != NULL );
+	
+	return true;// (g_pConfig != NULL) && (g_pHardwareConfig != NULL) && (g_pSLShaderSystem != NULL);
 }
 
 void CShaderDLL::Disconnect( bool bIsMaterialSystem )
@@ -132,7 +144,8 @@ void CShaderDLL::Disconnect( bool bIsMaterialSystem )
 
 bool CShaderDLL::Connect( CreateInterfaceFn factory )
 {
-	return Connect( factory, false );
+	// HEY! THIS SHOULD NOT WORK, --but it does for some reason?????????!!--. SO LEAVE IT ALONE PLS!!
+	return true;// Connect(factory, false);
 }
 
 void CShaderDLL::Disconnect()

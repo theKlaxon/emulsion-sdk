@@ -649,6 +649,38 @@ bool CBaseShader::IsAlphaModulating()
 {
 	return (s_nModulationFlags & SHADER_USING_ALPHA_MODULATION) != 0;
 }
+
+// ilovesdk2007it'sthebestsdk : D
+void CBaseShader::ComputeModulationColor(float* color)
+{
+	Assert(!IsSnapshotting());
+	if (!s_ppParams)
+		return;
+
+	IMaterialVar* pColorVar = s_ppParams[COLOR];
+	if (pColorVar->GetType() == MATERIAL_VAR_TYPE_VECTOR)
+	{
+		pColorVar->GetVecValue(color, 3);
+	}
+	else
+	{
+		color[0] = color[1] = color[2] = pColorVar->GetFloatValue();
+	}
+
+	ApplyColor2Factor(color);
+
+	if (!g_pConfig->bShowDiffuse)
+	{
+		color[0] = color[1] = color[2] = 0.0f;
+	}
+	if (mat_fullbright.GetInt() == 2)
+	{
+		color[0] = color[1] = color[2] = 1.0f;
+	}
+	
+	color[3] = s_ppParams[ALPHA]->GetFloatValue();//GetAlpha();
+}
+
 // FIXME: Figure out a better way to do this?
 //-----------------------------------------------------------------------------
 int CBaseShader::ComputeModulationFlags( IMaterialVar** params, IShaderDynamicAPI* pShaderAPI )
@@ -982,4 +1014,68 @@ bool CBaseShader::IsHDREnabled( void )
 	// HDRFIXME!  Need to fix this for vgui materials
 	HDRType_t hdr_mode = g_pHardwareConfig->GetHDRType();
 	return ( hdr_mode == HDR_TYPE_INTEGER ) || ( hdr_mode == HDR_TYPE_FLOAT );
+}
+
+// vss methods :)
+
+void CBaseShader::HashShadow2DJitter(const float fJitterSeed, float* fU, float* fV)
+{
+	const int nTexRes = 32;
+	int nSeed = fmod(fJitterSeed, 1.0f) * nTexRes * nTexRes;
+
+	int nRow = nSeed / nTexRes;
+	int nCol = nSeed % nTexRes;
+
+	// Div and mod to get an individual texel in the fTexRes x fTexRes grid
+	*fU = nRow / (float)nTexRes;	// Row
+	*fV = nCol / (float)nTexRes;	// Column
+}
+
+//-----------------------------------------------------------------------------
+// GR - translucency query
+//-----------------------------------------------------------------------------
+BlendType_t CBaseShader::EvaluateBlendRequirements(int textureVar, bool isBaseTexture,
+	int detailTextureVar)
+{
+	// Either we've got a constant modulation
+	bool isTranslucent = IsAlphaModulating();
+
+	// Or we've got a vertex alpha
+	isTranslucent = isTranslucent || (CurrentMaterialVarFlags() & MATERIAL_VAR_VERTEXALPHA);
+
+	// Or we've got a texture alpha (for blending or alpha test)
+	isTranslucent = isTranslucent || (TextureIsTranslucent(textureVar, isBaseTexture) &&
+		!(CurrentMaterialVarFlags() & MATERIAL_VAR_ALPHATEST));
+
+	if ((detailTextureVar != -1) && (!isTranslucent))
+	{
+		isTranslucent = TextureIsTranslucent(detailTextureVar, isBaseTexture);
+	}
+
+	if (CurrentMaterialVarFlags() & MATERIAL_VAR_ADDITIVE)
+	{
+		return isTranslucent ? BT_BLENDADD : BT_ADD;	// Additive
+	}
+	else
+	{
+		return isTranslucent ? BT_BLEND : BT_NONE;		// Normal blending
+	}
+}
+
+void CBaseShader::SetVertexShaderTextureTransform(int vertexReg, int transformVar)
+{
+	Vector4D transformation[2];
+	IMaterialVar* pTransformationVar = s_ppParams[transformVar];
+	if (pTransformationVar && (pTransformationVar->GetType() == MATERIAL_VAR_TYPE_MATRIX))
+	{
+		const VMatrix& mat = pTransformationVar->GetMatrixValue();
+		transformation[0].Init(mat[0][0], mat[0][1], mat[0][2], mat[0][3]);
+		transformation[1].Init(mat[1][0], mat[1][1], mat[1][2], mat[1][3]);
+	}
+	else
+	{
+		transformation[0].Init(1.0f, 0.0f, 0.0f, 0.0f);
+		transformation[1].Init(0.0f, 1.0f, 0.0f, 0.0f);
+	}
+	s_pShaderAPI->SetVertexShaderConstant(vertexReg, transformation[0].Base(), 2);
 }

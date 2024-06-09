@@ -18,6 +18,8 @@
 #include "materialsystem/ishaderapi.h"
 #include "materialsystem/imaterialsystemhardwareconfig.h"
 
+//#include "cshader.h"
+//#define BEGIN_BASE_SHADER(_name, _help) __BEGIN_SHADER_INTERNAL( CBaseShader, _name, _help, 0)
 
 //-----------------------------------------------------------------------------
 // Forward declarations
@@ -109,6 +111,7 @@ public:
 	virtual void DrawElements( IMaterialVar **params, int nModulationFlags, IShaderShadow* pShaderShadow, IShaderDynamicAPI* pShaderAPI,
 								VertexCompressionType_t vertexCompression, CBasePerMaterialContextData **pContext, CBasePerInstanceContextData** pInstanceDataPtr );
 
+	void ComputeModulationColor(float* color);
 	virtual int ComputeModulationFlags( IMaterialVar** params, IShaderDynamicAPI* pShaderAPI );
 	virtual bool NeedsPowerOfTwoFrameBufferTexture( IMaterialVar **params, bool bCheckSpecificToThisFrame = true ) const;
 	virtual bool NeedsFullFrameBufferTexture( IMaterialVar **params, bool bCheckSpecificToThisFrame = true ) const;
@@ -218,6 +221,11 @@ public:
 	bool UsingEditor( IMaterialVar **params ) const;
 
 	void ApplyColor2Factor( float *pColorOut ) const;		// (*pColorOut) *= COLOR2
+
+	// vs shader methods i put here cause i wanted to
+	void HashShadow2DJitter(const float fJitterSeed, float* fU, float* fV);
+	BlendType_t EvaluateBlendRequirements(int textureVar, bool isBaseTexture, int detailTextureVar = -1);
+	void SetVertexShaderTextureTransform(int vertexReg, int transformVar);
 
 private:
 	// This is a per-instance state which is handled completely by the system

@@ -1010,6 +1010,8 @@ bool InitParticleManager()
 	return true;
 }
 
+#include "..\materialsystem\IShaderSystem.h"
+
 bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 {
 	if (!VGui_Startup( appSystemFactory ))

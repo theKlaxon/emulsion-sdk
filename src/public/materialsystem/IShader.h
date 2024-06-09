@@ -58,6 +58,10 @@ struct ShaderParamInfo_t
 	int m_nFlags;
 };
 
+// p2sdk
+struct ShaderComboSemantics_t {
+	char size[20]; // 20 byte struct, just reserve the space and call it a day.
+};
 
 
 //-----------------------------------------------------------------------------

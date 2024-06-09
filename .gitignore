@@ -102,6 +102,7 @@ src/tier1/Debug/
 src/tier1/Release/
 
 game/emulsion/maps/workshop/
+game/pbrtest/*
 
 *.opendb
 *.db-shm
