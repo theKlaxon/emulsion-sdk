@@ -16,6 +16,7 @@
 		SearchPaths
 		{
 			Game				|gameinfo_path|.
+			Game				pbrtest
 			Game				"D:\SteamLibrary\steamapps\common\Portal 2\portal2"
 			Game				"D:\SteamLibrary\steamapps\common\Portal 2\update"
 		}
