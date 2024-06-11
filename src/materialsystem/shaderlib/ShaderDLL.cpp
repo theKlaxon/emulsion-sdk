@@ -37,8 +37,8 @@ public:
 	virtual int ShaderCount() const;
 	virtual IShader *GetShader( int nShader );
 
-	int ShaderComboSemanticsCount() const { return NSemanticsHack::sems.Count(); }
-	const ShaderComboSemantics_t* GetComboSemantics(int param_1) { return param_1 < NSemanticsHack::sems.Count() ? NSemanticsHack::sems[param_1] : nullptr; }
+	virtual int ShaderComboSemanticsCount() const { return NSemanticsHack::sems.Count(); }
+	virtual const ShaderComboSemantics_t* GetComboSemantics(int param_1) { return param_1 < NSemanticsHack::sems.Count() ? NSemanticsHack::sems[param_1] : nullptr; }
 
 	// methods of IShaderDLLInternal
 	virtual bool Connect( CreateInterfaceFn factory, bool bIsMaterialSystem );
@@ -113,20 +113,21 @@ CShaderDLL::CShaderDLL()
 //-----------------------------------------------------------------------------
 bool CShaderDLL::Connect( CreateInterfaceFn factory, bool bIsMaterialSystem )
 {
-	g_pHardwareConfig =  (IMaterialSystemHardwareConfig*)factory( MATERIALSYSTEM_HARDWARECONFIG_INTERFACE_VERSION, NULL );
+	g_pHardwareConfig = (IMaterialSystemHardwareConfig*)factory( MATERIALSYSTEM_HARDWARECONFIG_INTERFACE_VERSION, NULL );
 	g_pConfig = (const MaterialSystem_Config_t*)factory( MATERIALSYSTEM_CONFIG_VERSION, NULL );
-	g_pSLShaderSystem =  (IShaderSystem*)factory( SHADERSYSTEM_INTERFACE_VERSION, NULL );
+	g_pSLShaderSystem = (IShaderSystem*)factory( SHADERSYSTEM_INTERFACE_VERSION, NULL );
 
 	if (g_pConfig == NULL || g_pHardwareConfig == NULL || g_pSLShaderSystem == NULL)
 		return false;
 
+	// dont do the init of the things below if we dont even have our interfaces yet :/
 	if ( !bIsMaterialSystem )
 	{
 		ConnectTier1Libraries( &factory, 1 );
   		InitShaderLibCVars( factory );
 	}
 	
-	return true;// (g_pConfig != NULL) && (g_pHardwareConfig != NULL) && (g_pSLShaderSystem != NULL);
+	return true;
 }
 
 void CShaderDLL::Disconnect( bool bIsMaterialSystem )

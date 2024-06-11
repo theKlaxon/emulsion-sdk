@@ -101,6 +101,4 @@ enum VertexTextureSampler_t
 #define ReverseDepthOnX360() false
 #endif
 
-
-
 #endif // SHADERAPI_SHAREDDEFS_H

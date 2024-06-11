@@ -170,6 +170,8 @@ public:
 	// Get the dimensions of the back buffer.
 	virtual void GetBackBufferDimensions( int& width, int& height ) const = 0;
 
+	virtual AspectRatioInfo_t* GetAspectRatioInfo() const = 0;
+
 	// Get the dimensions of the current render target
 	virtual void GetCurrentRenderTargetDimensions( int& nWidth, int& nHeight ) const = 0;
 
@@ -180,14 +182,14 @@ public:
 	// and were moved for stdshader_dx8. Let's try to move them back!
 
 	virtual void SetPixelShaderFogParams( int reg ) = 0;
-
+	
 	// Use this to get the mesh builder that allows us to modify vertex data
 	virtual bool InFlashlightMode() const = 0;
 	virtual const FlashlightState_t &GetFlashlightState( VMatrix &worldToTexture ) const = 0;
 	virtual bool InEditorMode() const = 0;
 
 	// Binds a standard texture
-	virtual void BindStandardTexture( Sampler_t sampler, StandardTextureId_t id ) = 0;
+	virtual void BindStandardTexture( Sampler_t sampler, int/*TextureBindFlags_t*/ flags, StandardTextureId_t id ) = 0;
 
 	virtual ITexture *GetRenderTargetEx( int nRenderTargetID ) const = 0;
 
@@ -195,7 +197,7 @@ public:
 	virtual const Vector &GetToneMappingScaleLinear( void ) const = 0;
 
 	// Sets the ambient light color
-	virtual void SetAmbientLightColor( float r, float g, float b ) = 0;
+	//virtual void SetAmbientLightColor( float r, float g, float b ) = 0;
 
 	virtual void SetFloatRenderingParameter(int parm_number, float value) = 0;
 	virtual void SetIntRenderingParameter(int parm_number, int value) = 0 ;
@@ -262,6 +264,8 @@ public:
 	virtual float GetFarZ() = 0;
 
 	virtual bool SinglePassFlashlightModeEnabled( void ) = 0;
+
+	virtual void GetActualProjectionMatrix(float* param_1) = 0;
 
 	virtual void SetDepthFeatheringPixelShaderConstant( int iConstant, float fDepthBlendScale ) = 0;
 

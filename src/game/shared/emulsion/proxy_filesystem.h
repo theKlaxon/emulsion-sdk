@@ -2,6 +2,9 @@
 #include "filesystem.h"
 #ifdef CLIENT_DLL
 #include "cdll_client_int.h"
+#elif (INFESTED_DLL) // vbsp case
+extern IFileSystem* g_pFullFileSystem;
+IFileSystem* filesystem = g_pFullFileSystem;
 #else
 extern IFileSystem* filesystem;
 #endif

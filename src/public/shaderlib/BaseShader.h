@@ -165,13 +165,13 @@ public:
 	bool CanUseEditorMaterials() const;
 
 	// Loads a texture
-	void LoadTexture( int nTextureVar );
+	void LoadTexture( int nTextureVar, int flags = 0 );
 
 	// Loads a bumpmap
 	void LoadBumpMap( int nTextureVar );
 
 	// Loads a cubemap
-	void LoadCubeMap( int nTextureVar );
+	void LoadCubeMap( int nTextureVar, int flags = 0 );
 
 	// get the shaderapi handle for a texture. BE CAREFUL WITH THIS. 
 	ShaderAPITextureHandle_t GetShaderAPITextureBindHandle( int nTextureVar, int nFrameVar, int nTextureChannel = 0 );

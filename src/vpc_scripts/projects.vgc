@@ -37,3 +37,8 @@ $Project "gamepadui"
 {
 	"game\gamepadui\gamepadui_emulsion.vpc" [$EMULSION]
 }
+
+$Project "vbsp"
+{
+	"utils\vbsp\vbsp.vpc"
+}

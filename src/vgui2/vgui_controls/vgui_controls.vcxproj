@@ -13,7 +13,6 @@
   <PropertyGroup Label="Globals">
     <ProjectName>vgui_controls</ProjectName>
     <ProjectGuid>{F69B3672-C5E8-CD1A-257F-253A25B5B939}</ProjectGuid>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -53,23 +52,13 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent>
-      <Command>if EXIST ..\..\lib\public\.\$(TargetName).lib ( for /f "delims=" %%A in ('attrib "..\..\lib\public\.\$(TargetName).lib"') do set valveTmpIsReadOnly="%%A"
-) else ( if not EXIST ..\..\lib\public\. mkdir ..\..\lib\public\. )
-set valveTmpIsReadOnlyLetter=%valveTmpIsReadOnly:~6,1%
-if "%valveTmpIsReadOnlyLetter%"=="R" (
-    attrib -r ..\..\lib\public\.\$(TargetName).lib
-    ..\..\devtools\bin\gnu\touch.exe -d "1999-01-01" ..\..\lib\public\.\$(TargetName).lib
-    attrib +r ..\..\lib\public\.\$(TargetName).lib
-)
-if exist "..\..\devtools\bin\vpc.exe" "..\..\devtools\bin\vpc.exe" -crc2 "vgui_controls.vcxproj"
-if ERRORLEVEL 1 exit /b 1
-</Command>
+      <Command>if EXIST ..\..\lib\public\.\$(TargetName).lib ( for /f &quot;delims=&quot; %%A in (&apos;attrib &quot;..\..\lib\public\.\$(TargetName).lib&quot;&apos;) do set valveTmpIsReadOnly=&quot;%%A&quot;&#x0D;&#x0A;) else ( if not EXIST ..\..\lib\public\. mkdir ..\..\lib\public\. )&#x0D;&#x0A;set valveTmpIsReadOnlyLetter=%valveTmpIsReadOnly:~6,1%&#x0D;&#x0A;if &quot;%valveTmpIsReadOnlyLetter%&quot;==&quot;R&quot; (&#x0D;&#x0A;    attrib -r ..\..\lib\public\.\$(TargetName).lib&#x0D;&#x0A;    ..\..\devtools\bin\gnu\touch.exe -d &quot;1999-01-01&quot; ..\..\lib\public\.\$(TargetName).lib&#x0D;&#x0A;    attrib +r ..\..\lib\public\.\$(TargetName).lib&#x0D;&#x0A;)&#x0D;&#x0A;if exist &quot;..\..\devtools\bin\vpc.exe&quot; &quot;..\..\devtools\bin\vpc.exe&quot; -crc2 &quot;vgui_controls.vcxproj&quot;&#x0D;&#x0A;if ERRORLEVEL 1 exit /b 1&#x0D;&#x0A;</Command>
     </PreBuildEvent>
     <ClCompile>
       <AdditionalOptions> /ignore:4800;/ignore:4481</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..\common;..\..\public;..\..\public\tier0;..\..\public\tier1;generated_proto;..\..\thirdparty\protobuf-2.3.0\src;..\..\thirdparty;..\..\thirdparty\cef;generated_proto</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>VPC;RAD_TELEMETRY_DISABLED;_HAS_ITERATOR_DEBUGGING=0;WIN32;_WIN32;_DEBUG;DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_ALLOW_RUNTIME_LIBRARY_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;_ALLOW_MSC_VER_MISMATCH;%(PreprocessorDefinitions);COMPILER_MSVC32;COMPILER_MSVC32;COMPILER_MSVC;_DLL_EXT=.dll;LIBNAME=vgui_controls;BINK_VIDEO;AVI_VIDEO;WMV_VIDEO;DEV_BUILD;FRAME_POINTER_OMISSION_DISABLED;OVERRIDE=override;;_EXTERNAL_DLL_EXT=.dll;VPCGAMECAPS=EMULSION;PROJECTDIR=D:\theKlaxon\emulsion-sdk\src\vgui2\vgui_controls;_DLL_EXT=.dll;SOURCE1=1;VPCGAME=emulsion</PreprocessorDefinitions>
+      <PreprocessorDefinitions>VPC;RAD_TELEMETRY_DISABLED;_HAS_ITERATOR_DEBUGGING=0;WIN32;_WIN32;_DEBUG;DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_ALLOW_RUNTIME_LIBRARY_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;_ALLOW_MSC_VER_MISMATCH;%(PreprocessorDefinitions);COMPILER_MSVC32;COMPILER_MSVC32;COMPILER_MSVC;_DLL_EXT=.dll;LIBNAME=vgui_controls;BINK_VIDEO;AVI_VIDEO;WMV_VIDEO;DEV_BUILD;FRAME_POINTER_OMISSION_DISABLED;OVERRIDE=override;;_EXTERNAL_DLL_EXT=.dll;VPCGAMECAPS=VALVE;PROJECTDIR=D:\theKlaxon\emulsion-sdk\src\vgui2\vgui_controls;_DLL_EXT=.dll;SOURCE1=1;VPCGAME=valve</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>false</ExceptionHandling>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -91,15 +80,12 @@ if ERRORLEVEL 1 exit /b 1
       <BrowseInformation>false</BrowseInformation>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
-      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <CompileAs>CompileAsCpp</CompileAs>
       <UseFullPaths>true</UseFullPaths>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <BrowseInformationFile>$(IntDir)/</BrowseInformationFile>
       <ErrorReporting>Prompt</ErrorReporting>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <PreLinkEvent>
     </PreLinkEvent>
@@ -123,17 +109,7 @@ if ERRORLEVEL 1 exit /b 1
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
-      <Command>if EXIST ..\..\lib\public\.\$(TargetName).lib ( for /f "delims=" %%A in ('attrib "..\..\lib\public\.\$(TargetName).lib"') do set valveTmpIsReadOnly="%%A"
-) else ( if not EXIST ..\..\lib\public\. mkdir ..\..\lib\public\. )
-set valveTmpIsReadOnlyLetter=%valveTmpIsReadOnly:~6,1%
-if "%valveTmpIsReadOnlyLetter%"=="R" (
-    attrib -r ..\..\lib\public\.\$(TargetName).lib
-    ..\..\devtools\bin\gnu\touch.exe -d "1999-01-01" ..\..\lib\public\.\$(TargetName).lib
-    attrib +r ..\..\lib\public\.\$(TargetName).lib
-)
-if exist "..\..\devtools\bin\vpc.exe" "..\..\devtools\bin\vpc.exe" -crc2 "vgui_controls.vcxproj"
-if ERRORLEVEL 1 exit /b 1
-</Command>
+      <Command>if EXIST ..\..\lib\public\.\$(TargetName).lib ( for /f &quot;delims=&quot; %%A in (&apos;attrib &quot;..\..\lib\public\.\$(TargetName).lib&quot;&apos;) do set valveTmpIsReadOnly=&quot;%%A&quot;&#x0D;&#x0A;) else ( if not EXIST ..\..\lib\public\. mkdir ..\..\lib\public\. )&#x0D;&#x0A;set valveTmpIsReadOnlyLetter=%valveTmpIsReadOnly:~6,1%&#x0D;&#x0A;if &quot;%valveTmpIsReadOnlyLetter%&quot;==&quot;R&quot; (&#x0D;&#x0A;    attrib -r ..\..\lib\public\.\$(TargetName).lib&#x0D;&#x0A;    ..\..\devtools\bin\gnu\touch.exe -d &quot;1999-01-01&quot; ..\..\lib\public\.\$(TargetName).lib&#x0D;&#x0A;    attrib +r ..\..\lib\public\.\$(TargetName).lib&#x0D;&#x0A;)&#x0D;&#x0A;if exist &quot;..\..\devtools\bin\vpc.exe&quot; &quot;..\..\devtools\bin\vpc.exe&quot; -crc2 &quot;vgui_controls.vcxproj&quot;&#x0D;&#x0A;if ERRORLEVEL 1 exit /b 1&#x0D;&#x0A;</Command>
     </PreBuildEvent>
     <ClCompile>
       <AdditionalOptions>/d2Zi+ /ignore:4800;/ignore:4481</AdditionalOptions>
@@ -142,7 +118,7 @@ if ERRORLEVEL 1 exit /b 1
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\..\common;..\..\public;..\..\public\tier0;..\..\public\tier1;generated_proto;..\..\thirdparty\protobuf-2.3.0\src;..\..\thirdparty;..\..\thirdparty\cef;generated_proto</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>VPC;RAD_TELEMETRY_DISABLED;WIN32;_WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_ALLOW_RUNTIME_LIBRARY_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;_ALLOW_MSC_VER_MISMATCH;%(PreprocessorDefinitions);COMPILER_MSVC32;COMPILER_MSVC32;COMPILER_MSVC;_DLL_EXT=.dll;LIBNAME=vgui_controls;BINK_VIDEO;AVI_VIDEO;WMV_VIDEO;DEV_BUILD;FRAME_POINTER_OMISSION_DISABLED;OVERRIDE=override;;_EXTERNAL_DLL_EXT=.dll;VPCGAMECAPS=EMULSION;PROJECTDIR=D:\theKlaxon\emulsion-sdk\src\vgui2\vgui_controls;_DLL_EXT=.dll;SOURCE1=1;VPCGAME=emulsion</PreprocessorDefinitions>
+      <PreprocessorDefinitions>VPC;RAD_TELEMETRY_DISABLED;WIN32;_WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_ALLOW_RUNTIME_LIBRARY_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;_ALLOW_MSC_VER_MISMATCH;%(PreprocessorDefinitions);COMPILER_MSVC32;COMPILER_MSVC32;COMPILER_MSVC;_DLL_EXT=.dll;LIBNAME=vgui_controls;BINK_VIDEO;AVI_VIDEO;WMV_VIDEO;DEV_BUILD;FRAME_POINTER_OMISSION_DISABLED;OVERRIDE=override;;_EXTERNAL_DLL_EXT=.dll;VPCGAMECAPS=VALVE;PROJECTDIR=D:\theKlaxon\emulsion-sdk\src\vgui2\vgui_controls;_DLL_EXT=.dll;SOURCE1=1;VPCGAME=valve</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>false</ExceptionHandling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -369,14 +345,10 @@ if ERRORLEVEL 1 exit /b 1
   <ItemGroup>
     <CustomBuild Include="vgui_controls.vpc">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Running VPC CRC Check - vgui_controls.vpc</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">if exist "..\..\devtools\bin\vpc.exe" "..\..\devtools\bin\vpc.exe" -crc2 "vgui_controls.vcxproj"
-if ERRORLEVEL 1 exit /b 1
-echo crc_complete &gt; D:\theKlaxon\emulsion-sdk\src\vgui2\vgui_controls\vgui_controls.vpc.sentinel</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">if exist &quot;..\..\devtools\bin\vpc.exe&quot; &quot;..\..\devtools\bin\vpc.exe&quot; -crc2 &quot;vgui_controls.vcxproj&quot;&#x0D;&#x0A;if ERRORLEVEL 1 exit /b 1&#x0D;&#x0A;echo crc_complete &gt; D:\theKlaxon\emulsion-sdk\src\vgui2\vgui_controls\vgui_controls.vpc.sentinel</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\theKlaxon\emulsion-sdk\src\vgui2\vgui_controls\vgui_controls.vpc.sentinel</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Running VPC CRC Check - vgui_controls.vpc</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">if exist "..\..\devtools\bin\vpc.exe" "..\..\devtools\bin\vpc.exe" -crc2 "vgui_controls.vcxproj"
-if ERRORLEVEL 1 exit /b 1
-echo crc_complete &gt; D:\theKlaxon\emulsion-sdk\src\vgui2\vgui_controls\vgui_controls.vpc.sentinel</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">if exist &quot;..\..\devtools\bin\vpc.exe&quot; &quot;..\..\devtools\bin\vpc.exe&quot; -crc2 &quot;vgui_controls.vcxproj&quot;&#x0D;&#x0A;if ERRORLEVEL 1 exit /b 1&#x0D;&#x0A;echo crc_complete &gt; D:\theKlaxon\emulsion-sdk\src\vgui2\vgui_controls\vgui_controls.vpc.sentinel</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\theKlaxon\emulsion-sdk\src\vgui2\vgui_controls\vgui_controls.vpc.sentinel</Outputs>
     </CustomBuild>
   </ItemGroup>

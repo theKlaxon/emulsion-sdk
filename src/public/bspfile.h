@@ -307,10 +307,13 @@ enum
 	LUMP_FACEBRUSHLIST				= 23,
 	LUMP_UNUSED1					= 24,
 	LUMP_UNUSED2					= 25,
-	//LUMP_PROPCOLLISION				= 22,	// static props convex hull lists
-	//LUMP_PROPHULLS					= 23,	// static prop convex hulls
-	//LUMP_PROPHULLVERTS				= 24,	// static prop collision verts
-	//LUMP_PROPTRIS					= 25,	// static prop per hull triangle index start/count
+
+	// these technically dont exist in p2, but the new vbsp from reactivedrop 
+	// wants these. this will be interesting to watch.
+	LUMP_PROPCOLLISION				= 22,	// static props convex hull lists
+	LUMP_PROPHULLS					= 23,	// static prop convex hulls
+	LUMP_PROPHULLVERTS				= 24,	// static prop collision verts
+	LUMP_PROPTRIS					= 25,	// static prop per hull triangle index start/count
 
 	LUMP_DISPINFO					= 26,
 	LUMP_ORIGINALFACES				= 27,

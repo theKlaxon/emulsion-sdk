@@ -146,6 +146,8 @@ public:
 
 	// Methods related to alpha blending
 	virtual void EnableBlending( bool bEnable ) = 0;
+	virtual void EnableBlendingForceOpaque(bool bEnable) = 0; // p2sdk
+
 	virtual void BlendFunc( ShaderBlendFactor_t srcFactor, ShaderBlendFactor_t dstFactor ) = 0;
 	virtual void EnableBlendingSeparateAlpha( bool bEnable ) = 0;
 	virtual void BlendFuncSeparateAlpha( ShaderBlendFactor_t srcFactor, ShaderBlendFactor_t dstFactor ) = 0;
@@ -189,7 +191,7 @@ public:
 	virtual void EnableAlphaToCoverage( bool bEnable ) = 0;
 
 	// Shadow map filtering
-	virtual void SetShadowDepthFiltering( Sampler_t stage ) = 0;
+	//virtual void SetShadowDepthFiltering( Sampler_t stage ) = 0; // not in p2 vtable
 
 	// Per vertex texture unit stuff
 	virtual void EnableVertexTexture( VertexTextureSampler_t sampler, bool bEnable ) = 0;

@@ -463,7 +463,7 @@ bool CBaseShader::CanUseEditorMaterials() const
 //-----------------------------------------------------------------------------
 // Loads a texture
 //-----------------------------------------------------------------------------
-void CBaseShader::LoadTexture( int nTextureVar )
+void CBaseShader::LoadTexture( int nTextureVar, int flags )
 {
 	if ((!s_ppParams) || (nTextureVar == -1))
 		return;
@@ -471,7 +471,7 @@ void CBaseShader::LoadTexture( int nTextureVar )
 	IMaterialVar* pNameVar = s_ppParams[nTextureVar];
 	if( pNameVar && pNameVar->IsDefined() )
 	{
-		s_pShaderInit->LoadTexture( pNameVar, s_pTextureGroupName );
+		s_pShaderInit->LoadTexture( pNameVar, s_pTextureGroupName, flags);
 	}
 }
 
@@ -495,7 +495,7 @@ void CBaseShader::LoadBumpMap( int nTextureVar )
 //-----------------------------------------------------------------------------
 // Loads a cubemap
 //-----------------------------------------------------------------------------
-void CBaseShader::LoadCubeMap( int nTextureVar )
+void CBaseShader::LoadCubeMap( int nTextureVar, int flags )
 {
 	if ((!s_ppParams) || (nTextureVar == -1))
 		return;
@@ -503,7 +503,7 @@ void CBaseShader::LoadCubeMap( int nTextureVar )
 	IMaterialVar* pNameVar = s_ppParams[nTextureVar];
 	if( pNameVar && pNameVar->IsDefined() )
 	{
-		s_pShaderInit->LoadCubeMap( s_ppParams, pNameVar );
+		s_pShaderInit->LoadCubeMap( s_ppParams, pNameVar, flags );
 	}
 }
 
@@ -561,11 +561,11 @@ void CBaseShader::BindTexture( Sampler_t sampler1, Sampler_t sampler2, int nText
 
 		if ( sampler2 == -1 )
 		{
-			GetShaderSystem()->BindTexture( sampler1, pTextureVar->GetTextureValue(), nFrame );
+			GetShaderSystem()->BindTexture( sampler1, 0, pTextureVar->GetTextureValue(), nFrame );
 		}
 		else
 		{
-			GetShaderSystem()->BindTexture( sampler1, sampler2, pTextureVar->GetTextureValue(), nFrame );
+			GetShaderSystem()->BindTexture( sampler1, sampler2, 0, pTextureVar->GetTextureValue(), nFrame );
 		}
 	}
 }
@@ -582,11 +582,11 @@ void CBaseShader::BindTexture( Sampler_t sampler1, Sampler_t sampler2, ITexture 
 
 	if ( sampler2 == -1 )
 	{
-		GetShaderSystem()->BindTexture( sampler1, pTexture, nFrame );
+		GetShaderSystem()->BindTexture( sampler1, 0, pTexture, nFrame );
 	}
 	else
 	{
-		GetShaderSystem()->BindTexture( sampler1, sampler2, pTexture, nFrame );
+		GetShaderSystem()->BindTexture( sampler1, sampler2, 0, pTexture, nFrame );
 	}
 }
 
@@ -714,14 +714,14 @@ int CBaseShader::ComputeModulationFlags( IMaterialVar** params, IShaderDynamicAP
 		if ( IS_FLAG2_SET( MATERIAL_VAR2_USE_GBUFFER1 ) )
 			mod |= SHADER_USING_GBUFFER1;
 	}
-	else
-	{
-		int nFixedLightingMode = pShaderAPI->GetIntRenderingParameter( INT_RENDERPARM_ENABLE_FIXED_LIGHTING );
-		if ( nFixedLightingMode & 1 )
-			mod |= SHADER_USING_GBUFFER0;
-		if ( nFixedLightingMode & 2 )
-			mod |= SHADER_USING_GBUFFER1;
-	}
+	//else
+	//{
+	//	int nFixedLightingMode = pShaderAPI->GetIntRenderingParameter( INT_RENDERPARM_ENABLE_FIXED_LIGHTING );
+	//	if ( nFixedLightingMode & 1 )
+	//		mod |= SHADER_USING_GBUFFER0;
+	//	if ( nFixedLightingMode & 2 )
+	//		mod |= SHADER_USING_GBUFFER1;
+	//}
 	s_pShaderAPI = NULL;
 	return mod;
 }

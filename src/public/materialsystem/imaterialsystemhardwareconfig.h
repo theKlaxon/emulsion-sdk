@@ -143,7 +143,7 @@ public:
 
 	virtual void OverrideStreamOffsetSupport( bool bOverrideEnabled, bool bEnableSupport ) = 0;
 
-	virtual int GetShadowFilterMode() const = 0;
+	virtual int GetShadowFilterMode(bool param_1 = 0, bool param_2 = 0) const = 0;
 
 	virtual int NeedsShaderSRGBConversion() const = 0;
 
