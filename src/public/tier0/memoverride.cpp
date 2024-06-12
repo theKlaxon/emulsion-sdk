@@ -712,7 +712,7 @@ int __cdecl _CrtDbgReport( int nRptType, const char * szFile,
 
 #if _MSC_VER >= 1400
 
-#if defined( _DEBUG ) && !defined( EMULSION_DLL ) && !defined(INFESTED_DLL)
+#if defined( _DEBUG ) && !defined( EMULSION_DLL ) && !defined(INFESTED_DLL) 
  
 // wrapper which passes no debug info; not available in debug
 void __cdecl _invalid_parameter_noinfo(void)

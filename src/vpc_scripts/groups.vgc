@@ -11,6 +11,7 @@ $Group "game"
 {
 	"client"
 	"server"
+	"game_shader_dx9"
 }
 
 $Group "everything"
@@ -19,7 +20,7 @@ $Group "everything"
 	"server"
 	"tier1"
 	"vgui_controls"
-	"vbsp"
+	"game_shader_dx9"
 }
 
 $Group "gamepad"

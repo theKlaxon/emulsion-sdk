@@ -1,0 +1,39 @@
+//-----------------------------------------------------------------------------
+//	game_shader_dx9_pbr.vpc -- include this to add pbr shader to your project
+//
+//	Project Script for mods to use an an example of how to override shaders
+//-----------------------------------------------------------------------------
+
+$Configuration 
+{
+    $Compiler
+    {
+        $AdditionalIncludeDirectories	"$BASE;pbr;pbr/include;"	[$WIN32||$POSIX]
+    }
+}
+
+$Project 
+{
+    $Folder "Header Files"
+    {
+        $File "pbr/pbr_common_ps2_3_x.h"
+    }
+
+    $Folder "Shader Source"
+    {
+        $Folder "fxc"
+        {
+            $File "pbr/pbr_ps20b.fxc"
+            $File "pbr/pbr_ps30.fxc"
+            $File "pbr/pbr_vs20b.fxc"
+            $File "pbr/pbr_vs30.fxc"
+        }
+
+        $File "pbr/pbr_dx9_30.txt"
+    }
+
+    $Folder	"Source Files"
+    {
+        $File "pbr/pbr_dx9.cpp"
+    }
+}

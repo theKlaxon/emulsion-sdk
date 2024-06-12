@@ -69,7 +69,7 @@ struct PBR_Vars_t
 };
 
 // Beginning the shader
-BEGIN_VS_SHADER(PBR, "PBR shader")
+BEGIN_BASE_SHADER(PBR, "PBR shader")
 
 	// Setting up vmt parameters
 	BEGIN_SHADER_PARAMS;

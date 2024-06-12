@@ -8,6 +8,7 @@
 // Project definitions //
 /////////////////////////
 
+// static libs
 $Project "vgui_controls"
 {
 	"vgui2\vgui_controls\vgui_controls.vpc"
@@ -38,6 +39,13 @@ $Project "gamepadui"
 	"game\gamepadui\gamepadui_emulsion.vpc" [$EMULSION]
 }
 
+$Project "game_shader_dx9"
+{
+	"materialsystem\stdshaders\game_shader_dx9_emulsion.vpc" [$EMULSION]
+	"materialsystem\stdshaders\game_shader_dx9_vectronic.vpc" [$VECTRONIC]
+}
+
+// utils
 $Project "vbsp"
 {
 	"utils\vbsp\vbsp.vpc"

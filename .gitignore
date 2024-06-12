@@ -65,8 +65,9 @@ src/.vs/Game_Vectronic-2010/
 src/.vs/GamepadUI-2010/
 src/.vs/GamepadUI-2013/
 src/.vs/Everything-2010/
-src/.vs/Game_TF2-2010/
+
 src/vgui2/vgui_controls/.vs/
+src/materialsystem/stdshaders/.vs/
 
 game/emulsion/gameinfo.txt
 game/vectronic/gameinfo.txt
@@ -100,6 +101,9 @@ src/vgui2/vgui_controls/Release/
 
 src/tier1/Debug/
 src/tier1/Release/
+
+src/utils/vbsp/Debug/
+src/utils/vbsp/.vs/
 
 game/emulsion/maps/workshop/
 game/pbrtest/*

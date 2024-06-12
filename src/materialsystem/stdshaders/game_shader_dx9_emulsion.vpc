@@ -1,0 +1,20 @@
+//-----------------------------------------------------------------------------
+//	game_shader_dx9.vpc
+//
+//	Project Script for Emulsion shaders
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR 		"..\.."
+$Macro GAMENAME		"emulsion"
+
+$Include "$SRCDIR\materialsystem\stdshaders\game_shader_dx9_base.vpc"
+$Include "$SRCDIR\materialsystem\stdshaders\game_shader_dx9_pbr.vpc"
+
+$Project "Shaders (Emulsion)"
+{
+	$File	"buildEmulsionShaders.bat"
+	$File	"buildshaders.bat"
+
+	$Shaders	"emulsion/emulsion_dx9_20b.txt"
+	$Shaders	"emulsion/emulsion_dx9_30.txt"
+}

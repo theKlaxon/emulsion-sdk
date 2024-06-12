@@ -1,0 +1,20 @@
+//-----------------------------------------------------------------------------
+//	game_shader_dx9.vpc
+//
+//	Project Script for Vectronic shaders
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR 		"..\.."
+$Macro GAMENAME		"vectronic"
+
+$Include "$SRCDIR\materialsystem\stdshaders\game_shader_dx9_base.vpc"
+$Include "$SRCDIR\materialsystem\stdshaders\game_shader_dx9_pbr.vpc"
+
+$Project "Shaders (Vectronic)"
+{
+	$File	"buildVectronicShaders.bat"
+	$File	"buildshaders.bat"
+
+	$Shaders	"vectronic/vectronic_dx9_20b.txt"
+	$Shaders	"vectronic/vectronic_dx9_30.txt"
+}
