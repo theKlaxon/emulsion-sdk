@@ -1,17 +1,16 @@
-"UnlitGeneric"
-//"Modulate"
+UnlitGeneric
 {
-	"$baseTexture" "vecball/ball_white_tape"
-	"$nocull" "1"	
-	"$additive" "1"
-	"$translucent" "1"
-	"$vertexcolor" 1
-	"$model" "1"
+	$baseTexture "vecball/ball_white_tape"
+	$nocull "1"	
+	$additive "1"
+	$translucent "1"
+	$vertexcolor 1
+	$model "1"
 	
-	"Proxies"
+	Proxies
 	{
 
-		"TextureScroll"
+		TextureScroll
 		{
 			"texturescrollvar" "$basetexturetransform"
 			"texturescrollrate" -1

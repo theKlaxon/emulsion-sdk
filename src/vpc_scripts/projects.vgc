@@ -45,6 +45,11 @@ $Project "game_shader_dx9"
 	"materialsystem\stdshaders\game_shader_dx9_vectronic.vpc" [$VECTRONIC]
 }
 
+$Project "game_shader_generic_deferred"
+{
+	"materialsystem\deferredshaders\game_shader_generic_deferred.vpc" [$VECTRONIC]
+}
+
 // utils
 $Project "vbsp"
 {

@@ -377,7 +377,7 @@ int C_SpriteRenderer::DrawSprite(
 	}
 
 	// Get extra data
-	CEngineSprite *psprite = (CEngineSprite *)modelinfo->GetModelExtraData( model );
+	CEngineSprite *psprite = (CEngineSprite *)modelinfo->GetModelExtraData( model ); // this is fucked! fix it!
 	if ( !psprite )
 	{
 		return 0;

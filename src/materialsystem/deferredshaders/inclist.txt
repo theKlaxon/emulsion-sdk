@@ -1,0 +1,10 @@
+fxctmp9_tmp\gbuffer_vs30.inc
+fxctmp9_tmp\gbuffer_ps30.inc
+fxctmp9_tmp\gbuffer_defshading_ps30.inc
+fxctmp9_tmp\screenspace_shading_ps30.inc
+fxctmp9_tmp\screenspace_combine_ps30.inc
+fxctmp9_tmp\radiosity_gen_global_ps30.inc
+fxctmp9_tmp\radiosity_gen_vs30.inc
+fxctmp9_tmp\radiosity_propagate_ps30.inc
+fxctmp9_tmp\radiosity_propagate_vs30.inc
+fxctmp9_tmp\radiosity_blend_ps30.inc

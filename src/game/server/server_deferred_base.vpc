@@ -1,0 +1,40 @@
+//-----------------------------------------------------------------------------
+//	SERVER_DEFERRED_BASE.VPC
+//
+//	Project Script
+//-----------------------------------------------------------------------------
+
+$Configuration
+{
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"$BASE;.\deferred;$SRCDIR\game\shared\deferred;"
+		$PreprocessorDefinitions		"$BASE;USE_DEFERRED;"
+	}
+}
+
+$Project
+{
+	$Folder "Source Files"
+	{
+		$Folder "Deferred"
+		{
+			$Folder "Shared"
+			{
+				$File	"$SRCDIR\game\shared\deferred\CDefLight.cpp"
+				$File	"$SRCDIR\game\shared\deferred\CDefLight.h"
+				$File	"$SRCDIR\game\shared\deferred\CDefLightContainer.cpp"
+				$File	"$SRCDIR\game\shared\deferred\CDefLightContainer.h"
+				$File	"$SRCDIR\game\shared\deferred\CDefLightGlobal.cpp"
+				$File	"$SRCDIR\game\shared\deferred\CDefLightGlobal.h"
+				$File	"$SRCDIR\game\shared\deferred\deferred_shared_common.cpp"
+				$File	"$SRCDIR\game\shared\deferred\deferred_shared_common.h"
+				$File	"$SRCDIR\game\shared\deferred\ssemath_ext.h"
+			}
+
+			$File	"deferred\cdeferred_manager_server.cpp"
+			$File	"deferred\cdeferred_manager_server.h"
+			$File	"deferred\deferred_server_common.h"
+		}
+	}
+}

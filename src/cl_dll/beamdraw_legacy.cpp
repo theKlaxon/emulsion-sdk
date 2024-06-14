@@ -49,7 +49,7 @@ void CBeamSegDraw::Start(IMatRenderContext* pRenderContext, int nSegs, IMaterial
 	}
 	else
 	{
-		//m_pMeshBuilder = NULL;
+		m_pMeshBuilder = NULL;
 		m_nMeshVertCount = 0;
 
 #ifdef CLIENT_DLL
@@ -63,6 +63,9 @@ void CBeamSegDraw::Start(IMatRenderContext* pRenderContext, int nSegs, IMaterial
 
 		//IMesh *pMesh = materials->GetDynamicMesh( true, NULL, NULL, pMaterial );
 		//pRenderContext->Bind(pMaterial);
+
+		//pMaterial = materials->FindMaterial("vecball/ball_yellow", TEXTURE_GROUP_OTHER);
+		Assert(pMaterial);
 
 		m_pMesh = pRenderContext->GetDynamicMesh( true, NULL, NULL, pMaterial );
 		m_Mesh.Begin(m_pMesh, MATERIAL_TRIANGLE_STRIP, (nSegs-1) * 2 );
@@ -103,89 +106,59 @@ inline void CBeamSegDraw::SpecifySeg( const Vector& vecCameraPos, const Vector &
 	VectorMA( m_Seg.m_vPos,  m_Seg.m_flWidth*0.5f, vNormal, vPoint1 );
 	VectorMA( m_Seg.m_vPos, -m_Seg.m_flWidth*0.5f, vNormal, vPoint2 );
 
-	//Vector4D vecSegColour;
-	//m_Seg.GetColor(&vecSegColour);
+	Vector4D vecSegColour;
+	m_Seg.GetColor(&vecSegColour);
 
-	// Specify the points.
-	m_Mesh.Position3fv(vPoint1.Base());
-	//m_Mesh.Color4f(Vector4DExpand(vecSegColour));
-	m_Mesh.Color4ub(m_Seg.m_color.r, m_Seg.m_color.g, m_Seg.m_color.b, m_Seg.m_color.a);
-	m_Mesh.TexCoord2f(0, 0, m_Seg.m_flTexCoord);
-	m_Mesh.TexCoord2f(1, 0, m_Seg.m_flTexCoord);
-	m_Mesh.TangentS3fv(vNormal.Base());
-	m_Mesh.TangentT3fv(vTangentY.Base());
-	m_Mesh.AdvanceVertex();
+	if (m_pMeshBuilder)
+	{
+		// Specify the points.
+		m_pMeshBuilder->Position3fv(vPoint1.Base());
+		m_pMeshBuilder->Color4f(Vector4DExpand(vecSegColour));
+		m_pMeshBuilder->TexCoord2f(0, 0, m_Seg.m_flTexCoord);
+		m_pMeshBuilder->TexCoord2f(1, 0, m_Seg.m_flTexCoord);
+		m_pMeshBuilder->TangentS3fv(vNormal.Base());
+		m_pMeshBuilder->TangentT3fv(vTangentY.Base());
+		m_pMeshBuilder->AdvanceVertex();
 
-	m_Mesh.Position3fv(vPoint2.Base());
-	m_Mesh.Color4ub(m_Seg.m_color.r, m_Seg.m_color.g, m_Seg.m_color.b, m_Seg.m_color.a);
-	m_Mesh.TexCoord2f(0, 1, m_Seg.m_flTexCoord);
-	m_Mesh.TexCoord2f(1, 1, m_Seg.m_flTexCoord);
-	m_Mesh.TangentS3fv(vNormal.Base());
-	m_Mesh.TangentT3fv(vTangentY.Base());
-	m_Mesh.AdvanceVertex();
+		m_pMeshBuilder->Position3fv(vPoint2.Base());
+		m_pMeshBuilder->Color4f(Vector4DExpand(vecSegColour));
+		m_pMeshBuilder->TexCoord2f(0, 1, m_Seg.m_flTexCoord);
+		m_pMeshBuilder->TexCoord2f(1, 1, m_Seg.m_flTexCoord);
+		m_pMeshBuilder->TangentS3fv(vNormal.Base());
+		m_pMeshBuilder->TangentT3fv(vTangentY.Base());
+		m_pMeshBuilder->AdvanceVertex();
 
-	//if (m_nSegsDrawn > 1)
-	//{
-	//	int nBase = ((m_nSegsDrawn - 2) * 2) + m_nMeshVertCount;
+		if (m_nSegsDrawn > 1)
+		{
+			int nBase = ((m_nSegsDrawn - 2) * 2) + m_nMeshVertCount;
 
-	//	m_Mesh.FastIndex(nBase);
-	//	m_Mesh.FastIndex(nBase + 1);
-	//	m_Mesh.FastIndex(nBase + 2);
-	//	m_Mesh.FastIndex(nBase + 1);
-	//	m_Mesh.FastIndex(nBase + 3);
-	//	m_Mesh.FastIndex(nBase + 2);
-	//}
+			m_pMeshBuilder->FastIndex(nBase);
+			m_pMeshBuilder->FastIndex(nBase + 1);
+			m_pMeshBuilder->FastIndex(nBase + 2);
+			m_pMeshBuilder->FastIndex(nBase + 1);
+			m_pMeshBuilder->FastIndex(nBase + 3);
+			m_pMeshBuilder->FastIndex(nBase + 2);
+		}
+	}
+	else
+	{
+		// Specify the points.
+		m_Mesh.Position3fv(vPoint1.Base());
+		m_Mesh.Color4f(Vector4DExpand(vecSegColour));
+		m_Mesh.TexCoord2f(0, 0, m_Seg.m_flTexCoord);
+		m_Mesh.TexCoord2f(1, 0, m_Seg.m_flTexCoord);
+		m_Mesh.TangentS3fv(vNormal.Base());
+		m_Mesh.TangentT3fv(vTangentY.Base());
+		m_Mesh.AdvanceVertex();
 
-	//if ( m_Mesh != NULL )
-	//{
-	//	// Specify the points.
-	//	m_Mesh->Position3fv( vPoint1.Base() );
-	//	m_Mesh->Color4f(Vector4DExpand(vecSegColour));
-	//	m_Mesh->TexCoord2f( 0, 0, m_Seg.m_flTexCoord );
-	//	m_Mesh->TexCoord2f( 1, 0, m_Seg.m_flTexCoord );
-	//	m_Mesh->TangentS3fv( vNormal.Base() );
-	//	m_Mesh->TangentT3fv( vTangentY.Base() );
-	//	m_Mesh->AdvanceVertex();
-	//	
-	//	m_Mesh->Position3fv( vPoint2.Base() );
-	//	m_Mesh->Color4f(Vector4DExpand(vecSegColour));
-	//	m_Mesh->TexCoord2f( 0, 1, m_Seg.m_flTexCoord );
-	//	m_Mesh->TexCoord2f( 1, 1, m_Seg.m_flTexCoord );
-	//	m_Mesh->TangentS3fv( vNormal.Base() );
-	//	m_Mesh->TangentT3fv( vTangentY.Base() );
-	//	m_Mesh->AdvanceVertex();
-
-	//	if ( m_nSegsDrawn > 1 )
-	//	{
-	//		int nBase = ( ( m_nSegsDrawn - 2 ) * 2 ) + m_nMeshVertCount;
-
-	//		m_Mesh->FastIndex( nBase );
-	//		m_Mesh->FastIndex( nBase + 1 );
-	//		m_Mesh->FastIndex( nBase + 2 );
-	//		m_Mesh->FastIndex( nBase + 1 );
-	//		m_Mesh->FastIndex( nBase + 3 );
-	//		m_Mesh->FastIndex( nBase + 2 );
-	//	}
-	//}
-	//else
-	//{
-	//	// Specify the points.
-	//	m_Mesh.Position3fv( vPoint1.Base() );
-	//	m_Mesh.Color4f(Vector4DExpand(vecSegColour));
-	//	m_Mesh.TexCoord2f( 0, 0, m_Seg.m_flTexCoord );
-	//	m_Mesh.TexCoord2f( 1, 0, m_Seg.m_flTexCoord );
-	//	m_Mesh.TangentS3fv( vNormal.Base() );
-	//	m_Mesh.TangentT3fv( vTangentY.Base() );
-	//	m_Mesh.AdvanceVertex();
-	//	
-	//	m_Mesh.Position3fv( vPoint2.Base() );
-	//	m_Mesh.Color4f(Vector4DExpand(vecSegColour));
-	//	m_Mesh.TexCoord2f( 0, 1, m_Seg.m_flTexCoord );
-	//	m_Mesh.TexCoord2f( 1, 1, m_Seg.m_flTexCoord );
-	//	m_Mesh.TangentS3fv( vNormal.Base() );
-	//	m_Mesh.TangentT3fv( vTangentY.Base() );
-	//	m_Mesh.AdvanceVertex();
-	//}
+		m_Mesh.Position3fv(vPoint2.Base());
+		m_Mesh.Color4f(Vector4DExpand(vecSegColour));
+		m_Mesh.TexCoord2f(0, 1, m_Seg.m_flTexCoord);
+		m_Mesh.TexCoord2f(1, 1, m_Seg.m_flTexCoord);
+		m_Mesh.TangentS3fv(vNormal.Base());
+		m_Mesh.TangentT3fv(vTangentY.Base());
+		m_Mesh.AdvanceVertex();
+	}
 }
 
 void CBeamSegDraw::NextSeg( BeamSeg_t *pSeg )
@@ -226,11 +199,11 @@ void CBeamSegDraw::NextSeg( BeamSeg_t *pSeg )
 
 void CBeamSegDraw::End()
 {
-	//if ( m_pMeshBuilder )
-	//{
-	//	m_pMeshBuilder = NULL;
-	//	return;
-	//}
+	if ( m_pMeshBuilder )
+	{
+		m_pMeshBuilder = NULL;
+		return;
+	}
 
 	m_Mesh.End( false, true );
 	m_pMesh->Draw();

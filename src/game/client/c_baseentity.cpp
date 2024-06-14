@@ -5559,7 +5559,8 @@ void C_BaseEntity::SetRenderMode( RenderMode_t nRenderMode, bool bForceUpdate )
 	if ( nRenderMode != m_nRenderMode )
 	{
 		m_nRenderMode = nRenderMode;
-		m_pClientAlphaProperty->SetRenderFX( GetRenderFX(), nRenderMode );
+		GetIClientUnknown()->GetClientAlphaProperty()->SetRenderFX(GetRenderFX(), nRenderMode);
+		//m_pClientAlphaProperty->SetRenderFX( GetRenderFX(), nRenderMode );
 	}
 }
 
@@ -5573,7 +5574,8 @@ void CBaseEntity::SetRenderFX( RenderFx_t nRenderFX, float flStartTime, float fl
 			flStartTime = gpGlobals->curtime;
 		}
 		m_nRenderFX = nRenderFX;
-		m_pClientAlphaProperty->SetRenderFX( nRenderFX, GetRenderMode(), flStartTime, flDuration );
+		GetIClientUnknown()->GetClientAlphaProperty()->SetRenderFX( nRenderFX, GetRenderMode(), flStartTime, flDuration );
+		//m_pClientAlphaProperty->SetRenderFX( nRenderFX, GetRenderMode(), flStartTime, flDuration );
 	}
 }
 

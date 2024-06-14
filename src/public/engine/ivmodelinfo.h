@@ -71,7 +71,7 @@ public:
 	virtual	void					GetModelRenderBounds( const model_t *model, Vector& mins, Vector& maxs ) const = 0;
 	virtual int						GetModelFrameCount( const model_t *model ) const = 0;
 	virtual int						GetModelType( const model_t *model ) const = 0;
-	virtual void					*GetModelExtraData( const model_t *model ) = 0;
+	virtual void					*GetModelExtraData( const model_t *model ) = 0; // <---- this is the fucky one FIX ME
 	virtual bool					ModelHasMaterialProxy( const model_t *model ) const = 0;
 	virtual bool					IsTranslucent( model_t const* model ) const = 0;
 	virtual bool					IsTranslucentTwoPass( const model_t *model ) const = 0;
@@ -124,8 +124,6 @@ public:
 	virtual bool					IsUsingFBTexture( const model_t *model, int nSkin, int nBody, void /*IClientRenderable*/ *pClientRenderable ) const = 0;
 
 	virtual const model_t			*FindOrLoadModel( const char *name ) const = 0;
-
-	//virtual void unused02() {}
 
 	virtual MDLHandle_t				GetCacheHandle( const model_t *model ) const = 0;
 

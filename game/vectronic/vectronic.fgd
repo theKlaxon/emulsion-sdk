@@ -1,0 +1,256 @@
+// Purpose: Vectronic game definition file (.fgd) 
+
+@include "base.fgd"
+
+//-------------------------------------------------------------------------
+//
+// Base
+//
+//-------------------------------------------------------------------------
+@BaseClass base(Targetname, Angles) = VectronicProp
+[
+	BallType(choices) : "Ball Type" : 0 : "The ball type on which this prop is associated with." = 
+	[
+		0 : "Ball 0 (Zero Gravity)"
+		1 : "Ball 1 (Ghost Clone)"
+		2 : "Ball 2 (Protect)"
+		3 : "Ball 3 (Custom 1)"
+		4 : "Ball 4 (Custom 2)"
+		5 : "Ball 5 (Custom 3)"
+	]
+]
+
+///=============================================================================
+//
+// Point Entities
+//
+///=============================================================================
+@BaseClass base(Targetname) = vectronic_gamerules
+[
+	balllife(float) : "VecBall Life" : "1" : "The life of the VecBalls"
+	ballspeed(float) : "VecBall Speed" : "1000.0f" : "The speed of the VecBalls"
+
+	customgun(boolean) : "Custom Gun" : 0 : "Replace player's gun with a version that holds custom VecBalls?"
+	ball3color(color255) : "Ball 3 Color (R G B)" : "193 124 123"
+	ball4color(color255) : "Ball 4 Color (R G B)" : "193 183 123"
+	ball5color(color255) : "Ball 5 Color (R G B)" : "123 124 193"
+	respawn(choices) : "Toggle Player Respawning" : 1: "You can toggle if the map should hard reset or not." = 
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+]
+
+@BaseClass base(Targetname, Angles, EnableDisable) = info_player_vecspawn
+[
+]
+
+@BaseClass base(Targetname, Angles, EnableDisable) studio("models/editor/cone_helper.mdl") = info_vecball_cleanser
+[
+	filtertype(choices) : "Ball Type" : 0 : "The ball type on which this cleanser will remove." = 
+	[
+		-1: "Any"
+		0 : "Ball 0 (Zero Gravity)"
+		1 : "Ball 1 (Ghost Clone)"
+		2 : "Ball 2 (Protect)"
+		3 : "Ball 3 (Custom 1)"
+		4 : "Ball 4 (Custom 2)"
+		5 : "Ball 5 (Custom 3)"
+	]	
+
+	target(target_destination) : "Cleanser Trigger" 
+	wide(boolean) : "Wide" : 0 : "Use the wide particle?"
+
+	output TurnOn(void) : ""
+	output TurnOff(void) : ""
+]
+
+///=============================================================================
+//
+// Model Entities
+//
+///=============================================================================
+@PointClass base(Targetname, Parentname, Angles ) studio("models/props/switch001.mdl") = prop_button :
+"A button which is activated by player use or by game inputs."
+[
+	Delay(float) : "Delay Before Reset" : 1 : "Amount of time, in seconds, after the button has been pressed before it returns to the starting position. Once it has returned, it can be used again."
+	istimer(choices) : "Play timer sound?" : 0 : "If set, this button will play timer sounds while button is depressed. This allows fast reset by default - use Prevent fast reset to stop this." =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	input Press(void) : "Cause the button to be pressed."
+	input Lock(void) : "Locks the button."
+	input UnLock(void) : "UnLocks the button."
+	input CancelPress(void) : "Causes the button to reset quietly and without firing OnButtonReset outputs."
+	
+	output OnPressed(void) : "Called when the button has been pressed."
+	output OnButtonReset(void) : "Called when the button has reset after being pressed."
+]
+
+@PointClass base(Targetname, Parentname, Angles ) studio("models/props_signage/doorstate.mdl") = prop_indicator_panel :
+"A visual indicator that acts like a relay."
+[
+	target(target_destination) : "Indicator Lights" 
+	timed(boolean) : "Timed" : 0 : "If true, the panel will reset after the a fixed time ammount."
+	timeamount(float) : "Delay Before Reset" : 1 : "Amount of time, in seconds, after the panel has been activated before it can be triggered again."
+	quiet(boolean) : "Don't Play Ticking" : 0 : "If true, the panel will not make ticking sound if Timed is set."
+
+	input Activate(void) : "Sets the state to true."
+	input Deactivate(void) : "Sets the state to false."
+
+	output OnActivate(void) : "Called when the panel has been set to true."
+	output OnDeactivate(void) : "Called when the panel has been set to false."
+]
+
+@PointClass base(VectronicProp, EnableDisable) studio("models/props/balldispenser.mdl") = prop_vecball_dispenser :
+"VecBall dispenser."
+[
+	autoregen(boolean) : "Regenerate Ball" : 0 : "If set, when the player looses their ball, the dispenser will automaticly regenerate the ball they've lost."
+
+	input RespawnBall(void) : "Forces dispenser to regenerate vecball."
+	output OnBallEquipped(void) : "Called when the player picks up the vecball from this dispenser."
+]
+
+@PointClass base(VectronicProp) studio("models/props/ballshoot.mdl") = prop_vecball_launcher :
+"VecBall launcher."
+[
+	life(float) : "VecBall Life" : "1" : "The life of the fired VecBall"
+
+	input LaunchBall(void) : "Fires VecBall."
+	output OnPostSpawnProjectile(void) : "Called when the VecBall is fired."
+]
+
+@PointClass base(Targetname, Angles) studio("models/props/puzzlebox.mdl") sphere(radius) = prop_vecbox :
+"A box that can be affected by the VecBalls."
+[
+	target(boolean) : "Targetable" : 0 : "(BETA) If set, the box will 'suck' the vecball to itself."
+
+	input EnableTarget(void) : "(BETA) Enables target system."
+	input DisableTarget(void) : "(BETA) Disables target system."
+	input SetTargetRadius(float) : "(BETA) sets radius of target system."
+
+	input EnableGravity(integer) : "Toggles gravity mode of the physics object."
+	input MakeGhost(void) : "Makes a ghost of the box."
+	input KillGhost(void) : "Kills the ghost of the box if one exists."
+
+	input Dissolve(void) : "Dissolve object."
+	input Explode(void) : "Explode object."
+
+	input DisableBallTouch(void) : "Make it so that the VecBall ignores being hit by VecBalls."
+	input EnableBallTouch(void) : "Make it so that the VecBall reads being hit by VecBalls."
+
+	output OnBallHit(void) : "Fired when any ball hits the box."
+	output OnBall0(void) : ""
+	output OnBall1(void) : ""
+	output OnBall2(void) : ""
+	output OnBall3(void) : ""
+	output OnBall4(void) : ""
+	output OnBall5(void) : ""
+
+	output OnExplode(void) : "Fired when the box explodes."
+	output OnReset(void) : "Fired when the box was turned off."
+
+	output OnPlayerUse(void) : "Fired when the player tries to +USE the prop. This output will fire only if the Generate output on +USE spawnflag is set."
+	output OnPlayerPickup(void) : "Fired whenever the player picks up this prop (with the physcannon or with +USE)."
+	output OnPhysGunPickup(void) : "Picked up with physgun"
+	output OnPhysGunDrop(void) : "Released by physgun"
+]
+
+///=============================================================================
+//
+// Brush Entities
+//
+///=============================================================================
+@SolidClass base(Targetname, EnableDisable) = func_solidity : 
+	"Legacy entity for cut light bridges."
+[
+	StartSoild(boolean) : "Start Soild" : 0 : "Starts soild on start."
+
+	input SetSoild(void) : ""
+	input SetNonSoild(void) : ""
+]
+
+@SolidClass base(Targetname, EnableDisable) = func_laser_receiver : 
+	"A brush that reads laser hit and losts."
+[
+	output OnLaserHit(void) : ""
+	output OnLaserLost(void) : ""
+]
+
+@SolidClass base(Targetname, EnableDisable) = func_noball_volume : 
+	"A region in which no vecball can exist."
+[
+]
+
+@SolidClass base(Trigger, Targetname) = trigger_vecball_cleanser : 
+	"A trigger volume that removes all VecBalls from the player when the player touches it."
+[
+	filtertype(choices) : "Ball Type" : 0 : "The ball type on which this cleanser will remove." = 
+	[
+		-1: "Any"
+		0 : "Ball 0 (Zero Gravity)"
+		1 : "Ball 1 (Ghost Clone)"
+		2 : "Ball 2 (Protect)"
+		3 : "Ball 3 (Custom 1)"
+		4 : "Ball 4 (Custom 2)"
+		5 : "Ball 5 (Custom 3)"
+	]	
+
+	dissolvebox(boolean) : "Dissolve" : 0 : "If set, the trigger will also dissovle the box."
+	output OnBoxTouch(void) : ""
+	output OnPlayerTouch(void) : ""
+	output OnPlayerBallRemoved(void) : "Fired only when the clenaser removed the ball from the player."
+]
+
+@SolidClass base(VectronicProp, EnableDisable) = trigger_vecball_equip : 
+	"Leagcy entity for giving players VecBalls."
+[
+]
+
+@SolidClass base(Trigger, EnableDisable) = trigger_vecbox : 
+	"A trigger that only fires outputs for vecboxes!"
+[
+	filtertype(choices) : "Ball Type" : 0 : "The ball type on which this cleanser will remove." = 
+	[
+		-1: "Any"
+		0 : "Ball 0 (Zero Gravity)"
+		1 : "Ball 1 (Ghost Clone)"
+		2 : "Ball 2 (Protect)"
+		3 : "Ball 3 (Custom 1)"
+		4 : "Ball 4 (Custom 2)"
+		5 : "Ball 5 (Custom 3)"
+		9 : "Ghost Box"
+		10 : "Any Box"
+	]	
+
+	ignoreprotection(boolean) : "Ignore Protection" : 0 : "Ignore Ball 3 Effect"
+	negated(boolean) : "Negated" : 0 : ""
+
+	output OnBoxTouch(void) : ""
+	output OnEndBoxTouch(void) : ""
+	output OnPlayerTouch(void) : ""
+	output OnEndPlayerTouch(void) : ""
+]
+
+@SolidClass base(Trigger) = trigger_blower : 
+	"The trigger used for the blower element. It ignores certian box types."
+[
+	pushdir(angle) : "Push Direction (Pitch Yaw Roll)" : "0 0 0" : "Angles indicating the direction to push touched entities."
+	alternateticksfix(float) : "Alternate Ticks" : 0 : ""
+	input SetPushDirection(vector) : "Sets the angles indicating the direction to push touched entities."
+]
+
+@SolidClass base(Targetname, EnableDisable) = func_clip_vecbox : 
+	"Clip that only exists for vecboxes."
+[
+]
+
+@SolidClass base(Targetname, EnableDisable) = trigger_button : 
+	""
+[
+	output OnPress(void) : ""
+	output OnUnPress(void) : ""
+	output OnPressPlayer(void) : ""
+	output OnPressBox(void) : ""
+]

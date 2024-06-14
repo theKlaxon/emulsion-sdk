@@ -75,6 +75,13 @@ enum view_id_t
 	VIEW_INTRO_PLAYER = 5,
 	VIEW_INTRO_CAMERA = 6,
 	VIEW_SHADOW_DEPTH_TEXTURE = 7,
+
+#ifdef USE_DEFERRED
+	// @Deferred - Biohazard
+	VIEW_DEFERRED_GBUFFER = 8,
+	VIEW_DEFERRED_SHADOW = 9,
+#endif
+
 	VIEW_ID_COUNT
 };
 view_id_t CurrentViewID();

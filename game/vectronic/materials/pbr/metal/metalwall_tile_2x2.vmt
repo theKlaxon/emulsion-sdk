@@ -1,0 +1,11 @@
+PBR
+{
+	$basetexture 	"pbr/metal/metalwall_tile_base"
+	$mraotexture	"pbr/metal/metalwall_tile_mrao"
+	$normaltexture	"pbr/metal/metalwall_tile_2x2_normal"
+	
+	
+	$envmap			"env_cubemap"
+	$surfaceprop	"metal"
+	$model			"0"
+}
