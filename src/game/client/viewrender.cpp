@@ -127,10 +127,10 @@ static float GetFogMaxDensity( fogparams_t *pFogParams, bool ignoreOverride = fa
 static bool GetFogEnable( fogparams_t *pFogParams, bool ignoreOverride = false );
 static float GetFogStart( fogparams_t *pFogParams, bool ignoreOverride = false );
 static float GetFogEnd( fogparams_t *pFogParams, bool ignoreOverride = false );
-static float GetSkyboxFogStart( bool ignoreOverride = false );
-static float GetSkyboxFogEnd( bool ignoreOverride = false );
-static float GetSkyboxFogMaxDensity( bool ignoreOverride = false );
-static void GetSkyboxFogColor( float *pColor, bool ignoreOverride = false, bool ignoreHDRColorScale = false );
+/*static*/ float GetSkyboxFogStart( bool ignoreOverride = false );
+/*static*/ float GetSkyboxFogEnd( bool ignoreOverride = false );
+/*static*/ float GetSkyboxFogMaxDensity( bool ignoreOverride = false );
+/*static*/ void GetSkyboxFogColor( float *pColor, bool ignoreOverride = false, bool ignoreHDRColorScale = false );
 static void FogOverrideCallback( IConVar *pConVar, char const *pOldString, float flOldValue );
 static ConVar fog_override( "fog_override", "0", FCVAR_CHEAT, "Overrides the map's fog settings (-1 populates fog_ vars with map's values)", FogOverrideCallback );
 // set any of these to use the maps fog
@@ -210,7 +210,7 @@ static VMatrix g_matCurrentCamInverse;
 bool s_bCanAccessCurrentView = false;
 IntroData_t *g_pIntroData = NULL;
 static bool	g_bRenderingView = false;			// For debugging...
-static int g_CurrentViewID = VIEW_NONE;
+/*static*/ int g_CurrentViewID = VIEW_NONE;
 bool g_bRenderingScreenshot = false;
 
 static FrustumCache_t s_FrustumCache;
@@ -954,7 +954,7 @@ void CSimpleRenderExecutor::AddView( CRendering3dView *pView )
 }
 
 
-#if !defined( INFESTED_DLL )
+#if !defined( INFESTED_DLL ) && !defined(USE_DEFERRED)
 static CViewRender g_ViewRender;
 IViewRender *GetViewRenderInstance()
 {
@@ -1780,7 +1780,7 @@ static float GetFogMaxDensity( fogparams_t *pFogParams, bool ignoreOverride )
 //-----------------------------------------------------------------------------
 // Purpose: Returns the skybox fog color to use in rendering the current frame.
 //-----------------------------------------------------------------------------
-static void GetSkyboxFogColor( float *pColor, bool ignoreOverride, bool ignoreHDRColorScale )
+void GetSkyboxFogColor( float *pColor, bool ignoreOverride, bool ignoreHDRColorScale )
 {			   
 	C_BasePlayer *pbp = C_BasePlayer::GetLocalPlayer();
 	if( !pbp )
@@ -1846,7 +1846,7 @@ static void GetSkyboxFogColor( float *pColor, bool ignoreOverride, bool ignoreHD
 }
 
 
-static float GetSkyboxFogStart( bool ignoreOverride )
+float GetSkyboxFogStart( bool ignoreOverride )
 {
 	C_BasePlayer *pbp = C_BasePlayer::GetLocalPlayer();
 	if( !pbp )
@@ -1872,7 +1872,7 @@ static float GetSkyboxFogStart( bool ignoreOverride )
 	}
 }
 
-static float GetSkyboxFogEnd( bool ignoreOverride )
+float GetSkyboxFogEnd( bool ignoreOverride )
 {
 	C_BasePlayer *pbp = C_BasePlayer::GetLocalPlayer();
 	if( !pbp )
@@ -1899,7 +1899,7 @@ static float GetSkyboxFogEnd( bool ignoreOverride )
 }
 
 
-static float GetSkyboxFogMaxDensity( bool ignoreOverride )
+float GetSkyboxFogMaxDensity( bool ignoreOverride )
 {
 	C_BasePlayer *pbp = C_BasePlayer::GetLocalPlayer();
 	if ( !pbp )
@@ -2724,6 +2724,12 @@ void CViewRender::RenderView( const CViewSetup &view, const CViewSetup &hudViewS
 
 
 }
+
+#ifdef USE_DEFERRED
+void FlushWorldCache() {
+	g_WorldListCache.Flush();
+}
+#endif
 
 //-----------------------------------------------------------------------------
 // Purpose: Renders extra 2D effects in derived classes while the 2D view is on the stack

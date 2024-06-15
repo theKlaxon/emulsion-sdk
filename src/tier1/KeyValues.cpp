@@ -1463,9 +1463,9 @@ bool KeyValues::GetBool( const char *keyName, bool defaultValue )
 //-----------------------------------------------------------------------------
 // Purpose: Gets a color
 //-----------------------------------------------------------------------------
-Color KeyValues::GetColor( const char *keyName )
+Color KeyValues::GetColor( const char *keyName, const Color defaultValue)
 {
-	Color color(0, 0, 0, 0);
+	Color color = defaultValue;
 	KeyValues *dat = FindKey( keyName, false );
 	if ( dat )
 	{

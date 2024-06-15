@@ -344,7 +344,7 @@ public:
 	virtual int					GetNumLightmapPages() const { return m_pBaseMaterialsPassThru->GetNumLightmapPages( ); }
 	
 	// taken from my updated p2 imatsys
-	virtual IPaintMapTextureManager* RegisterPaintMapDataManager(IPaintMapDataManager* pDataManager) { m_pBaseMaterialsPassThru->RegisterPaintMapDataManager(pDataManager); } //You supply an interface we can query for bits, it gives back an interface you can use to drive updates
+	virtual IPaintMapTextureManager* RegisterPaintMapDataManager(IPaintMapDataManager* pDataManager) { return m_pBaseMaterialsPassThru->RegisterPaintMapDataManager(pDataManager); } //You supply an interface we can query for bits, it gives back an interface you can use to drive updates
 
 	// TODO: check on these
 	virtual void				BeginUpdatePaintmaps(void) { m_pBaseMaterialsPassThru->BeginUpdatePaintmaps(); }

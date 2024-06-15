@@ -193,7 +193,7 @@ public:
 	const wchar_t *GetWString( const char *keyName = NULL, const wchar_t *defaultValue = L"" );
 	void *GetPtr( const char *keyName = NULL, void *defaultValue = (void*)0 );
 	bool GetBool( const char *keyName = NULL, bool defaultValue = false );
-	Color GetColor( const char *keyName = NULL /* default value is all black */);
+	Color GetColor( const char *keyName = NULL, const Color defaultValue = Color(0, 0, 0, 0) /* default value is all black */);
 	bool  IsEmpty(const char *keyName = NULL);
 
 	// Data access
@@ -202,7 +202,7 @@ public:
 	const char *GetString( int keySymbol, const char *defaultValue = "" );
 	const wchar_t *GetWString( int keySymbol, const wchar_t *defaultValue = L"" );
 	void *GetPtr( int keySymbol, void *defaultValue = (void*)0 );
-	Color GetColor( int keySymbol /* default value is all black */);
+	Color GetColor(int keySymbol, const Color defaultValue = Color(0, 0, 0, 0) /* default value is all black */);
 	bool  IsEmpty( int keySymbol );
 
 	// Key writing
@@ -457,9 +457,8 @@ inline void *KeyValues::GetPtr( int keySymbol, void *defaultValue )
 	return dat ? dat->GetPtr( (const char *)NULL, defaultValue ) : defaultValue;
 }
 
-inline Color KeyValues::GetColor( int keySymbol )
+inline Color KeyValues::GetColor( int keySymbol, const Color defaultValue )
 {
-	Color defaultValue( 0, 0, 0, 0 );
 	KeyValues *dat = FindKey( keySymbol );
 	return dat ? dat->GetColor( ) : defaultValue;
 }

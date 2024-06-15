@@ -25,7 +25,6 @@ IViewRender* GetViewRenderInstance()
 static CDeferredMaterialSystem g_DeferredMaterialSystem;
 static IMaterialSystem *g_pOldMatSystem;
 
-
 CDeferredManagerClient::CDeferredManagerClient() : BaseClass( "DeferredManagerClient" )
 {
 	m_bDefRenderingEnabled = false;

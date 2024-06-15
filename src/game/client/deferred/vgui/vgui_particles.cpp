@@ -81,7 +81,7 @@ void CVGUIParticles::Paint()
 	Vector4D baseDiffuse( 1, 1, 1, 1 );
 	FOR_EACH_VEC( m_hParticles, i )
 	{
-		m_hParticles[ i ]->Render( 0, pRenderContext, baseDiffuse ); // TODO: account for portal recursion here
+		m_hParticles[ i ]->Render( pRenderContext, baseDiffuse ); // TODO: account for portal recursion here
 	}
 
 	render->PopView( pRenderContext, frustum );

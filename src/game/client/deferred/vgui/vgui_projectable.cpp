@@ -73,7 +73,7 @@ void CVGUIProjectable::LoadProjectableConfig( KeyValues *pKV )
 
 void CVGUIProjectable::ApplyConfig( KeyValues *pKV )
 {
-	SetFgColor( pKV->GetColor( "fgcolor", Color( 255,255,255,255 ) ) );
+	SetFgColor( pKV->GetColor( "fgcolor", Color( 255,255,255,255 ) ) ); // this one not compile, because only the asw version and up of KV is the one that allows for a fallback color to be specified.
 	SetBgColor( pKV->GetColor( "bgcolor", Color( 0,0,0,0 ) ) );
 }
 

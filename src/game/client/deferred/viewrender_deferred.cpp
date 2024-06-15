@@ -77,13 +77,13 @@ extern ConVar cl_maxrenderable_dist;
 extern ConVar r_entityclips; //FIXME: Nvidia drivers before 81.94 on cards that support user clip planes will have problems with this, require driver update? Detect and disable?
 
 // Matches the version in the engine
-extern ConVar r_drawopaqueworld;
-extern ConVar r_drawtranslucentworld;
-extern ConVar r_3dsky;
-extern ConVar r_skybox;
-extern ConVar r_drawviewmodel;
-extern ConVar r_drawtranslucentrenderables;
-extern ConVar r_drawopaquerenderables;
+ConVarRef r_drawopaqueworld("r_drawopaqueworld");
+ConVarRef r_drawtranslucentworld("r_drawtranslucentworld");
+ConVarRef r_3dsky("r_3dsky");
+ConVarRef r_skybox("r_skybox");
+ConVarRef r_drawviewmodel("r_drawviewmodel");
+ConVarRef r_drawtranslucentrenderables("r_drawviewmodel");
+ConVarRef r_drawopaquerenderables("r_drawopaquerenderables");
 
 extern ConVar r_flashlightdepth_drawtranslucents;
 
@@ -105,7 +105,7 @@ extern float GetSkyboxFogEnd( bool ignoreOverride = false );
 extern float GetSkyboxFogMaxDensity( bool ignoreOverride = false );
 extern void GetSkyboxFogColor( float *pColor, bool ignoreOverride = false, bool ignoreHDRColorScale = false );
 // set any of these to use the maps fog
-extern ConVar fog_enableskybox;
+ConVarRef fog_enableskybox("fog_enableskybox");
 
 extern void PositionHudPanels( CUtlVector< vgui::VPANEL > &list, const CViewSetup &view );
 
@@ -123,12 +123,12 @@ extern ConVar r_WaterDrawRefraction;
 extern ConVar r_WaterDrawReflection;
 extern ConVar r_ForceWaterLeaf;
 extern ConVar mat_drawwater;
-extern ConVar mat_clipz;
+ConVarRef mat_clipz("mat_clipz");
 
 //-----------------------------------------------------------------------------
 // Other convars
 //-----------------------------------------------------------------------------
-extern ConVar r_eyewaterepsilon;
+ConVarRef r_eyewaterepsilon("r_eyewaterepsilon");
 
 //-----------------------------------------------------------------------------
 // Globals
