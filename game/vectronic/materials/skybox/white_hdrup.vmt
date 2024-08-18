@@ -1,0 +1,7 @@
+"sky"
+{
+	"$hdrcompressedTexture" "tools\toolswhite"	
+	"$nofog" "1"
+	"$ignorez" "1"
+	"$basetexture" "tools\toolswhite"
+}

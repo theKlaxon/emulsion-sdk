@@ -19,6 +19,11 @@ $Project "tier1"
 	"tier1\tier1.vpc"
 }
 
+$Project "fgdlib"
+{
+	"fgdlib\fgdlib.vpc"
+}
+
 // game stuff
 $Project "client"
 {
@@ -54,4 +59,25 @@ $Project "game_shader_generic_deferred"
 $Project "vbsp"
 {
 	"utils\vbsp\vbsp.vpc"
+}
+
+$Project "vrad"
+{
+	"utils\vrad\vrad_dll.vpc"
+}
+
+$Project "vvis"
+{
+	"utils\vvis\vvis_dll.vpc"
+}
+
+// experimental
+$Project "particles2"
+{
+	"particles2/particles2.vpc"
+}
+
+$Project "particles_dll"
+{
+	"particles_dll/particles_dll.vpc"
 }

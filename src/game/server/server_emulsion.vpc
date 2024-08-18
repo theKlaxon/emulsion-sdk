@@ -14,7 +14,7 @@ $Configuration
 	$Compiler
 	{
 		$AdditionalIncludeDirectories	"$BASE;.\hl2;$SRCDIR\game\shared\hl2;.\emulsion;.\multiplayer;$SRCDIR\game\shared\multiplayer;$SRCDIR\game\shared\emulsion;$SRCDIR\game\shared\swarm"
-		$PreprocessorDefinitions		"$BASE;EMULSION_DLL;SWARM_DLL;"
+		$PreprocessorDefinitions		"$BASE;EMULSION_DLL;SWARM_DLL;PARTICLES2;"
 	}
 }
 
@@ -34,9 +34,7 @@ $Project "Server (Emulsion)"
 				$File	"$SRCDIR\game\shared\emulsion\emulsion_parsers.cpp"
 				$File	"$SRCDIR\game\shared\emulsion\paintblob_manager.cpp"
 				$File	"$SRCDIR\game\shared\emulsion\paintblob_manager.h"
-				$File	"$SRCDIR\game\shared\emulsion\proxy_filesystem.h"
-				$File	"$SRCDIR\game\shared\emulsion\proxy_imaterialsystem.cpp"
-				$File	"$SRCDIR\game\shared\emulsion\proxy_imatrendercontext.h"
+
 				$File	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
 				$File	"$SRCDIR\game\shared\predicted_viewmodel.h"
 			}
@@ -67,5 +65,10 @@ $Project "Server (Emulsion)"
 			$File 	"emulsion\paint_sphere.cpp"
 			$File 	"emulsion\paint_sphere.h"
 		}
+	}
+
+	$Folder	"Link Libraries"
+	{
+		$Lib "$LIBPUBLIC\particles2"
 	}
 }

@@ -988,7 +988,8 @@ void CVectronicGameMovement::CheckFalling()
 			}
 		}
 
-		PlayerRoughLandingEffects(fvol);
+		if (player->m_Local.m_flFallVelocity >= pl_fallpunchthreshold.GetFloat() * 2)
+			PlayerRoughLandingEffects(fvol);
 
 		if (bAlive)
 			MoveHelper()->PlayerSetAnimation(PLAYER_WALK);

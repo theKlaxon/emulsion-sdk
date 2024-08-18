@@ -1405,12 +1405,14 @@ void CClientShadowMgr::CalculateRenderTargetsAndSizes( void )
 		
 	m_nDepthTextureResolution = r_flashlightdepthres.GetInt();
 	m_nDepthTextureResolutionHigh = r_flashlightdepthreshigh.GetInt();
-	if ( bTools )									// Higher resolution shadow maps in tools mode
+	//if ( bTools )									// Higher resolution shadow maps in tools mode
 	{
 		char defaultRes[] = "2048";
 		m_nDepthTextureResolution = atoi( CommandLine()->ParmValue( "-sfm_shadowmapres", defaultRes ) );
+		m_nDepthTextureResolutionHigh = m_nDepthTextureResolution;// atoi(CommandLine()->ParmValue("-sfm_shadowmapres", defaultRes));
+		r_flashlightdepthreshigh.SetValue(m_nDepthTextureResolutionHigh);
 	}
-	m_nMaxDepthTextureShadows = bTools ? MAX_DEPTH_TEXTURE_SHADOWS_TOOLS : MAX_DEPTH_TEXTURE_SHADOWS;	// Just one shadow depth texture in games, more in tools
+	m_nMaxDepthTextureShadows = 12;// bTools ? MAX_DEPTH_TEXTURE_SHADOWS_TOOLS : MAX_DEPTH_TEXTURE_SHADOWS;	// Just one shadow depth texture in games, more in tools
 }
 //-----------------------------------------------------------------------------
 // Constructor
@@ -1577,9 +1579,9 @@ void CClientShadowMgr::InitRenderTargets()
 
 	if ( m_DepthTextureCache.Count() )
 	{
-		bool bTools = CommandLine()->CheckParm( "-tools" ) != NULL;
-		int nNumShadows = bTools ? MAX_DEPTH_TEXTURE_SHADOWS_TOOLS : MAX_DEPTH_TEXTURE_SHADOWS;
-		m_nLowResStart = bTools ? MAX_DEPTH_TEXTURE_HIGHRES_SHADOWS_TOOLS : MAX_DEPTH_TEXTURE_HIGHRES_SHADOWS;
+		//bool bTools = CommandLine()->CheckParm( "-tools" ) != NULL;
+		int nNumShadows = 12;// bTools ? MAX_DEPTH_TEXTURE_SHADOWS_TOOLS : MAX_DEPTH_TEXTURE_SHADOWS;
+		m_nLowResStart = 0;// bTools ? MAX_DEPTH_TEXTURE_HIGHRES_SHADOWS_TOOLS : MAX_DEPTH_TEXTURE_HIGHRES_SHADOWS;
 
 		if ( m_nLowResStart > nNumShadows )
 		{
@@ -1629,7 +1631,8 @@ void CClientShadowMgr::PreCacheDepthTex(int count) {
 	ImageFormat nullFormat = g_pMaterialSystemHardwareConfig->GetNullTextureFormat();			// Vendor-dependent null texture format (takes as little memory as possible)
 	materials->BeginRenderTargetAllocation();
 
-	m_DummyColorTexture.InitRenderTarget(m_nDepthTextureResolutionHigh, m_nDepthTextureResolutionHigh, RT_SIZE_NO_CHANGE, nullFormat, MATERIAL_RT_DEPTH_NONE, false, "_rt_ShadowDummy");
+	m_DummyColorTexture.InitRenderTarget(m_nDepthTextureResolutionHigh, m_nDepthTextureResolutionHigh, RT_SIZE_OFFSCREEN, nullFormat, MATERIAL_RT_DEPTH_NONE, false, "_rt_ShadowDummy");
+	//m_DummyColorTexture.InitRenderTarget(m_nDepthTextureResolutionHigh, m_nDepthTextureResolutionHigh, RT_SIZE_NO_CHANGE, nullFormat, MATERIAL_RT_DEPTH_NONE, false, "_rt_ShadowDummy");
 
 	// Create some number of depth-stencil textures
 	m_DepthTextureCache.Purge();
@@ -1644,7 +1647,8 @@ void CClientShadowMgr::PreCacheDepthTex(int count) {
 		sprintf(strRTName, "_rt_ShadowDepthTexture_%d", i);
 
 		int nTextureResolution = m_nDepthTextureResolutionHigh;
-		depthTex.InitRenderTarget(nTextureResolution, nTextureResolution, RT_SIZE_NO_CHANGE, dstFormat, MATERIAL_RT_DEPTH_NONE, false, strRTName);
+		depthTex.InitRenderTarget(nTextureResolution, nTextureResolution, RT_SIZE_OFFSCREEN, dstFormat, MATERIAL_RT_DEPTH_NONE, false, strRTName);
+		//depthTex.InitRenderTarget(nTextureResolution, nTextureResolution, RT_SIZE_NO_CHANGE, dstFormat, MATERIAL_RT_DEPTH_NONE, false, strRTName);
 
 		// SAUL: ensure the depth texture size wasn't changed
 		if(depthTex->GetActualWidth() != nTextureResolution)
@@ -1674,8 +1678,11 @@ void CClientShadowMgr::InitDepthTextureShadows()
 	if ( !r_flashlightdepthtexture.GetBool() )
 		return;
 
+	m_nDepthTextureResolution = r_flashlightdepthreshigh.GetInt();
+	m_nDepthTextureResolutionHigh = r_flashlightdepthreshigh.GetInt();
+
 	if (!m_bDepthTexturesAllocated || m_nDepthTextureResolution != r_flashlightdepthres.GetInt() || m_nDepthTextureResolutionHigh != r_flashlightdepthreshigh.GetInt())
-		PreCacheDepthTex(8);
+		PreCacheDepthTex(12);
 //	{
 //		CalculateRenderTargetsAndSizes();
 //		m_bDepthTexturesAllocated = true;
@@ -3099,7 +3106,7 @@ void CClientShadowMgr::BuildOrthoShadow( IClientRenderable* pRenderable,
 
 	// Place the origin at the point with min dot product with shadow dir
 	Vector org;
-	float falloffStart = ComputeLocalShadowOrigin( pRenderable, mins, maxs, localShadowDir, 2.0f, org );
+	float falloffStart = ComputeLocalShadowOrigin( pRenderable, mins, maxs, localShadowDir, 1.0f, org );
 
 	// Transform the local origin into world coordinates
 	Vector worldOrigin = pRenderable->GetRenderOrigin( );
@@ -5483,7 +5490,7 @@ int CClientShadowMgr::BuildActiveShadowDepthList( const CViewSetup &viewSetup, i
 			}
 		}
 
-		if ( nActiveDepthShadowCount >= nMaxDepthShadows )
+		if ( nActiveDepthShadowCount >= nMaxDepthShadows && false ) // no more culling of flashlights >:(
 		{
 			if ( !flashlightState.m_bShadowHighRes )
 			{

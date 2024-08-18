@@ -19,6 +19,9 @@ public:
     virtual void OnLevelInitializePreEntity() = 0;
     virtual void OnLevelInitializePostEntity() = 0;
     virtual void OnLevelShutdown() = 0;
+
+    virtual void OnLevelLoadStarted() = 0;
+    virtual void OnLevelLoadFinished() = 0;
 	
     virtual void VidInit() = 0;
 };

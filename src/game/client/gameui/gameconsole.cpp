@@ -23,14 +23,49 @@
 #include "tier0/memdbgon.h"
 
 static CGameConsole g_GameConsole;
+
+class CSativaConsole_Client : public IGameConsole {
+public:
+	CSativaConsole_Client() { m_pConsole = &g_GameConsole; }
+	~CSativaConsole_Client() {}
+
+	// sets up the console for use
+	void Initialize() { m_pConsole->Initialize(); }
+
+	// activates the console, makes it visible and brings it to the foreground
+	virtual void Activate() { m_pConsole->Activate(); }
+	// hides the console
+	virtual void Hide() { m_pConsole->Hide(); }
+	// clears the console
+	virtual void Clear() { m_pConsole->Clear(); }
+
+	// returns true if the console is currently in focus
+	virtual bool IsConsoleVisible() { return m_pConsole->IsConsoleVisible(); }
+
+	void SetParent(int parent) { m_pConsole->SetParent(parent); }
+
+	// activates the console after a delay
+	void ActivateDelayed(float time) { m_pConsole->ActivateDelayed(time); }
+
+	void Override(IGameConsole* pConsole) { m_pConsole = pConsole; }
+
+private:
+
+	IGameConsole* m_pConsole;
+
+};
+
+static CSativaConsole_Client g_SativaConsole;
+
 //-----------------------------------------------------------------------------
 // Purpose: singleton accessor
 //-----------------------------------------------------------------------------
-CGameConsole &GameConsole()
+IGameConsole& GameConsole()
 {
-	return g_GameConsole;
+	return g_SativaConsole;
 }
-EXPOSE_SINGLE_INTERFACE_GLOBALVAR(CGameConsole, IGameConsole, GAMECONSOLE_INTERFACE_VERSION, g_GameConsole);
+
+EXPOSE_SINGLE_INTERFACE_GLOBALVAR(CGameConsole, IGameConsole, GAMECONSOLE_INTERFACE_VERSION, g_SativaConsole);
 
 //-----------------------------------------------------------------------------
 // Purpose: Constructor

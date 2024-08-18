@@ -1,0 +1,54 @@
+//-----------------------------------------------------------------------------
+//	PARTICLES_DLL.VPC
+//
+//	Project Script
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR		".."
+$Macro OUTBINDIR	"$SRCDIR\..\game\bin"
+
+$Include "$SRCDIR\vpc_scripts\source_dll_base.vpc"
+
+$Configuration
+{
+	$Compiler
+	{
+		$AdditionalIncludeDirectories		"$BASE,..\common,..\vmpi,..\vmpi\mysql\mysqlpp\include,..\vmpi\mysql\include"
+		$PreprocessorDefinitions			"$BASE;MPI;PROTECTED_THINGS_DISABLE;VRAD"
+	}
+
+	$Linker
+	{
+		$AdditionalDependencies				"$BASE ws2_32.lib"
+	}
+}
+
+$Project "Particles_dll"
+{
+	$Folder	"Public Header Files"
+	{
+		$File	"$SRCDIR\public\particles\particles.h"
+	}
+
+	$Folder	"Header Files"
+	{
+
+	}
+
+	$Folder	"Source Files"
+	{
+		$File "particles_dll.cpp"
+	}
+
+	$Folder	"Link Libraries"
+	{
+		$Lib bitmap
+		$Lib mathlib
+		$Lib raytrace
+		$Lib particles
+		$Lib tier1
+		$Lib tier2
+		$Lib tier3
+		$Lib vtf
+	}
+}

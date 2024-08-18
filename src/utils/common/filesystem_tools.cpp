@@ -35,6 +35,7 @@
 // ---------------------------------------------------------------------------------------------------- //
 
 IBaseFileSystem *g_pFileSystem = NULL;
+IFileSystem* filesystem = g_pFullFileSystem;
 
 // These are only used for tools that need the search paths that the engine's file system provides.
 CSysModule			*g_pFullFileSystemModule = NULL;

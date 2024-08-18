@@ -15,7 +15,6 @@
 
 #include "mathlib/vector.h"
 #include "materialsystem/imesh.h"
-#include "../game/shared/emulsion/proxy_imatrendercontext.h"
 
 //-----------------------------------------------------------------------------
 // Forward declarations
@@ -119,7 +118,7 @@ public:
 
 	// for normal game code compat, defined in proxy_imatrendercontext.cpp
 	void			Start(IMatRenderContext* pRenderContext, int nSegs, IMaterial* pMaterial = 0, CMeshBuilder* pMeshBuilder = NULL, int nMeshVertCount = 0);
-	//void			Start(IMatRenderContASW* pRenderContext, int nSegs, IMaterial* pMaterial = 0, CMeshBuilder* pMeshBuilder = NULL, int nMeshVertCount = 0);
+	void			StartEX(IMatRenderContext* pRenderContext, int nSegs, IMaterial* pMaterial = 0, CMeshBuilder* pMeshBuilder = NULL, int nMeshVertCount = 0);
 
 	void			ComputeRenderInfo( BeamSegRenderInfo_t *pRenderInfo, const Vector &vecCameraPos, int nSegCount, const BeamSeg_t *pSegs );
 	virtual void	NextSeg( BeamSeg_t *pSeg );

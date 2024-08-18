@@ -8,7 +8,6 @@ $Macro SRCDIR		"..\.."
 $Macro GAMENAME 	"vectronic"
 
 $Include "$SRCDIR\game\client\client_base.vpc"
-$Include "$SRCDIR\game\client\client_deferred_base.vpc"
 
 $Configuration
 {
@@ -82,9 +81,6 @@ $Project "Client (Vectronic)"
 				$File	"$SRCDIR\game\shared\vectronic\vectronic_weapon_parse.h"
 				$File	"$SRCDIR\game\shared\vectronic\vectronic_weapon_parse.cpp"
 				
-				$File	"$SRCDIR\game\shared\emulsion\proxy_filesystem.h"
-				$File	"$SRCDIR\game\shared\emulsion\proxy_imaterialsystem.cpp"
-				$File	"$SRCDIR\game\shared\emulsion\proxy_imatrendercontext.h"
 				$File	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
 				$File	"$SRCDIR\game\shared\predicted_viewmodel.h"
 			}

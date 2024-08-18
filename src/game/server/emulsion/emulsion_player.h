@@ -62,6 +62,7 @@ protected:
 	
 	CEmulsionGameMovement* pMove;
 
+	PaintInfo_t m_tPrevPaintInfo;
 	PaintInfo_t m_tCurPaintInfo;
 	CBaseEntity* m_pStickParent;
 
@@ -73,7 +74,6 @@ protected:
 	Vector m_vecCurLerpUp;
 	QAngle m_vecStickEyeAngles;
 	Vector m_vecStickEyeOrigin;
-	//Vector m_vecGravity;
 	//Vector m_vecEyeAxisRot;
 
 	float m_flEyeRotation;
@@ -87,6 +87,11 @@ protected:
 	CNetworkVar(bool, m_bPlayerPickedUpObject);
 	CNetworkVar(int, m_nPaintPower);
 	CNetworkVector(m_vecGravity);
+	CNetworkVector(m_vecPrevUp);
+	CNetworkVector(m_vecStickRight);
+	CNetworkVector(m_vecSurfaceForward);
+	CNetworkVector(m_vecPrevOrigin);
+	CNetworkVector(m_vecUp);
 };
 
 inline CEmulsionPlayer* ToEmulsionPlayer(CBaseEntity* pEntity) {

@@ -289,12 +289,18 @@ bool CEngineSprite::Init( const char *pName )
 			m_material[i] = NULL;
 		}
 
-		KeyValues *kv = new KeyValues( "vmt" );
+		KeyValues *kv = new KeyValues("vmt");
 		if ( !kv->LoadFromFile( g_pFullFileSystem, pMaterialPath, "GAME" ) ) // was EX
 		{
 			Warning( "Unable to load sprite material %s!\n", pMaterialPath );
 			return false;
 		}
+		
+		const char* psname = kv->GetString("$baseTexture");
+		Msg(kv->GetName());
+		Msg("\n");
+
+		//bool dumped = KeyValuesDumpAsDevMsg(kv);
 
 		for ( int i = 0; i < kRenderModeCount; ++i )
 		{	
@@ -306,9 +312,16 @@ bool CEngineSprite::Init( const char *pName )
 			// strip possible materials/
 			Q_snprintf( pMaterialPath, sizeof(pMaterialPath), "%s_rendermode_%d", pMaterialName + ( bIsUNC ? 0 : 10 ), i );
 			KeyValues *pMaterialKV = kv->MakeCopy();
+			
+			psname = pMaterialKV->GetString("$baseTexture");
+			Msg(pMaterialKV->GetName());
+			Msg("\n");
+
 			pMaterialKV->SetInt( "$spriteRenderMode", i );
-			m_material[i] = g_pMaterialSystem->FindProceduralMaterial( pMaterialPath, TEXTURE_GROUP_CLIENT_EFFECTS, pMaterialKV );
-			m_material[i]->IncrementReferenceCount();	
+			int test = pMaterialKV->GetInt("$spriteRenderMode", -1);
+
+			m_material[i] = g_pMaterialSystem->FindProceduralMaterial(pMaterialPath, TEXTURE_GROUP_CLIENT_EFFECTS, pMaterialKV);
+			m_material[i]->IncrementReferenceCount();
 		}
 
 		kv->deleteThis();

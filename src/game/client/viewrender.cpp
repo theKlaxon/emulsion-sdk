@@ -13,6 +13,7 @@
 #include "model_types.h"
 #include "clientsideeffects.h"
 #include "particlemgr.h"
+#include "particles_ez.h"
 #include "viewrender.h"
 #include "iclientmode.h"
 #include "voice_status.h"
@@ -31,7 +32,6 @@
 #include "engine/ivmodelinfo.h"
 #include "tier0/icommandline.h"
 #include "view_scene.h"
-#include "particles_ez.h"
 #include "engine/IStaticPropMgr.h"
 #include "engine/ivdebugoverlay.h"
 #include "c_pixel_visibility.h"
@@ -68,6 +68,10 @@
 #ifdef INFESTED_DLL
 #include "c_asw_render_targets.h"
 #include "clientmode_asw.h"
+#endif
+
+#ifdef SHADER_EDITOR
+#include "shadereditor/ivshadereditor.h";
 #endif
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -436,7 +440,13 @@ protected:
 	sky3dparams_t *m_pSky3dParams;
 };
 
-
+//class CViewModelLightView : public CRendering3dView {
+//	DECLARE_CLASS(CViewModelLightView, CRendering3dView)
+//public:
+//
+//
+//
+//};
 
 
 //-----------------------------------------------------------------------------
@@ -1076,8 +1086,6 @@ void CViewRender::DrawViewModels( const CViewSetup &view, bool drawViewmodel )
 {
 	VPROF( "CViewRender::DrawViewModel" );
 
-
-
 	bool bShouldDrawPlayerViewModel = ShouldDrawViewModel( drawViewmodel );
 	bool bShouldDrawToolViewModels = ToolsEnabled();
 
@@ -1442,6 +1450,14 @@ void CViewRender::ViewDrawScene( bool bDrew3dSkybox, SkyboxVisibility_t nSkyboxV
 	ParticleMgr()->IncrementFrameCode();
 
 	DrawWorldAndEntities( drawSkybox, view, nClearFlags, pCustomVisibility );
+
+#ifdef SHADER_EDITOR
+	VisibleFogVolumeInfo_t fogVolumeInfo;
+	render->GetVisibleFogVolume(view.origin, nullptr, &fogVolumeInfo);
+	WaterRenderInfo_t info;
+	DetermineWaterRenderInfo(fogVolumeInfo, info);
+	g_ShaderEditorSystem->CustomViewRender(&g_CurrentViewID, fogVolumeInfo, info);
+#endif
 
 	// Disable fog for the rest of the stuff
 	DisableFog();
@@ -2228,6 +2244,7 @@ void PositionHudPanels( CUtlVector< vgui::VPANEL > &list, const CViewSetup &view
 	}
 }
 
+#ifndef PARTICLES2
 #ifdef PARTICLE_USAGE_DEMO
 static ConVar r_particle_demo( "r_particle_demo", "0", FCVAR_CHEAT );
 static CNonDrawingParticleSystem *s_pDemoSystem = NULL;
@@ -2264,6 +2281,7 @@ void ParticleUsageDemo( void )
 
 	}
 }
+#endif
 #endif
 
 
@@ -2382,6 +2400,9 @@ void CViewRender::RenderView( const CViewSetup &view, const CViewSetup &hudViewS
 				if ( ( bDrew3dSkybox = pSkyView->Setup( view, &nClearFlags, &nSkyboxVisible ) ) != false )
 				{
 					AddViewToScene( pSkyView );
+#ifdef SHADER_EDITOR
+					g_ShaderEditorSystem->UpdateSkymask(false, view.x, view.y, view.width, view.height);
+#endif
 				}
 				SafeRelease( pSkyView );
 			}
@@ -2481,6 +2502,10 @@ void CViewRender::RenderView( const CViewSetup &view, const CViewSetup &hudViewS
 		// Now actually draw the viewmodel
 		DrawViewModels( view, whatToDraw & RENDERVIEW_DRAWVIEWMODEL );
 
+#ifdef SHADER_EDITOR
+		g_ShaderEditorSystem->UpdateSkymask(bDrew3dSkybox, view.x, view.y, view.width, view.height);
+#endif
+
 		DrawUnderwaterOverlay();
 
 		PixelVisibility_EndScene();
@@ -2544,6 +2569,10 @@ void CViewRender::RenderView( const CViewSetup &view, const CViewSetup &hudViewS
 			}
 			pRenderContext.SafeRelease();
 		}
+
+#ifdef SHADER_EDITOR
+		g_ShaderEditorSystem->CustomPostRender();
+#endif
 
 		// And here are the screen-space effects
 
@@ -2718,10 +2747,11 @@ void CViewRender::RenderView( const CViewSetup &view, const CViewSetup &hudViewS
 
 	m_CurrentView = view;
 
+#ifndef PARTICLES2
 #ifdef PARTICLE_USAGE_DEMO
 	ParticleUsageDemo();
 #endif
-
+#endif
 
 }
 
@@ -4044,7 +4074,7 @@ static inline void DrawRenderable( IClientRenderable *pEnt, int flags, const Ren
 	{
 		Assert( view->GetCurrentlyDrawingEntity() == NULL );
 		view->SetCurrentlyDrawingEntity( pEnt->GetIClientUnknown()->GetBaseEntity() );
-		bool bBlockNormalDraw = BlurTest( pEnt, flags, true, instance );
+		bool bBlockNormalDraw = false;// BlurTest(pEnt, flags, true, instance);
 		if( !bBlockNormalDraw )
 			pEnt->DrawModel( flags, instance );
 		BlurTest( pEnt, flags, false, instance );

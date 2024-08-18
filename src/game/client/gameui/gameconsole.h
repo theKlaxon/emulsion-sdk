@@ -37,10 +37,13 @@ public:
 	// returns true if the console is currently in focus
 	virtual bool IsConsoleVisible();
 
+	virtual void SetParent(int parent);
+
 	// activates the console after a delay
 	void ActivateDelayed(float time);
 
-	void SetParent( int parent );
+	// override used by sativa ui, unused here.
+	virtual void Override(IGameConsole* pConsole) {};
 
 	static void OnCmdCondump();
 private:
@@ -49,6 +52,6 @@ private:
 	CGameConsoleDialog *m_pConsole;
 };
 
-extern CGameConsole &GameConsole();
+extern IGameConsole &GameConsole();
 
 #endif // GAMECONSOLE_H

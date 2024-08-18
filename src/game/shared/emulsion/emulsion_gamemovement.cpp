@@ -74,6 +74,7 @@ CEmulsionGameMovement::CEmulsionGameMovement() {
 
 	m_vecGravity = Vector(0, 0, -1);
 	m_vecPrevGravity = m_vecGravity;
+	m_vecPrevUp = Vector(0, 0, 1);
 
 	MatrixSetIdentity(m_mGravityTransform);
 
@@ -299,7 +300,6 @@ C:
 
 void CEmulsionGameMovement::CategorizePosition(void)
 {
-
 	Vector point;
 	trace_t pm;
 
@@ -328,9 +328,6 @@ void CEmulsionGameMovement::CategorizePosition(void)
 	//point[1] = mv->GetAbsOrigin()[1];
 	//point[2] = mv->GetAbsOrigin()[2] - flOffset;
 	point = mv->GetAbsOrigin() + ((-1 * GetGravityDir()) * -flOffset);
-
-	//point = mv->GetAbsOrigin();
-	//point += GetGravityDir() * -flOffset;
 
 	Vector bumpOrigin;
 	bumpOrigin = mv->GetAbsOrigin();
@@ -399,19 +396,19 @@ void CEmulsionGameMovement::CategorizePosition(void)
 				GetPlayerMaxs(), PlayerSolidMask(), pFilter, pm, flStandableZ, true, &m_nTraceCount);
 			UnlockTraceFilter(pFilter);
 			//if (!pm.m_pEnt || (pm.plane.normal[2] < flStandableZ))
-			if (!pm.m_pEnt || (slope < flStandableZ))
-			{
-				SetGroundEntity(NULL);
-				// probably want to add a check for a +z velocity too!
-				//if ((mv->m_vecVelocity.z > 0.0f) &&
-				if (((mv->m_vecVelocity * (-1 * GetGravityDir())).Length() > 0.0f) &&
-					(player->GetMoveType() != MOVETYPE_NOCLIP))
-				{
-					player->m_surfaceFriction = 0.25f;
-				}
-				bMoveToEndPos = false;
-			}
-			else
+			//if (!pm.m_pEnt || (slope < flStandableZ))
+			//{
+			//	SetGroundEntity(NULL);
+			//	// probably want to add a check for a +z velocity too!
+			//	//if ((mv->m_vecVelocity.z > 0.0f) &&
+			//	if (((mv->m_vecVelocity * (-1 * GetGravityDir())).Length() > 0.0f) &&
+			//		(player->GetMoveType() != MOVETYPE_NOCLIP))
+			//	{
+			//		player->m_surfaceFriction = 0.25f;
+			//	}
+			//	bMoveToEndPos = false;
+			//}
+			//else
 			{
 				SetGroundEntity(&pm);
 			}
@@ -1027,7 +1024,8 @@ void CEmulsionGameMovement::CheckFalling()
 			}
 		}
 
-		PlayerRoughLandingEffects(fvol);
+		if (player->m_Local.m_flFallVelocity >= pl_fallpunchthreshold.GetFloat() * 2)
+			PlayerRoughLandingEffects(fvol);
 
 		if (bAlive)
 			MoveHelper()->PlayerSetAnimation(PLAYER_WALK);
@@ -1306,7 +1304,7 @@ bool CEmulsionGameMovement::CheckJumpButton() {
 #endif
 
 	// ACC FORHOP
-
+#if 0
 	bool bAllowBunnyHopperSpeedBoost = (gpGlobals->maxClients == 1);
 
 
@@ -1337,7 +1335,7 @@ bool CEmulsionGameMovement::CheckJumpButton() {
 		// Add it on
 		VectorAdd((vecForward * flSpeedAddition), mv->m_vecVelocity, mv->m_vecVelocity);
 	}
-
+#endif
 	//
 
 	FinishGravity();

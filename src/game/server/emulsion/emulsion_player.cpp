@@ -54,6 +54,11 @@ LINK_ENTITY_TO_CLASS(player, CEmulsionPlayer);
 IMPLEMENT_SERVERCLASS_ST(CEmulsionPlayer, DT_EmulsionPlayer)
 SendPropVector(SENDINFO(m_vecVelocity), -1, SPROP_NOSCALE, 0.0f, HIGH_DEFAULT),
 SendPropVector(SENDINFO(m_vecGravity), -1, SPROP_NOSCALE, 0.0f, HIGH_DEFAULT),
+SendPropVector(SENDINFO(m_vecPrevUp), -1, SPROP_NOSCALE, 0.0f, HIGH_DEFAULT),
+SendPropVector(SENDINFO(m_vecStickRight), -1, SPROP_NOSCALE, 0.0f, HIGH_DEFAULT),
+SendPropVector(SENDINFO(m_vecSurfaceForward), -1, SPROP_NOSCALE, 0.0f, HIGH_DEFAULT),
+SendPropVector(SENDINFO(m_vecPrevOrigin), -1, SPROP_NOSCALE, 0.0f, HIGH_DEFAULT),
+SendPropVector(SENDINFO(m_vecUp), -1, SPROP_NOSCALE, 0.0f, HIGH_DEFAULT),
 SendPropEHandle(SENDINFO(m_hStickParent)),
 SendPropInt(SENDINFO(m_nPaintPower))
 END_SEND_TABLE()
@@ -61,6 +66,10 @@ END_SEND_TABLE()
 CEmulsionPlayer::CEmulsionPlayer() {
 	pMove = (CEmulsionGameMovement*)g_pGameMovement;
 	m_vecGravity = Vector(0, 0, -1);
+	m_vecPrevUp = Vector(0, 0, 1);
+	m_vecUp = Vector(0, 0, 1);
+	m_vecStickRight = Vector(0, 1, 0);
+	m_vecSurfaceForward = Vector(1, 0, 0);
 	m_bIsTouchingStickParent = false;
 }
 
@@ -491,8 +500,8 @@ void CEmulsionPlayer::PickupObject(CBaseEntity* pObject, bool bLimitMassAndSize)
 
 	PlayerPickupObject(this, pObject);
 
-	pObject->SetSolid(SOLID_NONE);
-	pObject->SetSolidFlags(FSOLID_NOT_SOLID);
+	//pObject->SetSolid(SOLID_NONE);
+	//pObject->SetSolidFlags(FSOLID_NOT_SOLID);
 }
 
 bool CEmulsionPlayer::IsHoldingEntity(CBaseEntity* pEnt)
@@ -674,12 +683,40 @@ extern bool m_bCancelNextExitSound;
 void CEmulsionPlayer::StickPlayer(PaintInfo_t info) {
 
 	if (m_tCurPaintInfo.plane.normal != info.plane.normal) {
+
+		m_vecPrevUp.m_Value = m_vecUp.m_Value;
+		Msg("Prev Up: (%f, %f, %f)\n", m_vecPrevUp.GetX(), m_vecPrevUp.GetY(), m_vecPrevUp.GetZ());
+
+		//for (int i = 0; i < 3; i++)
+		//	if (m_vecPrevUp.Get()[i] < 0)
+		//		m_vecPrevUp.GetForModify()[i] *= -1;
+
+		//Msg("PrevGravity: (%f, %f, %f)\n", m_vecPrevUp.GetX(), m_vecPrevUp.GetY(), m_vecPrevUp.GetZ());
 		SetGravityDir(-1 * info.plane.normal);
 		pMove->SetGravityDir(-1 * info.plane.normal);
 		pMove->CalculateStickAngles();
 
+		m_vecUp = info.plane.normal;
+		Msg("New Up: (%f, %f, %f)\n", m_vecUp.GetX(), m_vecUp.GetY(), m_vecUp.GetZ());
+		
+		// im bad at math! BUT, this should give me an angle perpendicular to the surface normal.
+		QAngle hackright;
+		VectorAngles(info.plane.normal, hackright);
+
+		QAngle hackforward;
+		VectorAngles(m_vecPrevUp, hackforward);
+
+		Vector rightyright;
+		Vector forwardyforward;
+		AngleVectors(hackright, nullptr, &rightyright, nullptr); 
+		AngleVectors(hackright, nullptr, nullptr, &forwardyforward); // we ARE using the forward as the up here, dont change it. 
+
+		m_vecStickRight = CrossProduct(m_vecUp, m_vecPrevUp);
+		Msg("Rot Axis: (%f, %f, %f)\n", m_vecStickRight.GetX(), m_vecStickRight.GetY(), m_vecStickRight.GetZ());
+
 		SetGroundEntity(NULL);
 
+		m_vecPrevOrigin = GetAbsOrigin();
 		SetAbsOrigin(info.pos);
 		RotateBBox(info.plane.normal);
 	}
@@ -704,6 +741,7 @@ void CEmulsionPlayer::UnStickPlayer() {
 	g_bStickPaintJumpRelease = false;
 
 	SetGravityDir(Vector(0, 0, -1));
+	//m_vecUp = Vector(0, 0, 1);
 	//pMove->SetGravityDir(Vector(0, 0, -1));
 	//pMove->CalculateStickAngles();
 	pMove->UnStickPlayer();
@@ -716,6 +754,9 @@ void CEmulsionPlayer::UnStickPlayer() {
 
 	RotateBBox(Vector(0, 0, 1));
 	SetMoveType(MOVETYPE_WALK);
+
+	m_vecPrevUp = m_vecUp;
+	m_vecUp = Vector(0, 0, 1);
 }
 
 static CViewVectors g_OriginalDefaultViewVectors(

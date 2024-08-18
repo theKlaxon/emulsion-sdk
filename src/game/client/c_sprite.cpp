@@ -64,6 +64,10 @@ void DrawSpriteModel( IClientEntity *baseentity, CEngineSprite *psprite, const V
 	if ( !material )
 		return;
 
+	//Msg("Sprite Mat: ");
+	//Msg(material->GetName());
+	//Msg("\n");
+
 	CMatRenderContextPtr pRenderContext( materials );
 	
 	if ( ShouldDrawInWireFrameMode() || r_drawsprites.GetInt() == 2 )
@@ -73,7 +77,8 @@ void DrawSpriteModel( IClientEntity *baseentity, CEngineSprite *psprite, const V
 	}
 	else
 	{
-		pRenderContext->Bind( material, (IClientRenderable*)baseentity );
+		//pRenderContext->Bind( material, (IClientRenderable*)baseentity );
+		pRenderContext->Bind( material, baseentity->GetClientRenderable() );
 	}
 
 	unsigned char color[4];
@@ -376,10 +381,12 @@ int C_SpriteRenderer::DrawSprite(
 		return 0;
 	}
 
+	const char* mdlname = modelinfo->GetModelName(model);
 	// Get extra data
 	CEngineSprite *psprite = (CEngineSprite *)modelinfo->GetModelExtraData( model ); // this is fucked! fix it!
 	if ( !psprite )
 	{
+		Msg("Bad Model Info given for %s!\n", mdlname);
 		return 0;
 	}
 

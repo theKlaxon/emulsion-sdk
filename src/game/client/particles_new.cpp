@@ -40,7 +40,10 @@ CNewParticleEffect::CNewParticleEffect( CBaseEntity *pOwner, CParticleSystemDefi
 			pEffect = g_pParticleSystemMgr->FindParticleSystem( "error" );
 		}
 	}
-	Init( pEffect );
+
+	g_pParticleSystemMgr->InitCollection(this, pEffect);
+
+	//Init( pEffect );
 	Construct();
 }
 
@@ -617,7 +620,8 @@ int CNewParticleEffect::DrawModel( int flags, const RenderableInstance_t &instan
 		pRenderContext->MatrixMode( MATERIAL_MODEL );
 		pRenderContext->PushMatrix();
 		pRenderContext->LoadIdentity();
-		Render( pRenderContext, vecDiffuseModulation, ( flags & STUDIO_TRANSPARENCY ) ? IsTwoPass() : false, pCameraObject ); // TODO
+		//Render( pRenderContext, vecDiffuseModulation, ( flags & STUDIO_TRANSPARENCY ) ? IsTwoPass() : false, pCameraObject );
+		g_pParticleSystemMgr->RenderCollection(this, pRenderContext, vecDiffuseModulation, (flags & STUDIO_TRANSPARENCY) ? IsTwoPass() : false, pCameraObject);
 		pRenderContext->MatrixMode( MATERIAL_MODEL );
 		pRenderContext->PopMatrix();
 	}

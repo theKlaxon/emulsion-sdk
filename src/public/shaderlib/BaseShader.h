@@ -227,7 +227,7 @@ public:
 	BlendType_t EvaluateBlendRequirements(int textureVar, bool isBaseTexture, int detailTextureVar = -1);
 	void SetVertexShaderTextureTransform(int vertexReg, int transformVar);
 
-private:
+public:
 	// This is a per-instance state which is handled completely by the system
 	void PI_SetSkinningMatrices();
 	void PI_SetVertexShaderLocalLighting( );

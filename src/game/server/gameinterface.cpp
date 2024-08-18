@@ -632,12 +632,14 @@ static bool InitGameSystems( CreateInterfaceFn appSystemFactory )
 CServerGameDLL g_ServerGameDLL;
 EXPOSE_SINGLE_INTERFACE_GLOBALVAR(CServerGameDLL, IServerGameDLL, INTERFACEVERSION_SERVERGAMEDLL, g_ServerGameDLL);
 
-#include "../game/shared/emulsion/proxy_filesystem.h"
-#include "../game/shared/emulsion/proxy_imaterialsystem.h"
-
-//IFileSysPrx* g_pFullFileSysPrx = nullptr;
-
 #undef AddJob
+
+#if defined(PARTICLES2)
+#include "particles/iparticlesdll.h"
+IParticlesDLL* pParticles = nullptr;
+static IParticleSystemMgr* g_ParticlePtr = nullptr;
+IParticleSystemMgr* g_pParticleSystemMgr = g_ParticlePtr;
+#endif
 
 bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory, 
 		CreateInterfaceFn physicsFactory, CreateInterfaceFn fileSystemFactory, 
@@ -664,6 +666,14 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory,
 #endif
 #if !defined(NO_STEAM)
 	s_SteamGameServerAPIContext.Init();
+#endif
+
+	// add the 'custom' mod folder path
+	g_pFullFileSystem->AddSearchPath("custom", "MOD");
+
+	// print our paths for debugging (just incase)
+#ifdef DEBUG
+	g_pFullFileSystem->PrintSearchPaths();
 #endif
 
 	COM_TimestampedLog( "Factories - Start" );
@@ -714,9 +724,6 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory,
 	{
 		scriptmanager = (IScriptManager *)appSystemFactory( VSCRIPT_INTERFACE_VERSION, NULL );
 	}
-
-	//g_pMaterialSysASW = &g_matsysasw;
-	//g_pFullFileSysPrx = (IFileSysPrx*)filesystem;
 
 #ifdef SERVER_USES_VGUI
 	// If not running dedicated, grab the engine vgui interface
@@ -783,9 +790,28 @@ bool CServerGameDLL::DLLInit( CreateInterfaceFn appSystemFactory,
 	InitializeCvars();
 	
 	COM_TimestampedLog( "g_pParticleSystemMgr->Init" );
+
+#if defined(PARTICLES2)
+	CSysModule* pModule = g_pFullFileSystem->LoadModule("particles_dll", "BIN", false);
+	if (pModule != nullptr)
+	{
+		CreateInterfaceFn particlesFactory = Sys_GetFactory(pModule);
+		pParticles = (IParticlesDLL*)particlesFactory(PARTICLES_INTERFACE_VERSION, NULL);
+	}
+
+	if (!pParticles) {
+		Warning("Could not load particles dll!\n");
+		return false;
+	}
+
+	pParticles->Initialize(appSystemFactory);
+	g_ParticlePtr = pParticles->GetMgrInstance();
+	g_pParticleSystemMgr = g_ParticlePtr;
+#endif
+
 	// Initialize the particle system
 	bool bPrecacheParticles = IsPC() && !engine->IsCreatingXboxReslist();
-	if ( !g_pParticleSystemMgr->Init2( g_pParticleSystemQuery, bPrecacheParticles ) )
+	if ( !g_pParticleSystemMgr->Init( g_pParticleSystemQuery, bPrecacheParticles ) )
 	{
 		return false;
 	}

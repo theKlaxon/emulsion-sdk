@@ -1,0 +1,24 @@
+VertexLitGeneric
+{
+$baseTexture "models\props/metal_box_new_ring_pink"
+$selfillum 1
+
+$nodecal 1
+$frame 0
+Proxies
+{
+	ConVar 
+	{
+		convar "cube_consistent"
+		resultVar $frame
+	}
+	
+	Clamp 
+	{
+		min 0
+		max 1
+		srcVar $frame
+		resultVar $frame
+	}
+}
+}

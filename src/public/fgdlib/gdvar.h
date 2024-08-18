@@ -10,7 +10,7 @@
 #pragma once
 
 #include <utlvector.h>
-#include <tier2/TokenReader.h> // dvs: for MAX_STRING. Fix.
+#include <tier1/TokenReader.h> // dvs: for MAX_STRING. Fix.
 
 
 class MDkeyvalue;

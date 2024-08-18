@@ -18,7 +18,7 @@
 #endif
 
 #include "HelperInfo.h"
-#include "tier2/TokenReader.h"
+#include "tier1/TokenReader.h"
 #include "GDVar.h"
 #include "InputOutput.h"
 #include "mathlib/vector.h"

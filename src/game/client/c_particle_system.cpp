@@ -45,7 +45,7 @@ protected:
 	uint8		m_iServerControlPointAssignments[4];
 
 	CUtlReference< CNewParticleEffect > m_pEffect;
-	CParticleSnapshot *m_pSnapshot;
+	//CParticleSnapshot *m_pSnapshot;
 
 	enum { kMAXCONTROLPOINTS = 63 }; ///< actually one less than the total number of cpoints since 0 is assumed to be me
 
@@ -88,7 +88,7 @@ END_RECV_TABLE();
 // Purpose: 
 //-----------------------------------------------------------------------------
 C_ParticleSystem::C_ParticleSystem( void )
- :	m_pSnapshot( NULL )
+// :	m_pSnapshot( NULL )
 {
 	memset( m_szSnapshotFileName, 0, sizeof( m_szSnapshotFileName ) );
 }
@@ -98,11 +98,11 @@ C_ParticleSystem::C_ParticleSystem( void )
 //-----------------------------------------------------------------------------
 C_ParticleSystem::~C_ParticleSystem( void )
 {
-	if ( m_pSnapshot )
-	{
-		delete m_pSnapshot;
-		m_pSnapshot = NULL;
-	}
+	//if ( m_pSnapshot )
+	//{
+	//	delete m_pSnapshot;
+	//	m_pSnapshot = NULL;
+	//}
 }
 
 //-----------------------------------------------------------------------------
@@ -128,15 +128,15 @@ void C_ParticleSystem::PostDataUpdate( DataUpdateType_t updateType )
 	{
 		// TODO: !!HACK HACK HACK!! .PSF files should be loaded/refcounted through the CParticleSystemMgr (ala .PCFs).
 		//       The current code will duplicate a given .PSF file in memory for every info_particle_system that uses it!
-		if ( m_szSnapshotFileName[0] )
-		{
-			m_pSnapshot = new CParticleSnapshot();
-			if ( !m_pSnapshot->Unserialize( CFmtStr( "particles/%s.psf", m_szSnapshotFileName ) ) )
-			{
-				delete m_pSnapshot;
-				m_pSnapshot = NULL;
-			}
-		}
+		//if ( m_szSnapshotFileName[0] )
+		//{
+		//	m_pSnapshot = new CParticleSnapshot();
+		//	if ( !m_pSnapshot->Unserialize( CFmtStr( "particles/%s.psf", m_szSnapshotFileName ) ) )
+		//	{
+		//		delete m_pSnapshot;
+		//		m_pSnapshot = NULL;
+		//	}
+		//}
 
 		if ( m_bActive )
 		{
@@ -241,11 +241,11 @@ void C_ParticleSystem::ClientThink( void )
 				}
 
 				// Attach our particle snapshot if we have one
-				Assert( m_pSnapshot || !m_szSnapshotFileName[0] ); // m_szSnapshotFileName shouldn't change after the create update
-				if ( m_pSnapshot )
-				{
-					pEffect->SetControlPointSnapshot( 0, m_pSnapshot );
-				}
+				//Assert( m_pSnapshot || !m_szSnapshotFileName[0] ); // m_szSnapshotFileName shouldn't change after the create update
+				//if ( m_pSnapshot )
+				//{
+				//	pEffect->m_pCollection->SetControlPointSnapshot( 0, m_pSnapshot );
+				//}
 
 				// NOTE: What we really want here is to compare our lifetime and that of our children and see if this delta is
 				//		 already past the end of it, denoting that we're finished.  In that case, just destroy us and be done. -- jdw
@@ -299,7 +299,7 @@ void StartParticleEffect( const CEffectData &data, int nSplitScreenPlayerSlot /*
 
 				CUtlReference<CNewParticleEffect> pEffect = pEnt->ParticleProp()->CreatePrecached( data.m_nHitBox, (ParticleAttachment_t)data.m_nDamageType, data.m_nAttachmentIndex );
 
-				if ( pEffect.IsValid() && pEffect->IsValid() )
+				if ( pEffect.IsValid() )
 				{
 					if ( (ParticleAttachment_t)data.m_nDamageType == PATTACH_CUSTOMORIGIN || (ParticleAttachment_t)data.m_nDamageType == PATTACH_CUSTOMORIGIN_FOLLOW )
 					{
@@ -339,11 +339,15 @@ void StartParticleEffect( const CEffectData &data, int nSplitScreenPlayerSlot /*
 	}	
 	else
 	{
-		CParticleSystemDefinition *pDef = g_pParticleSystemMgr->FindPrecachedParticleSystem( data.m_nHitBox );
+		if (!g_pParticleSystemMgr->FindPrecachedParticleSystem(data.m_nHitBox))
+			PrecacheParticleSystem(g_pParticleSystemMgr->GetParticleSystemNameFromIndex(data.m_nHitBox));
+
+		CParticleSystemDefinition* pDef = g_pParticleSystemMgr->FindPrecachedParticleSystem( data.m_nHitBox );
+
 		if ( pDef )
 		{
 			CUtlReference<CNewParticleEffect> pEffect = CNewParticleEffect::CreateOrAggregate( NULL, pDef, data.m_vOrigin, NULL, nSplitScreenPlayerSlot );
-			if ( pEffect.IsValid() && pEffect->IsValid() )
+			if ( pEffect.IsValid() )
 			{
 				pEffect->SetSortOrigin( data.m_vOrigin );
 				pEffect->SetControlPoint( 0, data.m_vOrigin );
@@ -402,7 +406,7 @@ void ParticleEffectStopCallback( const CEffectData &data )
 
 					if ( pDef )
 					{
-						pEnt->ParticleProp()->StopParticlesNamed( pDef->GetName(), true );
+						pEnt->ParticleProp()->StopParticlesNamed( g_pParticleSystemMgr->GetDefName(pDef), true);
 					}
 				}
 			}

@@ -1417,7 +1417,7 @@ struct mstudiomesh_t
 
 	mstudio_meshvertexdata_t vertexdata;
 
-	int					unused[6]; // remove as appropriate - was 8 in ASW
+	int					unused[6]; // remove as appropriate -- 8 in asw
 
 	mstudiomesh_t(){}
 private:

@@ -49,6 +49,6 @@ private:
 	CGameConsoleDialog *m_pConsole;
 };
 
-extern CGameConsole &GameConsole();
+extern IGameConsole &GameConsole();
 
 #endif // GAMECONSOLE_H

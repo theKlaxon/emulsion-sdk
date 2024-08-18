@@ -267,7 +267,7 @@ public:
 	virtual bool				IsStereoActiveThisFrame() const { return m_pBaseMaterialsPassThru->IsStereoActiveThisFrame(); }
 
 	// TODO: relocate?
-	virtual void				NVStereoUpdate() { }//m_pBaseMaterialsPassThru->NVStereoUpdate(); }
+	virtual void				NVStereoUpdate() { m_pBaseMaterialsPassThru->NVStereoUpdate(); }
 
 	// --
 

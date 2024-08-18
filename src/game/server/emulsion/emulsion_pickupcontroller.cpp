@@ -658,6 +658,8 @@ bool CGrabController::UpdateObject(CBasePlayer* pPlayer, float flError)
 	QAngle playerAngles = ((CEmulsionPlayer*)pPlayer)->StickEyeAngles();//pPlayer->EyeAngles();
 	AngleVectors(playerAngles, &forward, &right, &up);
 
+	forward = ((CEmulsionPlayer*)pPlayer)->GetForward_Stick();
+
 	float pitch = AngleDistance(playerAngles.x, 0);
 
 	//if (!m_bAllowObjectOverhead)
@@ -671,7 +673,8 @@ bool CGrabController::UpdateObject(CBasePlayer* pPlayer, float flError)
 
 	// Now clamp a sphere of object radius at end to the player's bbox
 	Vector radial = physcollision->CollideGetExtent(pPhys->GetCollide(), vec3_origin, pEntity->GetAbsAngles(), -forward);
-	Vector player2d = pPlayer->CollisionProp()->OBBMaxs();
+	//Vector player2d = pPlayer->CollisionProp()->OBBMaxs();
+	Vector player2d = pPlayer->GetPlayerMaxs();
 	float playerRadius = player2d.Length2D();
 	float radius = playerRadius + fabs(DotProduct(forward, radial));
 
@@ -697,24 +700,24 @@ bool CGrabController::UpdateObject(CBasePlayer* pPlayer, float flError)
 	{
 		end = start + forward * (distance - radius);
 	}
+
 	Vector playerMins, playerMaxs, nearest;
 	pPlayer->CollisionProp()->WorldSpaceAABB(&playerMins, &playerMaxs);
-	Vector playerLine = pPlayer->CollisionProp()->WorldSpaceCenter();
+
+	//Vector playerLine = pPlayer->CollisionProp()->WorldSpaceCenter();
+	Vector playerLine = ((CEmulsionPlayer*)pPlayer)->GetHalfHeight_Stick();
 
 	int k = 0;
 	Vector stickgrav = ((CEmulsionPlayer*)pPlayer)->StickGravity();
-
-	//Msg("StickVec: (%f, %f, %f)\n", stickgrav.x, stickgrav.y, stickgrav.z);
-
+	
 	if (stickgrav == Vector(0, 0, 1))
 		stickgrav *= -0.99;
 	else
 		stickgrav *= -1;
-
-	//Msg("GrabVec: (%f, %f, %f)\n", stickgrav.x, stickgrav.y, stickgrav.z);
-
+	
+	// TODO: investigate this -klax
 	//CalcClosestPointOnLine(end, playerLine + Vector(0, 0, playerMins.z), playerLine + Vector(0, 0, playerMaxs.z), nearest, NULL);
-	CalcClosestPointOnLine(end, playerLine + ( stickgrav * playerMins), playerLine + stickgrav * playerMins, nearest, NULL);
+	CalcClosestPointOnLine(end, playerLine + (stickgrav * playerMaxs), playerLine + stickgrav * playerMaxs, nearest, NULL);
 
 	if (!m_bAllowObjectOverhead)
 	{

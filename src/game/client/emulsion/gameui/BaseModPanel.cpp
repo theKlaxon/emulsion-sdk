@@ -1167,7 +1167,8 @@ void CBaseModPanel::RunFrame()
 	//}
 }
 
-
+#include "../gamepadui/igamepadui.h"
+extern IGamepadUI* g_pGamepadUI;
 //=============================================================================
 void CBaseModPanel::OnLevelLoadingStarted( char const *levelName, bool bShowProgressDialog )
 {
@@ -1187,7 +1188,6 @@ void CBaseModPanel::OnLevelLoadingStarted( char const *levelName, bool bShowProg
 		engine->SearchPathsChangedAfterInstall();
 	}
 #endif
-
 	CloseAllWindows();
 
 	if ( UI_IsDebug() )
@@ -1195,167 +1195,9 @@ void CBaseModPanel::OnLevelLoadingStarted( char const *levelName, bool bShowProg
 		Msg( "[GAMEUI] OnLevelLoadingStarted - opening loading progress (%s)...\n",
 			levelName ? levelName : "<< no level specified >>" );
 	}
-
-	return;
-
-	//LoadingProgress *pLoadingProgress = static_cast<LoadingProgress*>( OpenWindow( WT_LOADINGPROGRESS, 0 ) );
-
-	KeyValues *pMissionInfo = NULL;
-	KeyValues *pChapterInfo = NULL;
 	
-	bool bShowPoster = false;
-	char chGameMode[64] = {0};
-
-	//
-	// If playing on listen server then "levelName" is set to the map being loaded,
-	// so it is authoritative - it might be a background map or a real level.
-	//
-	if ( levelName )
-	{
-		// Derive the mission info from the server game details
-		KeyValues *pGameSettings = g_pMatchFramework->GetMatchNetworkMsgController()->GetActiveServerGameDetails( NULL );
-		if ( !pGameSettings )
-		{
-			// In this particular case we need to speculate about game details
-			// this happens when user types "map c5m2 versus easy" from console, so there's no
-			// active server spawned yet, nor is the local client connected to any server.
-			// We have to force server DLL to apply the map command line to the settings and then
-			// speculatively construct the settings key.
-			if ( IServerGameDLL *pServerDLL = ( IServerGameDLL * ) g_pMatchFramework->GetMatchExtensions()->GetRegisteredExtensionInterface( INTERFACEVERSION_SERVERGAMEDLL ) )
-			{
-				KeyValues *pApplyServerSettings = new KeyValues( "::ExecGameTypeCfg" );
-				KeyValues::AutoDelete autodelete_pApplyServerSettings( pApplyServerSettings );
-
-				pApplyServerSettings->SetString( "map/mapname", levelName );
-
-				pServerDLL->ApplyGameSettings( pApplyServerSettings );
-			}
-
-			static ConVarRef r_mp_gamemode( "mp_gamemode" );
-			if ( r_mp_gamemode.IsValid() )
-			{
-				pGameSettings = new KeyValues( "CmdLineSettings" );
-				pGameSettings->SetString( "game/mode", r_mp_gamemode.GetString() );
-			}
-		}
-		
-		KeyValues::AutoDelete autodelete_pGameSettings( pGameSettings );
-		if ( pGameSettings )
-		{
-			// It is critical to get map info by the actual levelname that is being loaded, because
-			// for level transitions the server is still in the old map and the game settings returned
-			// will reflect the old state of the server.
-			pChapterInfo = g_pMatchExtSwarm->GetMapInfoByBspName( pGameSettings, levelName, &pMissionInfo );
-			Q_strncpy( chGameMode, pGameSettings->GetString( "game/mode", "" ), ARRAYSIZE( chGameMode ) );
-		}
-	}
-	
-	IMatchSession *pSession = g_pMatchFramework->GetMatchSession();
-	if ( !pChapterInfo && pSession  )
-	{
-		if ( KeyValues *pSettings = pSession->GetSessionSettings() )
-		{
-			pChapterInfo = g_pMatchExtSwarm->GetMapInfo( pSettings, &pMissionInfo );
-			Q_strncpy( chGameMode, pSettings->GetString( "game/mode", "" ), ARRAYSIZE( chGameMode ) );
-		}
-	}
-
-	//
-	// If we are just loading into some unknown map, then fake chapter information
-	// (static lifetime of fake keyvalues so that we didn't worry about ownership)
-	//
-	if ( !pMissionInfo )
-	{
-		static KeyValues *s_pFakeMissionInfo = new KeyValues( "" );
-		pMissionInfo = s_pFakeMissionInfo;
-		pMissionInfo->SetString( "displaytitle", "#L4D360UI_Lobby_Unknown_Campaign" );
-	}
-	if ( !pChapterInfo )
-	{
-		static KeyValues *s_pFakeChapterInfo = new KeyValues( "1" );
-		pChapterInfo = s_pFakeChapterInfo;
-		pChapterInfo->SetString( "displayname", levelName ? levelName : "#L4D360UI_Lobby_Unknown_Campaign" );
-		pChapterInfo->SetString( "map", levelName ? levelName : "" );
-	}
-	
-	//
-	// If we are transitioning maps from a real level then we don't want poster.
-	// We always want the poster when loading the first chapter of a campaign (vote for restart)
-	//
-	bShowPoster = false;// true; //( !GameUI().IsInLevel() ||
-					//GameModeIsSingleChapter( chGameMode ) ||
-					//( pChapterInfo && pChapterInfo->GetInt( "chapter" ) == 1 ) ) &&
-		//pLoadingProgress->ShouldShowPosterForLevel( pMissionInfo, pChapterInfo );
-
-	//LoadingProgress::LoadingType type;
-	//if ( bShowPoster )
-	//{
-	//	type = LoadingProgress::LT_POSTER;
-
-	//	// These names match the order of the enum Avatar_t in imatchmaking.h
-
-	//	const char *pPlayerNames[NUM_LOADING_CHARACTERS] = { NULL, NULL, NULL, NULL };
-	//	const char *pAvatarNames[NUM_LOADING_CHARACTERS] = { "", "", "", "" };
-
-	//	unsigned char botFlags = 0xFF;
-
-	//	if ( IMatchSession *pSession = g_pMatchFramework->GetMatchSession() )
-	//	{
-	//		KeyValues *pSettings = pSession->GetSessionSettings();
-	//		if ( pSettings )
-	//			pSettings = pSettings->FindKey( "members" );
-
-	//		int numMachines = pSettings->GetInt( "numMachines", 0 );
-	//		for ( int iMachine = 0; iMachine < numMachines; ++ iMachine )
-	//		{
-	//			char chMachine[32];
-	//			sprintf( chMachine, "machine%d", iMachine );
-	//			KeyValues *pMachine = pSettings->FindKey( chMachine );
-
-	//			int numPlayers = pMachine->GetInt( "numPlayers", 0 );
-	//			for ( int iPlayer = 0; iPlayer < numPlayers; ++ iPlayer )
-	//			{
-	//				char chPlayer[32];
-	//				sprintf( chPlayer, "player%d", iPlayer );
-	//				KeyValues *pPlayer = pMachine->FindKey( chPlayer );
-
-	//				XUID xuidPlayer = pPlayer->GetUint64( "xuid", 0ull );
-	//				char const *szPlayerName = pPlayer->GetString( "name", "" );
-	//				szPlayerName = CUIGameData::Get()->GetPlayerName( xuidPlayer, szPlayerName );
-	//				char const *szAvatar = pPlayer->GetString( "game/avatar", "" );
-
-	//				// Find the avatar
-	//				int iAvatar;
-	//				for ( iAvatar = 0; iAvatar < ARRAYSIZE( pAvatarNames ); ++ iAvatar )
-	//				{
-	//					if ( !Q_stricmp( pAvatarNames[iAvatar], szAvatar ) )
-	//						break;
-	//				}
-	//				if ( iAvatar < ARRAYSIZE( pPlayerNames ) )
-	//				{
-	//					pPlayerNames[ iAvatar ] = szPlayerName;
-	//					botFlags &= ~(1 << iAvatar);
-	//				}
-	//			}
-	//		}
-	//	}
-	//	pLoadingProgress->SetPosterData( pMissionInfo, pChapterInfo, pPlayerNames, botFlags, chGameMode );
-	//}
-	//else if ( GameUI().IsInLevel() && !GameUI().IsInBackgroundLevel() )
-	//{
-	//	// Transitions between levels 
-	//	type = LoadingProgress::LT_TRANSITION;
-	//}
-	//else
-	//{
-	//	// Loading the menu the first time
-	//	type = LoadingProgress::LT_MAINMENU;
-	//}
-
-	//pLoadingProgress->SetLoadingType( type );
-	//pLoadingProgress->SetProgress( 0.0f );
-
 	m_LevelLoading = true;
+	g_pGamepadUI->OnLevelLoadStarted();
 }
 
 void CBaseModPanel::OnEngineLevelLoadingSession( KeyValues *pEvent )
@@ -1447,6 +1289,8 @@ void CBaseModPanel::OnLevelLoadingFinished( KeyValues *kvEvent )
 			pMsg->SetUsageData( data );
 		}		
 	}
+
+	g_pGamepadUI->OnLevelLoadFinished();
 }
 
 class CMatchSessionCreationAsyncOperation : public IMatchAsyncOperation

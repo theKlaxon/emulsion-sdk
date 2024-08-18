@@ -12,7 +12,6 @@
 
 #include "tier1/interface.h"
 
-
 //-----------------------------------------------------------------------------
 // Purpose: interface to game/dev console
 //-----------------------------------------------------------------------------
@@ -34,6 +33,11 @@ public:
 	virtual bool IsConsoleVisible() = 0;
 
 	virtual void SetParent( int parent ) = 0;
+
+	// for use in the swarm code :/
+	virtual void ActivateDelayed(float time) = 0;
+	
+	virtual void Override(IGameConsole* pConsole) = 0;
 };
 
 #define GAMECONSOLE_INTERFACE_VERSION "GameConsole004"

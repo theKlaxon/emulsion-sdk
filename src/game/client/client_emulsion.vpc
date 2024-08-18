@@ -14,7 +14,7 @@ $Configuration
 	$Compiler
 	{
 		$AdditionalIncludeDirectories	"$BASE;.\swarm;.\hl2;.\emulsion;.\swarm\vgui;$SRCDIR\game\shared\swarm;$SRCDIR\game\shared\emulsion;.\gameui;$SRCDIR\game\client\swarm\gameui;..\statemachine;"
-		$PreprocessorDefinitions		"$BASE;EMULSION_DLL;SWARM_DLL;GAMEUI_EMBEDDED;GAMEUI_EXPORTS;SPLITSCREEN_STUBS"
+		$PreprocessorDefinitions		"$BASE;EMULSION_DLL;SWARM_DLL;GAMEUI_EMBEDDED;GAMEUI_EXPORTS;SPLITSCREEN_STUBS;PARTICLES2;"
 	}
 }
 
@@ -73,9 +73,6 @@ $Project "Client (Emulsion)"
 				$File	"$SRCDIR\game\shared\emulsion\emulsion_parsers.cpp"
 				$File	"$SRCDIR\game\shared\emulsion\paintblob_manager.cpp"
 				$File	"$SRCDIR\game\shared\emulsion\paintblob_manager.h"
-				$File	"$SRCDIR\game\shared\emulsion\proxy_filesystem.h"
-				$File	"$SRCDIR\game\shared\emulsion\proxy_imaterialsystem.cpp"
-				$File	"$SRCDIR\game\shared\emulsion\proxy_imatrendercontext.h"
 				$File 	"$SRCDIR\game\shared\predicted_viewmodel.cpp"
 			}
 
@@ -106,5 +103,6 @@ $Project "Client (Emulsion)"
 	$Folder	"Link Libraries"
 	{
 		$Lib "$LIBPUBLIC\vpklib"
+		$Lib "$LIBPUBLIC\particles2"
 	}
 }

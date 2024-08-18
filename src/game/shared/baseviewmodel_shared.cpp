@@ -402,6 +402,7 @@ void CBaseViewModel::CalcViewModelView( CBasePlayer *owner, const Vector& eyePos
 		{
 			// add weapon-specific bob 
 			pWeapon->AddViewmodelBob( this, vmorigin, vmangles );
+			
 		}
 	}
 	// Add model-specific bob even if no weapon associated (for head bob for off hand models)

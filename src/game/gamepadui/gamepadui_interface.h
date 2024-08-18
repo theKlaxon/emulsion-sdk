@@ -27,6 +27,7 @@
 
 class GamepadUIBasePanel;
 class GamepadUIMainMenu;
+class GamepadUILoadingDisplay;
 
 #define CORRECT_PATH_SEPARATOR_S "/"
 #define GAMEPADUI_RESOURCE_FOLDER "gamepadui" CORRECT_PATH_SEPARATOR_S
@@ -45,6 +46,9 @@ public:
     void OnLevelInitializePreEntity() override;
     void OnLevelInitializePostEntity() override;
     void OnLevelShutdown() override;
+
+    void OnLevelLoadStarted() override;
+    void OnLevelLoadFinished() override;
 	
     void VidInit() override;
 
@@ -59,6 +63,8 @@ public:
     vgui::VPANEL GetBaseVPanel() const;
     vgui::Panel *GetMainMenuPanel() const;
     vgui::VPANEL GetMainMenuVPanel() const;
+    vgui::Panel* GetLoadingPanel() const;
+    vgui::VPANEL GetLoadingVPanel() const;
 
     GamepadUIBasePanel* GetBaseUIPanel() const;
 
@@ -104,6 +110,7 @@ private:
     CSteamAPIContext m_SteamAPIContext;
 
     GamepadUIMainMenu* GetMainMenu() const;
+    GamepadUILoadingDisplay* GetLoadingDisplay() const;
 	
     float   m_flScreenRatio = 1.0f;
 

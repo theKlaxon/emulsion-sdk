@@ -59,8 +59,21 @@ struct ShaderParamInfo_t
 };
 
 // p2sdk
+
+// size 0xc
+struct ShaderComboInformation_t {
+	const char* pVar0;
+	char padding[8];
+};
+
+// size 0x14
 struct ShaderComboSemantics_t {
-	char size[20]; // 20 byte struct, just reserve the space and call it a day.
+	const char* m_pVar0;	// name!
+	void* m_pVar1;			// combo info // judging from the output of print_shader_combos, this is the arr of dynamic combos
+	int m_nVar2;			// this is a count of tha arr of pointers above???
+	void* m_pVar3;			// static combos
+	int m_nVar4;			// static combo count
+	char padding[4]; 
 };
 
 

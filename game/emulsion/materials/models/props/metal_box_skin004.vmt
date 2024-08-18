@@ -1,0 +1,33 @@
+VertexLitGeneric
+{
+$basetexture "models/props/metal_box_new_companion"
+$bumpmap "models\props\Metal_box_normal"
+$phong 1
+$phongexponenttexture "models\props\Metal_box_exponent"
+
+$phongboost 1
+
+$phongfresnelranges "[5 1 2]"
+
+$selfillum 1
+$selfillumtint "{114 96 40}"
+
+$nodecal 1
+$frame 0
+Proxies
+{
+	ConVar 
+	{
+		convar "cube_glow"
+		resultVar $frame
+	}
+	
+	Clamp 
+	{
+		min 0
+		max 1
+		srcVar $frame
+		resultVar $frame
+	}
+}
+}

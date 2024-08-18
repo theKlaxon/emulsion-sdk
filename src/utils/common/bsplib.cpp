@@ -2855,7 +2855,8 @@ void WriteBSPFile( const char *filename, char *pUnused )
 	if ( g_pPhysCollide )
 		AddLump( LUMP_PHYSCOLLIDE, g_pPhysCollide, g_PhysCollideSize );
 	if ( g_pPhysLevel )
-		AddLump(LUMP_PHYSLEVEL, g_pPhysLevel, g_PhysLevelSize);// , LUMP_PHYSLEVEL_VERSION ); // change for the p2sdk
+		AddLump(LUMP_PHYSLEVEL, g_pPhysLevel, g_PhysLevelSize, LUMP_PHYSLEVEL_VERSION);
+		//AddLump(LUMP_PHYSLEVEL, g_pPhysLevel, g_PhysLevelSize);// , LUMP_PHYSLEVEL_VERSION ); // change for the p2sdk
 
 	AddLump( LUMP_DISPINFO, g_dispinfo );
 	AddLump( LUMP_VERTEXES, dvertexes, numvertexes );
@@ -2887,7 +2888,7 @@ void WriteBSPFile( const char *filename, char *pUnused )
 	AddLump( LUMP_LEAF_AMBIENT_INDEX, g_LeafAmbientIndexLDR );
 	AddLump( LUMP_LEAF_AMBIENT_INDEX_HDR, g_LeafAmbientIndexHDR );
 	AddLump( LUMP_LEAF_AMBIENT_LIGHTING_HDR, g_LeafAmbientLightingHDR, LUMP_LEAF_AMBIENT_LIGHTING_VERSION );
-	AddLump( LUMP_LEAFFACES, dleaffaces, numleaffaces );
+	AddLump( LUMP_LEAFFACES, dleaffaces, numleaffaces );																		// bad!
 	AddLump( LUMP_LEAFWATERDATA, dleafwaterdata, numleafwaterdata );
 
 	AddLump( LUMP_OVERLAYS, g_Overlays, g_nOverlayCount );
@@ -2908,6 +2909,7 @@ void WriteBSPFile( const char *filename, char *pUnused )
 	AddLump( LUMP_FACEIDS, dfaceids, numfaceids );
 	AddLump( LUMP_ORIGINALFACES, dorigfaces, numorigfaces );     // original faces lump
 
+	// these 5 are bad!
 	AddLump( LUMP_PROPCOLLISION, g_PropCollision );
 	AddLump( LUMP_PROPHULLS, g_PropHulls );
 	AddLump( LUMP_PROPHULLVERTS, g_PropHullVerts );

@@ -14,7 +14,7 @@ rem == Note that this path needs does not support long file/directory names ==
 rem == So instead of a path such as "C:\Program Files\Steam\steamapps\mymod" ==
 rem == you need to find the 8.3 abbreviation for the directory name using 'dir /x' ==
 rem == and set the directory to something like C:\PROGRA~2\Steam\steamapps\sourcemods\mymod ==
-set GAMEDIR=D:\source2011\game\source2011
+set GAMEDIR=D:\theKlaxon\emulsion-sdk\game\deferred\
 
 rem == Set the relative path to SourceSDK\bin\orangebox\bin ==
 rem == As above, this path does not support long directory names or spaces ==
@@ -63,3 +63,4 @@ if not "%dynamic_shaders%" == "1" (
 
 %TTEXE% -diff %tt_all_start% -cur
 echo.
+pause

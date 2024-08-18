@@ -24,7 +24,6 @@ public:
 	// Always transmit to clients
 	virtual int UpdateTransmitState();
 	virtual void Activate( void );
-	virtual void Spawn( void );
 
 	void InputTurnOn( inputdata_t &inputdata );
 	void InputTurnOff( inputdata_t &inputdata );
@@ -39,18 +38,12 @@ public:
 	void InputSetLightColor( inputdata_t &inputdata );
 	void InputSetSpotlightTexture( inputdata_t &inputdata );
 	void InputSetAmbient( inputdata_t &inputdata );
-	void InputSetLightStyle( inputdata_t &inputdata );
-	void InputSetPattern( inputdata_t &inputdata );
-	void InputSetNearZ( inputdata_t &inputdata );
-	void InputSetFarZ( inputdata_t &inputdata );
 
 	void InitialThink( void );
 
 	CNetworkHandle( CBaseEntity, m_hTargetEntity );
 
 private:
-
-	void EnforceSingleProjectionRules( bool bWarnOnEnforcement = false );
 
 	CNetworkVar( bool, m_bState );
 	CNetworkVar( bool, m_bAlwaysUpdate );
@@ -71,12 +64,6 @@ private:
 	CNetworkVar( int, m_nShadowQuality );
 	CNetworkVar( float, m_flProjectionSize );
 	CNetworkVar( float, m_flRotation );
-	
-	// Light style
-	CNetworkVar( int, m_iStyle );
-	int			m_iDefaultStyle;
-	string_t	m_iszPattern;
-
 };
 
 

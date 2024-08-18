@@ -10,7 +10,7 @@
 #pragma once
 #endif
 
-#include "tier2/TokenReader.h"
+#include "tier1/TokenReader.h"
 #include "GDClass.h"
 #include "InputOutput.h"
 #include "UtlString.h"

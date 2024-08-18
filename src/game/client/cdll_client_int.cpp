@@ -13,7 +13,6 @@
 #include "ivmodemanager.h"
 #include "prediction.h"
 #include "clientsideeffects.h"
-#include "particlemgr.h"
 #include "steam/steam_api.h"
 #include "smoke_fog_overlay.h"
 #include "view.h"
@@ -138,6 +137,8 @@
 
 #if defined( GAMEPADUI )
 #include "../gamepadui/igamepadui.h"
+#include "GameUI/IGameConsole.h"
+#include "gameconsole.h"
 #endif // GAMEPADUI
 
 #ifdef INFESTED_PARTICLES
@@ -149,9 +150,16 @@
 
 #endif
 
-// source 2 experimenting
-//#include "worldrenderer/iworldrenderermgr.h"
-// 
+#ifdef SHADER_EDITOR
+#include "shadereditor/ivshadereditor.h"
+#endif
+
+#ifdef PARTICLES2
+#include "particles/iparticlesdll.h"
+//#include "particles2/particles2.h"
+#else
+#include "particlemgr.h"
+#endif
 
 #include "tier1/UtlDict.h"
 #include "keybindinglistener.h"
@@ -881,7 +889,6 @@ IBaseClientDLL *clientdll = &gHLClient;
 
 EXPOSE_SINGLE_INTERFACE_GLOBALVAR( CHLClient, IBaseClientDLL, CLIENT_DLL_INTERFACE_VERSION, gHLClient );
 
-
 //-----------------------------------------------------------------------------
 // Precaches a material
 //-----------------------------------------------------------------------------
@@ -922,7 +929,6 @@ const char *GetMaterialNameFromIndex( int nIndex )
 	}
 }
 
-
 //-----------------------------------------------------------------------------
 // Precaches a particle system
 //-----------------------------------------------------------------------------
@@ -960,7 +966,6 @@ const char *GetParticleSystemNameFromIndex( int nIndex )
 		return g_pStringTableParticleEffectNames->GetString( nIndex );
 	return "error";
 }
-
 
 //-----------------------------------------------------------------------------
 // Precache-related methods for effects
@@ -1002,6 +1007,7 @@ extern IGameSystem *ViewportClientSystem();
 // enable threaded init functions on x360
 static ConVar cl_threaded_init("cl_threaded_init", IsX360() ? "1" : "0");
 
+#ifndef PARTICLES2
 bool InitParticleManager()
 {
 	if (!ParticleMgr()->Init(MAX_TOTAL_PARTICLES, materials))
@@ -1009,6 +1015,7 @@ bool InitParticleManager()
 
 	return true;
 }
+#endif
 
 #include "..\materialsystem\IShaderSystem.h"
 
@@ -1167,14 +1174,18 @@ int CHLClient::Connect( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGl
 #ifndef _X360
 	SteamAPI_InitSafe();
 	g_SteamAPIContext.Init();
-
-#ifdef INFESTED_DLL
-	
-#endif
 #endif
 
 	// Initialize the console variables.
 	ConVar_Register( FCVAR_CLIENTDLL );
+
+	// add the 'custom' mod folder path
+	g_pFullFileSystem->AddSearchPath("custom", "MOD");
+
+	// print our paths for debugging (just incase)
+#ifdef DEBUG
+	g_pFullFileSystem->PrintSearchPaths();
+#endif
 
 	return true;
 }
@@ -1183,7 +1194,96 @@ void nothing() {
 
 }
 
-#include "..\game\shared\emulsion\proxy_filesystem.h"
+#include "..\public\shaderlib\ShaderDLL.h"
+
+// this loads the actual meat of the deferred shaders, since the interface
+// loaded in the deferred client code only rlly loads the IDeferredExt stuff afaik -Klax
+IShaderSystemInternal_Partial* ShaderSystemInternal() {
+
+	static IShaderSystem* pShaderSystem = nullptr;
+	static IShaderSystemInternal_Partial* pShaderSystemInternal = nullptr;
+
+	if (!pShaderSystem)
+	{
+		CSysModule* pModule = nullptr;
+		Sys_LoadInterface("materialsystem" DLL_EXT_STRING, SHADERSYSTEM_INTERFACE_VERSION,
+			&pModule, reinterpret_cast<void**>(&pShaderSystem));
+
+		pShaderSystemInternal = static_cast<IShaderSystemInternal_Partial*>((void*)pShaderSystem);
+	}
+	
+	return pShaderSystemInternal;
+}
+
+CON_COMMAND(print_shader_combos, "print all shader combos (static and dynamic)") {
+	
+	IShaderDLLInternal* pShaderDLL = nullptr;
+	CSysModule* pModule = nullptr;
+
+	Sys_LoadInterface("stdshader_dx9" DLL_EXT_STRING, SHADER_DLL_INTERFACE_VERSION, &pModule, reinterpret_cast<void**>(&pShaderDLL));
+
+	if (!pShaderDLL) {
+		Warning("Could not get interface to stdshader_dx9! Not printing combos...\n");
+		return;
+	}
+
+	Msg("==== SHADER COMBOS ====\n");
+
+	for (int i = 0; i < pShaderDLL->ShaderComboSemanticsCount(); i++) {
+		const ShaderComboSemantics_t* pSem = pShaderDLL->GetComboSemantics(i);
+		Msg("%s %s", pSem->m_pVar0, "\n");
+
+		ShaderComboInformation_t* pDynamicInfos = static_cast<ShaderComboInformation_t*>(pSem->m_pVar1);
+		ShaderComboInformation_t* pStaticInfos = static_cast<ShaderComboInformation_t*>(pSem->m_pVar3);
+
+		// dynamic combos
+		Msg("	Dynamic\n");
+		for (int k = 0; k < pSem->m_nVar2; k++)
+			Msg("		%s %s", pDynamicInfos[k].pVar0, "\n");
+
+		Msg("	Static\n");
+		for (int k = 0; k < pSem->m_nVar4; k++)
+			Msg("		%s %s", pStaticInfos[k].pVar0, "\n");
+
+		Msg("\n");
+	}
+
+	Msg("==== END COMBOS =======\n");
+}
+
+static CUtlString GetShaderDLLPath(const char* pszName) {
+	CUtlString modulePath;
+	modulePath.SetLength(MAX_PATH);
+	g_pFullFileSystem->GetSearchPath("GAMEBIN", false, modulePath.Get(), MAX_PATH);
+
+	V_AppendSlash(modulePath.Get(), MAX_PATH);
+	V_strcat(modulePath.Get(), pszName, MAX_PATH);
+	V_strcat(modulePath.Get(), DLL_EXT_STRING, MAX_PATH);
+
+	return modulePath;
+}
+
+void LoadDeferredShaders() {
+	
+	CUtlString modulePath = GetShaderDLLPath("game_shader_generic_deferred"); // "deferred/bin/game_shader_generic_deferred.dll";//
+	bool loaded = ShaderSystemInternal()->LoadShaderDLL(modulePath);
+
+	if (loaded)
+		Msg("Loaded deferred shaders interface!");
+}
+
+void UnloadDeferredShaders() {
+
+	CUtlString modulePath = GetShaderDLLPath("game_shader_generic_deferred");
+	ShaderSystemInternal()->UnloadShaderDLL(modulePath);
+}
+
+// TODO: find a way to load a mod's shaders folder on portal 2 branch
+void LoadModShaders() {
+
+	
+
+}
 
 int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGlobals )
 {
@@ -1303,6 +1403,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 
 #ifdef EMULSION_DLL
 	engine->EnablePaintmapRender();
+	LoadModShaders();
 	g_pDiscord->Init();
 #endif
 
@@ -1311,15 +1412,20 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 	bool bInitSuccess = false;
 	if ( cl_threaded_init.GetBool() )
 	{
+#ifndef PARTICLES2
 		CFunctorJob *pGameJob = new CFunctorJob( CreateFunctor( InitParticleManager ) );
 		g_pThreadPool->AddJob( pGameJob );
-		bInitSuccess = InitGameSystems( appSystemFactory );
+
+		bInitSuccess = InitGameSystems(appSystemFactory);
 		pGameJob->WaitForFinishAndRelease();
+#else
+		bInitSuccess = InitGameSystems(appSystemFactory);
+#endif
 	}
 	else
 	{
 		COM_TimestampedLog( "ParticleMgr()->Init" );
-		if (!ParticleMgr()->Init(MAX_TOTAL_PARTICLES, materials))
+		if (!ParticleMgr()->Init(MAX_TOTAL_PARTICLES, g_pMaterialSystem))
 			return false;
 		COM_TimestampedLog( "InitGameSystems - Start" );
 		bInitSuccess = InitGameSystems( appSystemFactory );
@@ -1355,7 +1461,6 @@ void CHLClient::PostInit()
 	IGameSystem::PostInitAllSystems();
 	COM_TimestampedLog( "IGameSystem::PostInitAllSystems - Finish" );
 
-
 #if defined(GAMEPADUI)
 	COM_TimestampedLog("IGamepadUI::Initialize - Start");
 	if (IsSteamDeck())
@@ -1381,6 +1486,15 @@ void CHLClient::PostInit()
 				{
 					GamepadUI_Log("Unable to pull IGamepadUI interface.\n");
 				}
+
+				//IGameConsole* pSativaConsole = (IGameConsole*)gamepaduiFactory(GAMECONSOLE_INTERFACE_VERSION, NULL);
+				//if (pSativaConsole) {
+				//	GameConsole().Override(pSativaConsole);
+				//}
+				//else {
+				//	GamepadUI_Log("Could not override Console!\n");
+				//}
+
 			}
 			else
 			{
@@ -1398,6 +1512,7 @@ void CHLClient::PostInit()
 	}
 	COM_TimestampedLog("IGamepadUI::Initialize - Finish");
 #endif // GAMEPADUI
+
 }
 
 //-----------------------------------------------------------------------------
@@ -1441,6 +1556,8 @@ void CHLClient::Shutdown( void )
 			GetFullscreenClientMode()->Shutdown();
 		}
 	}
+
+	//UnloadDeferredShaders();
 
 	input->Shutdown_All();
 	C_BaseTempEntity::ClearDynamicTempEnts();
@@ -2114,8 +2231,9 @@ void CHLClient::LevelShutdown( void )
 
 	view->LevelShutdown();
 	beams->ClearBeams();
+
 	ParticleMgr()->RemoveAllEffects();
-	
+
 	for ( int hh = 0; hh < MAX_SPLITSCREEN_PLAYERS; ++hh )
 	{
 		StopAllRumbleEffects( hh );

@@ -355,7 +355,7 @@ static void PerformNewCustomEffects( const Vector &vecOrigin, trace_t &tr, const
 	SetImpactControlPoint( pEffect.GetObject(), 1, vecImpactPoint, vecReflect,		tr.m_pEnt ); 
 	SetImpactControlPoint( pEffect.GetObject(), 2, vecImpactPoint, vecShotBackward,	tr.m_pEnt ); 
 	pEffect->SetControlPoint( 3, Vector( iScale, iScale, iScale ) );
-	if ( pEffect->m_pDef->ReadsControlPoint( 4 ) )
+	if ( pEffect->m_pDef->ReadsControlPoint(4))
 	{
 		Vector vecColor;
 		GetColorForSurface( &tr, &vecColor );

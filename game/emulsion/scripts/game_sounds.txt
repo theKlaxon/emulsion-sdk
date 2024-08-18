@@ -241,6 +241,24 @@
 	"wave"		"ambient/fire/gascan_ignite1.wav"
 }
 
+"Player.UseDeny"
+{
+	"channel"	"CHAN_ITEM"
+	"volume"	"0.3"
+	"soundlevel"  "SNDLVL_75dB"
+
+	"wave"	"player/object_use_failure_01.wav"
+}
+
+
+"Player.Use"
+{
+	"channel"		"CHAN_ITEM"
+	"soundlevel"		"SNDLVL_NORM"
+	"volume"		"0.40"
+	"wave"		"common/wpn_select.wav"
+}
+
 "Default.Null"
 {
 	"channel"		"CHAN_BODY"

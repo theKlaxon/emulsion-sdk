@@ -1,0 +1,334 @@
+//==================================================================================================
+//
+// Physically Based Rendering pixel shader for brushes and models
+//
+//==================================================================================================
+
+// STATIC: "FLASHLIGHT"                 "0..1"
+// STATIC: "FLASHLIGHTDEPTHFILTERMODE"  "0..2"
+// STATIC: "LIGHTMAPPED"                "0..1"
+// STATIC: "USEENVAMBIENT"              "0..1"
+// STATIC: "SPECULAR"                   "0..1"
+// STATIC: "PARALLAXCORRECT"            "0..1"
+// STATIC: "PARALLAXOCCLUSION"          "0..1"
+
+// DYNAMIC: "WRITEWATERFOGTODESTALPHA"  "0..1"
+// DYNAMIC: "PIXELFOGTYPE"              "0..1"
+// DYNAMIC: "NUM_LIGHTS"                "0..4"
+// DYNAMIC: "WRITE_DEPTH_TO_DESTALPHA"  "0..1"
+// DYNAMIC: "FLASHLIGHTSHADOWS"         "0..1"
+
+// Can't write fog to alpha if there is no fog
+// SKIP: ($PIXELFOGTYPE == 0) && ($WRITEWATERFOGTODESTALPHA != 0)
+// We don't care about flashlight depth unless the flashlight is on
+// SKIP: ( $FLASHLIGHT == 0 ) && ( $FLASHLIGHTSHADOWS == 1 )
+// Flashlight shadow filter mode is irrelevant if there is no flashlight
+// SKIP: ( $FLASHLIGHT == 0 ) && ( $FLASHLIGHTDEPTHFILTERMODE != 0 )
+// Parallax-corrected cubemaps only work on brushes
+// SKIP: ( $LIGHTMAPPED == 0 ) && ( $PARALLAXCORRECT != 0 )
+
+#include "common_ps_fxc.h"
+#include "common_flashlight_fxc.h"
+#include "common_lightmappedgeneric_fxc.h"
+#include "shader_constant_register_map.h"
+
+#include "pbr_common_ps2_3_x.h"
+
+const float4 g_DiffuseModulation                : register(PSREG_DIFFUSE_MODULATION);
+const float4 g_ShadowTweaks                     : register(PSREG_ENVMAP_TINT__SHADOW_TWEAKS);
+const float3 cAmbientCube[6]                    : register(PSREG_AMBIENT_CUBE);
+const float4 g_EyePos                           : register(PSREG_EYEPOS_SPEC_EXPONENT);
+const float4 g_FogParams                        : register(PSREG_FOG_PARAMS);
+const float4 g_FlashlightAttenuationFactors     : register(PSREG_FLASHLIGHT_ATTENUATION);
+const float4 g_FlashlightPos                    : register(PSREG_FLASHLIGHT_POSITION_RIM_BOOST);
+const float4x4 g_FlashlightWorldToTexture       : register(PSREG_FLASHLIGHT_TO_WORLD_TEXTURE);
+PixelShaderLightInfo cLightInfo[3]              : register(PSREG_LIGHT_INFO_ARRAY);         // 2 registers each - 6 registers total (4th light spread across w's)
+const float4 g_BaseColor                        : register(PSREG_SELFILLUMTINT);
+
+#if PARALLAXCORRECT
+const float3 g_CubemapPos : register( c3 );
+const float4x4 g_ObbMatrix : register( c26 ); // Through c29
+#endif
+
+#if PARALLAXOCCLUSION
+const float4 g_ParallaxParms                    : register( c32 );
+#define PARALLAX_DEPTH                          g_ParallaxParms.r
+#define PARALLAX_CENTER                         g_ParallaxParms.g
+#endif
+
+sampler BaseTextureSampler          : register(s0);     // Base map, selfillum in alpha
+sampler NormalTextureSampler        : register(s1);     // Normal map
+sampler EnvmapSampler               : register(s2);     // Cubemap
+sampler ShadowDepthSampler          : register(s4);     // Flashlight shadow depth map sampler
+sampler RandRotSampler              : register(s5);     // RandomRotation sampler
+sampler FlashlightSampler           : register(s6);     // Flashlight cookie 
+sampler LightmapSampler             : register(s7);     // Lightmap
+sampler MRAOTextureSampler          : register(s10);    // MRAO texture
+
+#if SPECULAR
+sampler SpecularTextureSampler      : register(s12);    // Specular F0 texture
+#endif
+
+// paint samplers
+sampler SplatNormalSampler			: register(s13);
+sampler PaintSampler				: register(s14);
+
+#define ENVMAPLOD (g_EyePos.a)
+#define DummySampler SplatNormalSampler
+
+struct PS_INPUT
+{
+ 	float2 baseTexCoord             : TEXCOORD0;
+ 	float4 lightAtten               : TEXCOORD1;
+ 	float3 worldNormal              : TEXCOORD2;
+ 	float3 worldPos                 : TEXCOORD3;
+ 	float3 projPos                  : TEXCOORD4;
+ 	float4 lightmapTexCoord1And2    : TEXCOORD5; 
+ 	float4 lightmapTexCoord3        : TEXCOORD6;
+ 	float3x3 tangentSpaceTranspose 	: TEXCOORD7;
+};
+
+// Entry point
+float4 main(PS_INPUT i) : COLOR
+{
+#if USEENVAMBIENT
+	float3 EnvAmbientCube[6];
+	setupEnvMapAmbientCube(EnvAmbientCube, EnvmapSampler);
+#else
+	#define EnvAmbientCube cAmbientCube
+#endif
+	float2 baseTexCoord = float2(i.lightmapTexCoord3.z, i.lightmapTexCoord3.w);// * 10;
+
+	float3 surfNormal = normalize(i.worldNormal);
+	float3 surfTangent;
+	float3 surfBase; 
+	float flipSign;
+	float3x3 normalBasis = compute_tangent_frame(surfNormal, i.worldPos, baseTexCoord , surfTangent, surfBase, flipSign);
+
+#if PARALLAXOCCLUSION
+	float3 outgoingLightRay = g_EyePos.xyz - i.worldPos;
+	float3 outgoingLightDirectionTS = worldToRelative( outgoingLightRay, surfTangent, surfBase, surfNormal);
+	float2 correctedTexCoord = parallaxCorrect(baseTexCoord, outgoingLightDirectionTS , outgoingLightRay, i.worldNormal, NormalTextureSampler , PARALLAX_DEPTH , PARALLAX_CENTER);
+#else
+	float2 correctedTexCoord = baseTexCoord;
+#endif
+
+	float3 textureNormal = normalize((tex2D( NormalTextureSampler,  correctedTexCoord).xyz - float3(0.5, 0.5, 0.5)) * 2);
+	float3 normal = normalize(mul(textureNormal, normalBasis)); // World Normal
+
+	float3 worldVertToEyeVector = g_EyePos - i.worldPos;
+	float4 albedo;
+
+	// GRAB THE PAINT COLOUR
+	// this stuff is necessary for getting paint from the engine
+	float3 lightmapColor1 = float3( 1.0f, 1.0f, 1.0f );
+	float3 lightmapColor2 = float3( 1.0f, 1.0f, 1.0f );
+	float3 lightmapColor3 = float3( 1.0f, 1.0f, 1.0f );
+	float4 paintColor; 											// <---- 'paintColor' will act as the 'albedo' var here
+	float2 paintCoord;
+
+	{
+		float2 bumpCoord1;
+		float2 bumpCoord2;
+		float2 bumpCoord3;
+		ComputeBumpedLightmapCoordinates( i.lightmapTexCoord1And2, i.lightmapTexCoord3.xy,
+			bumpCoord1, bumpCoord2, bumpCoord3 );
+		
+		lightmapColor1 = LightMapSample( LightmapSampler, bumpCoord1 );
+		lightmapColor2 = LightMapSample( LightmapSampler, bumpCoord2 );
+		lightmapColor3 = LightMapSample( LightmapSampler, bumpCoord3 );
+		
+		
+		paintCoord.y = bumpCoord1.y;
+		paintCoord.x = bumpCoord1.x - ( bumpCoord2.x - bumpCoord1.x );
+		paintColor = tex2D( PaintSampler, paintCoord );
+	}
+
+	// this method of getting a splat is decent, and simple. BUT it doesnt look as good as p2's paint splats. 
+	//float noiseSample = tex2D( SplatNormalSampler, i.lightmapTexCoord1And2.xy * 10.0f).r;
+	//paintColor.a -= noiseSample * 0.2f;
+
+	float noiseSample = tex2D( SplatNormalSampler, paintCoord ).r;
+
+	float paintAlpha = paintColor.a;
+	paintAlpha -= noiseSample * 0.2f;
+	clip( paintAlpha - 0.01f );
+
+	// if (paintAlpha < 1.0f)
+	
+	
+	// PAINT SPLAT SETUP
+	//float3 splatCoords = float3(0,0,0);
+	//splatCoords.xy = i.lightmapTexCoord1And2.xy * 10.0f;
+	// correctedTexCoord = splatCoords;
+	// splatCoords.xy = correctedTexCoord.xy; // TODO: seamless?
+
+	// // float4 vDummy = 0.0f;
+	// // float4 vNormal = float4(0, 0, 1, 1);
+	// // float3 mulnorm = normalize(i.worldNormal);
+	// // mulnorm = mulnorm * mulnorm;
+
+	// // GetBaseTextureAndNormal( DummySampler, DummySampler, DummySampler,
+	// // 						 false, false, 
+	// // 						 splatCoords, vDummy, 
+	// // 						 mulnorm, vDummy, vDummy, vNormal );
+
+	// float3x3 tangenttranspose = i.tangentSpaceTranspose;
+	// float3x3 worldToTangentSpace = transpose( tangenttranspose ); //yay, math both forwards and backwards, for kicks!
+
+	// // PAINT SPLAT BEGIN
+
+	// float3 fvViewDirection = mul( normalize( worldVertToEyeVector ), worldToTangentSpace );
+	// float4 fvSplats = tex2D( SplatNormalSampler, correctedTexCoord );
+	// float4 fvSplatsPushed = tex2D( SplatNormalSampler, correctedTexCoord + fvViewDirection * fvSplats.r * paintColor.a * 0.05 );
+
+	// paintAlpha = (paintAlpha + max( fvSplats.r, fvSplatsPushed.r ) );
+
+	float3 splatColour = paintColor.rgb;//saturate( lerp( paintColor.rgb * 0.32f, float3( 1.0f, 1.0f, 1.0f ), smoothstep( 0.3f, 1.4f, fvSplatsPushed.r + paintColor.a ) * 0.2f ));;
+	// PAINT SPLAT END
+
+#if SPECULAR
+	float3 specular = tex2D(SpecularTextureSampler, correctedTexCoord).xyz;
+#endif
+	
+	// PAINT + SPLAT gives us the base colour / albedo / diffuse thingy now
+	albedo = float4(splatColour, 1.0f);
+	albedo.xyz *= g_BaseColor;
+
+	float3 mrao = tex2D(MRAOTextureSampler, correctedTexCoord).xyz;
+	float metalness = mrao.x, roughness = mrao.y, ambientOcclusion = mrao.z;
+
+	//textureNormal = fvNormal.xyz; // PAINT TEST
+	textureNormal.y *= flipSign; // Fixup textureNormal for ambient lighting
+
+	float3 outgoingLightDirection = normalize(g_EyePos.xyz - i.worldPos); // Lo
+	float lightDirectionAngle = max(0, dot(normal, outgoingLightDirection)); // cosLo
+
+	float3 specularReflectionVector = 2.0 * lightDirectionAngle * normal - outgoingLightDirection; // Lr
+
+#if ( PARALLAXCORRECT )
+	float3 worldPos = i.worldPos.xyz;
+	float3 positionLS = mul( float4( worldPos, 1 ), g_ObbMatrix );
+	float3 rayLS = mul( specularReflectionVector, (float3x3)g_ObbMatrix );
+
+	float3 firstPlaneIntersect = ( float3( 1.0f, 1.0f, 1.0f ) - positionLS ) / rayLS;
+	float3 secondPlaneIntersect = ( -positionLS ) / rayLS;
+	float3 furthestPlane = max( firstPlaneIntersect, secondPlaneIntersect );
+	float distance = min( furthestPlane.x, min( furthestPlane.y, furthestPlane.z ) );
+
+	// Use distance in WS directly to recover intersection
+	float3 intersectPositionWS = worldPos + specularReflectionVector * distance;
+	specularReflectionVector = intersectPositionWS - g_CubemapPos;
+#endif
+
+#if SPECULAR
+	float3 fresnelReflectance = specular.rgb; // F0
+#else
+	float3 dielectricCoefficient = 0.04; //F0 dielectric
+	float3 fresnelReflectance = lerp(dielectricCoefficient, albedo.rgb, metalness); // F0
+#endif
+
+	// Start ambient
+	float3 ambientLighting = 0.0;
+	if (!FLASHLIGHT)
+	{
+		float3 diffuseIrradiance = ambientLookup(normal, EnvAmbientCube, textureNormal, i.lightmapTexCoord1And2, i.lightmapTexCoord3, LightmapSampler, g_DiffuseModulation);
+		
+		float3 ambientLightingFresnelTerm = fresnelSchlickRoughness(fresnelReflectance, lightDirectionAngle, roughness); // F
+#if SPECULAR
+		float3 diffuseContributionFactor = 1 - ambientLightingFresnelTerm; // kd
+#else
+		float3 diffuseContributionFactor = lerp(1 - ambientLightingFresnelTerm, 0, metalness); ; // kd
+#endif
+		float3 diffuseIBL = diffuseContributionFactor * albedo.rgb * diffuseIrradiance;
+
+		float4 specularUV = float4(specularReflectionVector, roughness * ENVMAPLOD);
+		float3 lookupHigh = ENV_MAP_SCALE * texCUBElod(EnvmapSampler, specularUV).xyz;
+		float3 lookupLow = PixelShaderAmbientLight(specularReflectionVector, EnvAmbientCube);
+		float3 specularIrradiance = lerp(lookupHigh, lookupLow, roughness * roughness);
+		float3 specularIBL = specularIrradiance * EnvBRDFApprox(fresnelReflectance, roughness, lightDirectionAngle);
+
+		ambientLighting = (diffuseIBL + specularIBL) * ambientOcclusion;
+	}
+	// End ambient
+
+	// Start direct
+	float3 directLighting = 0.0;
+	if (!FLASHLIGHT) {
+		for (uint n = 0; n < NUM_LIGHTS; ++n)
+		{
+			float3 LightIn = normalize(PixelShaderGetLightVector(i.worldPos, cLightInfo, n));
+			float3 LightColor = PixelShaderGetLightColor(cLightInfo, n) * GetAttenForLight(i.lightAtten, n); // Li
+
+			directLighting += calculateLight(LightIn, LightColor, outgoingLightDirection,
+					normal, fresnelReflectance, roughness, metalness, lightDirectionAngle, albedo.rgb);
+		}
+	}
+	// End direct
+
+	// Start flashlight
+	if (FLASHLIGHT)
+	{
+		float4 flashlightSpacePosition = mul(float4(i.worldPos, 1.0), g_FlashlightWorldToTexture);
+		clip( flashlightSpacePosition.w ); // stop projected textures from projecting backwards (only really happens if they have a big FOV because they get frustum culled.)
+		float3 vProjCoords = flashlightSpacePosition.xyz / flashlightSpacePosition.w;
+
+		float3 delta = g_FlashlightPos.xyz - i.worldPos;
+		float distSquared = dot(delta, delta);
+		float dist = sqrt(distSquared);
+
+		float3 flashlightColor = tex2D(FlashlightSampler, vProjCoords.xy);
+		flashlightColor *= cFlashlightColor.xyz;
+
+#if FLASHLIGHTSHADOWS
+		float flashlightShadow = DoFlashlightShadow(ShadowDepthSampler, RandRotSampler, vProjCoords, i.projPos, FLASHLIGHTDEPTHFILTERMODE, g_ShadowTweaks, true);
+		float flashlightAttenuated = lerp(flashlightShadow, 1.0, g_ShadowTweaks.y);         // Blend between fully attenuated and not attenuated
+		float fAtten = saturate(dot(g_FlashlightAttenuationFactors.xyz, float3(1.0, 1.0 / dist, 1.0 / distSquared)));
+		flashlightShadow = saturate(lerp(flashlightAttenuated, flashlightShadow, fAtten));  // Blend between shadow and above, according to light attenuation
+
+		flashlightColor *= flashlightShadow;
+#endif
+
+		float farZ = g_FlashlightAttenuationFactors.w;
+		float endFalloffFactor = RemapValClamped(dist, farZ, 0.6 * farZ, 0.0, 1.0);
+
+		float3 flashLightIntensity = flashlightColor * endFalloffFactor;
+		
+		float3 flashLightIn = normalize(g_FlashlightPos.xyz - i.worldPos);
+
+		directLighting += max(0, calculateLight(flashLightIn, flashLightIntensity, outgoingLightDirection,
+				normal, fresnelReflectance, -roughness, metalness, lightDirectionAngle, albedo.rgb));
+	}
+	// End flashlight
+
+	float fogFactor = 0.0f;
+	float alpha = 0.0f;
+
+#if !FLASHLIGHT
+
+	fogFactor = CalcPixelFogFactor(PIXELFOGTYPE, g_FogParams, g_EyePos.z, i.worldPos.z, i.projPos.z);
+
+#if WRITEWATERFOGTODESTALPHA && (PIXELFOGTYPE == PIXEL_FOG_TYPE_HEIGHT)
+	alpha = fogFactor;
+#else
+	alpha = albedo.a;
+#endif
+
+#endif
+
+	bool bWriteDepthToAlpha = (WRITE_DEPTH_TO_DESTALPHA != 0) && (WRITEWATERFOGTODESTALPHA == 0);
+
+	//float3 combinedLighting = directLighting + ambientLighting;
+	float3 paintResult;
+
+	// paint guts part 2
+	{
+		float3 fvTotalAmbient = ambientLighting * splatColour; 
+
+		alpha = paintAlpha > 0.75f;
+		paintResult = saturate( fvTotalAmbient + directLighting ).rgb;
+	}
+
+	return FinalOutput(float4(paintResult, alpha), fogFactor, PIXELFOGTYPE, TONEMAP_SCALE_LINEAR, false, i.projPos.z);
+
+}

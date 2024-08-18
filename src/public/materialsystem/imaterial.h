@@ -14,7 +14,11 @@
 #endif
 
 #include "bitmap/imageformat.h"
-#include "materialsystem/imaterialsystem.h"
+#ifndef PARTICLES_DLL
+#include "materialsystem/imaterialsystem.h"  // RenderTargetSizeMode_t and MaterialRenderTargetDepth_t definition
+#else
+#include "materialsystem_new.h"
+#endif
 
 //-----------------------------------------------------------------------------
 // Forward declarations
@@ -425,7 +429,8 @@ enum MaterialVarFlags2_t
 	// GR - HDR path puts lightmap alpha in separate texture...
 	MATERIAL_VAR2_BLEND_WITH_LIGHTMAP_ALPHA					= (1 << 8),
 	MATERIAL_VAR2_NEEDS_BAKED_LIGHTING_SNAPSHOTS			= (1 << 9),
-	MATERIAL_VAR2_USE_FLASHLIGHT							= (1 << 10),
+	MATERIAL_VAR2_USE_FLASHLIGHT							= (1 << 10), // 10
+	//MATERIAL_VAR2_USE_PAINTMAPS								= (1 << 10), // portal2
 	MATERIAL_VAR2_USE_FIXED_FUNCTION_BAKED_LIGHTING			= (1 << 11),
 	MATERIAL_VAR2_NEEDS_FIXED_FUNCTION_FLASHLIGHT			= (1 << 12),
 	MATERIAL_VAR2_USE_EDITOR								= (1 << 13),
@@ -494,7 +499,7 @@ public:
 	// This is how game code affects how a material is rendered.
 	// The game code must know about the params that are used by
 	// the shader for the material that it is trying to affect.
-	virtual IMaterialVar *	FindVar( const char *varName, bool *found, bool complain = true ) = 0;
+	virtual IMaterialVar *	FindVar( const char *varName, bool *found, bool complain = true ) = 0; // 0x2c, 44 off
 
 	// The user never allocates or deallocates materials.  Reference counting is
 	// used instead.  Garbage collection is done upon a call to 

@@ -15,10 +15,10 @@ IProcessUtils *g_pProcessUtils;
 IPhysics2 *g_pPhysics2;
 IPhysics2ActorManager *g_pPhysics2ActorManager;
 IPhysics2ResourceManager *g_pPhysics2ResourceManager;
-IFileSystem *g_pFullFileSystem;
+//IFileSystem *g_pFullFileSystem;
 IAsyncFileSystem *g_pAsyncFileSystem;
 IResourceSystem *g_pResourceSystem;
-IMaterialSystem *materials, *g_pMaterialSystem;
+//IMaterialSystem *materials, *g_pMaterialSystem;
 IMaterialSystem2 *g_pMaterialSystem2;
 IInputSystem *g_pInputSystem;
 IInputStackSystem *g_pInputStackSystem;
@@ -81,11 +81,11 @@ static const InterfaceGlobals_t g_pInterfaceGlobals[] =
 	{ VPHYSICS2_INTERFACE_VERSION, &g_pPhysics2 },
 	{ VPHYSICS2_ACTOR_MGR_INTERFACE_VERSION, &g_pPhysics2ActorManager },
 	{ VPHYSICS2_RESOURCE_MGR_INTERFACE_VERSION, &g_pPhysics2ResourceManager },
-	{ FILESYSTEM_INTERFACE_VERSION, &g_pFullFileSystem },
+	//{ FILESYSTEM_INTERFACE_VERSION, &g_pFullFileSystem },
 	{ ASYNCFILESYSTEM_INTERFACE_VERSION, &g_pAsyncFileSystem },
 	{ RESOURCESYSTEM_INTERFACE_VERSION, &g_pResourceSystem },
-	{ MATERIAL_SYSTEM_INTERFACE_VERSION, &materials },
-	{ MATERIAL_SYSTEM_INTERFACE_VERSION, &g_pMaterialSystem },
+	//{ MATERIAL_SYSTEM_INTERFACE_VERSION, &materials },
+	//{ MATERIAL_SYSTEM_INTERFACE_VERSION, &g_pMaterialSystem },
 	{ MATERIAL_SYSTEM2_INTERFACE_VERSION, &g_pMaterialSystem2 },
 	{ INPUTSYSTEM_INTERFACE_VERSION, &g_pInputSystem },
 	{ INPUTSTACKSYSTEM_INTERFACE_VERSION, &g_pInputStackSystem },

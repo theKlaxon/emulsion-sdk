@@ -1105,6 +1105,52 @@ public:
 		RenderTargetSizeMode_t param_4,
 		ImageFormat param_5, MaterialRenderTargetDepth_t param_6,
 		uint param_7, uint param_8) = 0;
+
+	virtual void Unused0() = 0;
+	virtual void Unused1() = 0;
+	virtual void Unused2() = 0;
+	virtual void Unused3() = 0;
+	virtual void Unused4() = 0;
+	virtual void Unused5() = 0;
+	virtual void Unused6() = 0;
+	virtual void Unused7() = 0;
+	virtual void Unused8() = 0;
+	virtual void Unused9() = 0;
+
+	virtual void Unused01() = 0;
+	virtual void Unused11() = 0;
+	virtual void Unused21() = 0;
+	virtual void Unused31() = 0;
+	virtual void Unused41() = 0;
+	virtual void Unused51() = 0;
+	virtual void Unused61() = 0;
+	virtual void Unused71() = 0;
+	virtual void Unused81() = 0;
+	virtual void Unused91() = 0;
+
+	virtual void Unused02() = 0;
+	virtual void Unused12() = 0;
+	virtual void Unused22() = 0;
+	virtual void Unused32() = 0;
+	virtual void Unused42() = 0;
+	virtual void Unused52() = 0;
+	virtual void Unused62() = 0;
+	virtual void Unused72() = 0;
+	virtual void Unused82() = 0;
+	virtual void Unused92() = 0;
+
+	virtual void Unused03() = 0;
+	virtual void Unused13() = 0;
+	virtual void Unused23() = 0;
+	virtual void Unused33() = 0;
+	virtual void Unused43() = 0;
+	virtual void Unused53() = 0;
+	virtual void Unused63() = 0;
+	virtual void Unused73() = 0;
+	virtual void Unused83() = 0;
+	virtual void Unused93() = 0;
+
+	virtual ITexture* GetPaintmapTexture(int param_1) = 0;
 };
 
 
@@ -1855,7 +1901,9 @@ static void DoMatSysQueueMark( IMaterialSystem *pMaterialSystem, const char *psz
 
 //-----------------------------------------------------------------------------
 
+#ifndef PARTICLES_DLL
 DECLARE_TIER2_INTERFACE( IMaterialSystem, materials );
 DECLARE_TIER2_INTERFACE( IMaterialSystem, g_pMaterialSystem );
+#endif
 
 #endif // IMATERIALSYSTEM_H

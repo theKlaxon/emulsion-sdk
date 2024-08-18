@@ -1,6 +1,7 @@
 #include "gamepadui_interface.h"
 #include "gamepadui_basepanel.h"
 #include "gamepadui_mainmenu.h"
+#include "gamepadui_loadingdisplay.h"
 
 #include "vgui/ILocalize.h"
 #include "interfaces/interfaces.h"
@@ -161,6 +162,17 @@ void GamepadUI::OnLevelShutdown()
     GetMainMenu()->OnMenuStateChanged();
 }
 
+void GamepadUI::OnLevelLoadStarted()
+{
+    //GetMainMenu()->Close();
+    //GetLoadingDisplay()->Activate();
+}
+
+void GamepadUI::OnLevelLoadFinished()
+{
+    //GetLoadingDisplay()->Close();
+}
+
 void GamepadUI::VidInit()
 {
     int w, h;
@@ -238,6 +250,16 @@ vgui::VPANEL GamepadUI::GetMainMenuVPanel() const
     return GetMainMenuPanel() ? GetMainMenuPanel()->GetVPanel() : 0;
 }
 
+vgui::Panel* GamepadUI::GetLoadingPanel() const
+{
+    return m_pBasePanel ? m_pBasePanel->GetLoadingDisplay() : NULL;
+}
+
+vgui::VPANEL GamepadUI::GetLoadingVPanel() const
+{
+    return GetLoadingPanel() ? GetLoadingPanel()->GetVPanel() : 0;
+}
+
 GamepadUIBasePanel* GamepadUI::GetBaseUIPanel() const
 {
     return m_pBasePanel;
@@ -247,3 +269,9 @@ GamepadUIMainMenu* GamepadUI::GetMainMenu() const
 {
     return static_cast<GamepadUIMainMenu*>( GetMainMenuPanel() );
 }
+
+GamepadUILoadingDisplay* GamepadUI::GetLoadingDisplay() const
+{
+    return static_cast<GamepadUILoadingDisplay*>(GetLoadingPanel());
+}
+

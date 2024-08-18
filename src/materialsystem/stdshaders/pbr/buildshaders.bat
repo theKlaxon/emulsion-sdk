@@ -67,7 +67,7 @@ if /i "%4" NEQ "-source" goto NoSourceDirSpecified
 set SrcDirBase=%~5
 
 REM ** use the -game parameter to tell us where to put the files
-set targetdir=%~3\shaders
+set targetdir=%~3\..\platform\shaders
 
 if not exist "%~3\gameinfo.txt" goto InvalidGameDirectory
 

@@ -17,7 +17,10 @@
 		{
 			Game				|gameinfo_path|.
 			Game				pbrtest
+			Game				emulsion
+			
 			Game				"D:\theKlaxon\emulsion-sdk\game\pbrtest"
+			Game				"D:\theKlaxon\emulsion-sdk\game\emulsion"
 			Game				"D:\SteamLibrary\steamapps\common\Portal 2\portal2"
 			Game				"D:\SteamLibrary\steamapps\common\Portal 2\update"
 		}

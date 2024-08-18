@@ -38,7 +38,7 @@ public:
 	unsigned int	GetActualSize( unsigned char *pInput );
 
 	// windowsize must be a power of two.
-	FORCEINLINE CLZSS( int nWindowSize = DEFAULT_LZSS_WINDOW_SIZE );
+	__forceinline CLZSS( int nWindowSize = DEFAULT_LZSS_WINDOW_SIZE );
 
 private:
 	// expected to be sixteen bytes
@@ -63,7 +63,7 @@ private:
 
 };
 
-FORCEINLINE CLZSS::CLZSS( int nWindowSize )
+__forceinline CLZSS::CLZSS( int nWindowSize )
 {
 	m_nWindowSize = nWindowSize;
 }

@@ -5,6 +5,7 @@
 #endif
 
 #include "gamepadui_backgroundmovie.h"
+#include "gamepadui_loadingdisplay.h"
 #include "gamepadui_interface.h"
 
 class GamepadUIMainMenu;
@@ -19,6 +20,7 @@ public:
 
     GamepadUIMainMenu *GetMainMenuPanel() const;
     GamepadUIMovieBackground* GetMovieBackground() const;
+    GamepadUILoadingDisplay* GetLoadingDisplay() const;
 
     void OnMenuStateChanged();
 
@@ -33,7 +35,8 @@ public:
 
 private:
     GamepadUIMainMenu *m_pMainMenu = NULL;
-    GamepadUIMovieBackground* m_pMovie;
+    GamepadUIMovieBackground* m_pMovie = NULL;
+    GamepadUILoadingDisplay* m_pLoadingDisplay = NULL;
 
     int m_nBackgroundMusicGUID;
     bool m_bBackgroundMusicEnabled;

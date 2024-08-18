@@ -112,6 +112,7 @@ src/utils/vbsp/.vs/
 
 game/emulsion/maps/workshop/
 game/pbrtest/*
+game/custom/*
 
 *.opendb
 *.db-shm
@@ -135,3 +136,13 @@ game/emulsion/bin/gamepadui.pdb
 
 game/vectronic/bin/gamepadui.dll
 game/vectronic/bin/gamepadui.pdb
+/src/materialsystem/deferredshaders/Release_dx9_deferred
+/src/materialsystem/shaderlib/.vs
+*.copy
+/src/lib/public/particles_old
+/src/.vs
+/src/materialsystem/deferredshaders/.vs
+/src/materialsystem/shaderlib/Debug
+/src/materialsystem/shaderlib/.vs
+src/materialsystem/shaderlib/.vs/shaderlib_sdk/v17/DocumentLayout.json
+/src/materialsystem/stdshaders/Release_dx9_vectronic

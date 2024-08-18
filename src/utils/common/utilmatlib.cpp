@@ -57,15 +57,17 @@ void LoadMaterialSystemInterface( CreateInterfaceFn fileSystemFactory )
 void InitMaterialSystem( const char *materialBaseDirPath, CreateInterfaceFn fileSystemFactory )
 {
 	LoadMaterialSystemInterface( fileSystemFactory );
+
 	MaterialSystem_Config_t config;
 	g_pMaterialSystem->OverrideConfig( config, false );
-	//g_pMaterialSystem->ModInit();
+	g_pMaterialSystem->ModInit();
 }
 
 void ShutdownMaterialSystem( )
 {
 	if ( g_pMaterialSystem )
 	{
+		//g_pMaterialSystem->ModShutdown();
 		g_pMaterialSystem->Shutdown();
 		g_pMaterialSystem = NULL;
 	}

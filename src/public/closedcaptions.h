@@ -58,6 +58,7 @@ struct AsyncCaption_t
 		return *this;
 	}
 
+#undef LoadFromFile
 	bool LoadFromFile( char const *pchFullPath );
 
 	CUtlRBTree< BlockInfo_t, unsigned short >	m_RequestedBlocks;

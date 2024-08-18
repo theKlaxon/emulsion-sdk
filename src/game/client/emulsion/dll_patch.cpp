@@ -34,14 +34,14 @@ void CMatSysPatch::Patch() {
 	static ConVarRef s_seventh_paint_color("seventh_paint_color");
 	static ConVarRef s_erase_color("erase_color");
 
-	g_PaintColors[BOUNCE_POWER] = s_bounce_paint_color.GetColor();
-	g_PaintColors[REFLECT_POWER] = s_reflect_paint_color.GetColor();
-	g_PaintColors[SPEED_POWER] = s_speed_paint_color.GetColor();
-	g_PaintColors[PORTAL_POWER] = s_portal_paint_color.GetColor();
-	//g_PaintColors[FIFTH_POWER]		= s_fifth_paint_color.GetColor();
-	//g_PaintColors[SIXTH_POWER]		= s_sixth_paint_color.GetColor();
+	g_PaintColors[BOUNCE_POWER]		= s_bounce_paint_color.GetColor();
+	g_PaintColors[REFLECT_POWER]	= s_reflect_paint_color.GetColor();
+	g_PaintColors[SPEED_POWER]		= s_speed_paint_color.GetColor();
+	g_PaintColors[PORTAL_POWER]		= s_portal_paint_color.GetColor();
+	//g_PaintColors[FIFTH_POWER]	= s_fifth_paint_color.GetColor();
+	//g_PaintColors[SIXTH_POWER]	= s_sixth_paint_color.GetColor();
 	//g_PaintColors[SEVENTH_POWER]	= s_seventh_paint_color.GetColor();
-	g_PaintColors[NO_POWER] = s_erase_color.GetColor();
+	g_PaintColors[NO_POWER]			= s_erase_color.GetColor();
 
 #if 0
 	Msg("Bounce Color: (%i, %i, %i)\n", g_PaintColors[BOUNCE_POWER].r(), g_PaintColors[BOUNCE_POWER].g(), g_PaintColors[BOUNCE_POWER].b());
@@ -60,10 +60,5 @@ void CMatSysPatch::Patch() {
 
 // Engine
 void CEnginePatch::Patch() {
-
-}
-
-
-void HostState_Shutdown2() {
 
 }

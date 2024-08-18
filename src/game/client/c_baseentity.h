@@ -1842,6 +1842,8 @@ protected:
 
 private:
 	bool							m_bIsBlurred;
+
+	//char padding[896];
 };
 
 EXTERN_RECV_TABLE(DT_BaseEntity);

@@ -69,11 +69,6 @@ char		outbase[32];
 
 char		g_szEmbedDir[MAX_PATH] = { 0 };
 
-#include "..\game\shared\emulsion\proxy_filesystem.h"
-
-IFileSysPrx g_filesysasw;
-IFileSysPrx* g_pFullFileSysPrx = &g_filesysasw;
-
 // HLTOOLS: Introduce these calcs to make the block algorithm proportional to the proper 
 // world coordinate extents.  Assumes square spatial constraints.
 #define BLOCKS_SIZE		1024
@@ -1398,6 +1393,7 @@ int RunVBSP( int argc, char **argv )
 		//
 		// start from scratch
 		//
+		Msg("Starting from scratch.\n");
 
 		// Load just the file system from the bsp
 		if( g_bKeepStaleZip && FileExists( mapFile ) )
@@ -1414,8 +1410,11 @@ int RunVBSP( int argc, char **argv )
 			Cubemap_FixupBrushSidesMaterials();
 			Cubemap_AttachDefaultCubemapToSpecularSides();
 			Cubemap_AddUnreferencedCubemaps();
+			Msg("Finished vertex cleanup\n");
 		}
+
 		SetModelNumbers ();
+
 		SetLightStyles ();
 		LoadEmitDetailObjectDictionary( gamedir );
 		ProcessModels ();
@@ -1423,6 +1422,7 @@ int RunVBSP( int argc, char **argv )
 		// Add embed dir if provided
 		if ( *g_szEmbedDir )
 		{
+			Msg("Adding Embed Dir\n");
 			AddDirToPak( GetPakFile(), g_szEmbedDir );
 			WriteBSPFile( mapFile );
 		}
@@ -1433,6 +1433,8 @@ int RunVBSP( int argc, char **argv )
 	char str[512];
 	GetHourMinuteSecondsString( (int)( end - start ), str, sizeof( str ) );
 	Msg( "%s elapsed\n", str );
+
+	PrintBSPFileSizes();
 
 	DeleteCmdLine( argc, argv );
 	ReleasePakFileLumps();

@@ -108,14 +108,14 @@ void CEffectsClient::Beam( const Vector &vecStartPoint, const Vector &vecEndPoin
 	unsigned char b, unsigned char brightness, unsigned char nSpeed)
 {
 	Assert(0);
-//	CBroadcastRecipientFilter filter;
-//	if ( !SuppressTE( filter ) )
-//	{
-//	beams->CreateBeamPoints( vecStartPoint, vecEndPoint, nModelIndex, nHaloIndex, 
-//		m_fHaloScale, 
-//		flLife, 0.1 * nWidth,  0.1 * nEndWidth, nFadeLength, 0.01 * nAmplitude, a, 0.1 * nSpeed, 
-//		m_nStartFrame, 0.1 * nFrameRate, r, g, b );
-//	}
+	//CBroadcastRecipientFilter filter;
+	//if ( !SuppressTE( filter ) )
+	//{
+	//beams->CreateBeamPoints( vecStartPoint, vecEndPoint, nModelIndex, nHaloIndex, 
+	//	m_fHaloScale, 
+	//	flLife, 0.1 * nWidth,  0.1 * nEndWidth, nFadeLength, 0.01 * nAmplitude, a, 0.1 * nSpeed, 
+	//	m_nStartFrame, 0.1 * nFrameRate, r, g, b );
+	//}
 }
 
 

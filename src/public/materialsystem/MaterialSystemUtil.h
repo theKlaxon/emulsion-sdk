@@ -14,7 +14,11 @@
 #endif
 
 #include "bitmap/imageformat.h" //ImageFormat enum definition
+#ifndef PARTICLES_DLL
 #include "materialsystem/imaterialsystem.h"  // RenderTargetSizeMode_t and MaterialRenderTargetDepth_t definition
+#else
+#include "materialsystem_new.h"
+#endif
 #include "materialsystem/itexture.h"
 //-----------------------------------------------------------------------------
 // Forward declarations
@@ -48,7 +52,7 @@ public:
 
 	// Automatic casts to IMaterial
 	operator IMaterial*() { return m_pMaterial; }
-	operator IMaterial const*() const { return m_pMaterial; } // const IMaterial consy* ???
+	operator IMaterial const*() const { return m_pMaterial; }
 	IMaterial* operator->() { return m_pMaterial; }
 
 	// Assignment operator

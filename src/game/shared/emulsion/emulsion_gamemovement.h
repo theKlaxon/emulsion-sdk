@@ -70,6 +70,7 @@ protected:
 
 	Vector m_vecStickForward;
 	Vector m_vecStickUp;
+	Vector m_vecPrevUp;
 
 	bool m_bIsTouchingStickParent;
 

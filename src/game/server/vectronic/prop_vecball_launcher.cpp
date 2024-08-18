@@ -102,7 +102,7 @@ void CPropVecBallLauncher::Precache( void )
 	PrecacheModel( SPRITE );
 
 	PrecacheParticleSystem( BALL_PARTICLE_NODES );
-	PrecacheParticleSystem( BALL_GLOW);
+	PrecacheParticleSystem( BALL_GLOW );
 
 	UTIL_PrecacheOther( "prop_particle_ball" );
 

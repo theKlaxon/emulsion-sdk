@@ -12,7 +12,6 @@ $Group "game"
 	"client"
 	"server"
 	"game_shader_dx9"
-	"game_shader_generic_deferred"
 }
 
 $Group "everything"
@@ -22,10 +21,18 @@ $Group "everything"
 	"tier1"
 	"vgui_controls"
 	"game_shader_dx9"
-	"game_shader_generic_deferred"
+	"fgdlib"
+	"particles_dll"
+	"particles2"
+	"gamepadui"
 }
 
 $Group "gamepad"
 {
 	"gamepadui"
+}
+
+$Group "modinit"
+{
+	"vbspmi"
 }

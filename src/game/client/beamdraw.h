@@ -115,6 +115,7 @@ public:
 
 	// for FBEAM_ONLYNOISEONCE
 	bool			m_bCalculatedNoise;
+	char padding[3];
 
 	float			m_flHDRColorScale;
 

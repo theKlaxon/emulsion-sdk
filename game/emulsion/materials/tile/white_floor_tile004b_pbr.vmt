@@ -1,0 +1,18 @@
+"PBR"
+{
+	$basetexture		"tile/white_floor_tile004b"
+	$bumpmap	"tile/white_floor_tile002a_normal"
+	$mraotexture	"tile/white_floor_tile004b_mrao"
+	
+	$envmap			"env_cubemap"
+	
+	$surfaceprop	"metal"
+	$model			"0"
+	
+	$parallax "1"
+	$parallaxdepth "0.04" // .04
+	$parallaxcenter "0.0"
+
+	//$hsv "[1 1 1]"
+	//$mraoscale "[1 1 1.5]"
+}

@@ -80,7 +80,7 @@ public:
 
 	virtual ITexture		*GetTextureValue( void ) = 0;
 
-	virtual bool			IsTextureValueInternalEnvCubemap() const = 0;
+	virtual bool			IsTextureValueInternalEnvCubemap() const = 0; // p2sdk
 
 	virtual char const *	GetName( void ) const = 0;
 	virtual MaterialVarSym_t	GetNameAsSymbol() const = 0;

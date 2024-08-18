@@ -426,7 +426,7 @@ public:
 	virtual bool			UnzipFile( const char *pFileName, const char *pPath, const char *pDestination ) = 0;
 };
 
-
+// all vtable addrs == +17 from IBaseFileSystem
 //-----------------------------------------------------------------------------
 // Main file system interface
 //-----------------------------------------------------------------------------
@@ -552,6 +552,9 @@ public:
 	//  it can't be resolved )
 	virtual bool			FullPathToRelativePath( const char *pFullpath, char *pRelative, int maxlen ) = 0;
 
+#ifdef VBSP
+#undef GetCurrentDirectory
+#endif
 	// Gets the current working directory
 	virtual bool			GetCurrentDirectory( char* pDirectory, int maxlen ) = 0;
 
@@ -863,8 +866,9 @@ inline unsigned IFileSystem::GetOptimalReadSize( FileHandle_t hFile, unsigned nL
 //-----------------------------------------------------------------------------
 // Globals Exposed
 //-----------------------------------------------------------------------------
+#ifndef PARTICLES_DLL
 DECLARE_TIER2_INTERFACE( IFileSystem, g_pFullFileSystem );
-
+#endif
 
 
 

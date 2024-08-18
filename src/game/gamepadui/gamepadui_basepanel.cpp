@@ -30,6 +30,7 @@ GamepadUIBasePanel::GamepadUIBasePanel( vgui::VPANEL parent ) : BaseClass( NULL,
 
     m_pMainMenu = new GamepadUIMainMenu( this );
     m_pMovie = new GamepadUIMovieBackground();
+    m_pLoadingDisplay = new GamepadUILoadingDisplay( this );
     OnMenuStateChanged();
 }
 
@@ -47,6 +48,7 @@ void GamepadUIBasePanel::ApplySchemeSettings( vgui::IScheme* pScheme )
     // Force the main menu to invalidate itself.
     // There is a weird ordering bug in VGUI we need to workaround.
     m_pMainMenu->InvalidateLayout( false, true );
+    m_pLoadingDisplay->InvalidateLayout( false, true );
 }
 
 //void GamepadUIBasePanel::Paint()
@@ -62,6 +64,11 @@ GamepadUIMainMenu* GamepadUIBasePanel::GetMainMenuPanel() const
 GamepadUIMovieBackground* GamepadUIBasePanel::GetMovieBackground() const
 {
     return m_pMovie;
+}
+
+GamepadUILoadingDisplay* GamepadUIBasePanel::GetLoadingDisplay() const
+{
+    return m_pLoadingDisplay;
 }
 
 void GamepadUIBasePanel::OnMenuStateChanged()

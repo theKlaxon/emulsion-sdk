@@ -1,0 +1,12 @@
+"PBR"
+{
+	$basetexture               "pbr/metal/metal_tilewall_001a"
+	$bumpmap                   "pbr/metal/metal_tilewall_001a_normalheight"
+	$mraotexture               "pbr/metal/metal_tilewall_001a_maro"
+
+	$envmap                    "env_cubemap"
+	$useenvambient				"true"
+	$useparallax 				"true"
+	$parallaxdepth 				"0.115"
+
+}

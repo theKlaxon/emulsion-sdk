@@ -102,8 +102,28 @@ public:
 
 	// Returns information about each shader defined in this DLL
 	virtual IShader *GetShader( int nShader ) = 0;
+
+	// for printing combos:
+	virtual int ShaderComboSemanticsCount() const = 0;
+	virtual const ShaderComboSemantics_t* GetComboSemantics(int param_1) = 0;
 };
 
+// an re'd matsysinternal for use with shader override stuff
+abstract_class IShaderSystemInternal_Partial : public IShaderInit, public IShaderSystem{
+public:
+
+	//virtual void Pad0() = 0;
+	//virtual void Pad1() = 0;
+	//virtual void Pad2() = 0;
+	virtual void Pad3() = 0;
+	virtual void Pad4() = 0;
+	virtual void Pad5() = 0;
+	virtual void Pad6() = 0;
+
+	virtual bool LoadShaderDLL(const char* param_1) = 0;
+	virtual void UnloadShaderDLL(const char* param_1) = 0;
+
+};
 
 //-----------------------------------------------------------------------------
 // Singleton interface

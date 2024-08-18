@@ -1,0 +1,8 @@
+VertexLitGeneric
+{
+$baseTexture "models\props/metal_box_new_ring_blue"
+$selfillum 1
+
+$nodecal 1
+
+}

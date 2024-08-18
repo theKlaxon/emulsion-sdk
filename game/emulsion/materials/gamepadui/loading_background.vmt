@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "gamepadui/loading_background"
+	"$vertexcolor" 1
+	"$ignorez" 1
+	"$no_fullbright" "1"
+}

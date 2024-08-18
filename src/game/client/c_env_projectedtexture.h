@@ -34,7 +34,6 @@ public:
 
 	virtual bool Simulate();
 
-	bool	ShouldUpdate( void );
 	void	UpdateLight( void );
 
 	C_EnvProjectedTexture();
@@ -73,11 +72,8 @@ private:
 	float		m_flFarZ;
 	char		m_SpotlightTextureName[ MAX_PATH ];
 	CTextureReference m_SpotlightTexture;
-	CMaterialReference m_ProjectedMaterial;
 	int			m_nSpotlightTextureFrame;
 	int			m_nShadowQuality;
-	int			m_iStyle;
-	bool		m_bIsCurrentlyProjected;
 
 	// simple projection
 	IMaterial	*m_pMaterial;

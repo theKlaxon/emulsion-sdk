@@ -133,7 +133,9 @@ DECLARE_TIER3_INTERFACE( vgui::ILocalize, g_pVGuiLocalize );
 DECLARE_TIER2_INTERFACE( IRenderDeviceMgr, g_pRenderDeviceMgr );
 
 #define FILESYSTEM_INTERFACE_VERSION			"VFileSystem017"
+#ifndef PARTICLES_DLL
 DECLARE_TIER2_INTERFACE( IFileSystem, g_pFullFileSystem );
+#endif
 
 #define ASYNCFILESYSTEM_INTERFACE_VERSION		"VNewAsyncFileSystem001"
 DECLARE_TIER2_INTERFACE( IAsyncFileSystem, g_pAsyncFileSystem );
@@ -142,8 +144,10 @@ DECLARE_TIER2_INTERFACE( IAsyncFileSystem, g_pAsyncFileSystem );
 DECLARE_TIER2_INTERFACE( IResourceSystem, g_pResourceSystem );
 
 #define MATERIAL_SYSTEM_INTERFACE_VERSION		"VMaterialSystem080"
+#ifndef PARTICLES_DLL
 DECLARE_TIER2_INTERFACE( IMaterialSystem, materials );
 DECLARE_TIER2_INTERFACE( IMaterialSystem, g_pMaterialSystem );
+#endif
 
 #define MATERIAL_SYSTEM2_INTERFACE_VERSION		"VMaterialSystem2_001"
 DECLARE_TIER2_INTERFACE( IMaterialSystem2, g_pMaterialSystem2 );

@@ -14,12 +14,13 @@
 #include "mathlib/vector.h"
 #include "mathlib/ssemath.h"
 #include "appframework/iappsystem.h"
-#if 1
+#if 0
 #include "materialsystem/imaterialsystem.h"
 #include "materialsystem/materialsystemutil.h"
 #else
 class IMaterial;
 class IMatRenderContext;
+#include "materialsystem/MaterialSystemUtil.h"
 #endif
 
 #include "dmxloader/dmxelement.h"
@@ -35,6 +36,8 @@ class IMatRenderContext;
 #include "c_pixel_visibility.h"
 #endif
 
+#include "basehandle.h"
+
 //-----------------------------------------------------------------------------
 // Forward declarations
 //-----------------------------------------------------------------------------
@@ -45,10 +48,22 @@ class CParticleOperatorInstance;
 class CParticleSystemDictionary;
 class CUtlBuffer;
 class IParticleOperatorDefinition;
+class IParticleCollection;
 class CSheet;
 class CMeshBuilder;
 extern float s_pRandomFloats[];
-				
+
+#ifdef PARTICLES_DLL
+class CParticleSystemDictionary {
+public:
+	
+	CParticleSystemDictionary();
+
+	CUtlStringMap<CParticleSystemDefinition*> m_ParticleNameMap;
+	CUtlVector<CParticleSystemDefinition*> m_ParticleIdMap;
+
+};
+#endif
 
 //-----------------------------------------------------------------------------
 // Random numbers
@@ -321,7 +336,7 @@ public:
 
 	// given a possible spawn point, tries to movie it to be on or in the source object. returns
 	// true if it succeeded
-	virtual bool MovePointInsideControllingObject( CParticleCollection *pParticles,
+	virtual bool MovePointInsideControllingObject( IParticleCollection *pParticles,
 												   void *pObject,
 												   Vector *pPnt )
 	{
@@ -329,7 +344,7 @@ public:
 	}
 
 	virtual	bool IsPointInControllingObjectHitBox( 
-		CParticleCollection *pParticles,
+		IParticleCollection *pParticles,
 		int nControlPointNumber, Vector vecPos, bool bBBoxOnly = false )
 	{
 		return true;
@@ -347,7 +362,7 @@ public:
 	}
 	
 	virtual void GetRandomPointsOnControllingObjectHitBox( 
-		CParticleCollection *pParticles,
+		IParticleCollection *pParticles,
 		int nControlPointNumber, 
 		int nNumPtsOut,
 		float flBBoxScale,
@@ -360,7 +375,7 @@ public:
 
 
 	virtual int GetControllingObjectHitBoxInfo(
-		CParticleCollection *pParticles,
+		IParticleCollection *pParticles,
 		int nControlPointNumber,
 		int nBufSize,										// # of output slots available
 		ModelHitBoxInfo_t *pHitBoxOutputBuffer )
@@ -369,7 +384,7 @@ public:
 		return 0;
 	}
 
-	virtual void GetControllingObjectOBBox( CParticleCollection *pParticles,
+	virtual void GetControllingObjectOBBox( IParticleCollection *pParticles,
 		int nControlPointNumber,
 		Vector vecMin, Vector vecMax )
 	{
@@ -418,12 +433,12 @@ public:
 
 	virtual void *GetModel( char const *pMdlName ) { return NULL; }
 
-	virtual void DrawModel( void *pModel, const matrix3x4_t &DrawMatrix, CParticleCollection *pParticles, int nParticleNumber, int nBodyPart, int nSubModel,
+	virtual void DrawModel( void *pModel, const matrix3x4_t &DrawMatrix, IParticleCollection *pParticles, int nParticleNumber, int nBodyPart, int nSubModel,
 							int nAnimationSequence = 0, float flAnimationRate = 30.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f ) = 0;
 
-	virtual void BeginDrawModels( int nNumModels, Vector const &vecCenter, CParticleCollection *pParticles ) {}
+	virtual void BeginDrawModels( int nNumModels, Vector const &vecCenter, IParticleCollection *pParticles ) {}
 
-	virtual void FinishDrawModels( CParticleCollection *pParticles ) {}
+	virtual void FinishDrawModels( IParticleCollection *pParticles ) {}
 
 	virtual void UpdateProjectedTexture( const int nParticleID, IMaterial *pMaterial, Vector &vOrigin, float flRadius, float flRotation, float r, float g, float b, float a, void *&pUserVar ) = 0;
 };
@@ -438,20 +453,176 @@ public:
 //-----------------------------------------------------------------------------
 typedef int ParticleSystemHandle_t;
 
-#include "proxy_imaterialsystem.h"
-
-// this is defined by symbols in the particles lib, this just allows access to said symbols
-// since not all of this stuff was in the src/public header :/ (just like the blobulator RE) -Klaxon
-class CParticleSystemDictionary {
+#ifdef PARTICLES2
+class IParticleSystemMgr {
 public:
 
-	CParticleSystemDictionary();
+	// Initialize the particle system
+	virtual bool Init(IParticleSystemQuery* pQuery, bool bAllowPrecache)= 0;
 
-	char filler[92];
+	virtual bool Init2(IParticleSystemQuery* pQuery, bool bAllowPrecache) = 0;
+
+	// methods to add builtin operators. If you don't call these at startup, you won't be able to sim or draw. These are done separately from Init, so that
+	// the server can omit the code needed for rendering/simulation, if desired.
+	virtual void AddBuiltinSimulationOperators(void) = 0;
+	virtual void AddBuiltinRenderingOperators(void) = 0;
+
+	// Registration of known operators
+	virtual void AddParticleOperator(ParticleFunctionType_t nOpType, IParticleOperatorDefinition* pOpFactory) = 0;
+
+	// Read a particle config file, add it to the list of particle configs
+	virtual bool ReadParticleConfigFile(const char* pFileName, bool bPrecache, bool bDecommitTempMemory = true) = 0;
+	virtual bool ReadParticleConfigFile(CUtlBuffer& buf, bool bPrecache, bool bDecommitTempMemory = true, const char* pFileName = NULL) = 0;
+	virtual void DecommitTempMemory() = 0;
+
+	virtual bool ReadParticleConfigFile2(const char* pFileName, bool bPrecache, bool bDecommitTempMemory = true) = 0;
+	
+	// For recording, write a specific particle system to a CUtlBuffer in DMX format
+	virtual bool WriteParticleConfigFile(const char* pParticleSystemName, CUtlBuffer& buf, bool bPreventNameBasedLookup = false) = 0;
+	virtual bool WriteParticleConfigFile(const DmObjectId_t& id, CUtlBuffer& buf, bool bPreventNameBasedLookup = false) = 0;
+
+	// create a particle system by name. returns null if one of that name does not exist
+	virtual IParticleCollection* CreateParticleCollection(const char* pParticleSystemName, float flDelay = 0.0f, int nRandomSeed = 0) = 0;
+	virtual IParticleCollection* CreateParticleCollection(ParticleSystemHandle_t particleSystemName, float flDelay = 0.0f, int nRandomSeed = 0) = 0;
+
+	// create a particle system given a particle system id
+	virtual IParticleCollection* CreateParticleCollection(const DmObjectId_t& id, float flDelay = 0.0f, int nRandomSeed = 0) = 0;
+
+	// Is a particular particle system defined?
+	virtual bool IsParticleSystemDefined(const char* pParticleSystemName) = 0;
+	virtual bool IsParticleSystemDefined(const DmObjectId_t& id) = 0;
+
+	// Returns the index of the specified particle system. 
+	virtual ParticleSystemHandle_t GetParticleSystemIndex(const char* pParticleSystemName) = 0;
+	virtual ParticleSystemHandle_t FindOrAddParticleSystemIndex(const char* pParticleSystemName) = 0;
+
+	// Returns the name of the specified particle system.
+	virtual const char* GetParticleSystemNameFromIndex(ParticleSystemHandle_t iIndex) = 0;
+
+	// Return the number of particle systems in our dictionary
+	virtual int GetParticleSystemCount(void) = 0;
+
+	// Get the label for a filter
+	virtual const char* GetFilterName(ParticleFilterType_t nFilterType) const = 0;
+
+	// call to get available particle operator definitions
+	// NOTE: FUNCTION_CHILDREN will return a faked one, for ease of writing the editor
+	virtual CUtlVector< IParticleOperatorDefinition*>& GetAvailableParticleOperatorList(ParticleFunctionType_t nWhichList) = 0;
+
+	virtual void GetParticleSystemsInFile(const char* pFileName, CUtlVector<CUtlString>* pOutSystemNameList) = 0;
+	virtual void GetParticleSystemsInBuffer(CUtlBuffer& buf, CUtlVector<CUtlString>* pOutSystemNameList) = 0;
+
+	// Returns the unpack structure for a particle system definition
+	virtual const DmxElementUnpackStructure_t* GetParticleSystemDefinitionUnpackStructure() = 0;
+
+	// Particle sheet management
+	virtual void ShouldLoadSheets(bool bLoadSheets) = 0;
+	virtual CSheet* FindOrLoadSheet(CParticleSystemDefinition* pDef) = 0;
+#if defined(PARTICLES2) || defined(LIBNAME)
+
+#ifndef PARTICLES_DLL
+	virtual CSheet* FindOrLoadSheet2(CParticleSystemDefinition* pDef) {}
+#else
+	virtual CSheet* FindOrLoadSheet2(CParticleSystemDefinition* pDef) = 0;
+#endif
+
+#endif
+	virtual void FlushAllSheets(void) = 0;
+
+	// Render cache used to render opaque particle collections
+	virtual void ResetRenderCache(void) = 0;
+	virtual void AddToRenderCache(CParticleCollection* pParticles) = 0;
+	virtual void DrawRenderCache(bool bShadowDepth) = 0;
+
+	virtual IParticleSystemQuery* Query(void) = 0;
+
+	// return the particle field name
+	virtual const char* GetParticleFieldName(int nParticleField) const = 0;
+
+	// WARNING: the pointer returned by this function may be invalidated 
+	// *at any time* by the editor, so do not ever cache it.
+	virtual CParticleSystemDefinition* FindParticleSystem(const char* pName) = 0;
+	virtual CParticleSystemDefinition* FindParticleSystem(const DmObjectId_t& id) = 0;
+	virtual CParticleSystemDefinition* FindParticleSystem(ParticleSystemHandle_t hParticleSystem) = 0;
+	virtual CParticleSystemDefinition* FindPrecachedParticleSystem(int nPrecacheIndex) = 0;
+
+	// Method for overriding a parameter in a loaded particle system definition
+	virtual bool OverrideEffectParameter(const char* pParticleSystemName, const char* pOperatorName, const char* pParameterName, const char* pParameterValue) = 0;
+
+
+	virtual void CommitProfileInformation(bool bCommit) = 0;			// call after simulation, if you want
+	// sim time recorded. if oyu pass
+	// flase, info will be thrown away and
+	// uncomitted time reset.  Having this
+	// function lets you only record
+	// profile data for slow frames if
+	// desired.
+
+
+	virtual void DumpProfileInformation(void) = 0;					// write particle_profile.csv
+
+	virtual void DumpParticleList(const char* pNameSubstring) = 0;
+
+	// Cache/uncache materials used by particle systems
+	virtual void PrecacheParticleSystem(int nStringNumber, const char* pName) = 0;
+	virtual void UncacheAllParticleSystems() = 0;
+
+#if defined(PARTICLES2) || defined(LIBNAME)
+
+#ifndef PARTICLES_DLL
+	virtual void PrecacheParticleSystem2(int nStringNumber, const char* pName) {}
+#else
+	virtual void PrecacheParticleSystem2(int nStringNumber, const char* pName) = 0;
+#endif
+
+#endif
+
+	// Sets the last simulation time, used for particle system sleeping logic
+	virtual void SetLastSimulationTime(float flTime) = 0;
+	virtual float GetLastSimulationTime() const = 0;
+
+	// Sets the last simulation duration ( the amount of time we spent simulating particle ) last frame
+	// Used to fallback to cheaper particle systems under load
+	virtual void SetLastSimulationDuration(float flDuration) = 0;
+	virtual float GetLastSimulationDuration() const = 0;
+
+	virtual void SetFallbackParameters(float flBase, float flMultiplier, float flSimFallbackBaseMultiplier, float flSimThresholdMs) = 0;
+	virtual float GetFallbackBase() const = 0;
+	virtual float GetFallbackMultiplier() const = 0;
+	virtual float GetSimFallbackThresholdMs() const = 0;
+	virtual float GetSimFallbackBaseMultiplier() const = 0;
+
+	virtual void SetSystemLevel(int nCPULevel, int nGPULevel) = 0;
+	virtual int GetParticleCPULevel() const = 0;
+	virtual int GetParticleGPULevel() const = 0;
+
+	virtual void LevelShutdown(void) = 0;								// called at level unload time
+
+
+	virtual void FrameUpdate(void) = 0;								// call this once per frame on main thread
+
+	// Particle attribute query funcs
+	virtual int GetParticleAttributeByName(const char* pAttribute) const = 0;		// SLOW! returns -1 on error
+	virtual const char* GetParticleAttributeName(int nAttribute) const = 0;		// returns 'unknown' on error
+	virtual EAttributeDataType GetParticleAttributeDataType(int nAttribute) const = 0;
+
+	virtual void GetParticleManifest(CUtlVector<CUtlString>& list) = 0;
+	virtual bool GetShouldAlwaysPrecache(CParticleSystemDefinition* pDef) const = 0;
+	virtual IParticleCollection* CreateParticleCollectionPtr() = 0;
+
+	virtual int CountChildParticleSystems(CParticleCollection* pCollection) = 0;
+
+	// particle def helpers
+	virtual IParticleCollection* GetDefFirstCollection(CParticleSystemDefinition* pDef) = 0;
+	virtual const char* GetDefName(CParticleSystemDefinition* pDef) = 0;
+	virtual CParticleSystemDefinition* GetDefFallback(CParticleSystemDefinition* pDef) = 0;
+
+	virtual void InitCollection(CParticleCollection* pCollection, CParticleSystemDefinition* pEffect) = 0;
+	virtual void RenderCollection(CParticleCollection* pCollection, void* pRenderContext, const Vector4D& vecDiffuseModulation, bool bTranslucentOnly = false, void* pCameraObject = NULL) = 0;
 };
+#endif
 
-static bool bInitted = false;
-
+#ifdef PARTICLES_DLL
 class CParticleSystemMgr
 {
 public:
@@ -461,38 +632,8 @@ public:
 
 	// Initialize the particle system
 	bool Init( IParticleSystemQuery *pQuery, bool bAllowPrecache );
-	bool Init2(IParticleSystemQuery* pQuery, bool bAllowPrecache) {
 
-		if (bInitted)
-			return true;
-
-		if (pQuery == nullptr)
-			return false;
-
-		KeyValues* pKVar3;
-		CParticleSystemDictionary* pThis00 = new CParticleSystemDictionary;
-
-		m_pParticleSystemDictionary = pThis00;
-		
-		m_pQuery = pQuery;
-		m_bAllowPrecache = bAllowPrecache;
-		
-		COM_TimestampedLog("CParticleSystemMgr->Init2 Start");
-
-		if (g_pMaterialSysASW != nullptr) {
-			pKVar3 = new KeyValues("DepthWrite");
-			pKVar3->SetInt("$no_fullbright", 1);
-			pKVar3->SetInt("$model", 0);
-			pKVar3->SetInt("$alphatest", 1);
-
-			m_pShadowDepthMaterial = g_pMaterialSysASW->CreateMaterial("__particlesDepthWrite", pKVar3);
-			bInitted = true;
-		}
-
-		SeedRandSIMD(0xbc614e);
-		
-		return true;
-	}
+	bool Init2(IParticleSystemQuery* pQuery, bool bAllowPrecache);
 
 	// methods to add builtin operators. If you don't call these at startup, you won't be able to sim or draw. These are done separately from Init, so that
 	// the server can omit the code needed for rendering/simulation, if desired.
@@ -506,6 +647,12 @@ public:
 	bool ReadParticleConfigFile( const char *pFileName, bool bPrecache, bool bDecommitTempMemory = true );
 	bool ReadParticleConfigFile( CUtlBuffer &buf, bool bPrecache, bool bDecommitTempMemory = true, const char *pFileName = NULL );
 	void DecommitTempMemory();
+
+#if defined(PARTICLES2) || defined(LIBNAME)
+
+	bool ReadParticleConfigFile2(const char* pFileName, bool bPrecache, bool bDecommitTempMemory = true);
+
+#endif
 
 	// For recording, write a specific particle system to a CUtlBuffer in DMX format
 	bool WriteParticleConfigFile( const char *pParticleSystemName, CUtlBuffer &buf, bool bPreventNameBasedLookup = false );
@@ -548,6 +695,11 @@ public:
 	// Particle sheet management
 	void ShouldLoadSheets( bool bLoadSheets );
 	CSheet *FindOrLoadSheet( CParticleSystemDefinition *pDef );
+#if defined(PARTICLES2) || defined(LIBNAME)
+
+	CSheet* FindOrLoadSheet2(CParticleSystemDefinition* pDef);
+
+#endif
 	void FlushAllSheets( void );
 
 	// Render cache used to render opaque particle collections
@@ -588,6 +740,11 @@ public:
 	void PrecacheParticleSystem( int nStringNumber, const char *pName );
 	void UncacheAllParticleSystems();
 
+#if defined(PARTICLES2) || defined(LIBNAME)
+
+	void PrecacheParticleSystem2(int nStringNumber, const char* pName);
+
+#endif
 
 	// Sets the last simulation time, used for particle system sleeping logic
 	void SetLastSimulationTime( float flTime );
@@ -617,6 +774,10 @@ public:
 	int GetParticleAttributeByName( const char *pAttribute ) const;		// SLOW! returns -1 on error
 	const char *GetParticleAttributeName( int nAttribute ) const;		// returns 'unknown' on error
 	EAttributeDataType GetParticleAttributeDataType( int nAttribute ) const;
+	
+	// functions for the IParticleSystemManagerInstance interface
+	virtual void GetParticleManifest(CUtlVector<CUtlString>& list);
+	virtual bool GetShouldAlwaysPrecache(CParticleSystemDefinition* pDef) const;
 
 private:
 	struct RenderCache_t
@@ -713,9 +874,13 @@ private:
 	friend class CParticleSystemDefinition;
 	friend class CParticleCollection;
 };
+#endif
 
-extern CParticleSystemMgr *g_pParticleSystemMgr;
-
+#if defined(PARTICLES2) && !defined(PARTICLES_DLL)
+extern IParticleSystemMgr* g_pParticleSystemMgr;
+#else
+extern CParticleSystemMgr* g_pParticleSystemMgr;
+#endif
 
 //-----------------------------------------------------------------------------
 // A particle system can only have 1 operator using a particular ID
@@ -1706,8 +1871,7 @@ struct CParticleAttributeAddressTable
 	void CopyParticleAttributes( int nSrcIndex, int nDestIndex ) const;
 };
 
-#include "../game/shared/emulsion/proxy_imatrendercontext.h"
-
+//#ifdef PARTICLES_DLL
 class CParticleCollection
 {
 public:
@@ -1763,11 +1927,7 @@ public:
 	void SkipToTime( float t );
 
 	// the camera objetc may be compared for equality against control point objects
-	void Render(IMatRenderContext* pRenderContext, const Vector4D& vecDiffuseModulation, bool bTranslucentOnly = false, void* pCameraObject = NULL);/* {
-		pContASW.SetProtectedContext(pRenderContext);
-		Render(&pContASW, vecDiffuseModulation, bTranslucentOnly, pCameraObject);
-	}
-	void Render( IMatRenderContASW *pRenderContext, const Vector4D &vecDiffuseModulation, bool bTranslucentOnly = false, void *pCameraObject = NULL );*/
+	void Render(IMatRenderContext* pRenderContext, const Vector4D& vecDiffuseModulation, bool bTranslucentOnly = false, void* pCameraObject = NULL);
 
 	bool IsValid( void ) const { return m_pDef != NULL; }
 
@@ -1928,12 +2088,15 @@ public:
 
 
 protected:
+	friend class CParticleCollectionPtr;
+	friend class CParticleSystemMgrPtr;
+
 	CParticleCollection( );
 
 	// Used by client code
 	bool Init( const char *pParticleSystemName );
 	bool Init( CParticleSystemDefinition *pDef );
-
+	
 	// Bloat the bounding box by bounds around the control point
 	void BloatBoundsUsingControlPoint();
 
@@ -1942,10 +2105,7 @@ protected:
 
 	void	SetRenderable( void *pRenderable );
 
-
 private:
-
-
 
 	void Init( CParticleSystemDefinition *pDef, float flDelay, int nRandomSeed );
 	void InitStorage( CParticleSystemDefinition *pDef );
@@ -2021,13 +2181,12 @@ public:
 	float m_flPrevSimTime;									// the time of the previous sim
 	float m_flTargetDrawTime;										// the timestamp for drawing
 
-	int m_nActiveParticles;			// # of active particles
+	int m_nActiveParticles;			// # of active particles 
 	float m_flDt;
 	float m_flPreviousDt;
 	float m_flNextSleepTime;								// time to go to sleep if not drawn
 
-
-	CUtlReference< CParticleSystemDefinition > m_pDef;
+	CUtlReference< CParticleSystemDefinition > m_pDef; // 60 off (without padding), should be 72 off
 	int m_nAllocatedParticles;
 	int m_nMaxAllowedParticles;
 	bool m_bDormant;
@@ -2153,9 +2312,338 @@ private:
 	friend class CParticleSystemDefinition;
 	friend class C4VInterpolatedAttributeIterator;
 	friend class CM128InterpolatedAttributeIterator;
+	
+public:
+
+	//CBaseHandle m_hEffectHandle;
+
+	//// new for particles dll client rendering data
+	//bool m_bRemove;
+};
+//#endif
+
+class IParticleCollection
+{
+public:
+
+	// Restarts the particle collection, stopping all non-continuous emitters
+	virtual void Restart(EParticleRestartMode_t eMode = RESTART_NORMAL) = 0;
+
+	// compute bounds from particle list
+	virtual void RecomputeBounds(void) = 0;
+
+
+	virtual void SetControlPoint(int nWhichPoint, const Vector& v) = 0;
+	virtual void SetControlPointObject(int nWhichPoint, void* pObject) = 0;
+
+	virtual void SetControlPointOrientation(int nWhichPoint, const Vector& forward,
+		const Vector& right, const Vector& up) = 0;
+	virtual void SetControlPointForwardVector(int nWhichPoint, const Vector& v) = 0;
+	virtual void SetControlPointUpVector(int nWhichPoint, const Vector& v) = 0;
+	virtual void SetControlPointRightVector(int nWhichPoint, const Vector& v) = 0;
+	virtual void SetControlPointParent(int nWhichPoint, int n) = 0;
+	virtual void SetControlPointSnapshot(int nWhichPoint, CParticleSnapshot* pSnapshot) = 0;
+
+	virtual void SetControlPointOrientation(int nWhichPoint, const Quaternion& q) = 0;
+
+	// get the pointer to an attribute for a given particle.  
+	// !!speed!! if you find yourself calling this anywhere that matters, 
+	// you're not handling the simd-ness of the particle system well
+	// and will have bad perf.
+	virtual const float* GetFloatAttributePtr(int nAttribute, int nParticleNumber) const = 0;
+	virtual const int* GetIntAttributePtr(int nAttribute, int nParticleNumber) const = 0;
+	virtual const fltx4* GetM128AttributePtr(int nAttribute, size_t* pStrideOut) const = 0;
+	virtual const FourVectors* Get4VAttributePtr(int nAttribute, size_t* pStrideOut) const = 0;
+	virtual const FourInts* Get4IAttributePtr(int nAttribute, size_t* pStrideOut) const = 0;
+	virtual const int* GetIntAttributePtr(int nAttribute, size_t* pStrideOut) const = 0;
+
+	virtual Vector GetVectorAttributeValue(int nAttribute, int nParticleNumber) const = 0;
+
+
+	virtual int* GetIntAttributePtrForWrite(int nAttribute, int nParticleNumber) = 0;
+
+	virtual float* GetFloatAttributePtrForWrite(int nAttribute, int nParticleNumber) = 0;
+	virtual fltx4* GetM128AttributePtrForWrite(int nAttribute, size_t* pStrideOut) = 0;
+	virtual FourVectors* Get4VAttributePtrForWrite(int nAttribute, size_t* pStrideOut) = 0;
+
+	virtual const float* GetInitialFloatAttributePtr(int nAttribute, int nParticleNumber) const = 0;
+	virtual const fltx4* GetInitialM128AttributePtr(int nAttribute, size_t* pStrideOut) const = 0;
+	virtual const FourVectors* GetInitial4VAttributePtr(int nAttribute, size_t* pStrideOut) const = 0;
+	virtual float* GetInitialFloatAttributePtrForWrite(int nAttribute, int nParticleNumber) = 0;
+	virtual fltx4* GetInitialM128AttributePtrForWrite(int nAttribute, size_t* pStrideOut) = 0;
+
+	virtual void Simulate(float dt) = 0;
+	virtual void SkipToTime(float t) = 0;
+
+	// the camera objetc may be compared for equality against control point objects
+	virtual void Render(IMatRenderContext* pRenderContext, const Vector4D& vecDiffuseModulation, bool bTranslucentOnly = false, void* pCameraObject = NULL) = 0;
+
+	virtual bool IsValid(void) const = 0;
+
+	// this system and all children are valid
+	virtual bool IsFullyValid(void) const = 0;
+
+	virtual const char* GetName() const = 0;
+
+	virtual bool DependsOnSystem(const char* pName) const = 0;
+
+	// IsFinished returns true when a system has no particles and won't be creating any more
+	virtual bool IsFinished(void) const = 0;
+
+	// Used to make sure we're accessing valid memory
+	virtual bool IsValidAttributePtr(int nAttribute, const void* pPtr) const = 0;
+
+	virtual void SwapPosAndPrevPos(void) = 0;
+
+	virtual void SetNActiveParticles(int nCount) = 0;
+	virtual void KillParticle(int nPidx, unsigned int nFlags = 0) = 0;
+
+	virtual void StopEmission(bool bInfiniteOnly = false, bool bRemoveAllParticles = false, bool bWakeOnStop = false, bool bPlayEndCap = false) = 0;
+	virtual void StartEmission(bool bInfiniteOnly = false) = 0;
+	virtual void SetDormant(bool bDormant) = 0;
+	virtual bool IsEmitting() const = 0;
+
+	virtual const Vector& GetControlPointAtCurrentTime(int nControlPoint) const = 0;
+	virtual void GetControlPointOrientationAtCurrentTime(int nControlPoint, Vector* pForward, Vector* pRight, Vector* pUp) const = 0;
+	virtual void GetControlPointTransformAtCurrentTime(int nControlPoint, matrix3x4_t* pMat) = 0;
+	virtual void GetControlPointTransformAtCurrentTime(int nControlPoint, VMatrix* pMat) = 0;
+	virtual int GetControlPointParent(int nControlPoint) const = 0;
+	virtual CParticleSnapshot* GetControlPointSnapshot(int nWhichPoint) const = 0;
+
+	// Used to retrieve the position of a control point
+	// somewhere between m_fCurTime and m_fCurTime - m_fPreviousDT
+	virtual void GetControlPointAtTime(int nControlPoint, float flTime, Vector* pControlPoint) = 0;
+	virtual void GetControlPointAtPrevTime(int nControlPoint, Vector* pControlPoint) = 0;
+	virtual void GetControlPointOrientationAtTime(int nControlPoint, float flTime, Vector* pForward, Vector* pRight, Vector* pUp) = 0;
+	virtual void GetControlPointTransformAtTime(int nControlPoint, float flTime, matrix3x4_t* pMat) = 0;
+	virtual void GetControlPointTransformAtTime(int nControlPoint, float flTime, VMatrix* pMat) = 0;
+	virtual void GetControlPointTransformAtTime(int nControlPoint, float flTime, CParticleSIMDTransformation* pXForm) = 0;
+	virtual int GetHighestControlPoint(void) const = 0;
+
+	// Control point accessed:
+	// NOTE: Unlike the definition's version of these methods,
+	// these OR-in the masks of their children.
+	virtual bool ReadsControlPoint(int nPoint) const = 0;
+	virtual bool IsNonPositionalControlPoint(int nPoint) const = 0;
+
+	// Used by particle systems to generate random numbers. Do not call these methods - use sse
+	// code
+	virtual int RandomInt(int nMin, int nMax) = 0;
+	virtual float RandomFloat(float flMin, float flMax) = 0;
+	virtual float RandomFloatExp(float flMin, float flMax, float flExponent) = 0;
+	virtual void RandomVector(float flMin, float flMax, Vector* pVector) = 0;
+	virtual void RandomVector(const Vector& vecMin, const Vector& vecMax, Vector* pVector) = 0;
+	virtual float RandomVectorInUnitSphere(Vector* pVector) = 0;	// Returns the length sqr of the vector
+
+	// NOTE: These versions will produce the *same random numbers* if you give it the same random
+	// sample id. do not use these methods.
+	virtual int RandomInt(int nRandomSampleId, int nMin, int nMax) = 0;
+	virtual float RandomFloat(int nRandomSampleId, float flMin, float flMax) = 0;
+	virtual float RandomFloatExp(int nRandomSampleId, float flMin, float flMax, float flExponent) = 0;
+	virtual void RandomVector(int nRandomSampleId, float flMin, float flMax, Vector* pVector) = 0;
+	virtual void RandomVector(int nRandomSampleId, const Vector& vecMin, const Vector& vecMax, Vector* pVector) = 0;
+	virtual float RandomVectorInUnitSphere(int nRandomSampleId, Vector* pVector) = 0;	// Returns the length sqr of the vector
+
+	virtual fltx4 RandomFloat(const FourInts& ParticleID, int nRandomSampleOffset) = 0;
+
+
+	// Random number offset (for use in getting Random #s in operators)
+	virtual int OperatorRandomSampleOffset() const = 0;
+
+	// Returns the render bounds
+	virtual void GetBounds(Vector* pMin, Vector* pMax) = 0;
+
+	// Visualize operators (for editing/debugging)
+	virtual void VisualizeOperator(const DmObjectId_t* pOpId = NULL) = 0;
+
+	// Does the particle system use the power of two frame buffer texture (refraction?)
+	virtual bool UsesPowerOfTwoFrameBufferTexture(bool bThisFrame) const = 0;
+
+	// Does the particle system use the full frame buffer texture (soft particles)
+	virtual bool UsesFullFrameBufferTexture(bool bThisFrame) const = 0;
+
+	// Is the particle system translucent?
+	virtual bool IsTranslucent() const = 0;
+
+	// Is the particle system two-pass?
+	virtual bool IsTwoPass() const = 0;
+
+	// Is the particle system batchable?
+	virtual bool IsBatchable() const = 0;
+
+	// Is the order of the particles important
+	virtual bool IsOrderImportant() const = 0;
+
+	// Should this system be run want to read its parent's kill list inside ApplyKillList?
+	virtual bool ShouldRunForParentApplyKillList(void) const = 0;
+
+	// Renderer iteration
+	virtual int GetRendererCount() const = 0;
+	virtual CParticleOperatorInstance* GetRenderer(int i) = 0;
+	virtual void* GetRendererContext(int i) = 0;
+
+	virtual bool CheckIfOperatorShouldRun(CParticleOperatorInstance const* op, float* pflCurStrength, bool bApplyingParentKillList = false) = 0;
+
+	virtual Vector TransformAxis(const Vector& SrcAxis, bool bLocalSpace, int nControlPointNumber = 0) = 0;
+
+	// return backwards-sorted particle list. use --addressing
+	virtual const ParticleRenderData_t* GetRenderList(IMatRenderContext* pRenderContext, bool bSorted, int* pNparticles, CParticleVisibilityData* pVisibilityData) = 0;
+
+	// calculate the points of a curve for a path
+	virtual void CalculatePathValues(CPathParameters const& PathIn,
+		float flTimeStamp,
+		Vector* pStartPnt,
+		Vector* pMidPnt,
+		Vector* pEndPnt
+	) = 0;
+
+	virtual int GetGroupID() const = 0;
+
+	virtual void InitializeNewParticles(int nFirstParticle, int nParticleCount, uint32 nInittedMask, bool bApplyingParentKillList = false) = 0;
+
+	// update hit boxes for control point if not updated yet for this sim step
+	virtual void UpdateHitBoxInfo(int nControlPointNumber) = 0;
+
+	// Used by particle system definitions to manage particle collection lists
+	virtual void UnlinkFromDefList() = 0;
+
+	virtual uint8 const* GetPrevAttributeMemory(void) const = 0;
+	virtual uint8 const* GetAttributeMemory(void) const = 0;
+	virtual bool IsUsingInterpolatedRendering(void) const = 0;
+
+	// render helpers
+	virtual int GenerateCulledSortedIndexList(ParticleRenderData_t* pOut, Vector vecCamera, Vector vecFwd, CParticleVisibilityData* pVisibilityData, bool bSorted) = 0;
+	virtual int GenerateSortedIndexList(ParticleRenderData_t* pOut, Vector vecCameraPos, CParticleVisibilityData* pVisibilityData, bool bSorted) = 0;
+
+	virtual IParticleCollection* GetNextCollectionUsingSameDef() = 0;
+
+protected:
+	friend class IParticleCollectionInheritor;
+	friend class CNewParticleEffect;
+	friend class CParticleSystemMgrPtr;
+
+	// Used by client code
+	virtual bool Init(const char* pParticleSystemName) = 0;
+	virtual bool Init(CParticleSystemDefinition* pDef) = 0;
+
+	// Bloat the bounding box by bounds around the control point
+	virtual void BloatBoundsUsingControlPoint() = 0;
+
+	// to run emitters on restart, out of main sim.
+	virtual void RunRestartedEmitters(void) = 0;
+
+	virtual void SetRenderable(void* pRenderable) = 0;
+
+private:
+
+	virtual void Init(CParticleSystemDefinition* pDef, float flDelay, int nRandomSeed) = 0;
+	virtual void InitStorage(CParticleSystemDefinition* pDef) = 0;
+	virtual void InitParticleCreationTime(int nFirstParticle, int nNumToInit) = 0;
+
+	virtual void CopyInitialAttributeValues(int nStartParticle, int nNumParticles) = 0;
+	virtual void ApplyKillList(void) = 0;
+	virtual void SetAttributeToConstant(int nAttribute, float fValue) = 0;
+	virtual void SetAttributeToConstant(int nAttribute, float fValueX, float fValueY, float fValueZ) = 0;
+	virtual void InitParticleAttributes(int nStartParticle, int nNumParticles, int nAttrsLeftToInit) = 0;
+
+	// call emitter and initializer operators on the specified system
+	// NOTE: this may be called from ApplyKillList, so the child can access about-to-be-killed particles
+	virtual void EmitAndInit(IParticleCollection* pCollection, bool bApplyingParentKillList = false) = 0;
+
+	// initialize this attribute for all active particles
+	virtual void FillAttributeWithConstant(int nAttribute, float fValue) = 0;
+
+	// Updates the previous control points
+	virtual void UpdatePrevControlPoints(float dt) = 0;
+
+	// Returns the memory for a particular constant attribute
+	virtual float* GetConstantAttributeMemory(int nAttribute) = 0;
+
+	// Swaps two particles in the particle list
+	virtual void SwapAdjacentParticles(int hParticle) = 0;
+
+	// Unlinks a particle from the list
+	virtual void UnlinkParticle(int hParticle) = 0;
+
+	// Inserts a particle before another particle in the list
+	virtual void InsertParticleBefore(int hParticle, int hBefore) = 0;
+
+	// Move a particle from one index to another
+	virtual void MoveParticle(int nInitialIndex, int nNewIndex) = 0;
+
+	// Computes the sq distance to a particle position
+	virtual float ComputeSqrDistanceToParticle(int hParticle, const Vector& vecPosition) const = 0;
+
+	// Grows the dist sq range for all particles
+	virtual void GrowDistSqrBounds(float flDistSqr) = 0;
+
+	// Simulates the first frame
+	virtual void SimulateFirstFrame() = 0;
+
+	virtual bool SystemContainsParticlesWithBoolSet(bool IParticleCollection::* pField) const = 0;
+	// Does the particle collection contain opaque particle systems
+	virtual bool ContainsOpaqueCollections() = 0;
+	virtual bool ComputeUsesPowerOfTwoFrameBufferTexture() = 0;
+	virtual bool ComputeUsesFullFrameBufferTexture() = 0;
+	virtual bool ComputeIsTranslucent() = 0;
+	virtual bool ComputeIsTwoPass() = 0;
+	virtual bool ComputeIsBatchable() = 0;
+	virtual bool ComputeIsOrderImportant() = 0;
+	virtual bool ComputeRunForParentApplyKillList() = 0;
+
+	virtual void LabelTextureUsage(void) = 0;
+
+	virtual void LinkIntoDefList() = 0;
+
+	// Return the number of particle systems sharing the same definition
+	virtual int GetCurrentParticleDefCount(CParticleSystemDefinition* pDef) = 0;
+
+	virtual void CopyParticleAttributesToPreviousAttributes(void) const = 0;
+
+public:
+
+	virtual CParticleControlPoint& ControlPoint(int nIdx) const = 0;
+	virtual CModelHitBoxesInfo& ControlPointHitBox(int nIdx) const = 0;
+
+	virtual void LoanKillListTo(IParticleCollection* pBorrower) const = 0;
+	virtual bool HasAttachedKillList(void) const = 0;
+
+	// new accessors for talking with the client
+	virtual int GetAllocatedParticles() = 0;
+	virtual int GetMaxParticles() = 0;
+	virtual int GetActiveParticles() = 0;
+	virtual int GetHighestCP() = 0;
+
+	virtual float GetCurTime() = 0;
+	virtual float NextSleep() = 0;
+
+	virtual bool BoundsValid() = 0;
+	virtual bool QueuedStartEmission() = 0;
+	virtual bool Dormant() = 0;
+	virtual bool EmissionStopped() = 0;
+
+	virtual CUtlReference< CParticleSystemDefinition > GetDef() = 0;
+
+	virtual Vector GetMinBounds() = 0;
+	virtual Vector GetMaxBounds() = 0;
+
+	virtual void SetMinBounds(Vector vBounds) = 0;
+	virtual void SetMaxBounds(Vector vBounds) = 0;
+	virtual void SetQueuedStartEmission(bool bQueued) = 0;
+	virtual void SetRemove(bool bRemove) = 0;
+
+	virtual IParticleCollection* GetParent() = 0;
+
+	virtual void SetEffectHandle(CBaseHandle handle) = 0;
+	virtual CBaseHandle GetEffectHandle() = 0;
+
+	virtual bool InternalIsValid() = 0;
+
+private:
+	void* pCollectionPtr; // using this to store the pointer to the internal CParticleCollection when CParticleCollectionPtr is cast to the IParticleCollection
 };
 
-
+//#ifdef PARTICLES_DLL
 
 class CM128InitialAttributeIterator : public CStridedConstPtr<fltx4>
 {
@@ -2907,7 +3395,7 @@ FORCEINLINE void CParticleCollection::GrowDistSqrBounds( float flDistSqr )
 		m_flLastMaxDistSqr = flDistSqr;
 	}
 }
-
+//#endif
 
 
 
@@ -3023,13 +3511,13 @@ private:
 	int m_nPerParticleUpdatedAttributeMask;
 	int m_nPerParticleInitializedAttributeMask;
 	int m_nInitialAttributeReadMask;
-	int m_nAttributeReadMask;
+	int m_nAttributeReadMask;			// 16 bytes
 	uint64 m_nControlPointReadMask;
-	uint64 m_nControlPointNonPositionalMask;
-	Vector m_BoundingBoxMin;
-	Vector m_BoundingBoxMax;
-	char m_pszMaterialName[MAX_PATH];
-	CMaterialReference m_Material;
+	uint64 m_nControlPointNonPositionalMask; // 32
+	Vector m_BoundingBoxMin;				 // 44
+	Vector m_BoundingBoxMax;				// 56
+	char m_pszMaterialName[MAX_PATH];	
+	CMaterialReference m_Material;		
 	Vector4D m_vecMaterialModulation;
 	CParticleCollection *m_pFirstCollection;
 	char m_pszCullReplacementName[128];
@@ -3291,6 +3779,7 @@ inline const DmObjectId_t& CParticleSystemDefinition::GetId() const
 	return m_Id;
 }
 
+//#ifdef PARTICLES_DLL
 inline int CParticleCollection::GetGroupID( void ) const
 {
 	return m_pDef->m_nGroupID;
@@ -3327,5 +3816,6 @@ FORCEINLINE CParticleSnapshot *CParticleCollection::GetControlPointSnapshot( int
 		return NULL;
 	return ControlPoint( nControlPoint ).m_pSnapshot;
 }
+//#endif
 
 #endif	// PARTICLES_H

@@ -9,3 +9,4 @@
 
 pbr_vs30.fxc
 pbr_ps30.fxc
+pbr_paint_ps30.fxc

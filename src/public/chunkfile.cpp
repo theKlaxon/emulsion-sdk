@@ -404,6 +404,7 @@ ChunkFileResult_t CChunkFile::Open(const char *pszFileName, ChunkFileOpenMode_t 
 	{
 		// UNDONE: TokenReader encapsulates file - unify reading and writing to use the same file I/O.
 		// UNDONE: Support in-memory parsing.
+		FILE thandle;
 		if (m_TokenReader.Open(pszFileName))
 		{
 			m_nCurrentDepth = 0;

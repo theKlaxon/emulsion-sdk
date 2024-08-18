@@ -71,16 +71,6 @@ typedef uint64 ThreadId_t;
 typedef uint32 ThreadId_t;
 #endif
 
-enum ThreadPriorityEnum_t
-{
-	TP_PRIORITY_DEFAULT = 0,
-	TP_PRIORITY_NORMAL = 0,
-	TP_PRIORITY_HIGH = 1,
-	TP_PRIORITY_LOW = -1,
-	TP_PRIORITY_HIGHEST = 2,
-	TP_PRIORITY_LOWEST = -2,
-};
-
 //-----------------------------------------------------------------------------
 //
 // Simple thread creation. Differs from VCR mode/CreateThread/_beginthreadex
@@ -1239,6 +1229,14 @@ private:
 class PLATFORM_CLASS CThread
 {
 public:
+
+	enum ThreadPriorityEnum_t
+	{
+		TP_DEFAULT = 0,
+		TP_HIGH = 1,
+		TP_LOW = -1,
+	};
+
 	CThread();
 	virtual ~CThread();
 
@@ -1255,7 +1253,7 @@ public:
 
 	// Start thread running  - error if already running
 	//virtual bool Start( unsigned nBytesStack = 0 );
-	virtual bool Start( unsigned nBytesStack = 0, ThreadPriorityEnum_t nPriority = TP_PRIORITY_DEFAULT);
+	virtual bool Start( unsigned nBytesStack = 0, ThreadPriorityEnum_t nPriority = (ThreadPriorityEnum_t)0);
 
 	// Returns true if thread has been created and hasn't yet exited
 	bool IsAlive();

@@ -3,11 +3,11 @@
   "WorkspaceRootPath": "D:\\theKlaxon\\emulsion-sdk\\src\\materialsystem\\shaderlib\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1A1149D9-CB1B-BF85-19CA-C9C2996BFDE8}|shaderlib_sdk.vcxproj|D:\\theKlaxon\\emulsion-sdk\\src\\materialsystem\\shaderlib\\BaseShader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{1A1149D9-CB1B-BF85-19CA-C9C2996BFDE8}|shaderlib_sdk.vcxproj|solutionrelative:BaseShader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{1A1149D9-CB1B-BF85-19CA-C9C2996BFDE8}|shaderlib_sdk.vcxproj|D:\\theKlaxon\\emulsion-sdk\\src\\public\\materialsystem\\imaterial.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1A1149D9-CB1B-BF85-19CA-C9C2996BFDE8}|shaderlib_sdk.vcxproj|D:\\theKlaxon\\emulsion-sdk\\src\\public\\shaderlib\\BaseShader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{1A1149D9-CB1B-BF85-19CA-C9C2996BFDE8}|shaderlib_sdk.vcxproj|D:\\theKlaxon\\emulsion-sdk\\src\\materialsystem\\shaderlib\\BaseShader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1A1149D9-CB1B-BF85-19CA-C9C2996BFDE8}|shaderlib_sdk.vcxproj|solutionrelative:BaseShader.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1A1149D9-CB1B-BF85-19CA-C9C2996BFDE8}|shaderlib_sdk.vcxproj|D:\\theKlaxon\\emulsion-sdk\\src\\materialsystem\\shaderlib\\ShaderDLL.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -15,6 +15,9 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{1A1149D9-CB1B-BF85-19CA-C9C2996BFDE8}|shaderlib_sdk.vcxproj|D:\\theKlaxon\\emulsion-sdk\\src\\public\\shaderlib\\ShaderDLL.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A1149D9-CB1B-BF85-19CA-C9C2996BFDE8}|shaderlib_sdk.vcxproj|D:\\theKlaxon\\emulsion-sdk\\src\\public\\shaderlib\\BaseShader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1A1149D9-CB1B-BF85-19CA-C9C2996BFDE8}|shaderlib_sdk.vcxproj|D:\\theKlaxon\\emulsion-sdk\\src\\public\\materialsystem\\IShader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
@@ -27,11 +30,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 216,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "imaterial.h",
+              "DocumentMoniker": "D:\\theKlaxon\\emulsion-sdk\\src\\public\\materialsystem\\imaterial.h",
+              "RelativeDocumentMoniker": "..\\..\\public\\materialsystem\\imaterial.h",
+              "ToolTip": "D:\\theKlaxon\\emulsion-sdk\\src\\public\\materialsystem\\imaterial.h",
+              "RelativeToolTip": "..\\..\\public\\materialsystem\\imaterial.h",
+              "ViewState": "AQIAAJIBAAAAAAAAAAAAAK8BAAAuAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-08-18T15:21:28.836Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "BaseShader.cpp",
+              "DocumentMoniker": "D:\\theKlaxon\\emulsion-sdk\\src\\materialsystem\\shaderlib\\BaseShader.cpp",
+              "RelativeDocumentMoniker": "BaseShader.cpp",
+              "ToolTip": "D:\\theKlaxon\\emulsion-sdk\\src\\materialsystem\\shaderlib\\BaseShader.cpp",
+              "RelativeToolTip": "BaseShader.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-07-23T20:52:12.321Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "BaseShader.h",
               "DocumentMoniker": "D:\\theKlaxon\\emulsion-sdk\\src\\public\\shaderlib\\BaseShader.h",
               "RelativeDocumentMoniker": "..\\..\\public\\shaderlib\\BaseShader.h",
@@ -39,25 +68,11 @@
               "RelativeToolTip": "..\\..\\public\\shaderlib\\BaseShader.h",
               "ViewState": "AQIAANcAAAAAAAAAAADwv+EAAABHAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-06-09T00:02:20.686Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-09T00:02:20.686Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "BaseShader.cpp",
-              "DocumentMoniker": "D:\\theKlaxon\\emulsion-sdk\\src\\materialsystem\\shaderlib\\BaseShader.cpp",
-              "RelativeDocumentMoniker": "BaseShader.cpp",
-              "ToolTip": "D:\\theKlaxon\\emulsion-sdk\\src\\materialsystem\\shaderlib\\BaseShader.cpp",
-              "RelativeToolTip": "BaseShader.cpp",
-              "ViewState": "AQIAAB4EAAAAAAAAAAAxwDIEAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-05-31T08:29:33.104Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "IShader.h",
               "DocumentMoniker": "D:\\theKlaxon\\emulsion-sdk\\src\\public\\materialsystem\\IShader.h",
               "RelativeDocumentMoniker": "..\\..\\public\\materialsystem\\IShader.h",
@@ -87,7 +102,7 @@
               "RelativeDocumentMoniker": "ShaderDLL.cpp",
               "ToolTip": "D:\\theKlaxon\\emulsion-sdk\\src\\materialsystem\\shaderlib\\ShaderDLL.cpp",
               "RelativeToolTip": "ShaderDLL.cpp",
-              "ViewState": "AQIAAJMAAAAAAAAAAAAAAGkAAAABAAAA",
+              "ViewState": "AQIAAHUAAAAAAAAAAAAAAHgAAAAPAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-05-31T08:29:40.121Z",
               "EditorCaption": ""

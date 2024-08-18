@@ -14,7 +14,7 @@ $Configuration
 	$Compiler
 	{
 		$AdditionalIncludeDirectories		"$BASE,..\common,..\vmpi"
-		$PreprocessorDefinitions			"$BASE;INFESTED_DLL;MACRO_MATHLIB;PROTECTED_THINGS_DISABLE;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_ALLOW_RUNTIME_LIBRARY_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;_ALLOW_MSC_VER_MISMATCH;"
+		$PreprocessorDefinitions			"$BASE;MACRO_MATHLIB;PROTECTED_THINGS_DISABLE"
 	}
 
 	$Linker
@@ -119,6 +119,7 @@ $Project "Vbsp"
 			$File	"..\common\map_shared.h"
 			$File	"..\common\pacifier.h"
 			$File	"..\common\polylib.h"
+			$File	"$SRCDIR\public\tier1\tokenreader.h"
 			$File	"..\common\utilmatlib.h"
 			$File	"..\vmpi\vmpi.h"
 			$File	"$SRCDIR\public\zip_uncompressed.h"

@@ -315,6 +315,7 @@ bool	GetBSPDependants( const char *pBSPFilename, CUtlVector< CUtlString > *pList
 void	UnloadBSPFile();
 
 void	ParseEntities (void);
+void	ParseEntities (void);
 void	UnparseEntities (void);
 void	PrintEntity (entity_t *ent);
 

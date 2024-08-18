@@ -608,7 +608,8 @@ void EmitStaticProps()
 			build.m_Solid = IntForKey( &entities[i], "solid" );
 			build.m_Skin = IntForKey( &entities[i], "skin" );
 			build.m_FadeMaxDist = FloatForKey( &entities[i], "fademaxdist" );
-			build.m_Flags = 0;//IntForKey( &entities[i], "spawnflags" ) & STATIC_PROP_WC_MASK;
+			build.m_Flags = 0;// IntForKey(&entities[i], "spawnflags")& STATIC_PROP_WC_MASK; // was noted out!
+
 			if (IntForKey( &entities[i], "ignorenormals" ) == 1)
 			{
 				build.m_Flags |= STATIC_PROP_IGNORE_NORMALS;
@@ -650,12 +651,13 @@ void EmitStaticProps()
 			const char *pKey = ValueForKey( &entities[i], "fadescale" );
 			if ( pKey && pKey[0] )
 			{
-				build.m_flForcedFadeScale = FloatForKey( &entities[i], "fadescale" );
+				build.m_flForcedFadeScale = FloatForKey(&entities[i], "fadescale");
 			}
 			else
 			{
 				build.m_flForcedFadeScale = 1;
 			}
+
 			build.m_FadesOut = (build.m_FadeMaxDist > 0);
 			build.m_pLightingOrigin = ValueForKey( &entities[i], "lightingorigin" );
 			if (build.m_FadesOut)

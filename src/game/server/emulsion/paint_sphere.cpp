@@ -94,100 +94,13 @@ private:
 
 void CPaintSphere::Spawn() {
 	
-
 	PaintBlobManager()->QueuePaintSphere(this);
 
 	BaseClass::Spawn();
-
-	// get any brushes within our rad
-	//float rad = 256.0f;
-	//Vector vecRad = Vector(1.0f, 1.0f, 1.0f) * rad;
-	//Vector worldSpacePaintPoint = GetAbsOrigin() + 0.1f * vec3_origin;
-
-	
-	//CBaseEntity* pEnts[16];
-	//CDetailEnum pEnum(pEnts, 16);
-	////int cnt = UTIL_EntitiesInSphere(GetAbsOrigin(), rad, &pEnum);//UTIL_EntitiesInSphere(pEnts, 16, GetAbsOrigin(), rad, 0);
-
-	//partition->EnumerateElementsInSphere(PARTITION_ENGINE_NON_STATIC_EDICTS, GetAbsOrigin(), rad, false, &pEnum);
-	//int cnt = pEnum.GetCount();
-
-	//for (int i = 0; i < cnt; i++) {
-	//	int k = 0;
-	//}
-
-	//CBrushEnum pList;
-	//enginetrace->EnumerateEntities(worldSpacePaintPoint - vecRad, worldSpacePaintPoint + vecRad, &pList);
-
-	//int k = 0;
-
-	//CBrushQuery query;
-	//enginetrace->GetBrushesInAABB(worldSpacePaintPoint - vecRad, worldSpacePaintPoint + vecRad, query);
-
-	//for (int i = 0; i < query.m_iCount; i++) {
-	//	
-	//	CBaseEntity* pEnt = gEntList.GetBaseEntity(query.m_pBrushes[i]);
-
-	//	if (!pEnt)
-	//		continue;
-
-	//	if (!pEnt->GetModel())
-	//		continue;
-
-	//	Vector entSpacePos;
-	//	pEnt->WorldToEntitySpace(worldSpacePaintPoint, &entSpacePos);
-
-	//	engine->SpherePaintSurface(pEnt->GetModel(), entSpacePos, BOUNCE_POWER, rad, 1.0f);
-
-	//}
-
-
-
-	//for (int i = 0; i < count; i++) {
-	//	
-	//	Vector entSpacePos;
-	//	pList.m_Brushes[i]->WorldToEntitySpace(worldSpacePaintPoint, &entSpacePos);
-
-	//	engine->SpherePaintSurface(pList.m_Brushes[i]->GetModel(), entSpacePos, BOUNCE_POWER, rad, 1.0f);
-
-	//}
-
-	//for (int i = 0; i < count; i++) {
-	//	if (!pEnts[i]->IsBSPModel())
-	//		continue;
-
-	//	Vector entSpacePaintPoint;
-	//	pEnts[i]->WorldToEntitySpace(worldSpacePaintPoint, &entSpacePaintPoint);
-
-	//	engine->SpherePaintSurface(pEnts[i]->GetModel(), entSpacePaintPoint, BOUNCE_POWER, 128.0f, 1.0f);
-	//}
-
-	//engine->SpherePaintSurface(GetWorldEntity()->GetModel(), entSpacePaintPoint, BOUNCE_POWER, 128.0f, 1.0f);
-
-
-	//CBrushEnum pList;
-	//enginetrace->EnumerateEntities(worldSpacePaintPoint - vecRad, worldSpacePaintPoint + vecRad, &pList);
-
-	//for (int i = 0; i < pList.m_Brushes.Count(); i++) {
-
-	//	CBaseEntity* pEnt;
-	//	Vector entSpacePaintPoint;
-	//	pEnt = pList.m_Brushes[i];
-	//	pEnt->WorldToEntitySpace(worldSpacePaintPoint, &entSpacePaintPoint);
-
-	//	engine->SpherePaintSurface(pEnt->GetModel(), entSpacePaintPoint, BOUNCE_POWER, 128.0f, 1.0f);
-	//}
-
-	//engine->SpherePaintSurface(GetWorldEntity()->GetModel(), GetAbsOrigin(), BOUNCE_POWER, 256.0f, 1.0f);
-
 }
 
 void CPaintSphere::Paint() {
 	
-	//float rad = 256.0f;
-	//Vector vecRad = Vector(1.0f, 1.0f, 1.0f) * rad;
-	//Vector worldSpacePaintPoint = GetAbsOrigin() + 0.1f * vec3_origin;
-
 	trace_t tr;
 	for (int i = 0; i < 6; i++) {
 		UTIL_TraceLine(GetAbsOrigin(), GetAbsOrigin() + (dirs[i] * m_flRad), MASK_ALL, this, COLLISION_GROUP_PLAYER_MOVEMENT, &tr);

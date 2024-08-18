@@ -11,9 +11,9 @@
 #include "BaseVSShader.h"
 #include "cpp_shader_constant_register_map.h"
 
-#include "decalmodulate_vs20.inc"
-#include "decalmodulate_ps20.inc"
-#include "decalmodulate_ps20b.inc"
+//#include "decalmodulate_vs20.inc"
+//#include "decalmodulate_ps20.inc"
+//#include "decalmodulate_ps20b.inc"
 
 #ifndef _X360
 #include "decalmodulate_vs30.inc"
@@ -108,30 +108,30 @@ BEGIN_VS_SHADER( DEFERRED_DECALMODULATE,
 
 			bool bHasVertexAlpha = IS_FLAG_SET( MATERIAL_VAR_VERTEXCOLOR ) && IS_FLAG_SET( MATERIAL_VAR_VERTEXALPHA );
 
-#ifndef _X360
-			if ( !g_pHardwareConfig->HasFastVertexTextures() )
-#endif
-			{
-				DECLARE_STATIC_VERTEX_SHADER( decalmodulate_vs20 );
-				SET_STATIC_VERTEX_SHADER_COMBO( VERTEXCOLOR,  bHasVertexAlpha );
-				SET_STATIC_VERTEX_SHADER_COMBO( LIGHTING_PREVIEW, nLightingPreviewMode != 0 );
-				SET_STATIC_VERTEX_SHADER( decalmodulate_vs20 );
-
-				if( g_pHardwareConfig->SupportsPixelShaders_2_b() )
-				{
-					DECLARE_STATIC_PIXEL_SHADER( decalmodulate_ps20b );
-					SET_STATIC_PIXEL_SHADER_COMBO( VERTEXALPHA,  bHasVertexAlpha );
-					SET_STATIC_PIXEL_SHADER( decalmodulate_ps20b );
-				}
-				else
-				{
-					DECLARE_STATIC_PIXEL_SHADER( decalmodulate_ps20 );
-					SET_STATIC_PIXEL_SHADER_COMBO( VERTEXALPHA,  bHasVertexAlpha );
-					SET_STATIC_PIXEL_SHADER( decalmodulate_ps20 );
-				}
-			}
-#ifndef _X360
-			else
+//#ifndef _X360
+//			if ( !g_pHardwareConfig->HasFastVertexTextures() )
+//#endif
+//			{
+//				DECLARE_STATIC_VERTEX_SHADER( decalmodulate_vs20 );
+//				SET_STATIC_VERTEX_SHADER_COMBO( VERTEXCOLOR,  bHasVertexAlpha );
+//				SET_STATIC_VERTEX_SHADER_COMBO( LIGHTING_PREVIEW, nLightingPreviewMode != 0 );
+//				SET_STATIC_VERTEX_SHADER( decalmodulate_vs20 );
+//
+//				if( g_pHardwareConfig->SupportsPixelShaders_2_b() )
+//				{
+//					DECLARE_STATIC_PIXEL_SHADER( decalmodulate_ps20b );
+//					SET_STATIC_PIXEL_SHADER_COMBO( VERTEXALPHA,  bHasVertexAlpha );
+//					SET_STATIC_PIXEL_SHADER( decalmodulate_ps20b );
+//				}
+//				else
+//				{
+//					DECLARE_STATIC_PIXEL_SHADER( decalmodulate_ps20 );
+//					SET_STATIC_PIXEL_SHADER_COMBO( VERTEXALPHA,  bHasVertexAlpha );
+//					SET_STATIC_PIXEL_SHADER( decalmodulate_ps20 );
+//				}
+//			}
+//#ifndef _X360
+//			else
 			{
 				DECLARE_STATIC_VERTEX_SHADER( decalmodulate_vs30 );
 				SET_STATIC_VERTEX_SHADER_COMBO( VERTEXCOLOR,  bHasVertexAlpha );
@@ -142,7 +142,7 @@ BEGIN_VS_SHADER( DEFERRED_DECALMODULATE,
 				SET_STATIC_PIXEL_SHADER_COMBO( VERTEXALPHA,  bHasVertexAlpha );
 				SET_STATIC_PIXEL_SHADER( decalmodulate_ps30 );
 			}
-#endif
+//#endif
 
 			// Set stream format (note that this shader supports compression)
 			unsigned int flags = VERTEX_POSITION | VERTEX_FORMAT_COMPRESSED;
@@ -199,29 +199,29 @@ BEGIN_VS_SHADER( DEFERRED_DECALMODULATE,
 			fConsts[1] = params[ FOGSCALE ]->GetFloatValue();
 			pShaderAPI->SetPixelShaderConstant( 0, fConsts );
 
-#ifndef _X360
-			if ( !g_pHardwareConfig->HasFastVertexTextures() )
-#endif
-			{
-				DECLARE_DYNAMIC_VERTEX_SHADER( decalmodulate_vs20 );
-				SET_DYNAMIC_VERTEX_SHADER_COMBO( SKINNING, 0 );
-				SET_DYNAMIC_VERTEX_SHADER_COMBO( COMPRESSED_VERTS, (int)vertexCompression );
-//				SET_DYNAMIC_VERTEX_SHADER_COMBO( TESSELLATION, 0 );             // JasonM TODO: set this appropriately when we care about decals on subds				
-				SET_DYNAMIC_VERTEX_SHADER( decalmodulate_vs20 );
-
-				if( g_pHardwareConfig->SupportsPixelShaders_2_b() )
-				{
-					DECLARE_DYNAMIC_PIXEL_SHADER( decalmodulate_ps20b );
-					SET_DYNAMIC_PIXEL_SHADER( decalmodulate_ps20b );
-				}
-				else
-				{
-					DECLARE_DYNAMIC_PIXEL_SHADER( decalmodulate_ps20 );
-					SET_DYNAMIC_PIXEL_SHADER( decalmodulate_ps20 );
-				}
-			}
-#ifndef _X360
-			else
+//#ifndef _X360
+//			if ( !g_pHardwareConfig->HasFastVertexTextures() )
+//#endif
+//			{
+//				DECLARE_DYNAMIC_VERTEX_SHADER( decalmodulate_vs20 );
+//				SET_DYNAMIC_VERTEX_SHADER_COMBO( SKINNING, 0 );
+//				SET_DYNAMIC_VERTEX_SHADER_COMBO( COMPRESSED_VERTS, (int)vertexCompression );
+////				SET_DYNAMIC_VERTEX_SHADER_COMBO( TESSELLATION, 0 );             // JasonM TODO: set this appropriately when we care about decals on subds				
+//				SET_DYNAMIC_VERTEX_SHADER( decalmodulate_vs20 );
+//
+//				if( g_pHardwareConfig->SupportsPixelShaders_2_b() )
+//				{
+//					DECLARE_DYNAMIC_PIXEL_SHADER( decalmodulate_ps20b );
+//					SET_DYNAMIC_PIXEL_SHADER( decalmodulate_ps20b );
+//				}
+//				else
+//				{
+//					DECLARE_DYNAMIC_PIXEL_SHADER( decalmodulate_ps20 );
+//					SET_DYNAMIC_PIXEL_SHADER( decalmodulate_ps20 );
+//				}
+//			}
+//#ifndef _X360
+//			else
 			{
 				SetHWMorphVertexShaderState( VERTEX_SHADER_SHADER_SPECIFIC_CONST_6, VERTEX_SHADER_SHADER_SPECIFIC_CONST_7, SHADER_VERTEXTEXTURE_SAMPLER0 );
 
@@ -237,7 +237,7 @@ BEGIN_VS_SHADER( DEFERRED_DECALMODULATE,
 				bool bUnusedTexCoords[3] = { false, false, !pShaderAPI->IsHWMorphingEnabled() };
 				pShaderAPI->MarkUnusedVertexFields( 0, 3, bUnusedTexCoords );
 			}
-#endif
+//#endif
 		}
 		Draw( );
 	}

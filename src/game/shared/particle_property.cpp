@@ -147,7 +147,7 @@ CNewParticleEffect *CParticleProperty::Create( CParticleSystemDefinition *pDef, 
 	bool bRequestedBatch = ( nBatchMode == 2 ) || ( ( nBatchMode == 1 ) && pDef && pDef->ShouldBatch() ); 
 	if ( ( iAttachType == PATTACH_CUSTOMORIGIN ) && bRequestedBatch )
 	{
-		int iIndex = FindEffect( pDef->GetName() );
+		int iIndex = FindEffect( g_pParticleSystemMgr->GetDefName(pDef) );
 		if ( iIndex >= 0 )
 		{
 			CNewParticleEffect *pEffect = m_ParticleEffects[iIndex].pParticleEffect.GetObject();
@@ -158,7 +158,7 @@ CNewParticleEffect *CParticleProperty::Create( CParticleSystemDefinition *pDef, 
 
 	int iIndex = m_ParticleEffects.AddToTail();
 	ParticleEffectList_t *newEffect = &m_ParticleEffects[iIndex];
-	newEffect->pParticleEffect = CNewParticleEffect::Create( m_pOuter, pDef, pDef->GetName() );
+	newEffect->pParticleEffect = CNewParticleEffect::Create( m_pOuter, pDef, g_pParticleSystemMgr->GetDefName(pDef) );
 
 	if ( !newEffect->pParticleEffect->IsValid() )
 	{
@@ -171,7 +171,7 @@ CNewParticleEffect *CParticleProperty::Create( CParticleSystemDefinition *pDef, 
 
 	if ( m_pOuter )
 	{
-		m_pOuter->OnNewParticleEffect( pDef->GetName(), newEffect->pParticleEffect.GetObject() );
+		m_pOuter->OnNewParticleEffect( g_pParticleSystemMgr->GetDefName(pDef), newEffect->pParticleEffect.GetObject() );
 	}
 
 	return newEffect->pParticleEffect.GetObject();
@@ -406,7 +406,7 @@ void CParticleProperty::StopParticlesNamed( const char *pszEffectName, bool bFor
 	{
 		// for each effect...
 		CNewParticleEffect *pParticleEffect = m_ParticleEffects[i].pParticleEffect.GetObject();
-		if (pParticleEffect->m_pDef() == pDef)
+		if (pParticleEffect->m_pDef == pDef)
 		{
 			if ( nSplitScreenPlayerSlot != -1 )
 			{
@@ -527,7 +527,7 @@ void CParticleProperty::UpdateControlPoint( ParticleEffectList_t *pEffect, int i
 
 	ParticleControlPoint_t *pPoint = &pEffect->pControlPoints[iPoint];
 
-	if ( pEffect->pParticleEffect->m_pDef->IsScreenSpaceEffect() && iPoint == 0 )
+	if ( pEffect->pParticleEffect->m_pDef->IsScreenSpaceEffect() && iPoint == 0)
 	{
 		pEffect->pParticleEffect->SetControlPointOrientation( pPoint->iControlPoint, Vector(1,0,0), Vector(0,1,0), Vector(0,0,1) );
 		pEffect->pParticleEffect->SetControlPoint( pPoint->iControlPoint, vec3_origin );
@@ -580,7 +580,7 @@ void CParticleProperty::UpdateControlPoint( ParticleEffectList_t *pEffect, int i
 						MatrixVectors( attachmentToWorld, &vecForward, &vecRight, &vecUp );
 						MatrixPosition( attachmentToWorld, vecOrigin );
 
-						if ( pEffect->pParticleEffect->m_pDef->IsViewModelEffect() )
+						if ( pEffect->pParticleEffect->m_pDef->IsViewModelEffect())
 						{
 							FormatViewModelAttachment( pPlayer, vecOrigin, true );
 						}
@@ -601,7 +601,7 @@ void CParticleProperty::UpdateControlPoint( ParticleEffectList_t *pEffect, int i
 #endif
 						MatrixPosition( attachmentToWorld, vecOrigin );
 
-						if ( pEffect->pParticleEffect->m_pDef->IsViewModelEffect() )
+						if ( pEffect->pParticleEffect->m_pDef->IsViewModelEffect())
 						{
 							HACK_GETLOCALPLAYER_GUARD( "CParticleProperty::UpdateControlPoint" );
 
@@ -618,7 +618,7 @@ void CParticleProperty::UpdateControlPoint( ParticleEffectList_t *pEffect, int i
 				{
 					bWarned = true;
 					DevWarning( "Attempted to attach particle effect %s to an unknown attachment on entity %s\n",
-						pEffect->pParticleEffect->m_pDef->GetName(), pAnimating->GetClassname() );
+						g_pParticleSystemMgr->GetDefName(pEffect->pParticleEffect->m_pDef), pAnimating->GetClassname()); // this pointer chain is getting OUT OF HAND - FIX IT  TODO TODO TODO TODO 
 				}
 			}
 			if ( !bValid )
@@ -696,7 +696,7 @@ void CParticleProperty::DebugPrintEffects( void )
 			i,
 			pParticleEffect->GetEffectName(),
 			( pParticleEffect->m_bDormant ) ? "yes" : "no",
-			( pParticleEffect->m_bEmissionStopped ) ? "yes" : "no" );
+			( pParticleEffect->m_bDormant ) ? "yes" : "no" );
 	}
 }
 

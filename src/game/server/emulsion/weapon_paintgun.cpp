@@ -188,6 +188,12 @@ void CWeaponPaintgun::FirePaint(bool erase) {
 		
 		g_nBlobCycle++;
 	}
+	//if (paintgun_fire_blobs.GetBool()) {
+	//	Vector origin;
+	//	RandomVectorInUnitSphere(&origin);
+
+	//	PaintBlobManager()->CreateBlob();
+	//}
 	else {
 		trace_t tr;
 		UTIL_TraceLine(halfHeightOrigin, pPlayer->GetForward_Stick() * MAX_TRACE_LENGTH, MASK_ALL, pPlayer, COLLISION_GROUP_PLAYER_MOVEMENT, &tr);
@@ -196,7 +202,8 @@ void CWeaponPaintgun::FirePaint(bool erase) {
 
 			if (tr.DidHitWorld())
 				if (!erase) {
-					engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, g_CurPaintgunPower, paintgun_rad.GetInt(), paintgun_strength.GetInt());
+					bool result = engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, g_CurPaintgunPower, paintgun_rad.GetInt(), paintgun_strength.GetInt());
+					Msg("Painted? %i\n", (int)result);
 				}
 				else
 					engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, NO_POWER, paintgun_rad.GetInt(), paintgun_strength.GetInt()); // erase		

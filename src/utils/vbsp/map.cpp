@@ -2702,6 +2702,9 @@ bool LoadMapFile( const char *pszFileName )
 	g_nMapFileVersion = 400;
 
 	const char *pszExtension =V_GetFileExtension( pszFileName );
+	Msg(pszExtension);
+	Msg("\n");
+
 	if ( pszExtension && strcmpi( pszExtension, "vmm" ) == 0 )
 	{
 		pMainManifest = new CManifest();

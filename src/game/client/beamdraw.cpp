@@ -24,6 +24,44 @@ extern ConVar r_DrawBeams;
 
 static IMaterial *g_pBeamWireframeMaterial;
 
+// beamdraw_legacy.cpp
+void CBeamSegDraw::StartEX(IMatRenderContext* pRenderContext, int nSegs, IMaterial* pMaterial, CMeshBuilder* pMeshBuilder, int nMeshVertCount) {
+	Assert(nSegs >= 2);
+
+	m_nSegsDrawn = 0;
+	m_nTotalSegs = nSegs;
+
+	if (pMeshBuilder)
+	{
+		m_Mesh = *pMeshBuilder;
+		m_nMeshVertCount = nMeshVertCount;
+	}
+	else
+	{
+		m_pMeshBuilder = NULL;
+		m_nMeshVertCount = 0;
+
+		//#ifdef CLIENT_DLL
+		//		if ( ShouldDrawInWireFrameMode() || r_DrawBeams.GetInt() == 2 )
+		//		{
+		//			if ( !g_pBeamWireframeMaterial )
+		//				g_pBeamWireframeMaterial = materials->FindMaterial("shadertest/wireframevertexcolor", TEXTURE_GROUP_OTHER);
+		//			pMaterial = g_pBeamWireframeMaterial;
+		//		}
+		//#endif
+
+		//IMesh *pMesh = materials->GetDynamicMesh( true, NULL, NULL, pMaterial );
+		//pRenderContext->Bind(pMaterial);
+
+		Assert(pMaterial);
+
+		m_pMesh = pRenderContext->GetDynamicMesh(true, NULL, NULL, pMaterial);
+		pRenderContext->Bind(pMaterial);
+		m_Mesh.Begin(m_pMesh, MATERIAL_TRIANGLE_STRIP, (nSegs - 1) * 2);
+	}
+
+}
+
 //-----------------------------------------------------------------------------
 // Purpose: Retrieve sprite object and set it up for rendering
 // Input  : *pSpriteModel - 
@@ -329,7 +367,7 @@ void DrawSegs( int noise_divisions, float *prgNoise, const model_t* spritemodel,
 	// Specify all the segments.
 	CMatRenderContextPtr pRenderContext( g_pMaterialSystem );
 	CBeamSegDraw segDraw;
-	segDraw.Start( pRenderContext, segments, pMaterial );
+	segDraw.StartEX( pRenderContext, segments, pMaterial );
 
 	for ( i = 0; i < segments; i++ )
 	{
@@ -531,7 +569,7 @@ void DrawTeslaSegs( int noise_divisions, float *prgNoise, const model_t* spritem
 	// Specify all the segments.
 	CMatRenderContextPtr pRenderContext( g_pMaterialSystem );
 	CBeamSegDraw segDraw;
-	segDraw.Start( pRenderContext, segments, NULL );
+	segDraw.StartEX( pRenderContext, segments, NULL );
 
 	// Keep track of how many times we've branched
 	int iBranches = 0;
@@ -701,7 +739,7 @@ void DrawSplineSegs( int noise_divisions, float *prgNoise,
 	IMaterial *pBeamMaterial = pBeamSprite->GetMaterial( (RenderMode_t)rendermode );
 	CMatRenderContextPtr pRenderContext( g_pMaterialSystem );
 	CBeamSegDraw segDraw;
-	segDraw.Start( pRenderContext, (segments-1)*(numAttachments-1), pBeamMaterial );
+	segDraw.StartEX( pRenderContext, (segments-1)*(numAttachments-1), pBeamMaterial );
 
 	CEngineSprite *pHaloSprite = (CEngineSprite *)modelinfo->GetModelExtraData( halosprite );
 	IMaterial *pHaloMaterial = NULL;
@@ -1493,7 +1531,7 @@ void DrawBeamQuadratic( const Vector &start, const Vector &control, const Vector
 
 	CMatRenderContextPtr pRenderContext( g_pMaterialSystem );
 	CBeamSegDraw beamDraw;
-	beamDraw.Start( pRenderContext, subdivisions+1, NULL );
+	beamDraw.StartEX( pRenderContext, subdivisions+1, NULL );
 
 	BeamSeg_t seg;
 	seg.m_flWidth = width;

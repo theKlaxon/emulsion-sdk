@@ -832,7 +832,7 @@ void CClientTools::PostToolMessage( KeyValues *pKeyValues )
 	{
 		// NOTE: This cannot be done during particle system init because tools aren't set up at that point
 		CUtlVector<CUtlString> files;
-		GetParticleManifest( files );
+		g_pParticleSystemMgr->GetParticleManifest( files );
 		int nCount = files.Count();
 		for ( int i = 0; i < nCount; ++i )
 		{

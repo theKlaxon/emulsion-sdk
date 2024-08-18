@@ -18,6 +18,10 @@
 #include "networkstringtable_clientdll.h"
 #endif
 
+#ifdef PARTICLES2
+#include "particles\iparticlesdll.h"
+#endif
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -53,6 +57,57 @@ int GetAttachTypeFromString( const char *pszString )
 	return -1;
 }
 
+#ifdef GAME_DLL
+
+void GetParticleManifest(CUtlVector<CUtlString>& list) {
+	GetParticleManifest(list, "particles/particles_manifest.txt");
+}
+
+void GetParticleManifest(CUtlVector<CUtlString>& list, const char* pFile) {
+
+	if (g_pFullFileSystem == nullptr)
+		return;
+
+	KeyValues *pNames = new KeyValues(pFile);
+	pNames->LoadFromFile(g_pFullFileSystem, pFile, "GAME");
+
+	if (!pNames) {
+		Warning("Could not load particles manifest!\n");
+		return;
+	}
+
+	pNames = pNames->GetFirstSubKey();
+
+	if (pNames != nullptr) {
+
+		while (pNames != nullptr) {
+
+			const char* pszTemp = pNames->GetName();
+
+			if (!V_stricmp(pszTemp, "file")) {
+
+				pszTemp = pNames->GetString();
+				list.InsertBefore(list.Count(), CUtlString(pszTemp));
+			}
+			else {
+				Warning("particle_parse : Manifest with bogus file type '%s', expecting 'file'.\n", pszTemp);
+			}
+			
+			pNames = pNames->GetNextKey();
+		}
+
+		pNames->deleteThis();
+		return;
+	}
+	else {
+
+		Warning("particle_parse: Unable to load manifest file '%s'.\n", pFile);
+	}
+
+	pNames->deleteThis();
+}
+#endif
+
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
@@ -69,7 +124,11 @@ void ParseParticleEffects( bool bLoadSheets )
 	for ( int i = 0; i < nCount; ++i )
 	{
 		COM_TimestampedLog("g_pParticleSystemMgr->ReadParticleConfigFile");
+#ifdef PARTICLES2
+		g_pParticleSystemMgr->ReadParticleConfigFile2( files[i], false, false );
+#else
 		g_pParticleSystemMgr->ReadParticleConfigFile( files[i], false, false );
+#endif
 	}
 
 	g_pParticleSystemMgr->DecommitTempMemory();
@@ -88,7 +147,7 @@ void PrecacheStandardParticleSystems( )
 	{
 		const char *pParticleSystemName = g_pParticleSystemMgr->GetParticleSystemNameFromIndex(i);
 		CParticleSystemDefinition *pParticleSystem = g_pParticleSystemMgr->FindParticleSystem( pParticleSystemName );
-		if ( pParticleSystem->ShouldAlwaysPrecache() )
+		if ( g_pParticleSystemMgr->GetShouldAlwaysPrecache(pParticleSystem) )
 		{
 			PrecacheParticleSystem( pParticleSystemName );
 		}

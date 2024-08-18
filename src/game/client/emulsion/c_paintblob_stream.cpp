@@ -73,6 +73,16 @@ END_PREDICTION_DATA()
 
 C_PaintBlobStream::C_PaintBlobStream() {
 
+	int nParticles = 32;
+
+	// ----
+
+	ImpTiler* pTiler = ImpTilerFactory::factory->getTiler();
+
+
+
+	// ----
+
 	m_nActiveParticlesInternal = 0;
 
 	m_pMaterial = materials->FindMaterial("paintblobs/blob_surface_portal", TEXTURE_GROUP_OTHER, 0);

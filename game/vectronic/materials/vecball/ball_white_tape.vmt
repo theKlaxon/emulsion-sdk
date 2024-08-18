@@ -1,4 +1,4 @@
-UnlitGeneric
+"UnlitGeneric"
 {
 	$baseTexture "vecball/ball_white_tape"
 	$nocull "1"	

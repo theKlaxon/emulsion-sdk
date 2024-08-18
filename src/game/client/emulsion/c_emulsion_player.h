@@ -29,5 +29,10 @@ protected:
 	// stick lerp
 	Vector m_vecCurLerpUp;
 	Vector m_vecGravity;
+	Vector m_vecPrevUp;
+	Vector m_vecStickRight;
+	Vector m_vecSurfaceForward;
+	Vector m_vecPrevOrigin;
+	Vector m_vecUp;
 	int m_nPaintPower;
 };

@@ -68,7 +68,7 @@ enum CompiledVtfFlags
 
 	TEXTUREFLAGS_CLAMPU                        = 0x02000000,
 	TEXTUREFLAGS_VERTEXTEXTURE                 = 0x04000000,	// Usable as a vertex texture
-	TEXTUREFLAGS_SSBUMP                        = 0x08000000,			
+	TEXTUREFLAGS_SSBUMP                        = 0x08000000,
 
 		TEXTUREFLAGS_UNUSED_10000000           = 0x10000000,
 

@@ -11,9 +11,9 @@
 
 // must match layout of PaintPowerType
 const char* g_PaintSplatParticles[] = {
-	"paint_splat_bounce_01",	// bounce
+	"paint_splat_bounce_01_0",	// bounce
 	"paint_splat_erase_01",		// reflect
-	"paint_splat_speed_01",		// speed
+	"paint_splat_speed_01_0",		// speed
 	"paint_splat_stick_02",		// portal / stick
 	"paint_splat_erase_01",		// no power
 };

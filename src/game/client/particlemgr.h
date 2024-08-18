@@ -608,21 +608,21 @@ enum
 };
 
 
-class CParticleCollection;
+class IParticleCollection;
 
 class CNonDrawingParticleSystem
 {
 public:
 	CNonDrawingParticleSystem *m_pNext;
 	CNonDrawingParticleSystem *m_pPrev;
-	CParticleCollection *m_pSystem;
+	IParticleCollection *m_pSystem;
 
-	FORCEINLINE CParticleCollection *operator()( void ) const
+	FORCEINLINE IParticleCollection* operator()( void ) const
 	{
 		return m_pSystem;
 	}
 
-	FORCEINLINE CParticleCollection *Get( void ) const
+	FORCEINLINE IParticleCollection* Get( void ) const
 	{
 		return m_pSystem;
 	}
@@ -731,7 +731,7 @@ public:
 private:
 	struct RetireInfo_t
 	{
-		CParticleCollection *m_pCollection;
+		IParticleCollection *m_pCollection;
 		float m_flScreenArea;
 		bool m_bFirstFrame;
 	};
@@ -843,11 +843,7 @@ inline const matrix3x4_t& CParticleEffectBinding::GetLocalSpaceTransform() const
 // ------------------------------------------------------------------------ //
 // GLOBALS
 // ------------------------------------------------------------------------ //
-
 CParticleMgr *ParticleMgr();
-
-
-
 
 //-----------------------------------------------------------------------------
 // StandardParticle_t; this is just one type of particle

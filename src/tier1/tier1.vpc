@@ -31,9 +31,14 @@ $Project "tier1"
 		}
 
 		$File	"KeyValues.cpp"
+		$File	"kvpacker.cpp"
 		$File	"uniqueid.cpp"
 		$File	"utlbuffer.cpp"
 		$File	"utlbufferutil.cpp"
+		$File	"utlstring.cpp"
+		$File	"utlsymbol.cpp"
+		$File	"lzmaDecoder.cpp"
+		$File	"tokenreader2.cpp"
 	}
 
 	$Folder	"Header Files"

@@ -70,11 +70,11 @@ public:
 							const IHandleEntity *ignore,
 							int collisionGroup, CBaseTrace *ptr );
 
-	virtual bool MovePointInsideControllingObject( CParticleCollection *pParticles,
+	virtual bool MovePointInsideControllingObject(IParticleCollection*pParticles,
 												   void *pObject,
 												   Vector *pPnt );
 	virtual void GetRandomPointsOnControllingObjectHitBox( 
-		CParticleCollection *pParticles,
+		IParticleCollection*pParticles,
 		int nControlPointNumber, 
 		int nNumPtsOut,
 		float flBBoxScale,
@@ -92,17 +92,17 @@ public:
 
 
 	virtual int GetControllingObjectHitBoxInfo(
-		CParticleCollection *pParticles,
+		IParticleCollection* pParticles,
 		int nControlPointNumber,
 		int nBufSize,										// # of output slots available
 		ModelHitBoxInfo_t *pHitBoxOutputBuffer );
 
 	virtual	bool IsPointInControllingObjectHitBox( 
-		CParticleCollection *pParticles,
+		IParticleCollection* pParticles,
 		int nControlPointNumber, Vector vecPos, bool bBBoxOnly );
 
 	virtual	void CParticleSystemQuery::GetControllingObjectOBBox( 
-		CParticleCollection *pParticles,
+		IParticleCollection* pParticles,
 		int nControlPointNumber, Vector vecMin, Vector vecMax );
 	
 	// Traces Four Rays against a defined RayTraceEnvironment
@@ -126,15 +126,15 @@ public:
 
 	virtual void DebugDrawLine( const Vector &origin, const Vector &target, int r, int g, int b, bool noDepthTest, float duration );
 
-	virtual void BeginDrawModels( int nMaxNumToDraw, Vector const &vecCenterPosition, CParticleCollection *pParticles )
+	virtual void BeginDrawModels( int nMaxNumToDraw, Vector const &vecCenterPosition, IParticleCollection *pParticles )
 	{
 	}
 
-	virtual void DrawModel( void *pModel, const matrix3x4_t &DrawMatrix, CParticleCollection *pParticles, int nParticleNumber, int nBodyPart, int nSubModel,
+	virtual void DrawModel( void *pModel, const matrix3x4_t &DrawMatrix, IParticleCollection *pParticles, int nParticleNumber, int nBodyPart, int nSubModel,
 							int nAnimationSequence = 0, float flAnimationRate = 30.0f, float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f );
 
 
-	virtual void FinishDrawModels( CParticleCollection *pParticles )
+	virtual void FinishDrawModels(IParticleCollection *pParticles )
 	{
 	}
 
@@ -234,7 +234,7 @@ void CParticleSystemQuery::TraceLine( const Vector& vecAbsStart,
 }
 
 bool CParticleSystemQuery::MovePointInsideControllingObject( 
-	CParticleCollection *pParticles, void *pObject, Vector *pPnt )
+	IParticleCollection *pParticles, void *pObject, Vector *pPnt )
 {
 #ifdef GAME_DLL
 	return true;
@@ -259,7 +259,7 @@ static float GetSurfaceCoord( float flRand, float flMinX, float flMaxX )
 
 
 void CParticleSystemQuery::GetRandomPointsOnControllingObjectHitBox( 
-	CParticleCollection *pParticles,
+	IParticleCollection *pParticles,
 	int nControlPointNumber, 
 	int nNumPtsOut,
 	float flBBoxScale,
@@ -288,7 +288,7 @@ void CParticleSystemQuery::GetRandomPointsOnControllingObjectHitBox(
 		float flRandMax = flBBoxScale;
 		float flRandMin = 1.0 - flBBoxScale;
 		Vector vecBasePos;
-		pParticles->GetControlPointAtTime( nControlPointNumber, pParticles->m_flCurTime, &vecBasePos );
+		pParticles->GetControlPointAtTime( nControlPointNumber, pParticles->GetCurTime(), &vecBasePos);
 
 		s_BoneMutex.Lock();
 		C_BaseAnimating *pAnimating = pMoveParent->GetBaseAnimating();
@@ -480,7 +480,7 @@ void CParticleSystemQuery::GetRandomPointsOnControllingObjectHitBox(
 
 
 int CParticleSystemQuery::GetControllingObjectHitBoxInfo(
-	CParticleCollection *pParticles,
+	IParticleCollection *pParticles,
 	int nControlPointNumber,
 	int nBufSize,										// # of output slots available
 	ModelHitBoxInfo_t *pHitBoxOutputBuffer )
@@ -569,7 +569,7 @@ int CParticleSystemQuery::GetControllingObjectHitBoxInfo(
 
 
 bool CParticleSystemQuery::IsPointInControllingObjectHitBox( 
-	CParticleCollection *pParticles,
+	IParticleCollection *pParticles,
 	int nControlPointNumber, Vector vecPos, bool bBBoxOnly )
 {
 	bool bSuccess = false;
@@ -652,7 +652,7 @@ bool CParticleSystemQuery::IsPointInControllingObjectHitBox(
 }
 
 void CParticleSystemQuery::GetControllingObjectOBBox( 
-	CParticleCollection *pParticles,
+	IParticleCollection *pParticles,
 	int nControlPointNumber, Vector vecMin, Vector vecMax )
 {
 	vecMin = vecMax = vec3_origin;
@@ -854,7 +854,7 @@ static void SetBodygroup( studiohdr_t *pstudiohdr, int &body, int iGroup, int iV
 #endif
 
 // callback to draw models given abstract ptr
-void CParticleSystemQuery::DrawModel( void *pModel, const matrix3x4_t &DrawMatrix, CParticleCollection *pParticles, int nParticleNumber, int nBodyPart, int nSubModel,
+void CParticleSystemQuery::DrawModel( void *pModel, const matrix3x4_t &DrawMatrix, IParticleCollection *pParticles, int nParticleNumber, int nBodyPart, int nSubModel,
 									  int nAnimationSequence, float flAnimationRate, float r, float g, float b, float a )
 {
 #ifdef CLIENT_DLL
@@ -872,7 +872,7 @@ void CParticleSystemQuery::DrawModel( void *pModel, const matrix3x4_t &DrawMatri
 
 		MDL.m_nSequence = nAnimationSequence;
 		MDL.m_flPlaybackRate = flAnimationRate;
-		MDL.m_flTime = pParticles->m_flCurTime;
+		MDL.m_flTime = pParticles->GetCurTime();
 
 		if ( pStudioHdr )
 		{

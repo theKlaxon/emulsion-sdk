@@ -963,19 +963,49 @@ CParticleMgr::~CParticleMgr()
 	Term();
 }
 
+#ifdef PARTICLES2
+#include "particles/iparticlesdll.h"
+#include "client_factorylist.h"
+
+IParticlesDLL* pParticles = nullptr;
+static IParticleSystemMgr* g_ParticlePtr = nullptr;
+IParticleSystemMgr* g_pParticleSystemMgr = g_ParticlePtr;
+#endif
 
 //-----------------------------------------------------------------------------
 // Initialization and shutdown
 //-----------------------------------------------------------------------------
 bool CParticleMgr::Init(unsigned long count, IMaterialSystem *pMaterials)
 {
-	Term();
+#if defined(PARTICLES2)
+	
+	CSysModule* pModule = g_pFullFileSystem->LoadModule("particles_dll", "BIN", false);
+	if (pModule != nullptr)
+	{
+		CreateInterfaceFn particlesFactory = Sys_GetFactory(pModule);
+		pParticles = (IParticlesDLL*)particlesFactory(PARTICLES_INTERFACE_VERSION, NULL);
+	}
 
+	if (!pParticles) {
+		Warning("Could not load particles dll!\n");
+		return false;
+	}
+
+	factorylist_t factories;
+	FactoryList_Retrieve(factories);
+	pParticles->Initialize(factories.appSystemFactory);
+	g_ParticlePtr = pParticles->GetMgrInstance();
+	g_pParticleSystemMgr = g_ParticlePtr;
+#endif
+
+	Term();
+	
+	// Initialize the particle system
+	bool bPrecacheParticles = true;// IsPC() && !engine->IsCreatingXboxReslist();
 	m_pMaterialSystem = pMaterials;
 
-	// Initialize the particle system
-	bool bPrecacheParticles = IsPC() && !engine->IsCreatingXboxReslist();
-	g_pParticleSystemMgr->Init2( g_pParticleSystemQuery, bPrecacheParticles );
+	g_pParticleSystemMgr->Init(g_pParticleSystemQuery, bPrecacheParticles);
+
 	// tell particle mgr to add the default simulation + rendering ops
 	g_pParticleSystemMgr->AddBuiltinSimulationOperators();
 	g_pParticleSystemMgr->AddBuiltinRenderingOperators();
@@ -1147,7 +1177,7 @@ void CParticleMgr::AddEffect( CNewParticleEffect *pEffect )
 {
 	m_NewEffects.AddToHead( pEffect );
 
-	if ( pEffect->IsValid() && pEffect->m_pDef->IsDrawnThroughLeafSystem() )
+	if ( pEffect->IsValid() && pEffect->m_pDef->IsDrawnThroughLeafSystem())
 	{
 #if !defined( PARTICLEPROTOTYPE_APP )
 		RenderableTranslucencyType_t nType;
@@ -1159,7 +1189,7 @@ void CParticleMgr::AddEffect( CNewParticleEffect *pEffect )
 		{
 			nType = RENDERABLE_IS_OPAQUE;
 		}
-		ClientLeafSystem()->CreateRenderableHandle( pEffect, pEffect->m_pDef->IsViewModelEffect(), nType, RENDERABLE_MODEL_ENTITY );
+		ClientLeafSystem()->CreateRenderableHandle( pEffect, pEffect->m_pDef->IsViewModelEffect(), nType, RENDERABLE_MODEL_ENTITY);
 		ClientLeafSystem()->EnableBloatedBounds( pEffect->RenderHandle(), true );
 #endif
 	}
@@ -1456,7 +1486,7 @@ static void ProcessPSystem( CNewParticleEffect *&pNewEffect )
 	// right leaves (if it has particles).
 	if ( pNewEffect->m_bQueuedStartEmission )
 	{
-		pNewEffect->m_bQueuedStartEmission = false;
+		pNewEffect->m_bQueuedStartEmission = false;// ->SetQueuedStartEmission(false);
 		pNewEffect->StartEmission();
 	}
 	int bFirstUpdate = pNewEffect->GetNeedsBBoxUpdate();
@@ -1490,7 +1520,7 @@ static void ProcessPSystem( CNewParticleEffect *&pNewEffect )
 }
 
 
-static void ProcessNonDrawingSystem( CParticleCollection *&pNonDrawingEffect )
+static void ProcessNonDrawingSystem( IParticleCollection *&pNonDrawingEffect )
 {
 	pNonDrawingEffect->Simulate( s_flThreadedPSystemTimeStep );
 }
@@ -1510,16 +1540,20 @@ int CParticleMgr::ComputeParticleDefScreenArea( int nInfoCount, RetireInfo_t *pI
 	float flMaxPixels = view.width * view.height;
 #endif
 
-	CParticleCollection *pCollection = pDef->FirstCollection();
+	IParticleCollection *pCollection = g_pParticleSystemMgr->GetDefFirstCollection(pDef);
 	for ( ; pCollection; pCollection = pCollection->GetNextCollectionUsingSameDef() )
 	{
-		CNewParticleEffect *pEffect = static_cast< CNewParticleEffect* >( pCollection );
+		if (!pCollection->GetEffectHandle().IsValid())
+			continue;
+
+		// TODO: Fix the new inheritance and rewrite this 
+		CNewParticleEffect* pEffect = static_cast<CNewParticleEffect*>( pCollection->GetEffectHandle().Get() );
 		if ( !pEffect->ShouldPerformCullCheck() )
 			continue;
 
 		// Don't count parents
-		Assert( !pCollection->m_pParent );
-		Assert( nCollection < nInfoCount && pDef == pCollection->m_pDef );
+		Assert(!pCollection->GetParent() );
+		Assert( nCollection < nInfoCount && pDef == pCollection->GetDef());
 
 		pInfo[nCollection].m_flScreenArea = 0.0f;
 		pInfo[nCollection].m_pCollection = pCollection;
@@ -1583,24 +1617,25 @@ bool CParticleMgr::RetireParticleCollections( CParticleSystemDefinition* pDef,
 	// Quicksort the retirement info
 	qsort( pInfo, nCount, sizeof(RetireInfo_t), RetireSort );
 
-	for ( int i = 0; i < nCount; ++i )
-	{
-		if ( flScreenArea <= flMaxTotalArea )
-			break;
+	// TODO: fix the new inheritance and rewrite this to work
+	//for ( int i = 0; i < nCount; ++i )
+	//{
+	//	if ( flScreenArea <= flMaxTotalArea )
+	//		break;
 
-		// We can only replace stuff that's being emitted this frame
-		if ( !pInfo[i].m_bFirstFrame )
-			continue;
+	//	// We can only replace stuff that's being emitted this frame
+	//	if ( !pInfo[i].m_bFirstFrame )
+	//		continue;
 
-		CNewParticleEffect* pRetireEffect = static_cast< CNewParticleEffect* >( pInfo[i].m_pCollection );
-		CNewParticleEffect* pNewEffect = pRetireEffect->ReplaceWith( pReplacementDef );
-		if ( pNewEffect )
-		{
-			pNewEffect->Update( s_flThreadedPSystemTimeStep );
-		}
-		bRetirementOccurred = true;
-		flScreenArea -= pInfo[i].m_flScreenArea;
-	}
+	//	CNewParticleEffect* pRetireEffect = static_cast< CNewParticleEffect* >( pInfo[i].m_pCollection );
+	//	CNewParticleEffect* pNewEffect = pRetireEffect->ReplaceWith( pReplacementDef );
+	//	if ( pNewEffect )
+	//	{
+	//		pNewEffect->Update( s_flThreadedPSystemTimeStep );
+	//	}
+	//	bRetirementOccurred = true;
+	//	flScreenArea -= pInfo[i].m_flScreenArea;
+	//}
 
 	return bRetirementOccurred;
 }
@@ -1699,7 +1734,7 @@ void CParticleMgr::BuildParticleSimList( CUtlVector< CNewParticleEffect* > &list
 	for( CNewParticleEffect *pNewEffect=m_NewEffects.m_pHead; pNewEffect;
 		pNewEffect=pNewEffect->m_pNext )
 	{
-		if ( flNow >= pNewEffect->m_flNextSleepTime && pNewEffect->m_nActiveParticles > 0 )
+		if ( flNow >= pNewEffect->m_flNextSleepTime && pNewEffect->m_nActiveParticles > 0)
 		{
 			if ( pNewEffect->GetOwner() )
 			{
@@ -1720,15 +1755,15 @@ void CParticleMgr::BuildParticleSimList( CUtlVector< CNewParticleEffect* > &list
 
 static ConVar r_particle_timescale( "r_particle_timescale", "1.0" );
 
-static int CountChildParticleSystems( CParticleCollection *p )
-{
-	int nCount = 1;
-	for ( CParticleCollection *pChild = p->m_Children.m_pHead; pChild; pChild = pChild->m_pNext )
-	{
-		nCount += CountChildParticleSystems( pChild );
-	}
-	return nCount;
-}
+//static int CountChildParticleSystems( CParticleCollection *p )
+//{
+//	int nCount = 1;
+//	for ( CParticleCollection *pChild = p->m_Children.m_pHead; pChild; pChild = pChild->m_pNext )
+//	{
+//		nCount += CountChildParticleSystems( pChild );
+//	}
+//	return nCount;
+//}
 
 static ConVar cl_particle_max_count( "cl_particle_max_count", "0" );
 
@@ -1747,7 +1782,7 @@ void CParticleMgr::SpewActiveParticleSystems( )
 	{
 		if ( ++histo[ pNewEffect->GetName() ].m_nCount == 1 )
 		{
-			histo[ pNewEffect->GetName() ].m_nChildCount = CountChildParticleSystems( pNewEffect );
+			histo[ pNewEffect->GetName() ].m_nChildCount = g_pParticleSystemMgr->CountChildParticleSystems( pNewEffect );
 		}
 	}
 
@@ -1785,7 +1820,7 @@ void CParticleMgr::UpdateNewEffects( float flTimeDelta )
 		particlesToSimulate[i]->Update( s_flThreadedPSystemTimeStep );
 		if ( nMaxParticleCount > 0 )
 		{
-			nParticleSystemCount += CountChildParticleSystems( particlesToSimulate[i] );
+			nParticleSystemCount += g_pParticleSystemMgr->CountChildParticleSystems( particlesToSimulate[i] );
 		}
 	}
 
@@ -1829,7 +1864,7 @@ void CParticleMgr::UpdateNewEffects( float flTimeDelta )
 	}
 
 	// now, simulate the non-drawing ones
-	CUtlVectorFixedGrowable< CParticleCollection *, 128 > nonDrawingSimulateList;
+	CUtlVectorFixedGrowable< IParticleCollection *, 128 > nonDrawingSimulateList;
 	for( CNonDrawingParticleSystem *i = m_NonDrawingParticleSystems.m_pHead; i; i = i->m_pNext )
 	{
 		nonDrawingSimulateList.AddToTail( i->m_pSystem );
@@ -1952,7 +1987,7 @@ void CParticleMgr::RemoveOldParticleEffects( float flTime )
 	for( CNewParticleEffect *pNewEffect=m_NewEffects.m_pHead; pNewEffect;
 		pNewEffect=pNewEffect->m_pNext )
 	{
-		if ( pNewEffect->m_flCurTime > flTime )
+		if ( pNewEffect->m_flCurTime > flTime)
 		{
 			pNewEffect->StopEmission( false, true, true );
 		}
