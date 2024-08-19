@@ -10,7 +10,13 @@
 #if !defined( NO_ENTITY_PREDICTION )
 
 #include "IGameSystem.h"
+
+#if (_MSC_VER >= 1900)
+#include <typeinfo>
+#else
 #include <typeinfo.h>
+#endif
+
 #include "cdll_int.h"
 
 #include <memory.h>

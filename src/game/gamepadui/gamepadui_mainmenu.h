@@ -27,6 +27,7 @@ class GamepadUIMainMenu : public GamepadUIFrame
 
 public:
     GamepadUIMainMenu( vgui::Panel* pParent );
+    ~GamepadUIMainMenu() {}
 
     void ApplySchemeSettings( vgui::IScheme* pScheme ) override;
     void OnCommand( char const* pCommand ) override;

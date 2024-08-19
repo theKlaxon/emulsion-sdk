@@ -33,6 +33,7 @@ class CHudGeiger: public CHudElement, public vgui::Panel
 	DECLARE_CLASS_SIMPLE( CHudGeiger, vgui::Panel );
 public:
 	CHudGeiger( const char *pElementName );
+	~CHudGeiger() {}
 	void Init( void );
 	void VidInit( void );
 	bool ShouldDraw( void );

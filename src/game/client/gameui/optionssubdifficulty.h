@@ -22,6 +22,7 @@ class COptionsSubDifficulty : public vgui::PropertyPage
 
 public:
 	COptionsSubDifficulty(vgui::Panel *parent);
+	~COptionsSubDifficulty() {}
 
 	virtual void OnResetData();
 	virtual void OnApplyChanges();

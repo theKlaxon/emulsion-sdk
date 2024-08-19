@@ -109,6 +109,7 @@ class CrosshairImagePanel : public ImagePanel
 	typedef ImagePanel BaseClass;
 public:
 	CrosshairImagePanel( Panel *parent, const char *name, CCvarToggleCheckButton *pAdditive );
+	~CrosshairImagePanel() {}
 
 	virtual void Paint();
 

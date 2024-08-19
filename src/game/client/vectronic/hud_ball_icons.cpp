@@ -56,6 +56,7 @@ class CHudBallIcons : public CHudElement, public vgui::Panel
 
 public:
 	CHudBallIcons( const char *pElementName );
+	~CHudBallIcons() {}
 	virtual void Init( void );
 	virtual void VidInit( void );
 	virtual void Reset( void );

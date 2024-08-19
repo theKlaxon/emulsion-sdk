@@ -68,6 +68,7 @@ class COptionsSubAudioThirdPartyCreditsDlg : public vgui::Frame
 	DECLARE_CLASS_SIMPLE( COptionsSubAudioThirdPartyCreditsDlg, vgui::Frame );
 public:
 	COptionsSubAudioThirdPartyCreditsDlg( vgui::VPANEL hParent );
+	~COptionsSubAudioThirdPartyCreditsDlg() {}
 
 	virtual void Activate();
 	void OnKeyCodeTyped(vgui::KeyCode code);

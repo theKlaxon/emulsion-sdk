@@ -16,6 +16,7 @@ class GamepadUIGenericConfirmationPanel : public GamepadUIFrame
 public:
     GamepadUIGenericConfirmationPanel( vgui::Panel *pParent, const char* pPanelName, const char *pTitle, const char *pText, std::function<void()> pCommand, bool bSmallFont = false, bool bShowCancel = true );
     GamepadUIGenericConfirmationPanel( vgui::Panel *pParent, const char* pPanelName, const wchar_t *pTitle, const wchar_t *pText, std::function<void()> pCommand, bool bSmallFont = false, bool bShowCancel = true );
+    ~GamepadUIGenericConfirmationPanel() {}
 
     void Paint() override;
     void OnCommand( const char *pCommand ) override;

@@ -846,6 +846,7 @@ public:
 		SetSizeable( false );
 		SetDeleteSelfOnClose( true );
 	}
+	~COptionsSubKeyboardAdvancedDlg() {}
 
 	virtual void Activate()
 	{

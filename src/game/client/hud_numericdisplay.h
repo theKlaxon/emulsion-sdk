@@ -22,6 +22,7 @@ class CHudNumericDisplay : public vgui::Panel
 
 public:
 	CHudNumericDisplay(vgui::Panel *parent, const char *name);
+	~CHudNumericDisplay() {}
 
 	void SetDisplayValue(int value);
 	void SetSecondaryValue(int value);

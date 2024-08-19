@@ -27,6 +27,7 @@ class CGameConsoleDialog : public vgui::CConsoleDialog
 
 public:
 	CGameConsoleDialog();
+	~CGameConsoleDialog() {}
 
 private:
 	MESSAGE_FUNC( OnClosedByHittingTilde, "ClosedByHittingTilde" );

@@ -29,6 +29,7 @@ class GamepadUISaveGamePanel : public GamepadUIFrame
 
 public:
     GamepadUISaveGamePanel( vgui::Panel *pParent, const char* pPanelName, bool bIsSave );
+	~GamepadUISaveGamePanel() {}
 
     void UpdateGradients();
 
@@ -119,6 +120,7 @@ public:
 			m_Image.SetImage( "gamepadui/save_game.vmt" );
 		}
     }
+	~GamepadUISaveButton() {}
 
     void Paint() override
     {

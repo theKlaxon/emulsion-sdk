@@ -23,10 +23,7 @@ $Project
     {
         $Folder "fxc"
         {
-            $File "pbr/pbr_paint_ps2x.fxc"
-            $File "pbr/pbr_ps20b.fxc"
             $File "pbr/pbr_ps30.fxc"
-            $File "pbr/pbr_vs20b.fxc"
             $File "pbr/pbr_vs30.fxc"
         }
 

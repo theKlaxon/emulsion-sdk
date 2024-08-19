@@ -119,6 +119,7 @@ public:
 	DECLARE_CLASS_SIMPLE( CAvatarImagePanel, vgui::ImagePanel );
 
 	CAvatarImagePanel( vgui::Panel *parent, const char *name );
+	~CAvatarImagePanel() {}
 
 	// Set the player that this Avatar should display for
 	void SetPlayer( C_BasePlayer *pPlayer );

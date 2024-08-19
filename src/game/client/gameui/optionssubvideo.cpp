@@ -149,6 +149,7 @@ public:
 
 		m_pGammaSlider->SetTickCaptions( "#GameUI_Light", "#GameUI_Dark" );
 	}
+	~CGammaDialog() {}
 
 	MESSAGE_FUNC_PTR( OnGammaChanged, "SliderMoved", panel )
 	{
@@ -446,6 +447,7 @@ public:
 
 		m_bUseChanges = false;
 	}
+	~COptionsSubVideoAdvancedDlg() {}
 
 	virtual void Activate()
 	{

@@ -21,6 +21,7 @@ class CIconPanel : public vgui::Panel
 
 public:
 	CIconPanel( vgui::Panel *parent, const char *name );
+	~CIconPanel() {}
 
 	void Init( void );
 	virtual void Paint();

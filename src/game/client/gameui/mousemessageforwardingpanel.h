@@ -20,6 +20,7 @@ class CMouseMessageForwardingPanel : public vgui::Panel
 	DECLARE_CLASS_SIMPLE( CMouseMessageForwardingPanel, vgui::Panel );
 public:
 	CMouseMessageForwardingPanel( Panel *parent, const char *name );
+	~CMouseMessageForwardingPanel() {}
 
 	virtual void PerformLayout( void );
 	virtual void OnMousePressed( vgui::MouseCode code );

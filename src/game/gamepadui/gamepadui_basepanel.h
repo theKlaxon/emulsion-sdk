@@ -15,6 +15,7 @@ class GamepadUIBasePanel : public vgui::Panel
     DECLARE_CLASS_SIMPLE(GamepadUIBasePanel, vgui::Panel );
 public:
     GamepadUIBasePanel( vgui::VPANEL parent );
+    ~GamepadUIBasePanel() {}
 
     void ApplySchemeSettings( vgui::IScheme* pScheme ) override;
 

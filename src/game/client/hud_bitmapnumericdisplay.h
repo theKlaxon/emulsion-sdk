@@ -18,6 +18,7 @@ class CHudBitmapNumericDisplay : public vgui::Panel
 
 public:
 	CHudBitmapNumericDisplay(vgui::Panel *parent, const char *name);
+	~CHudBitmapNumericDisplay() {}
 
 	void SetDisplayValue(int value);
 	void SetShouldDisplayValue(bool state);

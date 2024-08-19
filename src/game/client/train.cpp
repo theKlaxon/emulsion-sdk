@@ -28,6 +28,7 @@ class CHudTrain: public CHudElement, public vgui::Panel
 	DECLARE_CLASS_SIMPLE( CHudTrain, vgui::Panel );
 public:
 	CHudTrain( const char *pElementName );
+	~CHudTrain() {}
 	void Init( void );
 	void VidInit( void );
 	bool ShouldDraw( void );

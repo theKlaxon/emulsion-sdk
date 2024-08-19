@@ -133,6 +133,7 @@ public:
         : BaseClass( pParent, pActionSignalTarget, pSchemeFile, pCommand, pText, pDescription )
     {
     }
+    ~GamepadUICheckButton() {}
 
     virtual void ApplySchemeSettings( vgui::IScheme* pScheme )
     {
@@ -187,6 +188,7 @@ public:
         , m_szBinding( pszBinding )
     {
     }
+    ~GamepadUIKeyButton() {}
 
     void Paint() override
     {
@@ -363,6 +365,7 @@ public:
         , m_bSignOnly( bSignOnly )
     {
     }
+    ~GamepadUIWheelyWheel() {}
 
     void OnKeyCodePressed( vgui::KeyCode code )
     {
@@ -527,6 +530,7 @@ public:
         , nTextPrecision( nTextPrecision )
     {
     }
+    ~GamepadUISlideySlide() {}
 
     void OnKeyCodePressed( vgui::KeyCode code )
     {
@@ -651,6 +655,7 @@ public:
         , m_nSkill( nSkill )
     {
     }
+    ~GamepadUISkillySkill() {}
 
     void RunAnimations( ButtonState state ) override
     {
@@ -1358,8 +1363,8 @@ void GamepadUIOptionsPanel::LayoutCurrentTab()
 
                 if ( !bFound )
                 {
-                    ConVarRef cvar(pszDependentCVar);
-                    bHasDependencies = cvar.GetBool();
+                    ConVarRef _cvar(pszDependentCVar);
+                    bHasDependencies = _cvar.GetBool();
                 }
             }
         }

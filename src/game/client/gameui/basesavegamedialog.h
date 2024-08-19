@@ -47,6 +47,7 @@ class CBaseSaveGameDialog : public vgui::Frame
 
 public:
 	CBaseSaveGameDialog( vgui::Panel *parent, const char *name );
+	~CBaseSaveGameDialog() {}
 	static int __cdecl SaveGameSortFunc( const void *lhs, const void *rhs );
 
 protected:

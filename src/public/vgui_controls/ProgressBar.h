@@ -97,6 +97,7 @@ class ContinuousProgressBar : public ProgressBar
 
 public:
 	ContinuousProgressBar(Panel *parent, const char *panelName);
+	virtual ~ContinuousProgressBar() {}
 
 	virtual void Paint();
 };

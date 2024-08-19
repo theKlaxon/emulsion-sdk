@@ -32,6 +32,7 @@ class CSlideshowDisplayScreen : public CVGuiScreenPanel
 
 public:
 	CSlideshowDisplayScreen( vgui::Panel *parent, const char *panelName );
+	~CSlideshowDisplayScreen() {}
 
 	virtual void ApplySchemeSettings( IScheme *pScheme );
 

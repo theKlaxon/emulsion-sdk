@@ -128,6 +128,7 @@ class mpcontrol_t : public vgui::Panel
 {
 public:
 	mpcontrol_t( vgui::Panel *parent, char const *panelName );
+	~mpcontrol_t() {}
 
 	virtual	void	OnSizeChanged( int wide, int tall );
 

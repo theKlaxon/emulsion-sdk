@@ -13,6 +13,7 @@
 #include "characterset.h"
 #include "isaverestore.h"
 #include "gamerules.h"
+#include "../public/vscript/ivscript.h"
 
 IScriptVM * g_pScriptVM;
 extern ScriptClassDesc_t * GetScriptDesc( CBaseEntity * );

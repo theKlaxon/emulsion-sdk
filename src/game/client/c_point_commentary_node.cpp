@@ -45,6 +45,7 @@ class CHudCommentary : public CHudElement, public vgui::Panel
 	DECLARE_CLASS_SIMPLE( CHudCommentary, vgui::Panel );
 public:
 	CHudCommentary( const char *name );
+	~CHudCommentary() {}
 
 	virtual void Init( void );
 	virtual void VidInit( void );

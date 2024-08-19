@@ -111,6 +111,7 @@ class CNB_Gradient_Bar : public vgui::EditablePanel
 	DECLARE_CLASS_SIMPLE( CNB_Gradient_Bar, vgui::EditablePanel );
 public:
 	CNB_Gradient_Bar( vgui::Panel *parent, const char *name );
+	~CNB_Gradient_Bar() {}
 
 	virtual void PaintBackground();
 };

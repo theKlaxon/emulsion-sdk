@@ -28,6 +28,7 @@ class GamepadUIAchievementsPanel : public GamepadUIFrame
 
 public:
     GamepadUIAchievementsPanel( vgui::Panel *pParent, const char* pPanelName );
+    ~GamepadUIAchievementsPanel() {}
 
     void UpdateGradients() override;
 
@@ -70,6 +71,7 @@ public:
         , m_Image( pChapterImage )
     {
     }
+    ~GamepadUIAchievement() {}
 
     void ApplySchemeSettings( vgui::IScheme* pScheme ) override
     {

@@ -39,6 +39,7 @@ class CHudDamageIndicator : public CHudElement, public vgui::Panel
 
 public:
 	CHudDamageIndicator( const char *pElementName );
+	~CHudDamageIndicator() {}
 	void Init( void );
 	void Reset( void );
 	virtual bool ShouldDraw( void );

@@ -6,6 +6,8 @@ namespace BaseModUI {
 	class CGamepadUI_ClientPanel : public vgui::Panel {
 		DECLARE_CLASS_SIMPLE(CGamepadUI_ClientPanel, vgui::Panel)
 	public:
+		CGamepadUI_ClientPanel() : BaseClass() {}
+		~CGamepadUI_ClientPanel() {}
 
 		void OnGameUIActivated() {
 			COM_TimestampedLog("CGamepadUI_ClientPanel::OnGameUIActivated()");

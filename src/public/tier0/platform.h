@@ -579,6 +579,17 @@ typedef unsigned int		uint;
 #pragma warning(disable : 4996)	// functions declared deprecated
 #endif
 
+#if (_MSC_VER >= 1900)
+#pragma warning( disable : 4005 )
+#pragma warning( disable : 4091 )
+#pragma warning( disable : 4456 )
+#pragma warning( disable : 4463 )
+#pragma warning( disable : 4499 )
+#pragma warning( disable : 4594 )
+#pragma warning( disable : 4838 )
+#pragma warning( disable : 5205 )
+#endif
+
 // When we port to 64 bit, we'll have to resolve the int, ptr vs size_t 32/64 bit problems...
 #if !defined( COMPILER_MSVC64 )
 #if ( CROSS_PLATFORM_VERSION < 1 )

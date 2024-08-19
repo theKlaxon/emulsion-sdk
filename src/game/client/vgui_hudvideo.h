@@ -19,6 +19,7 @@ class HUDVideoPanel : public VideoPanel
 public:
 
 	HUDVideoPanel( vgui::Panel *parent, const char *name );
+	~HUDVideoPanel() {}
 
 	virtual void Paint( void );
 	virtual void Activate( void );

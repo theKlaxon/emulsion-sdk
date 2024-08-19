@@ -12,6 +12,7 @@ class CHudWeaponSelection : public CBaseHudWeaponSelection, public vgui::Panel
 	DECLARE_CLASS_SIMPLE( CHudWeaponSelection, vgui::Panel );
 
 	CHudWeaponSelection( const char* pElementName );
+	~CHudWeaponSelection() {}
 
 	void ApplySchemeSettings(vgui::IScheme* pScheme);
 

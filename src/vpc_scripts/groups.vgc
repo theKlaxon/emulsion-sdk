@@ -23,7 +23,6 @@ $Group "everything"
 	"game_shader_dx9"
 	"fgdlib"
 	"particles_dll"
-	"particles2"
 	"gamepadui"
 }
 

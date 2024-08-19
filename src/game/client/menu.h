@@ -25,6 +25,7 @@ class CHudMenu : public CHudElement, public vgui::Panel
 	DECLARE_CLASS_SIMPLE( CHudMenu, vgui::Panel );
 public:
 	CHudMenu( const char *pElementName );
+	~CHudMenu() {}
 	void Init( void );
 	void VidInit( void );
 	void Reset( void );

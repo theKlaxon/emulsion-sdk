@@ -30,6 +30,7 @@ class CHudHintDisplay : public vgui::Panel, public CHudElement
 
 public:
 	CHudHintDisplay( const char *pElementName );
+	~CHudHintDisplay() {}
 
 	void Init();
 	void Reset();
@@ -338,6 +339,7 @@ class CHudHintKeyDisplay : public vgui::Panel, public CHudElement
 
 public:
 	CHudHintKeyDisplay( const char *pElementName );
+	~CHudHintKeyDisplay() {}
 	void Init();
 	void Reset();
 	void MsgFunc_KeyHintText( bf_read &msg );

@@ -68,6 +68,7 @@ class CHudLabel : public vgui::Label
 	typedef vgui::Label BaseClass;
 public:
 	CHudLabel( vgui::Panel *parent, const char *panelName, const char *text );
+	~CHudLabel() {}
 	virtual void ApplySchemeSettings( vgui::IScheme *pScheme );
 	
 	// Selection highlight

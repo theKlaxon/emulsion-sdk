@@ -88,7 +88,7 @@ public:
 	// Render cache used to render opaque particle collections
 	virtual void ResetRenderCache(void) { m_pParticleSystemMgr->ResetRenderCache(); }
 	//virtual void AddToRenderCache(IParticleCollection* pParticles) { m_pParticleSystemMgr->AddToRenderCache(static_cast<CParticleCollectionPtr*>(pParticles)->m_pParticle); }
-	virtual void AddToRenderCache(CParticleCollection* pParticles) { m_pParticleSystemMgr->AddToRenderCache(pParticles); }
+	virtual void AddToRenderCache(CParticleCollection* _pParticles) { m_pParticleSystemMgr->AddToRenderCache(_pParticles); }
 	virtual void DrawRenderCache(bool bShadowDepth) { m_pParticleSystemMgr->DrawRenderCache(bShadowDepth); }
 
 	virtual IParticleSystemQuery* Query(void) { return m_pParticleSystemMgr->Query(); }

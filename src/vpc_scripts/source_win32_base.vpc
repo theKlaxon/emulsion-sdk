@@ -13,6 +13,7 @@ $Configuration
 		$PlatformToolset "v120_xp" [$VS2013 && !$ANALYZE && !$VS2019] // VS 2013 targeting Windows XP - http://msdn.microsoft.com/en-us/library/vstudio/jj851139.aspx
 		$PlatformToolset "v120" [$VS2013 && $ANALYZE && !$VS2019] // VS 2013 for /analyze
 		$PlatformToolset "v142"	[$VS2019]
+		$PlatformToolset "v143" // -- this will be the new default toolset
 	}
 
 	$General

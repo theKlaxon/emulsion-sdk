@@ -1,6 +1,6 @@
 [vpc crc file version 2]
 8209bbc3 D:\theKlaxon\emulsion-sdk\src\devtools\bin\vpc.exe
-_Nc_VS2010/vpcgame:valve_
+_Nc_VS2013/vpcgame:valve_
 86279dfa vgui_controls.vpc
 e632a220 ..\..\vpc_scripts\source_lib_base.vpc
 d752cf80 ..\..\vpc_scripts\platform_dirs.vpc
@@ -9,7 +9,7 @@ da22b8e7 ..\..\vpc_scripts\source_lib_win32_base.vpc
 486b766d ..\..\vpc_scripts\version.vpc
 fe1ec01f ..\..\vpc_scripts\source_lib_win32_debug.vpc
 e0f4e727 ..\..\vpc_scripts\source_lib_win32_release.vpc
-efa90b81 ..\..\vpc_scripts\source_win32_base.vpc
+d644a6f5 ..\..\vpc_scripts\source_win32_base.vpc
 49651204 ..\..\vpc_scripts\source_video_base.vpc
 c209a88e ..\..\vpc_scripts\protobuf_builder.vpc
 41db375b ..\..\vpc_scripts\definitions\win32_2010.def

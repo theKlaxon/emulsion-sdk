@@ -6,6 +6,7 @@ class GamepadUILoadingDisplay : public GamepadUIFrame {
 	DECLARE_CLASS_SIMPLE(GamepadUILoadingDisplay, GamepadUIFrame);
 public:
 	GamepadUILoadingDisplay(vgui::Panel* pParent);
+	~GamepadUILoadingDisplay() {}
 
 	void ApplySchemeSettings(vgui::IScheme* pScheme) override;
 

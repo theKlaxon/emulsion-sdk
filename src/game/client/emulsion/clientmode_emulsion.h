@@ -29,7 +29,12 @@ class CEmulsionViewportFullscreen : public CBaseViewport
 private:
 	DECLARE_CLASS_SIMPLE(CEmulsionViewportFullscreen, CBaseViewport );
 
+public:
+	CEmulsionViewportFullscreen() : BaseClass() {}
+	~CEmulsionViewportFullscreen() {}
+
 private:
+
 	virtual void InitViewportSingletons( void )
 	{
 		SetAsFullscreenViewportInterface();

@@ -990,7 +990,11 @@ void DevMsg( CAI_Agent *pAI, unsigned flags, const char *pszFormat, ... )
 {
 	if ( (flags & AIMF_IGNORE_SELECTED) || (pAI->GetDebugOverlayFlags() & OVERLAY_NPC_SELECTED_BIT) )
 	{
-		AIMsgGuts( pAI, flags, CFmtStr( &pszFormat ) );
+		va_list args;
+
+		va_start(args, pszFormat);
+		AIMsgGuts(pAI, flags, CFmtStr(&pszFormat, args));
+		va_end(args);
 	}
 }
 
@@ -1000,7 +1004,11 @@ void DevMsg( CAI_Agent *pAI, const char *pszFormat, ... )
 {
 	if ( (pAI->GetDebugOverlayFlags() & OVERLAY_NPC_SELECTED_BIT) )
 	{
-		AIMsgGuts( pAI, 0, CFmtStr( &pszFormat ) );
+		va_list args;
+
+		va_start(args, pszFormat);
+		AIMsgGuts(pAI, 0, CFmtStr(&pszFormat, args));
+		va_end(args);
 	}
 }
 

@@ -59,6 +59,7 @@ private:
 public:
 
 	CHudHistoryResource( const char *pElementName );
+	~CHudHistoryResource() {}
 
 	// CHudElement overrides
 	virtual void Init( void );

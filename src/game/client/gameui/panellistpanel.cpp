@@ -26,6 +26,7 @@ class VScrollBarReversedButtons : public ScrollBar
 {
 public:
 	VScrollBarReversedButtons( Panel *parent, const char *panelName, bool vertical );
+	~VScrollBarReversedButtons() {}
 	virtual void ApplySchemeSettings( IScheme *pScheme );
 };
 

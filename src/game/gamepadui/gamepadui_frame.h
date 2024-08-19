@@ -14,6 +14,7 @@ class GamepadUIFrame : public vgui::Frame, public SchemeValueMap
     DECLARE_CLASS_SIMPLE( GamepadUIFrame, vgui::Frame );
 public:
     GamepadUIFrame( vgui::Panel *pParent, const char *pszPanelName, bool bShowTaskbarIcon = true, bool bPopup = true );
+    ~GamepadUIFrame() {}
     void ApplySchemeSettings( vgui::IScheme* pScheme ) override;
     void OnThink() override;
     void Paint() override;

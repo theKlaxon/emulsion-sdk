@@ -61,7 +61,7 @@ class RadioButton : public ToggleButton
 
 public:
 	RadioButton(Panel *parent, const char *panelName, const char *text);
-	~RadioButton();
+	virtual ~RadioButton();
 
 	// Set the radio button checked. When a radio button is checked, a 
 	// message is sent to all other radio buttons in the same group so

@@ -26,6 +26,7 @@ class CHudWeapon : public CHudElement, public vgui::Panel
 	DECLARE_CLASS_SIMPLE( CHudWeapon, vgui::Panel );
 public:
 	CHudWeapon( const char *pElementName );
+	~CHudWeapon() {}
 
 	virtual void	ApplySchemeSettings( vgui::IScheme *scheme );
 	virtual void	Paint( void );

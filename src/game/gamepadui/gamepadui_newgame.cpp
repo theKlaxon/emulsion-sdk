@@ -49,6 +49,7 @@ class GamepadUINewGamePanel : public GamepadUIFrame
 
 public:
     GamepadUINewGamePanel( vgui::Panel *pParent, const char* pPanelName );
+    ~GamepadUINewGamePanel() {}
 
     void UpdateGradients();
 

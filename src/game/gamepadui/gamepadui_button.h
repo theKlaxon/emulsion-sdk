@@ -119,6 +119,7 @@ class GamepadUIButton : public vgui::Button, public SchemeValueMap
 public:
     GamepadUIButton( vgui::Panel *pParent, vgui::Panel* pActionSignalTarget, const char *pSchemeFile, const char *pCommand, const char *pText, const char *pDescription );
     GamepadUIButton( vgui::Panel *pParent, vgui::Panel* pActionSignalTarget, const char *pSchemeFile, const char *pCommand, const wchar_t *pText, const wchar_t *pDescription );
+    ~GamepadUIButton() {}
 
     void ApplySchemeSettings( vgui::IScheme* pScheme ) override;
     void OnThink() override;

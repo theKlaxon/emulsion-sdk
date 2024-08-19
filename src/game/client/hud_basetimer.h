@@ -22,6 +22,7 @@ class CHudBaseTimer : public CHudNumericDisplay
 
 public:
 	CHudBaseTimer(vgui::Panel *parent, const char *name);
+	~CHudBaseTimer() {}
 
 	void SetMinutes( int minutes );
 	void SetSeconds( int seconds );

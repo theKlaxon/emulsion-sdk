@@ -27,6 +27,7 @@ class CHudVehicle : public CHudElement, public vgui::Panel
 	DECLARE_CLASS_SIMPLE( CHudVehicle, vgui::Panel );
 public:
 	CHudVehicle( const char *pElementName );
+	~CHudVehicle() {}
 
 	virtual bool	ShouldDraw();
 

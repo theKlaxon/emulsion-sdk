@@ -27,6 +27,7 @@ public:
 	DECLARE_CLASS_SIMPLE( CHudVecCrosshair, vgui::Panel );
 
 	CHudVecCrosshair( const char *name );
+	~CHudVecCrosshair() {}
 
 	virtual void OnThink();
 	virtual void Paint();
