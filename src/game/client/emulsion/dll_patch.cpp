@@ -6,15 +6,15 @@
 #include "dll_patch.h"
 #include <memory>
 
-ConVar debug_paint_alpha("debug_paint_alpha", "1", FCVAR_DEVELOPMENTONLY);
-
 CMatSysPatch g_MatSysPatch = CMatSysPatch();
-CEnginePatch g_EnginePatch = CEnginePatch();
 
 // apply all patches
 void PatchAll() {
 	g_MatSysPatch.Patch();
-	g_EnginePatch.Patch();
+}
+
+void UnPatchAll() {
+	g_MatSysPatch.UnPatch();
 }
 
 // Material System
@@ -38,12 +38,19 @@ void CMatSysPatch::Patch() {
 	g_PaintColors[REFLECT_POWER]	= s_reflect_paint_color.GetColor();
 	g_PaintColors[SPEED_POWER]		= s_speed_paint_color.GetColor();
 	g_PaintColors[PORTAL_POWER]		= s_portal_paint_color.GetColor();
-	//g_PaintColors[FIFTH_POWER]	= s_fifth_paint_color.GetColor();
-	//g_PaintColors[SIXTH_POWER]	= s_sixth_paint_color.GetColor();
-	//g_PaintColors[SEVENTH_POWER]	= s_seventh_paint_color.GetColor();
+
+	// save the old data that was past the end of the colour array
+	m_pOldData[0] = g_PaintColors[FIFTH_POWER];
+	m_pOldData[1] = g_PaintColors[SIXTH_POWER];
+	m_pOldData[2] = g_PaintColors[SEVENTH_POWER];
+
+	g_PaintColors[FIFTH_POWER]		= s_fifth_paint_color.GetColor();
+	g_PaintColors[SIXTH_POWER]		= s_sixth_paint_color.GetColor();
+	g_PaintColors[SEVENTH_POWER]	= s_seventh_paint_color.GetColor();
+
 	g_PaintColors[NO_POWER]			= s_erase_color.GetColor();
 
-#if 0
+#ifdef DEBUG
 	Msg("Bounce Color: (%i, %i, %i)\n", g_PaintColors[BOUNCE_POWER].r(), g_PaintColors[BOUNCE_POWER].g(), g_PaintColors[BOUNCE_POWER].b());
 	Msg("Reflect Color: (%i, %i, %i)\n", g_PaintColors[REFLECT_POWER].r(), g_PaintColors[REFLECT_POWER].g(), g_PaintColors[REFLECT_POWER].b());
 	Msg("Speed Color: (%i, %i, %i)\n", g_PaintColors[SPEED_POWER].r(), g_PaintColors[SPEED_POWER].g(), g_PaintColors[SPEED_POWER].b());
@@ -58,7 +65,12 @@ void CMatSysPatch::Patch() {
 #endif
 }
 
-// Engine
-void CEnginePatch::Patch() {
+void CMatSysPatch::UnPatch() {
 
+	Color* g_PaintColors = (Color*)(m_Offsets.g_PaintColors.GetAddress());
+
+	// put the data back, or suffer the consequences >:(
+	g_PaintColors[FIFTH_POWER] = m_pOldData[0];
+	g_PaintColors[SIXTH_POWER] = m_pOldData[1];
+	g_PaintColors[SEVENTH_POWER] = m_pOldData[2];
 }

@@ -20,7 +20,7 @@ public:
 
 private:
 
-	float m_flCurPaintDelay;
+	float m_flNextFireTime = 0.0f;
 	CNetworkVar(int, m_nPaintType);
 
 };

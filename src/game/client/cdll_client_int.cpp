@@ -1439,11 +1439,6 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 	COM_TimestampedLog( "C_BaseAnimating::InitBoneSetupThreadPool" );
 
 	C_BaseAnimating::InitBoneSetupThreadPool();
-	
-#ifdef EMULSION_DLL
-	// patch the dlls
-	PatchAll();
-#endif
 
 	// This is a fullscreen element, so only lives on slot 0!!!
 	m_pHudCloseCaption = GET_FULLSCREEN_HUDELEMENT( CHudCloseCaption );
@@ -2152,6 +2147,7 @@ void CHLClient::LevelInitPreEntity( char const* pMapName )
 #endif // GAMEPADUI
 }
 
+#include "lightmap_lump.h"
 
 //-----------------------------------------------------------------------------
 // Purpose: Per level init
@@ -2172,6 +2168,10 @@ void CHLClient::LevelInitPostEntity( )
 	if (g_pGamepadUI != nullptr)
 		g_pGamepadUI->OnLevelInitializePostEntity();
 #endif // GAMEPADUI
+
+#ifndef VECTRONIC_DLL
+	LightmapLoad::LoadPages();
+#endif
 }
 
 //-----------------------------------------------------------------------------

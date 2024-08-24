@@ -9,11 +9,13 @@
 #include "scroll_controller.h"
 
 // -- paint colours
+//ConVar portal_paint_color("portal_paint_color", "15 252 11 255", FCVAR_REPLICATED); // i like greemn -Klax
+//ConVar portal_paint_color("portal_paint_color", "140 0 255 255", FCVAR_REPLICATED); // using this for stick paint
+
 ConVar bounce_paint_color("bounce_paint_color", "0 165 255 255", FCVAR_REPLICATED);
 ConVar speed_paint_color("speed_paint_color", "255 106 0 255", FCVAR_REPLICATED);
 ConVar portal_paint_color("portal_paint_color", "0 200 33 255", FCVAR_REPLICATED); // p2ce's green (i was allowed to use it) -Klax
-//ConVar portal_paint_color("portal_paint_color", "15 252 11 255", FCVAR_REPLICATED); // i like greemn -Klax
-//ConVar portal_paint_color("portal_paint_color", "140 0 255 255", FCVAR_REPLICATED); // using this for stick paint
+ConVar fifth_paint_color("fifth_paint_color", "251 255 0 255", FCVAR_REPLICATED);
 
 ConVar erase_color("erase_color", "0 0 0 255", FCVAR_REPLICATED);
 ConVar erase_visual_color("erase_visual_color", "0 0 0 255", FCVAR_REPLICATED);
@@ -21,6 +23,15 @@ ConVar paint_color_max_diff("paint_color_max_diff", "32", FCVAR_REPLICATED, "The
 // ---
 
 ConVar paintgun_fire_blobs("paintgun_fire_blobs", "1", FCVAR_NOTIFY, "Blobs are experimental!");
+ConVar paintgun_rad("paintgun_rad", "64", FCVAR_REPLICATED);
+ConVar paintgun_strength("paintgun_strength", "5", FCVAR_REPLICATED);
+ConVar paintgun_fire_offset_z("paintgun_fire_offset_z", "-20.0f", FCVAR_REPLICATED);
+ConVar paintgun_fire_offset_y("paintgun_fire_offset_y", "64.0f", FCVAR_REPLICATED);
+ConVar paintgun_fire_offset_x("paintgun_fire_offset_x", "20.0f", FCVAR_REPLICATED);
+ConVar paintgun_blobs_max_speed("paintgun_blobs_max_speed", "1050", FCVAR_CHEAT);
+ConVar paintgun_blobs_min_speed("paintgun_blobs_min_speed", "950", FCVAR_CHEAT);
+ConVar paintgun_blobs_per_second("paintgun_blobs_per_second", "40", FCVAR_CHEAT);
+ConVar paintgun_blobs_max_spread_angle("paintgun_blobs_max_spread_angle", "10.0f", FCVAR_CHEAT);
 
 // Paintgun power commands
 void Paintgun_NextPower();
@@ -28,16 +39,6 @@ void Paintgun_PrevPower();
 
 CWeaponPaintgun* g_playerPaintgun = nullptr;
 PaintPowerType g_CurPaintgunPower = BOUNCE_POWER;
-
-//ConCommand paintgun_next("paintgun_next", Paintgun_NextPower);
-//ConCommand paintgun_prev("paintgun_prev", Paintgun_PrevPower);
-
-ConVar paintgun_rad("paintgun_rad", "64", FCVAR_REPLICATED);
-ConVar paintgun_strength("paintgun_strength", "5", FCVAR_REPLICATED);
-ConVar paintgun_timing("paintgun_timing", "0.00125f", FCVAR_REPLICATED, "0.015 is the MINIMUM you should go.");
-ConVar paintgun_cone("paintgun_cone", "15.0f", FCVAR_REPLICATED, "Paintblob streak cone in degrees");
-ConVar paintgun_fire_offset_z("paintgun_fire_offset_z", "-20.0f", FCVAR_REPLICATED);
-ConVar paintgun_fire_offset_x("paintgun_fire_offset_x", "60.5f", FCVAR_REPLICATED);
 
 // TODO: maybe make this stuff into it's own class, make an interface 
 // in case a multiplayer version needs to be used at any point
@@ -58,6 +59,9 @@ void SetPaintDisplayColour(PaintPowerType power) {
 		case PORTAL_POWER:
 			g_playerPaintgun->SetRenderColor(portal_paint_color.GetColor().r(), portal_paint_color.GetColor().g(), portal_paint_color.GetColor().b());
 			break;
+		case FIFTH_POWER:
+			g_playerPaintgun->SetRenderColor(fifth_paint_color.GetColor().r(), fifth_paint_color.GetColor().g(), fifth_paint_color.GetColor().b());
+			break;
 		default:
 			g_playerPaintgun->SetRenderColor(bounce_paint_color.GetColor().r(), bounce_paint_color.GetColor().g(), bounce_paint_color.GetColor().b());
 			break;
@@ -71,8 +75,7 @@ IMPLEMENT_SERVERCLASS_ST(CWeaponPaintgun, DT_WeaponPaintgun)
 END_SEND_TABLE()
 
 CWeaponPaintgun::CWeaponPaintgun() {
-	m_flCurPaintDelay = 0.0f;
-	//g_playerPaintgun = this;
+	m_flNextFireTime = 0.0f;
 }
 
 void CWeaponPaintgun::Spawn() {
@@ -88,6 +91,7 @@ void CWeaponPaintgun::Equip(CBaseCombatCharacter* pOwner) {
 	g_playerPaintgun = this;
 	g_CurPaintgunPower = BOUNCE_POWER;
 	curPaintSwitchTime = 0.0f;
+	m_flNextFireTime = 0.0f;
 
 	g_sScroller.SetUp(Paintgun_NextPower);
 	g_sScroller.SetDn(Paintgun_PrevPower);
@@ -95,71 +99,23 @@ void CWeaponPaintgun::Equip(CBaseCombatCharacter* pOwner) {
 
 void CWeaponPaintgun::Drop(const Vector& vecVelocity) {
 	BaseClass::Drop(vecVelocity);
-	//g_playerPaintgun = nullptr;
 
 	g_sScroller.ClearBinds();
 }
 
-int GetStreamIndex(PaintPowerType type) {
-	return PaintBlobManager()->GetStreamIndex(type);
+float g_flFireDelay = 1.0f / paintgun_blobs_per_second.GetFloat();
+
+// returns a randomised version of the vector given
+void Vector_RandomiseInCone(Vector& vec, float flMaxAng) {
+
+	Vector random = {};
+	float rad = (flMaxAng * 0.01f);
+
+	int randAx = RandomInt(1, 2);
+	vec[randAx] += RandomFloat(-rad, rad);
 }
 
-struct BlobPattern_t {
-
-	BlobPattern_t(float velMod, Vector offsets, float radius, int count = 1) {
-		m_flVelMod = velMod;
-
-		m_vecOffsets = offsets;
-		m_flRadius = radius;
-		m_nCount = count;
-	}
-
-	float m_flVelMod;
-	Vector m_vecOffsets;
-	float m_flRadius;
-	int m_nCount;
-};
-
-#define BLOB_PATTERN_COUNT 6
-//float g_flOffsets0[3] = { 50, 0, 75 };
-//float g_flOffsets1[2] = { 0, 40 };
-//float g_flOffsets2[1] = { 10 };
-//float g_flOffsets3[2] = { 5, 60 };
-//float g_flOffsets4[3] = { 0, 50, 30 };
-//float g_flOffsets5[2] = { 45, 0 };
-
-Vector g_vecOffsets0 = Vector(0, 5, 0);
-Vector g_vecOffsets1 = Vector(3, 0, 2);
-Vector g_vecOffsets2 = Vector(0, 1, 3);
-Vector g_vecOffsets3 = Vector(2, 4, 3);
-Vector g_vecOffsets4 = Vector(0, 5, 1);
-Vector g_vecOffsets5 = Vector(1, 2, 2);
-
-//BlobPattern_t g_BlobPatterns[BLOB_PATTERN_COUNT] = {
-//	BlobPattern_t(1, g_flOffsets0, 0.5f),
-//	BlobPattern_t(2, g_flOffsets1, 0.4f),
-//	BlobPattern_t(2, g_flOffsets2, 0.6f),
-//	BlobPattern_t(1, g_flOffsets3, 0.8f),
-//	BlobPattern_t(2, g_flOffsets4, 0.6f),
-//	BlobPattern_t(1, g_flOffsets5, 0.3f)
-//};
-
-BlobPattern_t g_BlobPatterns[BLOB_PATTERN_COUNT] = {
-	BlobPattern_t(50, g_vecOffsets0, 0.5f, 1),
-	BlobPattern_t(-35, g_vecOffsets1, 0.4f, 2),
-	BlobPattern_t(100, g_vecOffsets2, 0.6f, 3),
-	BlobPattern_t(-75, g_vecOffsets3, 0.8f, 2),
-	BlobPattern_t(75, g_vecOffsets4, 0.6f, 1),
-	BlobPattern_t(-10, g_vecOffsets5, 0.3f, 3)
-};
-
-
-int g_nBlobCycle = 0;
-
 void CWeaponPaintgun::FirePaint(bool erase) {
-
-	//if (gpGlobals->curtime < m_flCurPaintDelay)
-	//	return;
 
 	CEmulsionPlayer* pPlayer = ToEmulsionPlayer(UTIL_PlayerByIndex(1));
 	Vector halfHeightOrigin = pPlayer->GetHalfHeight_Stick();
@@ -168,49 +124,51 @@ void CWeaponPaintgun::FirePaint(bool erase) {
 	AngleVectors(pPlayer->StickEyeAngles(), &forward, &right, &up);
 
 	Vector eyePosition = pPlayer->StickEyeOrigin();
-	eyePosition += Vector(0, 0, 1) * paintgun_fire_offset_z.GetFloat();
 
+	//trace_t tr;
+	//UTIL_TraceLine(eyePosition, eyePosition + (forward * paintgun_fire_offset_y.GetFloat() / 4), MASK_ALL, pPlayer, COLLISION_GROUP_PLAYER_MOVEMENT, &tr);
+
+	//if (!tr.DidHit())
+		eyePosition += forward * paintgun_fire_offset_y.GetFloat();
+
+	eyePosition += up * paintgun_fire_offset_z.GetFloat();
+	eyePosition += right * paintgun_fire_offset_x.GetFloat();
+	
 	if (paintgun_fire_blobs.GetBool()) {
+	
+		float blobSpeed = RandomFloat(paintgun_blobs_min_speed.GetFloat(), paintgun_blobs_max_speed.GetFloat());
+		Vector blobDir = forward;
 
-		if (g_nBlobCycle >= BLOB_PATTERN_COUNT)
-			g_nBlobCycle = 0;
+		PaintPowerType blobType = erase ? NO_POWER : g_CurPaintgunPower;
 
-		Vector blobVel = forward * (1000.0f + g_BlobPatterns[g_nBlobCycle].m_flVelMod);
-		PaintPowerType type = erase ? NO_POWER : g_CurPaintgunPower;
+		if (gpGlobals->curtime >= m_flNextFireTime) {
 
-		Vector offset = eyePosition + (g_BlobPatterns[g_nBlobCycle].m_vecOffsets * (forward + right + up));
+			Vector_RandomiseInCone(blobDir, paintgun_blobs_max_spread_angle.GetFloat());
+			
+			blobDir = blobDir.Normalized();
+			blobDir *= RandomFloat(paintgun_blobs_min_speed.GetFloat(), paintgun_blobs_max_speed.GetFloat());
 
-		for (int i = 0; i < g_BlobPatterns[g_nBlobCycle].m_nCount; i++) {
-			float randfor = RandomFloat(0.0f, 25.0f);
-			float randri = RandomFloat(-10.0f, 10.0f);
-			PaintBlobManager()->CreateBlob(offset + ((forward * (randfor + paintgun_fire_offset_x.GetFloat()))) + (right * randri), blobVel, GetStreamIndex(type), g_BlobPatterns[g_nBlobCycle].m_flVelMod);
+			PaintBlobManager()->CreateBlob(eyePosition, blobDir, blobType);
+
+			m_flNextFireTime = gpGlobals->curtime + g_flFireDelay;
 		}
-		
-		g_nBlobCycle++;
-	}
-	//if (paintgun_fire_blobs.GetBool()) {
-	//	Vector origin;
-	//	RandomVectorInUnitSphere(&origin);
 
-	//	PaintBlobManager()->CreateBlob();
+	}
+	//else {
+	//	trace_t tr;
+	//	UTIL_TraceLine(halfHeightOrigin, pPlayer->GetForward_Stick() * MAX_TRACE_LENGTH, MASK_ALL, pPlayer, COLLISION_GROUP_PLAYER_MOVEMENT, &tr);
+
+	//	if (tr.DidHit()) {
+
+	//		if (tr.DidHitWorld())
+	//			if (!erase) {
+	//				bool result = engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, g_CurPaintgunPower, paintgun_rad.GetInt(), paintgun_strength.GetInt());
+	//				Msg("Painted? %i\n", (int)result);
+	//			}
+	//			else
+	//				engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, NO_POWER, paintgun_rad.GetInt(), paintgun_strength.GetInt()); // erase		
+	//	}
 	//}
-	else {
-		trace_t tr;
-		UTIL_TraceLine(halfHeightOrigin, pPlayer->GetForward_Stick() * MAX_TRACE_LENGTH, MASK_ALL, pPlayer, COLLISION_GROUP_PLAYER_MOVEMENT, &tr);
-
-		if (tr.DidHit()) {
-
-			if (tr.DidHitWorld())
-				if (!erase) {
-					bool result = engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, g_CurPaintgunPower, paintgun_rad.GetInt(), paintgun_strength.GetInt());
-					Msg("Painted? %i\n", (int)result);
-				}
-				else
-					engine->SpherePaintSurface(tr.m_pEnt->GetModel(), tr.endpos, NO_POWER, paintgun_rad.GetInt(), paintgun_strength.GetInt()); // erase		
-		}
-	}
-
-	//m_flCurPaintDelay = gpGlobals->curtime + paintgun_timing.GetFloat();
 }
 
 int CWeaponPaintgun::UpdateClientData(CBasePlayer* pPlayer) {
@@ -234,6 +192,10 @@ void Paintgun_NextPower() {
 			SetPaintDisplayColour(PORTAL_POWER);
 			break;
 		case PORTAL_POWER:
+			g_CurPaintgunPower = FIFTH_POWER;
+			SetPaintDisplayColour(FIFTH_POWER);
+			break;
+		case FIFTH_POWER:
 			g_CurPaintgunPower = BOUNCE_POWER;
 			SetPaintDisplayColour(BOUNCE_POWER);
 			break;
@@ -253,8 +215,8 @@ void Paintgun_PrevPower() {
 
 	switch (g_CurPaintgunPower) {
 		case BOUNCE_POWER:
-			g_CurPaintgunPower = PORTAL_POWER;
-			SetPaintDisplayColour(PORTAL_POWER);
+			g_CurPaintgunPower = FIFTH_POWER;
+			SetPaintDisplayColour(FIFTH_POWER);
 			break;
 		case SPEED_POWER:
 			g_CurPaintgunPower = BOUNCE_POWER;
@@ -263,6 +225,10 @@ void Paintgun_PrevPower() {
 		case PORTAL_POWER:
 			g_CurPaintgunPower = SPEED_POWER;
 			SetPaintDisplayColour(SPEED_POWER);
+			break;
+		case FIFTH_POWER:
+			g_CurPaintgunPower = PORTAL_POWER;
+			SetPaintDisplayColour(PORTAL_POWER);
 			break;
 		default:
 			g_CurPaintgunPower = BOUNCE_POWER;

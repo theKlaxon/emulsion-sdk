@@ -4,6 +4,7 @@
 #include "c_weapon__stubs.h"
 #include "hud_basechat.h"
 #include "iinput.h"
+#include "dll_patch.h"
 
 ConVar default_fov( "default_fov", "90", FCVAR_CHEAT );
 
@@ -92,9 +93,14 @@ class SkeletonModeManager : public IVModeManager
 		GetFullscreenClientMode()->LevelInit(newmap);
 
 		engine->ClientCmd("r_flashlightbrightness 2");
+
+		// patch the dlls
+		PatchAll();
 	}
 	void LevelShutdown()
 	{
+		UnPatchAll();
+
 		for( int i = 0; i < MAX_SPLITSCREEN_PLAYERS; ++i )
 		{
 			ACTIVE_SPLITSCREEN_PLAYER_GUARD( i );

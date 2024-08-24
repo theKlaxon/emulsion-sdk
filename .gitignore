@@ -146,3 +146,7 @@ game/vectronic/bin/gamepadui.pdb
 /src/materialsystem/shaderlib/.vs
 src/materialsystem/shaderlib/.vs/shaderlib_sdk/v17/DocumentLayout.json
 /src/materialsystem/stdshaders/Release_dx9_vectronic
+/src/fgdlib/Release
+/src/materialsystem/shaderlib/Debug
+/src/materialsystem/shaderlib/Release
+/src/materialsystem/stdshaders/Release_dx9_emulsion

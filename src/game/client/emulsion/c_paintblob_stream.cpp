@@ -5,6 +5,7 @@
 #include "Implicit/ImpParticle.h"
 #include "Implicit/ImpTiler.h"
 #include "Implicit/SweepRenderer.h"
+#include "Implicit/UserFunctions.h"
 
 ConVar paintblob_stream_radius("r_paintblob_stream_radius", "6", FCVAR_REPLICATED);
 ConVar paintblob_stream_max_blobs("r_paintblob_stream_max_blobs", "350", FCVAR_REPLICATED);
@@ -12,7 +13,7 @@ ConVar paintblob_surface_max_tiles("r_paintblob_surface_max_tiles", "-1", FCVAR_
 
 ConVar paintblob_blr_cubewidth("r_paintblob_blr_cubewidth", "0.8", FCVAR_REPLICATED);
 ConVar paintblob_blr_render_radius("r_paintblob_blr_render_radius", "1.3", FCVAR_REPLICATED);
-ConVar paintblob_blr_cutoff_radius("r_paintblob_blr_cutoff_radius", "3.3", FCVAR_REPLICATED);
+ConVar paintblob_blr_cutoff_radius("r_paintblob_blr_cutoff_radius", "5.5", FCVAR_REPLICATED);
 
 // used to grab a cube with from a menu value
 ConVar paintblob_blr_menu_quality("r_paintblob_blr_menu_cubewidths", "0", FCVAR_REPLICATED);
@@ -28,7 +29,8 @@ const char* g_PaintTypeMaterials[] = {
 	"paintblobs/blob_surface_portal",	// reflect / stick
 	"paintblobs/blob_surface_speed",	// speed
 	"paintblobs/blob_surface_stick",	// portal
-	"paintblobs/blob_surface_erase",	// no power
+	"paintblobs/blob_surface_erase2",	// no power
+	"paintblobs/blob_surface_erase2",	// fifth_power
 };
 
 #define MAX_SURFACE_ELEMENTS paintblob_stream_max_blobs.GetInt()
@@ -42,14 +44,6 @@ IMPLEMENT_CLIENTCLASS_DT(C_PaintBlobStream, DT_PaintBlobStream, CPaintBlobStream
 		RecvPropVector(NULL, 0, sizeof(Vector))),
 	RecvPropUtlVector(
 		RECVINFO_UTLVECTOR(m_vecSurfaceVs),
-		paintblob_stream_max_blobs.GetInt(),
-		RecvPropFloat(NULL, 0, sizeof(float))),
-	RecvPropUtlVector(
-		RECVINFO_UTLVECTOR(m_vecSurfaceRs),
-		paintblob_stream_max_blobs.GetInt(),
-		RecvPropFloat(NULL, 0, sizeof(float))),
-	RecvPropUtlVector(
-		RECVINFO_UTLVECTOR(m_vecRadii),
 		paintblob_stream_max_blobs.GetInt(),
 		RecvPropFloat(NULL, 0, sizeof(float))),
 
@@ -78,8 +72,6 @@ C_PaintBlobStream::C_PaintBlobStream() {
 	// ----
 
 	ImpTiler* pTiler = ImpTilerFactory::factory->getTiler();
-
-
 
 	// ----
 
@@ -198,7 +190,7 @@ int C_PaintBlobStream::DrawModel(int flags, const RenderableInstance_t& instance
 
 		ImpParticleWithOneInterpolant* imp_particle = &imp_particles[i];
 		imp_particle->center = Point3D(m_vecSurfacePositions[i].x, m_vecSurfacePositions[i].y, m_vecSurfacePositions[i].z);
-		imp_particle->fieldRScaleSq = m_vecRadii[i];// m_vecSurfaceRs[i];
+		imp_particle->fieldRScaleSq = 1.0f;// m_vecRadii[i];// m_vecSurfaceRs[i];
 		imp_particle->scale = 1.0f;// m_vecRadii[i];
 		imp_particle->interpolants1[3] = m_vecSurfaceVs[i];
 		n_particles++;
@@ -206,7 +198,7 @@ int C_PaintBlobStream::DrawModel(int flags, const RenderableInstance_t& instance
 	
 	//SweepRenderer::setCubeWidth(paintblob_blr_cubewidth.GetFloat());
 
-	float cube_width = g_flBlobCubeWidths[paintblob_blr_menu_quality.GetInt()];
+	float cube_width = paintblob_blr_cubewidth.GetFloat();//g_flBlobCubeWidths[paintblob_blr_menu_quality.GetInt()];
 	SweepRenderer::setCubeWidth(cube_width);
 	SweepRenderer::setRenderR(paintblob_blr_render_radius.GetFloat());
 	SweepRenderer::setCutoffR(paintblob_blr_cutoff_radius.GetFloat());
@@ -227,7 +219,7 @@ int C_PaintBlobStream::DrawModel(int flags, const RenderableInstance_t& instance
 	pRenderContext->LoadIdentity();
 	pRenderContext->Translate(center.x, center.y, center.z);
 	pRenderContext->Scale(flRadius, flRadius, flRadius);
-	//pRenderContext->GetLocalCubemap();
+	pRenderContext->GetLocalCubemap();
 
 	tiler->beginFrame(Point3D(0.0f, 0.0f, 0.0f), (void*)&pRenderContext, 1);
 

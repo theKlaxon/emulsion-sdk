@@ -4,6 +4,7 @@
 #include "dll_offset.h"
 
 extern void PatchAll();
+extern void UnPatchAll();
 
 class CMatSysPatch {
 public:
@@ -14,6 +15,7 @@ public:
 
     // override the paint colors >:D (going goblin mode)
     void Patch();
+    void UnPatch();
 
 protected:
 
@@ -27,27 +29,10 @@ protected:
         Offset g_PaintColors;
     };
 
-    MatSysOffsets m_Offsets;// = MatSysOffsets(); // can't do this in the 2010 compiler...
+    MatSysOffsets m_Offsets;
+
+private:
+
+    Color m_pOldData[3];
 };
 extern CMatSysPatch g_MatSysPatch;
-
-class CEnginePatch {
-public:
-
-    CEnginePatch() {
-        m_Offsets = EngineOffsets();
-    }
-
-    void Patch();
-
-    class EngineOffsets {
-    public:
-
-        EngineOffsets() {
-        }
-
-    };
-
-    EngineOffsets m_Offsets;
-};
-extern CEnginePatch g_EnginePatch;

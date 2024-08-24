@@ -1,0 +1,37 @@
+paintblob
+{
+
+$uvscale "0.006" 
+
+$baseTexture "paintblobs\blob_surface_erase"
+//$opacityTexture "paintblobs\blob_surface_opacity_erase"
+
+$normalMap "paintblobs\blob_surface_normal"
+$bumpstrength "0.2"
+
+$diffuseScale "1.0"
+
+$phongexponent 40 
+$phongboost 2 
+$phongexponent2 400 
+$phongboost2 7 
+
+$rimlightexponent 8
+$rimlightboost 300
+
+$envMap "paint\paint_envmap_hdr"
+
+$fresnelBumpStrength 0
+$fresnelWarpTexture "Models/blob/blob_fresnel_warp"
+
+$interior 1 
+$interiorFogStrength "0.4" 
+$interiorFogLimit "0.4" 
+$interiorFogNormalBoost 8 
+$interiorBackgroundBoost 0 
+$interiorAmbientScale "0.1" 
+$interiorBacklightScale "0.1" 
+$interiorRefractStrength "0.1" 
+
+$nocull 1
+}

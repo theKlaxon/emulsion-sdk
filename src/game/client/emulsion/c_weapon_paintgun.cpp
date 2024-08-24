@@ -7,6 +7,7 @@
 ConVar bounce_paint_color("bounce_paint_color", "0 165 255 255", FCVAR_REPLICATED);
 ConVar speed_paint_color("speed_paint_color", "255 106 0 255", FCVAR_REPLICATED);
 ConVar portal_paint_color("portal_paint_color", "0 200 33 255", FCVAR_REPLICATED); // p2ce's green (i was allowed to use it) -Klax
+ConVar fifth_paint_color("fifth_paint_color", "251 255 0 255", FCVAR_REPLICATED);
 //ConVar portal_paint_color("portal_paint_color", "15 252 11 255", FCVAR_REPLICATED); // i like greemn -Klax
 
 #define	HL2_BOB_CYCLE_MIN	1.0f
@@ -247,6 +248,9 @@ void C_WeaponPaintgun::PostDataUpdate(DataUpdateType_t updateType) {
 		break;
 	case PORTAL_POWER:		
 		pPlayer->GetViewModel(0)->SetRenderColor(portal_paint_color.GetColor().r(), portal_paint_color.GetColor().g(), portal_paint_color.GetColor().b());
+		break;
+	case FIFTH_POWER:
+		pPlayer->GetViewModel(0)->SetRenderColor(fifth_paint_color.GetColor().r(), fifth_paint_color.GetColor().g(), fifth_paint_color.GetColor().b());
 		break;
 	default:
 		break;

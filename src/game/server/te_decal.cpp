@@ -28,7 +28,7 @@ public:
 	virtual			~CTEDecal( void );
 
 	virtual void	Test( const Vector& current_origin, const QAngle& current_angles );
-	
+
 	DECLARE_SERVERCLASS();
 
 public:

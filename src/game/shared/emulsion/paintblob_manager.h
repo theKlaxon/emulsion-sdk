@@ -5,6 +5,7 @@
 #else
 #include "paintblob_stream.h"
 #include "paint_sphere.h"
+#include "../public/game/shared/portal2/paint_enum.h"
 
 extern CPaintBlobStream* g_pBouncePaintStream;
 extern CPaintBlobStream* g_pSpeedPaintStream;
@@ -45,12 +46,11 @@ public:
 	void PreClientUpdate();
 	
 	CPaintBlobStream* GetStream(int streamIndex);
-	int GetStreamIndex(int paintType);
 	CUtlVector<int>* GetRemovalQueue(int streamIndex);
 
 	// blob manufacturing!
-	void CreateBlob(Vector origin, Vector velocity, int batch, float radius = 1.0f, int count = 1);
-	void QueueBlobForRemoval(int particleIndex, int batch);
+	void CreateBlob(Vector origin, Vector velocity, PaintPowerType type, float radius = 1.0f, int count = 1);
+	void QueueBlobForRemoval(int particleIndex, PaintPowerType type);
 	void RemoveQueuedBlobs();
 
 	virtual void FrameUpdatePreEntityThink();
@@ -82,8 +82,4 @@ private:
 extern IGameSystem* PaintBlobManager_System();
 extern CPaintBlobManager* PaintBlobManager();
 
-namespace Paint {
-
-	void CreateBlob(Vector center, Vector velocity);
-
-}
+//#define REGISTER_PAINT_STREAM(type)

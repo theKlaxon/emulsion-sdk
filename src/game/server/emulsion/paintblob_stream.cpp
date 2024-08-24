@@ -16,6 +16,7 @@ const char* g_PaintSplatParticles[] = {
 	"paint_splat_speed_01_0",		// speed
 	"paint_splat_stick_02",		// portal / stick
 	"paint_splat_erase_01",		// no power
+	"paint_splat_erase_01",		// fifth power
 };
 
 ConVar paintblob_stream_radius("paintblob_stream_radius", "3", FCVAR_REPLICATED | FCVAR_DEVELOPMENTONLY);
@@ -33,14 +34,6 @@ IMPLEMENT_SERVERCLASS_ST(CPaintBlobStream, DT_PaintBlobStream)
 		SENDINFO_UTLVECTOR(m_vecSurfaceVs),
 		paintblob_stream_max_blobs.GetInt(), // max elements
 		SendPropFloat(NULL, 0, sizeof(float), 6, 0, 0.0, 1.0)),
-	SendPropUtlVector(
-		SENDINFO_UTLVECTOR(m_vecSurfaceRs),
-		paintblob_stream_max_blobs.GetInt(), // max elements
-		SendPropFloat(NULL, 0, sizeof(float), 6, 0, 0.0, 2.0)),
-	SendPropUtlVector(
-		SENDINFO_UTLVECTOR(m_vecRadii),
-		paintblob_stream_max_blobs.GetInt(), // max elements
-		SendPropFloat(NULL, 0, sizeof(float), 6, 0, 0.0, 2.0)),
 
 	SendPropUtlVector(
 		SENDINFO_UTLVECTOR(m_nIndices),
@@ -81,9 +74,6 @@ void CPaintBlobStream::Spawn() {
 	BaseClass::Spawn();
 
 	SetModel("models/props/metal_box.mdl");
-
-	//SetThink(&CPaintBlobStream::Think);
-	//SetNextThink(gpGlobals->curtime + 0.0001);
 
 	SetHullType(HULL_SMALL_CENTERED);
 	SetHullSizeNormal();
@@ -154,7 +144,7 @@ void CPaintBlobStream::VPhysicsCollision(int index, gamevcollisionevent_t* pEven
 			engine->SpherePaintSurface(mdl, position, m_nPaintType, 48.0f, 3.0f);
 		}
 
-		PaintBlobManager()->QueueBlobForRemoval(pEvent->pObjects[index]->GetGameIndex(), PaintBlobManager()->GetStreamIndex(m_nPaintType));
+		PaintBlobManager()->QueueBlobForRemoval(pEvent->pObjects[index]->GetGameIndex(), (PaintPowerType)m_nPaintType.Get());
 		DispatchParticleEffect(g_PaintSplatParticles[m_nPaintType], position, QAngle());
 	}
 }

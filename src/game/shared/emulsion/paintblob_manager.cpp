@@ -48,11 +48,14 @@ CPaintBlobStream* g_pBouncePaintStream;
 CPaintBlobStream* g_pSpeedPaintStream;
 CPaintBlobStream* g_pStickPaintStream;
 CPaintBlobStream* g_pErasePaintStream;
+CPaintBlobStream* g_pFifthPaintStream;
 
 CUtlVector<int> g_BounceRemovalQueue;
 CUtlVector<int> g_SpeedRemovalQueue;
 CUtlVector<int> g_StickRemovalQueue;
 CUtlVector<int> g_EraseRemovalQueue;
+
+CUtlVector<int> g_FifthRemovalQueue;
 #endif
 
 void CPaintBlobManager::LevelInitPostEntity() {
@@ -69,20 +72,28 @@ void CPaintBlobManager::LevelInitPostEntity() {
 	g_pStickPaintStream = (CPaintBlobStream*)CreateEntityByName("env_paint_stream");
 	g_pErasePaintStream = (CPaintBlobStream*)CreateEntityByName("env_paint_stream");
 
+	g_pFifthPaintStream = (CPaintBlobStream*)CreateEntityByName("env_paint_stream");
+
 	g_pBouncePaintStream->SetPaintType(BOUNCE_POWER);
 	g_pSpeedPaintStream->SetPaintType(SPEED_POWER);
 	g_pStickPaintStream->SetPaintType(PORTAL_POWER);
 	g_pErasePaintStream->SetPaintType(NO_POWER);
+
+	g_pFifthPaintStream->SetPaintType(FIFTH_POWER);
 
 	g_pBouncePaintStream->SetAbsOrigin(Vector(-2056, -2056, -2056));
 	g_pSpeedPaintStream->SetAbsOrigin(Vector(-2056, -2056, -2056));
 	g_pStickPaintStream->SetAbsOrigin(Vector(-2056, -2056, -2056));
 	g_pErasePaintStream->SetAbsOrigin(Vector(-2056, -2056, -2056));
 
+	g_pFifthPaintStream->SetAbsOrigin(Vector(-2056, -2056, -2056));
+
 	g_pBouncePaintStream->Spawn();
 	g_pSpeedPaintStream->Spawn();
 	g_pStickPaintStream->Spawn();
 	g_pErasePaintStream->Spawn();
+
+	g_pFifthPaintStream->Spawn();
 
 #endif
 }
@@ -121,59 +132,58 @@ void CPaintBlobManager::PreClientUpdate() {
 
 CPaintBlobStream* CPaintBlobManager::GetStream(int streamIndex) {
 	switch (streamIndex) {
-	case 0:
-		return g_pBouncePaintStream;
-	case 1:
-		return g_pSpeedPaintStream;
-	case 2:
-		return g_pStickPaintStream;
-	case 3:
-		return g_pErasePaintStream;
-	}
-}
-
-int CPaintBlobManager::GetStreamIndex(int paintType) {
-	switch (paintType) {
 	case BOUNCE_POWER:
-		return 0;
+		return g_pBouncePaintStream;
 	case SPEED_POWER:
-		return 1;
+		return g_pSpeedPaintStream;
 	case PORTAL_POWER:
-		return 2;
+		return g_pStickPaintStream;
 	case NO_POWER:
-		return 3;
+		return g_pErasePaintStream;
+	case FIFTH_POWER:
+		return g_pFifthPaintStream;
 	}
+
+	return nullptr;
 }
 
 CUtlVector<int>* CPaintBlobManager::GetRemovalQueue(int streamIndex) {
 	switch (streamIndex) {
-	case 0:
+	case BOUNCE_POWER:
 		return &g_BounceRemovalQueue;
-	case 1:
+	case SPEED_POWER:
 		return &g_SpeedRemovalQueue;
-	case 2:
+	case PORTAL_POWER:
 		return &g_StickRemovalQueue;
-	case 3:
+	case NO_POWER:
 		return &g_EraseRemovalQueue;
+	case FIFTH_POWER:
+		return &g_FifthRemovalQueue;
 	}
+
+	return nullptr;
 }
 
-void CPaintBlobManager::CreateBlob(Vector origin, Vector velocity, int batch, float radius, int count) {
+void CPaintBlobManager::CreateBlob(Vector origin, Vector velocity, PaintPowerType type, float radius, int count) {
 	for (int i = 0; i < count; i++)
-		GetStream(batch)->AddParticle(origin, velocity, radius);
+		GetStream(type)->AddParticle(origin, velocity, radius);
 }
 
-void CPaintBlobManager::QueueBlobForRemoval(int particleIndex, int batch) {
-	GetRemovalQueue(batch)->AddToTail(particleIndex);
+void CPaintBlobManager::QueueBlobForRemoval(int particleIndex, PaintPowerType type) {
+	GetRemovalQueue(type)->AddToTail(particleIndex);
 }
 
 void CPaintBlobManager::RemoveQueuedBlobs() {
 	
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < PAINT_POWER_TYPE_COUNT; i++) {
 
 		CPaintBlobStream* pStream = GetStream(i);
 		CUtlVector<int>* pQueue = GetRemovalQueue(i);
 		
+		if (pStream == nullptr || pQueue == nullptr) {
+			continue;
+		}
+
 		// for the safety
 		if (!pStream || !pQueue)
 			continue;
@@ -207,6 +217,7 @@ void CPaintBlobManager::FrameUpdatePreEntityThink() {
 	g_pSpeedPaintStream->PurgeNewIndices();
 	g_pStickPaintStream->PurgeNewIndices();
 	g_pErasePaintStream->PurgeNewIndices();
+	g_pFifthPaintStream->PurgeNewIndices();
 }
 
 void CPaintBlobManager::FrameUpdatePostEntityThink() {
