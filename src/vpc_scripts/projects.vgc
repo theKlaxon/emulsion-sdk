@@ -24,6 +24,11 @@ $Project "fgdlib"
 	"fgdlib\fgdlib.vpc"
 }
 
+$Project "interfaces"
+{
+	"interfaces/interfaces.vpc"
+}
+
 // game stuff
 $Project "client"
 {
@@ -55,6 +60,26 @@ $Project "game_shader_generic_deferred"
 	"materialsystem\deferredshaders\game_shader_generic_deferred.vpc" [$VECTRONIC]
 }
 
+$Project "particles_dll"
+{
+	"particles_dll/particles_dll.vpc"
+}
+
+$Project "resourcesystem"
+{
+	"resourcesystem/resourcesystem.vpc"
+}
+
+$Project "video_services"
+{
+	"video_services/video_services/video_services.vpc"
+}
+
+$Project "framework2"
+{
+	"framework2/framework2.vpc"
+}
+
 // utils
 $Project "vbsp"
 {
@@ -71,13 +96,3 @@ $Project "vvis"
 	"utils\vvis\vvis_dll.vpc"
 }
 
-// experimental
-$Project "particles2"
-{
-	"particles2/particles2.vpc"
-}
-
-$Project "particles_dll"
-{
-	"particles_dll/particles_dll.vpc"
-}

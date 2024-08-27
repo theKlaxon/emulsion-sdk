@@ -96,7 +96,7 @@ CBaseEntity* FindEntity( edict_t *pEdict, char *classname)
 #ifdef SWARM_DLL
 //-----------------------------------------------------------------------------
 // Purpose: Precache game-specific models & sounds
-//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------
 PRECACHE_REGISTER_BEGIN( GLOBAL, ClientGamePrecache )
 	PRECACHE( MODEL, "models/player.mdl");
 	//PRECACHE( MODEL, "models/gibs/agibs.mdl" );

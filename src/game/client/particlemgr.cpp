@@ -967,7 +967,7 @@ CParticleMgr::~CParticleMgr()
 #include "particles/iparticlesdll.h"
 #include "client_factorylist.h"
 
-IParticlesDLL* pParticles = nullptr;
+IParticlesDLL* g_pParticles = nullptr;
 static IParticleSystemMgr* g_ParticlePtr = nullptr;
 IParticleSystemMgr* g_pParticleSystemMgr = g_ParticlePtr;
 #endif
@@ -983,18 +983,18 @@ bool CParticleMgr::Init(unsigned long count, IMaterialSystem *pMaterials)
 	if (pModule != nullptr)
 	{
 		CreateInterfaceFn particlesFactory = Sys_GetFactory(pModule);
-		pParticles = (IParticlesDLL*)particlesFactory(PARTICLES_INTERFACE_VERSION, NULL);
+		g_pParticles = (IParticlesDLL*)particlesFactory(PARTICLES_INTERFACE_VERSION, NULL);
 	}
 
-	if (!pParticles) {
+	if (!g_pParticles) {
 		Warning("Could not load particles dll!\n");
 		return false;
 	}
 
 	factorylist_t factories;
 	FactoryList_Retrieve(factories);
-	pParticles->Initialize(factories.appSystemFactory);
-	g_ParticlePtr = pParticles->GetMgrInstance();
+	g_pParticles->Initialize(factories.appSystemFactory);
+	g_ParticlePtr = g_pParticles->GetMgrInstance();
 	g_pParticleSystemMgr = g_ParticlePtr;
 #endif
 

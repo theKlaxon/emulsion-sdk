@@ -133,7 +133,7 @@ public:
 	virtual void AddTextOverlayRGB(const Vector& origin, int line_offset, float duration, float r, float g, float b, float alpha, const char *format, ...) = 0;
 };
 
-#define VPHYSICS_INTERFACE_VERSION	"VPhysics031"
+//#define VPHYSICS_INTERFACE_VERSION	"VPhysics031"
 
 abstract_class IPhysics : public IAppSystem
 {
@@ -1049,7 +1049,7 @@ struct surfacedata_t
 #define IVP_Material void* 
 #define CPhysicsSurfaceProps void*
 
-#define VPHYSICS_SURFACEPROPS_INTERFACE_VERSION	"VPhysicsSurfaceProps001"
+//#define VPHYSICS_SURFACEPROPS_INTERFACE_VERSION	"VPhysicsSurfaceProps001"
 abstract_class IPhysicsSurfaceProps
 {
 public:

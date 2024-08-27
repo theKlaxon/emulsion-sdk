@@ -90,22 +90,6 @@ void DrawPbrPass_Paint(CBaseVSShader* pShader, IMaterialVar** params, IShaderDyn
 			pShaderShadow->VertexShaderVertexFormat(flags, 3, 0, 0);
 		}
 
-		//if (!g_pHardwareConfig->HasFastVertexTextures() || mat_pbr_force_20b.GetBool())
-		//{
-		//	// Setting up static vertex shader
-		//	DECLARE_STATIC_VERTEX_SHADER(pbr_vs20);
-		//	SET_STATIC_VERTEX_SHADER(pbr_vs20);
-
-		//	// Setting up static pixel shader
-		//	DECLARE_STATIC_PIXEL_SHADER(pbr_paint_ps20b);
-		//	SET_STATIC_PIXEL_SHADER_COMBO(FLASHLIGHT, switches.bHasFlashlight);
-		//	SET_STATIC_PIXEL_SHADER_COMBO(FLASHLIGHTDEPTHFILTERMODE, switches.nShadowFilterMode);
-		//	SET_STATIC_PIXEL_SHADER_COMBO(LIGHTMAPPED, switches.bLightMapped);
-		//	SET_STATIC_PIXEL_SHADER_COMBO(SPECULAR, 0);
-		//	SET_STATIC_PIXEL_SHADER_COMBO(PARALLAXCORRECT, switches.bHasParallaxCorrection);
-		//	SET_STATIC_PIXEL_SHADER(pbr_paint_ps20b);
-		//}
-		//else
 		{
 			// Setting up static vertex shader
 			DECLARE_STATIC_VERTEX_SHADER(pbr_vs30);
@@ -222,7 +206,7 @@ void DrawPbrPass_Paint(CBaseVSShader* pShader, IMaterialVar** params, IShaderDyn
 		// Setting up mrao map
 		if (switches.bHasMraoTexture)
 		{
-			pShader->BindTexture(SAMPLER_MRAO, info.m_nPaintMRAO, 0);
+			pShader->BindTexture(SAMPLER_MRAO, info.mraoTexture, 0);
 		}
 		else
 		{
@@ -241,6 +225,7 @@ void DrawPbrPass_Paint(CBaseVSShader* pShader, IMaterialVar** params, IShaderDyn
 		// paint
 		pShaderAPI->BindStandardTexture(SAMPLER_PAINT, 0, TEXTURE_PAINT);
 		pShader->BindTexture(SAMPLER_SPLATNORMAL, info.m_nPaintSplatNormal);
+		pShader->BindTexture(SAMPLER_PAINTMRAO, info.m_nPaintMRAO);
 
 		// Getting the light state
 		LightState_t lightState;
@@ -322,30 +307,8 @@ void DrawPbrPass_Paint(CBaseVSShader* pShader, IMaterialVar** params, IShaderDyn
 		pShaderAPI->SetPixelShaderConstant(PSREG_EYEPOS_SPEC_EXPONENT, vEyePos_SpecExponent, 1);
 
 		// Setting lightmap texture
-		//pShader->s_pShaderAPI->BindStandardTexture(SAMPLER_LIGHTMAP, 0, TEXTURE_LIGHTMAP_BUMPED);
 		BindLightmapBumped();
 
-		//if (!g_pHardwareConfig->HasFastVertexTextures() || mat_pbr_force_20b.GetBool())
-		//{
-		//	// Setting up dynamic vertex shader
-		//	DECLARE_DYNAMIC_VERTEX_SHADER(pbr_vs20);
-		//	SET_DYNAMIC_VERTEX_SHADER_COMBO(DOWATERFOG, fogIndex);
-		//	SET_DYNAMIC_VERTEX_SHADER_COMBO(SKINNING, numBones > 0);
-		//	SET_DYNAMIC_VERTEX_SHADER_COMBO(LIGHTING_PREVIEW, pShaderAPI->GetIntRenderingParameter(INT_RENDERPARM_ENABLE_FIXED_LIGHTING) != 0);
-		//	SET_DYNAMIC_VERTEX_SHADER_COMBO(COMPRESSED_VERTS, info.nVertexCompression);
-		//	SET_DYNAMIC_VERTEX_SHADER_COMBO(NUM_LIGHTS, lightState.m_nNumLights);
-		//	SET_DYNAMIC_VERTEX_SHADER(pbr_vs20);
-
-		//	// Setting up dynamic pixel shader
-		//	DECLARE_DYNAMIC_PIXEL_SHADER(pbr_paint_ps20b);
-		//	SET_DYNAMIC_PIXEL_SHADER_COMBO(NUM_LIGHTS, lightState.m_nNumLights);
-		//	SET_DYNAMIC_PIXEL_SHADER_COMBO(WRITEWATERFOGTODESTALPHA, bWriteWaterFogToAlpha);
-		//	SET_DYNAMIC_PIXEL_SHADER_COMBO(WRITE_DEPTH_TO_DESTALPHA, bWriteDepthToAlpha);
-		//	SET_DYNAMIC_PIXEL_SHADER_COMBO(PIXELFOGTYPE, pShaderAPI->GetPixelFogCombo());
-		//	SET_DYNAMIC_PIXEL_SHADER_COMBO(FLASHLIGHTSHADOWS, bFlashlightShadows);
-		//	SET_DYNAMIC_PIXEL_SHADER(pbr_paint_ps20b);
-		//}
-		//else
 		{
 			// Setting up dynamic vertex shader
 			DECLARE_DYNAMIC_VERTEX_SHADER(pbr_vs30);

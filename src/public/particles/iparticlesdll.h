@@ -13,6 +13,6 @@ public:
 	virtual IParticleSystemMgr* GetMgrInstance() = 0;
 };
 
-extern IParticlesDLL* pParticles;
+extern IParticlesDLL* g_pParticles;
 
 #define PARTICLES_INTERFACE_VERSION "ParticlesDLL_001"

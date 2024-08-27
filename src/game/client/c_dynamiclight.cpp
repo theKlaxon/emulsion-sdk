@@ -141,7 +141,7 @@ void C_DynamicLight::ClientThink(void)
 				? effects->CL_AllocElight( index )
 				: effects->CL_AllocDlight( index );
 #else
-			m_pDynamicLight = effects->CL_AllocDlight( index );
+			m_pDynamicLight = g_pVFX->CL_AllocDlight( index );
 #endif
 			Assert (m_pDynamicLight);
 			m_pDynamicLight->minlight = 0;
@@ -183,7 +183,7 @@ void C_DynamicLight::ClientThink(void)
 		// Deal with the environment light
 		if ( !m_pSpotlightEnd || (m_pSpotlightEnd->key != -index) )
 		{
-			m_pSpotlightEnd = effects->CL_AllocDlight( -index );
+			m_pSpotlightEnd = g_pVFX->CL_AllocDlight( -index );
 			Assert (m_pSpotlightEnd);
 		}
 				  

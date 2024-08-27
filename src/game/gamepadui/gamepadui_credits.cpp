@@ -31,6 +31,7 @@ class GamepadUICreditsPanel : public GamepadUIFrame {
 	DECLARE_CLASS_SIMPLE(GamepadUICreditsPanel, GamepadUIFrame)
 public:
 	GamepadUICreditsPanel(vgui::Panel* pParent, const char* pPanelName);
+	~GamepadUICreditsPanel() {}
 
 	void OnThink() override;
 	void OnCommand(char const* pCommand) override;

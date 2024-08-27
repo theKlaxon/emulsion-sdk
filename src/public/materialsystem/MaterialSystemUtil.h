@@ -17,7 +17,7 @@
 #ifndef PARTICLES_DLL
 #include "materialsystem/imaterialsystem.h"  // RenderTargetSizeMode_t and MaterialRenderTargetDepth_t definition
 #else
-#include "materialsystem_new.h"
+#include "particles_materialsystem.h"
 #endif
 #include "materialsystem/itexture.h"
 //-----------------------------------------------------------------------------

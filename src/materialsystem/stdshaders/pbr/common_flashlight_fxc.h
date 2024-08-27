@@ -10,6 +10,7 @@
 
 #include "common_ps_fxc.h"
 
+#define FLASHLIGHT_RES 4096.0f // 1024.0f
 
 // Superellipse soft clipping
 //
@@ -142,7 +143,7 @@ float DoShadowNvidiaRAWZ( sampler DepthSampler, const float4 shadowMapPos )
 
 float DoShadowNvidiaCheap( sampler DepthSampler, const float4 shadowMapPos )
 {
-	float fTexelEpsilon = 1.0f / 1024.0f;
+	float fTexelEpsilon = 1.0f / FLASHLIGHT_RES;// 1024.0f;
 
 	float ooW = 1.0f / shadowMapPos.w;								// 1 / w
 	float3 shadowMapCenter_objDepth = shadowMapPos.xyz * ooW;		// Do both projections at once
@@ -161,7 +162,7 @@ float DoShadowNvidiaCheap( sampler DepthSampler, const float4 shadowMapPos )
 
 float DoShadowNvidiaPCF3x3Box( sampler DepthSampler, const float4 shadowMapPos )
 {
-	float fTexelEpsilon = 1.0f / 1024.0f;
+	float fTexelEpsilon = 1.0f / FLASHLIGHT_RES;// 1024.0f;
 
 	float ooW = 1.0f / shadowMapPos.w;								// 1 / w
 	float3 shadowMapCenter_objDepth = shadowMapPos.xyz * ooW;		// Do both projections at once

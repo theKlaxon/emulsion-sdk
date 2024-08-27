@@ -1,0 +1,43 @@
+//-----------------------------------------------------------------------------
+//	INTERFACES.VPC - CREDIT TO ALLIEDMODDERS
+//
+//	Project Script
+//-----------------------------------------------------------------------------
+
+$macro SRCDIR		".."
+ 
+$include "$SRCDIR\vpc_scripts\source_lib_base.vpc"
+
+$Configuration
+{
+	$Compiler
+	{
+		$PreprocessorDefinitions		"$BASE;INTERFACES_STATIC_LIB"
+	}
+
+	$Librarian [$WINDOWS]
+	{
+		$AdditionalDependencies			"$BASE Rpcrt4.lib"
+	}
+}
+
+$Project "interfaces"
+{
+	$Folder	"Public Header Files"
+	{
+		$File	"$SRCDIR\public\interfaces\interfaces.h"
+	}
+
+	$Folder	"Source Files"
+	{
+		$File "interfaces.cpp"
+	}
+
+	$Folder	"Link Libraries"
+	{
+		$Lib tier1
+		$Lib tier2
+		$Lib tier3
+		$Lib vtf
+	}
+}

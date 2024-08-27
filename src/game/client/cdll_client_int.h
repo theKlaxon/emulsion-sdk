@@ -63,7 +63,7 @@ enum GPULevel_t;
 extern IVModelRender *modelrender;
 extern IVEngineClient	*engine;
 extern IVModelRender *modelrender;
-extern IVEfx *effects;
+//extern IVEfx *effects;
 extern IVRenderView *render;
 extern IVDebugOverlay *debugoverlay;
 extern IMaterialSystemStub *materials_stub;

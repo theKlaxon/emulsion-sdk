@@ -72,6 +72,7 @@ sampler SpecularTextureSampler      : register(s12);    // Specular F0 texture
 // paint samplers
 sampler SplatNormalSampler			: register(s13);
 sampler PaintSampler				: register(s14);
+sampler PaintMRAO					: register(s15);
 
 #define ENVMAPLOD (g_EyePos.a)
 #define DummySampler SplatNormalSampler
@@ -108,12 +109,15 @@ float4 main(PS_INPUT i) : COLOR
 #if PARALLAXOCCLUSION
 	float3 outgoingLightRay = g_EyePos.xyz - i.worldPos;
 	float3 outgoingLightDirectionTS = worldToRelative( outgoingLightRay, surfTangent, surfBase, surfNormal);
-	float2 correctedTexCoord = parallaxCorrect(baseTexCoord, outgoingLightDirectionTS , outgoingLightRay, i.worldNormal, NormalTextureSampler , PARALLAX_DEPTH , PARALLAX_CENTER);
+	float2 correctedTexCoord = parallaxCorrect(baseTexCoord, outgoingLightDirectionTS , outgoingLightRay, i.worldNormal, SplatNormalSampler , PARALLAX_DEPTH , PARALLAX_CENTER);
+	//float2 correctedTexCoord = parallaxCorrect(baseTexCoord, outgoingLightDirectionTS , outgoingLightRay, i.worldNormal, NormalTextureSampler , PARALLAX_DEPTH , PARALLAX_CENTER);
+
 #else
 	float2 correctedTexCoord = baseTexCoord;
 #endif
 
-	float3 textureNormal = normalize((tex2D( NormalTextureSampler,  correctedTexCoord).xyz - float3(0.5, 0.5, 0.5)) * 2);
+	//float3 textureNormal = normalize((tex2D( NormalTextureSampler,  correctedTexCoord).xyz - float3(0.5, 0.5, 0.5)) * 2);
+	float3 textureNormal = normalize((tex2D( SplatNormalSampler,  correctedTexCoord).xyz - float3(0.5, 0.5, 0.5)) * 2);
 	float3 normal = normalize(mul(textureNormal, normalBasis)); // World Normal
 
 	float3 worldVertToEyeVector = g_EyePos - i.worldPos;
@@ -148,10 +152,10 @@ float4 main(PS_INPUT i) : COLOR
 	//float noiseSample = tex2D( SplatNormalSampler, i.lightmapTexCoord1And2.xy * 10.0f).r;
 	//paintColor.a -= noiseSample * 0.2f;
 
-	float noiseSample = tex2D( SplatNormalSampler, paintCoord ).r;
+	float noiseSample = tex2D( SplatNormalSampler, i.lightmapTexCoord1And2.xy * 10.0f ).a;
 
 	float paintAlpha = paintColor.a;
-	paintAlpha -= noiseSample * 0.2f;
+	paintAlpha -= noiseSample;// * 0.2f;
 	clip( paintAlpha - 0.01f );
 
 	// if (paintAlpha < 1.0f)
@@ -195,7 +199,12 @@ float4 main(PS_INPUT i) : COLOR
 	albedo = float4(splatColour, 1.0f);
 	albedo.xyz *= g_BaseColor;
 
+	// get the combined mrao
 	float3 mrao = tex2D(MRAOTextureSampler, correctedTexCoord).xyz;
+	float3 paint_mrao = tex2D(PaintMRAO, correctedTexCoord).xyz;
+
+	//mrao = mrao + paint_mrao;
+
 	float metalness = mrao.x, roughness = mrao.y, ambientOcclusion = mrao.z;
 
 	//textureNormal = fvNormal.xyz; // PAINT TEST

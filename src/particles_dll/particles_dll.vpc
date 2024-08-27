@@ -13,8 +13,8 @@ $Configuration
 {
 	$Compiler
 	{
-		$AdditionalIncludeDirectories		"$BASE,..\common,..\vmpi,..\vmpi\mysql\mysqlpp\include,..\vmpi\mysql\include"
-		$PreprocessorDefinitions			"$BASE;MPI;PROTECTED_THINGS_DISABLE;VRAD"
+		$AdditionalIncludeDirectories		"$BASE,..\common,..\public\particles;"
+		$PreprocessorDefinitions			"$BASE;PROTECTED_THINGS_DISABLE;PARTICLES2;PARTICLES_DLL"
 	}
 
 	$Linker
@@ -23,7 +23,7 @@ $Configuration
 	}
 }
 
-$Project "Particles_dll"
+$Project "particles"
 {
 	$Folder	"Public Header Files"
 	{
@@ -32,23 +32,32 @@ $Project "Particles_dll"
 
 	$Folder	"Header Files"
 	{
-
+		$File "particles_filesystem.h"
+		$File "particles_materialsystem.h"
+		$File "particles_instance.h"
+		$File "particles_dll.h"
+		$File "proxy_imaterialsystem.h"
+		$File "proxy_imatrendercontext.h"
 	}
 
 	$Folder	"Source Files"
 	{
 		$File "particles_dll.cpp"
+		$File "particles_instance.cpp"
+		$File "particles_interfaces.cpp"
+		$File "particles_matsysutil.cpp"
 	}
 
 	$Folder	"Link Libraries"
 	{
 		$Lib bitmap
+		$Lib dmxloader
 		$Lib mathlib
 		$Lib raytrace
-		$Lib particles
 		$Lib tier1
 		$Lib tier2
 		$Lib tier3
 		$Lib vtf
+		$Lib $SRCDIR\particles_dll\particles_lib\particles_asw
 	}
 }

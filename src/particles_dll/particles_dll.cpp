@@ -14,6 +14,9 @@ IMaterialSystemNew* g_pMaterialsNew;
 
 EXPOSE_SINGLE_INTERFACE(CParticles, IParticlesDLL, PARTICLES_INTERFACE_VERSION);
 
+//CParticles g_Particles;
+//EXPOSE_SINGLE_INTERFACE_GLOBALVAR(CParticles, IParticlesDLL, PARTICLES_INTERFACE_VERSION, g_Particles);
+
 void CParticles::Initialize(CreateInterfaceFn factory) {
 
     MathLib_Init(2.2f, 2.2f, 0.0f, 2.0f);

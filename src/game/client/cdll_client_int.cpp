@@ -161,6 +161,11 @@
 #include "particlemgr.h"
 #endif
 
+#ifdef RESOURCES2
+#include "resourcesystem/iresourcesystem.h"
+#include "panelmetaclassmgr.h"
+#endif
+
 #include "tier1/UtlDict.h"
 #include "keybindinglistener.h"
 
@@ -172,7 +177,7 @@ extern IClientMode *GetClientModeNormal();
 // IF YOU ADD AN INTERFACE, EXTERN IT IN THE HEADER FILE.
 IVEngineClient	*engine = NULL;
 IVModelRender *modelrender = NULL;
-IVEfx *effects = NULL;
+//IVEfx *effects = NULL;
 IVRenderView *render = NULL;
 IVDebugOverlay *debugoverlay = NULL;
 IMaterialSystemStub *materials_stub = NULL;
@@ -224,6 +229,7 @@ CSteamAPIContext *steamapicontext = &g_SteamAPIContext;
 
 bool g_bEngineIsHLTV = false;
 
+#ifndef RESOURCES2
 static bool g_bRequestCacheUsedMaterials = false;
 void RequestCacheUsedMaterials()
 {
@@ -241,6 +247,7 @@ void ProcessCacheUsedMaterials()
         materials->CacheUsedMaterials();
 	}
 }
+#endif
 
 static bool g_bHeadTrackingEnabled = false;
 
@@ -853,6 +860,12 @@ public:
 	virtual void			ResetHudCloseCaption();
 	virtual bool			HandleGameUIEvent(const InputEvent_t& event);
 
+	//virtual void			InstallStringTableCallback_GameRules(const char* tableName);
+	//virtual IPanelMetaClassMgr* GetPanelMetaClassMgr();
+	//virtual void PrecacheOther(const char* pClassName) {
+	//	UTIL_PrecacheOther(pClassName);
+	//}
+
 	//virtual int GetSpectatorTarget(ClientDLLObserverMode_t* par1) {
 	//	return 0;
 	//}
@@ -998,7 +1011,9 @@ CHLClient::CHLClient()
 	g_bLevelInitialized = false;
 	m_pHudCloseCaption = NULL;
 
+#ifndef RESOURCES2
 	SetDefLessFunc( m_CachedMaterials );
+#endif
 }
 
 
@@ -1295,7 +1310,7 @@ int CHLClient::Init( CreateInterfaceFn appSystemFactory, CGlobalVarsBase *pGloba
 		return false;
 	if ( (modelrender = (IVModelRender *)appSystemFactory( VENGINE_HUDMODEL_INTERFACE_VERSION, NULL )) == NULL )
 		return false;
-	if ( (effects = (IVEfx *)appSystemFactory( VENGINE_EFFECTS_INTERFACE_VERSION, NULL )) == NULL )
+	if ( (g_pVFX = (IVEfx *)appSystemFactory( VENGINE_EFFECTS_INTERFACE_VERSION, NULL )) == NULL )
 		return false;
 	if ( (enginetrace = (IEngineTrace *)appSystemFactory( INTERFACEVERSION_ENGINETRACE_CLIENT, NULL )) == NULL )
 		return false;
@@ -1718,6 +1733,13 @@ bool CHLClient::HandleGameUIEvent( const InputEvent_t &inputEvent )
 #endif
 }
 
+//void CHLClient::InstallStringTableCallback_GameRules(const char* tableName) {
+//	::InstallStringTableCallback_GameRules(tableName);
+//}
+//
+//IPanelMetaClassMgr* CHLClient::GetPanelMetaClassMgr() {
+//	return PanelMetaClassMgr();
+//}
 
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -2170,7 +2192,7 @@ void CHLClient::LevelInitPostEntity( )
 #endif // GAMEPADUI
 
 #ifndef VECTRONIC_DLL
-	LightmapLoad::LoadPages();
+	//LightmapLoad::LoadPages();
 #endif
 }
 
@@ -2345,7 +2367,7 @@ void CHLClient::VoiceStatus( int entindex, int iSsSlot, qboolean bTalking )
 	GetClientVoiceMgr()->UpdateSpeakerStatus( entindex, iSsSlot, !!bTalking );
 }
 
-
+#ifndef RESOURCES2
 //-----------------------------------------------------------------------------
 // Called when the string table for materials changes
 //-----------------------------------------------------------------------------
@@ -2388,6 +2410,7 @@ void OnPrecacheParticleFile( void *object, INetworkStringTable *stringTable, int
 	g_pParticleSystemMgr->DecommitTempMemory();
 }
 
+
 //-----------------------------------------------------------------------------
 // Called when the string table for VGUI changes
 //-----------------------------------------------------------------------------
@@ -2411,12 +2434,17 @@ void OnSceneStringTableChanged( void *object, INetworkStringTable *stringTable, 
 {
 }
 
+#endif
+
 //-----------------------------------------------------------------------------
 // Purpose: Hook up any callbacks here, the table definition has been parsed but 
 //  no data has been added yet
 //-----------------------------------------------------------------------------
 void CHLClient::InstallStringTableCallback( const char *tableName )
 {
+#ifdef RESOURCES2
+	//g_pResourceSystem->InstallStringTableCallback(CLIENTGLOBAL, tableName);
+#else
 	// Here, cache off string table IDs
 	if (!Q_strcasecmp(tableName, "VguiScreen"))
 	{
@@ -2470,7 +2498,7 @@ void CHLClient::InstallStringTableCallback( const char *tableName )
 		// Pass tablename to gamerules last if all other checks fail
 		InstallStringTableCallback_GameRules( tableName );
 	}
-
+#endif
 }
 
 
@@ -2479,6 +2507,9 @@ void CHLClient::InstallStringTableCallback( const char *tableName )
 //-----------------------------------------------------------------------------
 void CHLClient::PrecacheMaterial( const char *pMaterialName )
 {
+#ifdef RESOURCES2
+	g_pResourceSystem->PrecacheMaterial(pMaterialName);
+#else
 	Assert( pMaterialName );
 
 	int nLen = Q_strlen( pMaterialName );
@@ -2500,15 +2531,20 @@ void CHLClient::PrecacheMaterial( const char *pMaterialName )
 			m_CachedMaterials.Insert( pMaterial );
 		}
 	}
+#endif
 }
 
 void CHLClient::UncacheAllMaterials( )
 {
+#ifdef RESOURCES2
+	g_pResourceSystem->UncacheAllMaterials();
+#else
 	for ( int i = m_CachedMaterials.FirstInorder(); i != m_CachedMaterials.InvalidIndex(); i = m_CachedMaterials.NextInorder( i ) )
 	{
 		m_CachedMaterials[i]->DecrementReferenceCount();
 	}
 	m_CachedMaterials.RemoveAll();
+#endif
 }
 
 //-----------------------------------------------------------------------------
@@ -2859,7 +2895,11 @@ void CHLClient::FrameStageNotify( ClientFrameStage_t curStage )
 	case FRAME_NET_UPDATE_END:
 		{
 			COM_TimestampedLog("CHLClient::FrameStageNotify FRAME_NET_UPDATE_END");
+#ifdef RESOURCES2
+			g_pResourceSystem->ProcessCacheUsedMaterials();
+#else
 			ProcessCacheUsedMaterials();
+#endif
 
 			// reenable abs recomputation since now all entities have been updated
 			C_BaseEntity::EnableAbsRecomputations( true );

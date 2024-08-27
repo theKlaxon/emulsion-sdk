@@ -61,8 +61,8 @@ public:
 	virtual dlight_t   *GetElightByKey( int key ) = 0;
 };
 
-#define VENGINE_EFFECTS_INTERFACE_VERSION "VEngineEffects001"
+//#define VENGINE_EFFECTS_INTERFACE_VERSION "VEngineEffects001"
 
-extern IVEfx *effects;
+//extern IVEfx *effects;
 
 #endif // IEFX_H

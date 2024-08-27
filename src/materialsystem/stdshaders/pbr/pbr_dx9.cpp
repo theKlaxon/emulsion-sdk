@@ -113,7 +113,7 @@ BEGIN_VS_SHADER(PBR, "PBR shader")
 			params[PAINTBUBBLELAYOUT]->SetStringValue("paint/bubblelayout");
 			params[PAINTBUBBLE]->SetStringValue("paint/bubble");
 			params[PAINTENVMAP]->SetStringValue("paint/paint_envmap_hdr");
-			params[PAINTMRAO]->SetStringValue("paint/splat_mrao");
+			params[PAINTMRAO]->SetStringValue("paint/splat_mraoe");
 
 		}
 		else {

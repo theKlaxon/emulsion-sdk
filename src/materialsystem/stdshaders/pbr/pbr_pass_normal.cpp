@@ -47,6 +47,7 @@ void DrawPbrPass_Normal(CBaseVSShader* pShader, IMaterialVar** params, IShaderDy
 		{
 			pShaderShadow->EnableTexture(SAMPLER_SHADOWDEPTH, true);        // Shadow depth map
 			//pShaderShadow->SetShadowDepthFiltering(SAMPLER_SHADOWDEPTH);
+			pShaderShadow->EnableDepthWrites(true);
 			pShaderShadow->EnableSRGBRead(SAMPLER_SHADOWDEPTH, false);
 			pShaderShadow->EnableTexture(SAMPLER_RANDOMROTATION, true);     // Noise map
 			pShaderShadow->EnableTexture(SAMPLER_FLASHLIGHT, true);         // Flashlight cookie

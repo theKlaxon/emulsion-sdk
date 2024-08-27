@@ -33,6 +33,7 @@ static const Sampler_t SAMPLER_SPECULAR = SHADER_SAMPLER12;
 // paint samplers (only in paint pass)
 static const Sampler_t SAMPLER_SPLATNORMAL = SHADER_SAMPLER13;
 static const Sampler_t SAMPLER_PAINT = SHADER_SAMPLER14;
+static const Sampler_t SAMPLER_PAINTMRAO = SHADER_SAMPLER15;
 
 // Convars
 static ConVar mat_fullbright("mat_fullbright", "0", FCVAR_CHEAT);

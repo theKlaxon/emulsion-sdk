@@ -1,5 +1,5 @@
 #pragma once
-#include "materialsystem_new.h"
+#include "particles_materialsystem.h"
 
 extern IMaterialSystemNew* g_pMaterialsNew;
 

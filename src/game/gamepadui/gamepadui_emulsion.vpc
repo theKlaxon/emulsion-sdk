@@ -18,16 +18,19 @@ $Configuration
 	}
 }
 
-$Project "GamepadUI (Emulsion)"
+$Project "gamepadui (Emulsion)"
 {
 	$Folder "Header Files"
 	{
 		$File "gamepadui_backgroundmovie.h"
+		$FIle "gamepadui_loadingdisplay.h"
 	}
 
 	$Folder "Source Files"
 	{
 		$File "gamepadui_backgroundmovie.cpp"
+		$File "gamepadui_loadingdisplay.cpp"
+		$File "gamepadui_credits.cpp"
 	}
 
 }

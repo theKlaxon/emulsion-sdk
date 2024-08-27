@@ -10,7 +10,7 @@ $Macro GAMENAME		"emulsion"
 $Include "$SRCDIR\materialsystem\stdshaders\game_shader_dx9_base.vpc"
 $Include "$SRCDIR\materialsystem\stdshaders\game_shader_dx9_pbr.vpc"
 
-$Project "Shaders (Emulsion)"
+$Project "shaders (Emulsion)"
 {
 	$File	"buildEmulsionShaders.bat"
 	$File	"buildshaders.bat"

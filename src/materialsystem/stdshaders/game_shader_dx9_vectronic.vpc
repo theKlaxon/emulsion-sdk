@@ -10,7 +10,7 @@ $Macro GAMENAME		"vectronic"
 $Include "$SRCDIR\materialsystem\stdshaders\game_shader_dx9_base.vpc"
 $Include "$SRCDIR\materialsystem\stdshaders\game_shader_dx9_pbr.vpc"
 
-$Project "Shaders (Vectronic)"
+$Project "shaders (Vectronic)"
 {
 	$File	"buildVectronicShaders.bat"
 	$File	"buildshaders.bat"

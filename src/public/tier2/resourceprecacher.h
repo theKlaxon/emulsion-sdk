@@ -53,7 +53,6 @@ enum ResourceTypeOld_t	// called 'Old' to disambiguate with ResourceSystem
 	RESOURCE_TYPE_OLD_COUNT,
 };
 
-
 //-----------------------------------------------------------------------------
 // Resource types
 // NOTE: If you add types here, be sure to fix s_pPrecacheResourceTypeName
@@ -131,6 +130,17 @@ public:
 	friend class CPrecacheRegister;
 };
 
+//
+//class IResourceSystemPrecacher {
+//public:
+//
+//	virtual void Cache()
+//
+//};
+//
+//class CResourceSystemPrecacher {
+//
+//};
 
 //-----------------------------------------------------------------------------
 // Automatic precache macros

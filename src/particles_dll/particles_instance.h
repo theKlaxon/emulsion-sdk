@@ -1,7 +1,7 @@
 #pragma once
 #include "particles/particles.h"
 #include "particles/particles_collection.h"
-#include "materialsystem_new.h"
+#include "particles_materialsystem.h"
 
 //extern CParticleSystemMgr m_pParticleSystemMgr;
 static CMatRenderContextNew m_sRenderContext;

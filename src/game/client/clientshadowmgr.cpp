@@ -137,13 +137,13 @@ ConVar r_flashlightdepthtexture( "r_flashlightdepthtexture", "1" );
 #if defined( _X360 )
 ConVar r_flashlightdepthreshigh( "r_flashlightdepthreshigh", "512" );
 #else
-ConVar r_flashlightdepthreshigh( "r_flashlightdepthreshigh", "1024" );
+ConVar r_flashlightdepthreshigh( "r_flashlightdepthreshigh", "4096" );
 #endif
 
 #if defined( _X360 )
 ConVar r_flashlightdepthres( "r_flashlightdepthres", "512" );
 #else
-ConVar r_flashlightdepthres( "r_flashlightdepthres", "1024" );
+ConVar r_flashlightdepthres( "r_flashlightdepthres", "4096" );
 #endif
 
 #if defined( _X360 )
@@ -812,6 +812,7 @@ public:
 
 	virtual void OnSave() {}
 	virtual void OnRestore() {}
+
 	virtual void SafeRemoveIfDesired() {}
 
 	virtual void ReprojectShadows();
@@ -1405,7 +1406,7 @@ void CClientShadowMgr::CalculateRenderTargetsAndSizes( void )
 		
 	m_nDepthTextureResolution = r_flashlightdepthres.GetInt();
 	m_nDepthTextureResolutionHigh = r_flashlightdepthreshigh.GetInt();
-	//if ( bTools )									// Higher resolution shadow maps in tools mode
+	if ( bTools )									// Higher resolution shadow maps in tools mode
 	{
 		char defaultRes[] = "2048";
 		m_nDepthTextureResolution = atoi( CommandLine()->ParmValue( "-sfm_shadowmapres", defaultRes ) );

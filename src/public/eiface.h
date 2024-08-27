@@ -593,6 +593,8 @@ public:
 
 	//// return true to disconnect client due to timeout (used to do stricter timeouts when the game is sure the client isn't loading a map)
 	//virtual bool			ShouldTimeoutClient( int nUserID, float flTimeSinceLastReceived ) = 0;
+
+	//virtual void PrecacheOther(const char* pNames) = 0;
 };
 
 //-----------------------------------------------------------------------------

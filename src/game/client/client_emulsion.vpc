@@ -18,7 +18,7 @@ $Configuration
 	}
 }
 
-$Project "Client (Emulsion)"
+$Project "client (Emulsion)"
 {
 	$Folder	"Link Libraries"
 	{

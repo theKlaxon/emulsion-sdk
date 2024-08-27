@@ -26,6 +26,10 @@
 #include "xbox/xboxstubs.h"
 #endif
 
+#ifdef RESOURCES2
+#include "../game/client/panelmetaclassmgr.h"
+#endif
+
 //-----------------------------------------------------------------------------
 // forward declarations
 //-----------------------------------------------------------------------------
@@ -909,6 +913,10 @@ public:
 	virtual bool			HandleGameUIEvent( const InputEvent_t &event ) = 0;
 
 	//virtual bool			SupportsRandomMaps() = 0;
+
+	//virtual void InstallStringTableCallback_GameRules(const char* tableName) = 0;
+	//virtual IPanelMetaClassMgr* GetPanelMetaClassMgr() = 0;
+	//virtual void PrecacheOther(const char* pClassName) = 0;
 };
 
 #define CLIENT_DLL_INTERFACE_VERSION		"VClient016"

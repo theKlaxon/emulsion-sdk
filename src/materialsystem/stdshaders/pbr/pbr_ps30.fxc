@@ -203,7 +203,7 @@ float4 main(PS_INPUT i) : COLOR
 		float dist = sqrt(distSquared);
 
 		float3 flashlightColor = tex2D(FlashlightSampler, vProjCoords.xy);
-		flashlightColor *= cFlashlightColor.xyz;
+		//flashlightColor *= cFlashlightColor.xyz;
 
 #if FLASHLIGHTSHADOWS
 		float flashlightShadow = DoFlashlightShadow(ShadowDepthSampler, RandRotSampler, vProjCoords, i.projPos, FLASHLIGHTDEPTHFILTERMODE, g_ShadowTweaks, true);

@@ -16,22 +16,16 @@ $Group "game"
 
 $Group "everything"
 {
-	"client"
-	"server"
+	"fgdlib"
+	"interfaces"
 	"tier1"
 	"vgui_controls"
+	"client"
+	"server"
 	"game_shader_dx9"
-	"fgdlib"
 	"particles_dll"
 	"gamepadui"
-}
-
-$Group "gamepad"
-{
-	"gamepadui"
-}
-
-$Group "modinit"
-{
-	"vbspmi"
+	//"resourcesystem"
+	//"framework2"
+	//"video_services"
 }
