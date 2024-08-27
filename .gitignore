@@ -150,3 +150,6 @@ src/materialsystem/shaderlib/.vs/shaderlib_sdk/v17/DocumentLayout.json
 /src/materialsystem/shaderlib/Debug
 /src/materialsystem/shaderlib/Release
 /src/materialsystem/stdshaders/Release_dx9_emulsion
+/src/fgdlib/Debug
+/src/fgdlib/Debug
+/src/interfaces/Debug
