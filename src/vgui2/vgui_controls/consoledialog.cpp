@@ -480,7 +480,7 @@ void CConsolePanel::RebuildCompletionList(const char *text)
 	const char *space = strstr( text, " " );
 	if ( space )
 	{
-		ConCommand *pCommand = FindAutoCompleteCommmandFromPartial( text );
+		ConCommand* pCommand = nullptr;// FindAutoCompleteCommmandFromPartial(text);
 		if ( !pCommand )
 			return;
 
