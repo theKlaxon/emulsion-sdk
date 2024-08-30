@@ -68,6 +68,5 @@ $Project "server (Emulsion)"
 
 	$Folder	"Link Libraries"
 	{
-		$Lib "$LIBPUBLIC\particles2"
 	}
 }

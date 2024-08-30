@@ -103,6 +103,5 @@ $Project "client (Emulsion)"
 	$Folder	"Link Libraries"
 	{
 		$Lib "$LIBPUBLIC\vpklib"
-		$Lib "$LIBPUBLIC\particles2"
 	}
 }
