@@ -47,7 +47,6 @@ $Project "server (Emulsion)"
 			$File	"emulsion\emulsion_player.cpp"
 			$File	"emulsion\emulsion_playermove.cpp"
 			$File	"emulsion\weapon_paintgun.cpp"
-			$File	"emulsion\weapon_placement.cpp"
 
 			$File	"emulsion\paintblob_stream.cpp"
 			$File	"emulsion\paintblob_stream.h"
