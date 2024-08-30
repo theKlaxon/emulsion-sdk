@@ -2,6 +2,7 @@
 #include "particles_materialsystem.h"
 
 extern IMaterialSystemNew* g_pMaterialsNew;
+extern CMatRenderContextNew m_sRenderContext;
 
 class IMaterialSystem {
 
@@ -406,7 +407,7 @@ public:
 	// -----------------------------------------------------------
 	// Access the render contexts
 	// -----------------------------------------------------------
-	virtual IMatRenderContext* GetRenderContext() { return g_pMaterialsNew->GetRenderContext(); }
+	virtual IMatRenderContext* GetRenderContext() { return &m_sRenderContext; }//g_pMaterialsNew->GetRenderContext(); }
 
 	virtual void				BeginUpdateLightmaps(void) { g_pMaterialsNew->BeginUpdateLightmaps(); }
 	virtual void				EndUpdateLightmaps(void) { g_pMaterialsNew->EndUpdateLightmaps(); }

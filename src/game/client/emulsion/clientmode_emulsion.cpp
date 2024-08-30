@@ -70,6 +70,8 @@ IClientMode* GetFullscreenClientMode()
     ModeManager
 ******************/
 
+ConVarRef mat_queue_mode("mat_queue_mode");
+
 class SkeletonModeManager : public IVModeManager
 {
 	void Init()
@@ -79,6 +81,9 @@ class SkeletonModeManager : public IVModeManager
 			ACTIVE_SPLITSCREEN_PLAYER_GUARD( i );
 			g_pClientMode[ i ] = GetClientModeNormal();
 		}
+
+		// TODO: remove this when mat_queue_mode + render ropes no longer hangs :/
+		mat_queue_mode.SetValue(0);
 	}
 	
 	void SwitchMode( bool commander, bool force ) {}

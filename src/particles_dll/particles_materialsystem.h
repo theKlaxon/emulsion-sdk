@@ -2125,8 +2125,8 @@ protected:
 public:
 
 	// these 2 are for refcount stuff
-	//virtual void Unused1() {}
-	//virtual void Unused2() {}
+	virtual int AddRef() { return 1; }
+	virtual int Release() { return 1; } // dont release!
 
 	virtual void				BeginRender() { s_pOldRenderContext->BeginRender(); }
 	virtual void				EndRender() { s_pOldRenderContext->EndRender(); }
@@ -2453,8 +2453,12 @@ public:
 	virtual void GetMaxToRender(IMesh* pMesh, bool bMaxUntilFlush, int* pMaxVerts, int* pMaxIndices) { s_pOldRenderContext->GetMaxToRender(pMesh, bMaxUntilFlush, pMaxVerts, pMaxIndices); }
 
 	// Returns the max possible vertices + indices to render in a single draw call
-	virtual int GetMaxVerticesToRender(IMaterial* pMaterial) { return s_pOldRenderContext->GetMaxVerticesToRender(pMaterial); }
-	virtual int GetMaxIndicesToRender() { return s_pOldRenderContext->GetMaxIndicesToRender(); }
+	virtual int GetMaxVerticesToRender(IMaterial* pMaterial) { 
+		return s_pOldRenderContext->GetMaxVerticesToRender(pMaterial); 
+	}
+	virtual int GetMaxIndicesToRender() { 
+		return s_pOldRenderContext->GetMaxIndicesToRender(); 
+	}
 	virtual void DisableAllLocalLights() { s_pOldRenderContext->DisableAllLocalLights(); }
 	virtual int CompareMaterialCombos(IMaterial* pMaterial1, IMaterial* pMaterial2, int lightMapID1, int lightMapID2) { return s_pOldRenderContext->CompareMaterialCombos(pMaterial1, pMaterial2, lightMapID1, lightMapID2); }
 

@@ -6,6 +6,8 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
+CMatRenderContextNew m_sRenderContext;
+
 //static CParticleSystemDictionary* g_Dict = new CParticleSystemDictionary;
 
 bool bInitted = false;

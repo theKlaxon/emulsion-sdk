@@ -312,7 +312,7 @@ public:
 	virtual void GetMaxToRender(IMesh* pMesh, bool bMaxUntilFlush, int* pMaxVerts, int* pMaxIndices) { m_pRenderContext->GetMaxToRender(pMesh, bMaxUntilFlush, pMaxVerts, pMaxIndices); }
 
 	// Returns the max possible vertices + indices to render in a single draw call
-	virtual int GetMaxVerticesToRender(IMaterial* pMaterial) { return m_pRenderContext->GetMaxVerticesToRender(pMaterial); }
+	virtual int GetMaxVerticesToRender(IMaterial* pMaterial) { return m_pRenderContext->GetMaxVerticesToRender(pMaterial); } // 1f0?
 	virtual int GetMaxIndicesToRender() { return m_pRenderContext->GetMaxIndicesToRender(); }
 	virtual void DisableAllLocalLights() { m_pRenderContext->DisableAllLocalLights(); }
 	virtual int CompareMaterialCombos(IMaterial* pMaterial1, IMaterial* pMaterial2, int lightMapID1, int lightMapID2) { return m_pRenderContext->CompareMaterialCombos(pMaterial1, pMaterial2, lightMapID1, lightMapID2); }

@@ -4,7 +4,7 @@
 #include "particles_materialsystem.h"
 
 //extern CParticleSystemMgr m_pParticleSystemMgr;
-static CMatRenderContextNew m_sRenderContext;
+extern CMatRenderContextNew m_sRenderContext;
 
 class CParticleSystemMgrPtr : public IParticleSystemMgr {
 public:
