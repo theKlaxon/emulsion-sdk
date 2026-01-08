@@ -1417,7 +1417,7 @@ struct mstudiomesh_t
 
 	mstudio_meshvertexdata_t vertexdata;
 
-	int					unused[6]; // remove as appropriate -- 8 in asw
+	int					unused[8]; // ~~remove as appropriate -- 8 in asw~~ movercell: it actually is 8, dude!
 
 	mstudiomesh_t(){}
 private:
